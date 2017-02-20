@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="40sp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        app:srcCompat="@drawable/ic_folder_open_black"
+        android:id="@+id/item_folder_image" />
+
+    <TextView
+        android:text="TextView"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:id="@+id/item_folder_name"
+        android:layout_weight="1"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:text="TextView"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:id="@+id/item_folder_count"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical"/>
+
+</LinearLayout>

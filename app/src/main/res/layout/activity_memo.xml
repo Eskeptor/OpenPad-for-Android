@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.eskeptor.openTextViewer.MemoActivity">
+
+    <LinearLayout
+        android:id="@+id/activity_memo"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/memo_etxtHint"
+                android:id="@+id/memo_etxtMain"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:scrollbars="vertical"
+                android:elevation="1dp"
+                android:background="@drawable/edittext"
+                android:inputType="textMultiLine"
+                android:textSize="18dp">
+            </EditText>
+        </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

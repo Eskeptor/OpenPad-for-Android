@@ -1,0 +1,112 @@
+<resources>
+    <string name="app_name">OpenPad</string>
+    <string name="memo_btnOpen">Open</string>
+    <string name="memo_btnSave">Save</string>
+    <string name="memo_btnRemove">New</string>
+    <string name="memo_etxtHint">Enter Contents.</string>
+    <string name="memo_toast_removeSuccess">The file(%s) has been removed.</string>
+    <string name="memo_toast_removeFail">The file(%s) can not be removed.</string>
+    <string name="memo_toast_saveSuccess">The file(%s) has been saved.</string>
+    <string name="memo_toast_saveFail">The file(%s) can not be saved.</string>
+    <string name="memo_toast_openSuccess">The file(%s) has been opened.</string>
+    <string name="memo_toast_openFail">The file(%s) can not be opened.</string>
+    <string name="memo_intent_opendialog">Open File</string>
+    <string name="memo_alert_save_context">Choose</string>
+    <string name="browser_Location">Location :</string>
+    <string name="browser_nofiles">No files in this folder.</string>
+    <string name="back_press">Press the \' Back \' button once again to exit.</string>
+    <string name="browser_name">File Explorer</string>
+    <string name="menu_spinner_sort">Sort</string>
+
+    <string-array name="menu_spinner_sort">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
+    <string-array name="main_selectalert">
+        <item>File Browser</item>
+        <item>App Internal folder</item>
+    </string-array>
+    <string name="browser_etxtSaveHint">Please enter save name.</string>
+    <string name="browser_btnSave">Save</string>
+    <string name="browser_toast_error_regex">Please name include numbers, letters, and underbar(_).</string>
+    <string name="memo_alert_modified_context">Detect modified contents.&#xA;Do you want to save it?</string>
+    <string name="memo_alert_modified_title">Detector</string>
+    <string name="memo_alert_modified_btnSave">Save</string>
+    <string name="memo_alert_modified_btnDiscard">Discard</string>
+    <string name="memo_alert_modified_btnCancel">Cancel</string>
+    <string name="browser_name_save">File Save</string>
+    <string name="browser_name_open">File Open</string>
+    <string name="memo_title_newFile">New Memo</string>
+    <string name="folder_default">Default Folder</string>
+    <string name="file_noname">Nameless Text</string>
+    <string name="file_dateformat">dd/MM/yyyy hh:mm a</string>
+    <string name="dialog_folder_hint_add">Input folder name</string>
+    <string name="dialog_folder_title_create">New Folder</string>
+    <string name="dialog_folder_button_create">Create</string>
+    <string name="dialog_folder_button_cancel">Cancel</string>
+    <string name="dialog_folder_toast_exist">Folder already exists.</string>
+    <string name="dialog_folder_toast_delete">Deleted folder.</string>
+    <string name="dialog_folder_title_delete">Delete Folder</string>
+    <string name="dialog_folder_button_delete">Delete</string>
+    <string name="dialog_folder_message_question_delete">Are you sure you want to delete the folder?</string>
+    <string name="dialog_file_title_delete">Delete File</string>
+    <string name="dialog_file_message_question_delete">Are you sure you want to delete the file?</string>
+    <string name="dialog_file_toast_delete">Deleted file.</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_separator_information">Program Information</string>
+    <string name="settings_information_info">Info</string>
+    <string name="settings_separator_general">General</string>
+    <string name="settings_general_font">Font</string>
+    <string name="settings_general_fontsummary">General settings for fonts.</string>
+    <string name="settings_information_infosummary">Program information and version.</string>
+    <string name="dialog_settings_info_title">About Openpad</string>
+    <string name="dialog_settings_info_copyright">Copyright © 2017 Jeon Ye Chan</string>
+    <string name="dialog_settings_info_license">This program is affected by the \"GNU GPL v3 License \" license.</string>
+    <string name="dialog_settings_info_icon">Icons : https://material.io/icons/</string>
+    <string name="dialog_settings_info_ok">OK</string>
+    <string name="settings_information_version">Version</string>
+    <string name="settings_information_versionsummary">Program Version</string>
+    <string name="dialog_filebrower_alert_title">Warning</string>
+    <string name="dialog_filebrowser_alert_context">This file goes over 1 MB. &#xA;Would you like to open it?</string>
+    <string name="settings_font_fontsize">Font Size</string>
+    <string name="dialog_settings_font_context">Changing Font size affects only the note screen.</string>
+    <string name="settings_font_fonttype">Font type(Custom Font)</string>
+    <string name="testing_temporary">Future update scheduled.</string>
+    <string name="settings_information_bug_title">Bug Report</string>
+    <string name="settings_information_bugsummary">Report the bug to the developer.</string>
+    <string name="folder_toast_remove_defaultfolder">The default folder can not be removed.</string>
+    <string name="settings_information_help">Help</string>
+    <string name="settings_information_helpsummary">How to use a program.</string>
+    <string name="settings_help_title_main">Main Screen(Activity)</string>
+    <string name="settings_help_title_folder">Folder Screen(Activity)</string>
+    <string name="settings_help_title_text">Memo Screen(Activity)</string>
+    <string name="settings_help_main_list">Memo(File) List</string>
+    <string name="settings_help_main_delete">Delete Memo(File)</string>
+    <string name="settings_help_folder_list">Folder List</string>
+    <string name="settings_help_folder_delete">Delete Folder</string>
+    <string name="settings_help_main_memocreate">Create Memo</string>
+    <string name="settings_help_folder_create">Create Folder</string>
+    <string name="settings_help_folder_default">Default folder and path</string>
+    <string name="settings_help_folder_external">External File Explorer</string>
+    <string name="folder_externalBrowser">Open External File Explorer</string>
+    <string name="settings_help_memo_savelengthlimited">Maximum length of character</string>
+    <string name="settings_help_memo_fontcolor">Font Color</string>
+    <string name="help_main_list">By default, you\'ll see notes in the default folder when you run OpenPad.\nYou can call up the other folders by pressing the Folder button.</string>
+    <string name="help_main_memocreate">You can add a new note by pressing the \" Add button (+) \" at the bottom right-hand corner of the main screen.\nNote that these additional notes can be stored in the default folder (OpenPad/Basic) of the application and stored on the external path.</string>
+    <string name="help_main_delete">You can delete the corresponding notes in the main notes by pressing them for more than 1 second.\nDelete will also be deleted from the actual mobile phone memory when deleted.\n(You can not restore it again.)</string>
+    <string name="help_folder_list">Displays the folder in the folder (OpenPad) of the application.\nThe default folder (OpenPad) can not be deleted and will be recreated if it is erased.\nFolders list consist of \" Default Folder \", \" External File Explorer \" and newly created folders.</string>
+    <string name="help_folder_default">If you run an application \" More than once \", it automatically creates a folder called \" OpenPad \", which creates a default folder for \" Basic \" folders.\nThis folder does not delete the \" Deleted \" function from the \" OpenPad \" feature, and will be recreated again if it is deleted.\n(Note that notes can not be recovered when deleted.)</string>
+    <string name="help_folder_create">You can add folders by pressing the \" Add Folder \" button on the top right.\nThe name of the folder can not be duplicated and can not create a folder called \" Basic \".</string>
+    <string name="help_folder_delete">Like delete memo, you can delete it by pressing the corresponding folder for more than 1 second.\nIf you delete a folder, all the notes in the folder will be deleted.\n(However, the default folder and file explorer can not be deleted.)</string>
+    <string name="help_folder_external">Allows you to retrieve files (. txt) from a path other than the default folder (OpenPad).\nHowever, all files imported from an external file explorer are imported temporarily into \"EUC-KR → UTF-8\".\nSo, if you leave the memo window, there is a change if there is no change.\nAlso, if you call the \" UTF-8 \" file, the file will be broken.\n(This part will be updated later)</string>
+    <string name="help_memo_savelength">The maximum length of the letter is unspecified.\n\" Up to 500,000 characters in English, \" and \" 250,000 characters in Korean letters, \" will be saved.\nHowever, if you pass beyond this, you will not be able to guarantee stability.</string>
+    <string name="help_memo_fontcolor">Color color is not supported for \"after update list\".\nInstead, the theme updates are scheduled to be included with the theme.</string>
+    <string name="settings_help_memo_edit">Edit Memo</string>
+    <string name="help_memo_edit">Press the \" Edit button \" on the top right to enter the correction mode.\nOnce you have modified it, press and hold the \" Save button \" button on the top right.\nThe file will then be stored in the \" UTF-8 \" format.\n(However, if the open file is over 500 KB, it can not be edited.)</string>
+    <string name="settings_help_main_openfolder">Open Folder</string>
+    <string name="help_main_openfolder">Press the \" Open Folder \" button on the top left corner to view the notes contained in that folder.</string>
+    <string name="settings_help_title_ect">ETC.</string>
+    <string name="settings_help_etc_filecolor">Color files in an external file explorer</string>
+    <string name="help_etc_filecolor">There are three colors in a file.\nRed : Opening files does not guarantee stability (over 1 MB or more)\nYellow : File is opened but a little slower (500 KB or more files)\nBlack : File files that ensure file opening (500 KB files)\n(MB = 1024 KB)</string>
+</resources>

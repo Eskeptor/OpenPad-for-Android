@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.eskeptor.practice_fileio.com.eskeptor.practice_fileio.MainActivity">
+
+    <item
+        android:id="@+id/menu_main_settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="always"/>
+
+</menu>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_help_title_main">
+        <Preference
+            android:title="@string/settings_help_main_list"
+            android:key="settings_key_main_list" />
+        <Preference
+            android:title="@string/settings_help_main_memocreate"
+            android:key="settings_key_main_memocreate" />
+        <Preference
+            android:title="@string/settings_help_main_delete"
+            android:key="settings_key_main_delete" />
+        <Preference
+            android:title="@string/settings_help_main_openfolder"
+            android:key="settings_key_main_openfolder" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_help_title_folder">
+        <Preference
+            android:title="@string/settings_help_folder_list"
+            android:key="settings_key_folder_list" />
+        <Preference
+            android:title="@string/settings_help_folder_default"
+            android:key="settings_key_folder_default" />
+        <Preference
+            android:title="@string/settings_help_folder_create"
+            android:key="settings_key_folder_create" />
+        <Preference
+            android:title="@string/settings_help_folder_delete"
+            android:key="settings_key_folder_delete" />
+        <Preference
+            android:title="@string/settings_help_folder_external"
+            android:key="settings_key_foler_external" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_help_title_text">
+        <Preference
+            android:title="@string/settings_help_memo_savelengthlimited"
+            android:key="settings_key_memo_savelengthlimited" />
+        <Preference
+            android:title="@string/settings_help_memo_fontcolor"
+            android:key="settings_key_memo_fontcolor" />
+        <Preference
+            android:title="@string/settings_help_memo_edit"
+            android:key="settings_key_memo_edit" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_help_title_ect">
+        <Preference
+            android:title="@string/settings_help_etc_filecolor"
+            android:key="settings_key_etc_filecolor" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_filebrowser"
+    tools:context="com.eskeptor.openTextViewer.FileBrowserActivity"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/browser_txtPath"
+        android:textSize="14dp"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/browser_saveLayout"
+        android:visibility="visible">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/browser_etxtSave"
+            android:layout_weight="1"
+            android:background="@android:drawable/edit_text"
+            android:hint="@string/browser_etxtSaveHint" />
+
+        <Button
+            android:text="@string/browser_btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/browser_btnSave"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:onClick="onClick"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/browser_lvFilecontrol" />
+
+</LinearLayout>
