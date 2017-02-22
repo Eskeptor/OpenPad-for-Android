@@ -7,9 +7,10 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.2.20)
+## What's New? (Last updated 2017.2.21)
 ```
- 1) Version update(none → alpha)
+ 1) Bug fix(Error in error in " md 5 " when editting)
+ 2) Bug fix(Do not generate logs that occur in the "MIUI" environment)
 ```
 ## Next Updates
 ```
