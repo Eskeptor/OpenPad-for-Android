@@ -171,15 +171,14 @@ public class TextManager
 
     public String createMD5(final byte[] message)
     {
+        Log.d("Debug", "message length : " + message.length);
         MessageDigest messageDigest;
         StringBuilder sbuilder = new StringBuilder();
         CharBuffer charBuffer = null;
-        CharsetDecoder decoder = null;
         try
         {
             messageDigest = MessageDigest.getInstance("MD5");
-            decoder = Charset.forName(format).newDecoder();
-            charBuffer = decoder.decode(ByteBuffer.wrap(message));
+            charBuffer = Charset.forName(format).newDecoder().decode(ByteBuffer.wrap(message));
             messageDigest.update(charBuffer.toString().getBytes());
             byte[] hash = messageDigest.digest();
             for (int i = 0; i < hash.length; i++)
@@ -194,6 +193,7 @@ public class TextManager
 
     public String createMD5(final String message)
     {
+        Log.d("Debug", "message length : " + message.length());
         MessageDigest messageDigest;
         StringBuilder sbuilder = new StringBuilder();
         try

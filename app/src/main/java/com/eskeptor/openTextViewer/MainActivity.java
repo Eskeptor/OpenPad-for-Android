@@ -1,12 +1,17 @@
 package com.eskeptor.openTextViewer;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,10 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
 
+    private boolean permissionChecker;
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,6 +101,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == Constant.REQUEST_CODE_APP_PERMISSION_WRITE_STORAGE)
+        {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            {
+                defaultFolderCheck();
+                curFolderFiles();
+            }
+            else
+            {
+                Toast.makeText(context_this, "0 : " + Integer.toString(grantResults[0]) + ", 1 : " + Integer.toString(grantResults[1]), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        defaultFolderCheck();
-        curFolderFiles();
+        checkPermission();
     }
 
     @Override
@@ -167,6 +190,37 @@ public class MainActivity extends AppCompatActivity {
         {
             backPressedTime = tempTime;
             Toast.makeText(this, getResources().getString(R.string.back_press), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkPermission()
+    {
+        if(Build.VERSION.SDK_INT >= 23)
+        {
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            {
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_READ_STORAGE);
+                }
+                else
+                {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_WRITE_STORAGE);
+                }
+            }
+            else
+            {
+                defaultFolderCheck();
+                curFolderFiles();
+                permissionChecker = true;
+            }
+        }
+        else
+        {
+            defaultFolderCheck();
+            curFolderFiles();
+            permissionChecker = true;
         }
     }
 
@@ -191,8 +245,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         curFolderFileList.clear();
-        for(int i = 0; i < files.length; i++)
-            curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+        if(files != null)
+            for(int i = 0; i < files.length; i++)
+                curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
 
         curFileAdapter = new TextFileAdaptor(this, curFolderFileList);
         curFolderGridView.setAdapter(curFileAdapter);
@@ -239,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        curFolderFiles();
+        if(permissionChecker)
+            curFolderFiles();
     }
 }

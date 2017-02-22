@@ -34,6 +34,7 @@ public class MemoActivity extends AppCompatActivity {
 
     private EditText editText;
     private TextManager txtManager;
+    private LogManager logManager;
 
     private File lastLog;
     private AlertDialog.Builder alert;
@@ -108,11 +109,13 @@ public class MemoActivity extends AppCompatActivity {
         editText = (EditText)findViewById(R.id.memo_etxtMain);
         editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE));
         txtManager = new TextManager();
+        logManager = new LogManager();
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         fileSize = getIntent().getLongExtra(Constant.INTENT_EXTRA_FILE_SIZE, 0L);
 
         if(memoType == Constant.MEMO_TYPE_NEW)
         {
+            Log.e("Debug", "New File");
             lastLog = new File(openFolderURL + File.separator + Constant.LOG_FILE_COUNT);
             if(!lastLog.exists())
             {
@@ -120,14 +123,23 @@ public class MemoActivity extends AppCompatActivity {
                 {
                     lastLog.createNewFile();
                     memoIndex = 1;
-                    txtManager.saveText(Integer.toString(memoIndex), lastLog.getPath());
+                    logManager.saveLog(Integer.toString(memoIndex), lastLog.getPath());
+                    Log.e("Debug", "Create Log");
                 }
                 catch (IOException ioe){ioe.printStackTrace();}
             }
             else
             {
-                try {memoIndex = Integer.parseInt(txtManager.openText(lastLog.getPath()));}
-                catch (Exception e) {e.printStackTrace();}
+                try
+                {
+                    Log.e("Debug", logManager.openLog(lastLog.getPath()));
+                    memoIndex = Integer.parseInt(logManager.openLog(lastLog.getPath()));
+                    Log.e("Debug", "Get Log");
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("Debug", "Exception!! : " + logManager.openLog(lastLog.getPath()));
+                }
             }
             txtManager.initManager();
             setTitle(R.string.memo_title_newFile);
@@ -137,6 +149,7 @@ public class MemoActivity extends AppCompatActivity {
         }
         else if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
         {
+            Log.e("Debug", "Open File");
             openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
             openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
             setTitle(openFileName);
@@ -199,6 +212,7 @@ public class MemoActivity extends AppCompatActivity {
                             txtManager.saveText(editText.getText().toString(), openFileURL);
                             memoIndex++;
                             writeLog();
+                            Log.e("Debug", "isn't open");
                         }
                         finish();
                         break;
@@ -232,15 +246,17 @@ public class MemoActivity extends AppCompatActivity {
         try {
             if(!txtManager.isFileopen())
             {
-                txtManager.saveText(Integer.toString(memoIndex), lastLog.getPath());
+                logManager.saveLog(Integer.toString(memoIndex), lastLog.getPath());
             }
         }
         catch(Exception e){e.printStackTrace();}
+        Log.e("Debug", "memoIndex : " + memoIndex);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        writeLog();
     }
 
     @Override
