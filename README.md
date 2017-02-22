@@ -7,10 +7,10 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.2.21)
+## What's New? (Last updated 2017.2.22)
 ```
- 1) Bug fix(Error in error in " md 5 " when editting)
- 2) Bug fix(Do not generate logs that occur in the "MIUI" environment)
+ 1) Update Android version 6.0(or over) support
+ 2) Apply "Swipe Refresh"
 ```
 ## Next Updates
 ```
