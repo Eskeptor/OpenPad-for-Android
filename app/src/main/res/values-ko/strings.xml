@@ -109,4 +109,8 @@
     <string name="settings_help_title_ect">기타 사항</string>
     <string name="settings_help_etc_filecolor">외부 파일탐색기에서 메모파일의 색상</string>
     <string name="help_etc_filecolor">파일의 색은 3가지 입니다.\n빨간색 : 파일 열기에 안정성을 보장하지 않음(1MB 이상 파일)\n노란색 : 파일은 열어지나 조금은 느려짐(500KB 이상 파일)\n검정색 : 파일 열기에 안정성을 보장하는 파일(500KB 미만 파일)\n(1MB = 1024KB)</string>
+    <string name="dialog_main_restart_title">종료</string>
+    <string name="dialog_main_restart_context">권한 획득을 위해 종료합니다.\n(종료 후에 재시작 해주세요.)</string>
+    <string name="dialog_main_restart_title_no">경고</string>
+    <string name="dialog_main_restart_context_no">권한이 없으면 이용할 수 없습니다.</string>
 </resources>

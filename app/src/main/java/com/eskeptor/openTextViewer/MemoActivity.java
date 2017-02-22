@@ -13,6 +13,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.io.File;
@@ -46,6 +47,7 @@ public class MemoActivity extends AppCompatActivity {
     private MenuItem editMenu;
     private Drawable drawableModified;
     private Drawable drawableModifiedComplete;
+    private InputMethodManager inputMethodManager;
 
     public boolean onCreateOptionsMenu(Menu menu) {
         if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL) {
@@ -62,21 +64,27 @@ public class MemoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         switch (id)
         {
             case R.id.menu_memo_modified:
             {
+                Log.e("Debug", "isFocusable : " + Boolean.toString(editText.isFocusable()));
                 if(editText.isFocusable())
                 {
                     editText.setFocusable(false);
                     editMenu.setIcon(drawableModified);
+                    inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 }
                 else
                 {
                     editText.setFocusable(true);
                     editText.setFocusableInTouchMode(true);
+                    editText.requestFocus();
                     editMenu.setIcon(drawableModifiedComplete);
+                    inputMethodManager.showSoftInput(editText, 0);
                 }
+
                 return true;
             }
         }
@@ -104,6 +112,7 @@ public class MemoActivity extends AppCompatActivity {
 
         context_this = getApplicationContext();
         pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
+        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
         memoType = getIntent().getIntExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
         editText = (EditText)findViewById(R.id.memo_etxtMain);
@@ -145,7 +154,6 @@ public class MemoActivity extends AppCompatActivity {
             setTitle(R.string.memo_title_newFile);
             editText.setText("");
             editText.setFocusable(true);
-            editText.clearFocus();
         }
         else if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
         {

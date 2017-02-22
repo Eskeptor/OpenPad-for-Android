@@ -43,8 +43,7 @@ class Constant
     public static final int REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE = 1;
     public static final int REQUEST_CODE_OPEN_FILE_EXTERNAL = 2;
     public static final int REQUEST_CODE_OPEN_FOLDER = 3;
-    public static final int REQUEST_CODE_APP_PERMISSION_WRITE_STORAGE = 4;
-    public static final int REQUEST_CODE_APP_PERMISSION_READ_STORAGE = 5;
+    public static final int REQUEST_CODE_APP_PERMISSION_STORAGE = 4;
 
     public static final int FILE_OPEN_TYPE_INTERNAL = 1;
     public static final int FILE_OPEN_TYPE_EXTERNAL = 2;

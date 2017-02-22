@@ -12,10 +12,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.eskeptor.openTextViewer.MainActivity"
     tools:showIn="@layout/activity_main">
-
-    <GridView
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_curFolderFileList"
-        android:numColumns="2" />
+        android:id="@+id/main_swipeRefresh">
+        <GridView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/main_curFolderFileList"
+                android:numColumns="2" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

@@ -12,15 +12,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
 
 import java.io.File;
 import java.io.FileFilter;
@@ -34,22 +37,17 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private long backPressedTime;
-
     private String curFolderURL;
-
+    private SwipeRefreshLayout refreshLayout;
     private GridView curFolderGridView;
     private TextFileAdaptor curFileAdapter;
     private ArrayList<TextFile> curFolderFileList;
     private Drawable folderIcon;
-
     private AlertDialog.Builder dialog;
     private AdapterView.OnItemClickListener clickListener;
     private AdapterView.OnItemLongClickListener longClickListener;
-
     private Context context_this;
-
     private FloatingActionButton fab;
-
     private boolean permissionChecker;
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,17 +101,60 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == Constant.REQUEST_CODE_APP_PERMISSION_WRITE_STORAGE)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE)
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED)
             {
+                /*permissionChecker = true;
                 defaultFolderCheck();
-                curFolderFiles();
+                curFolderFiles();*/
+                dialog = new AlertDialog.Builder(this);
+                dialog.setTitle(R.string.dialog_main_restart_title);
+                dialog.setMessage(R.string.dialog_main_restart_context);
+                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which)
+                        {
+                            case AlertDialog.BUTTON_POSITIVE:
+                            {
+                                ActivityCompat.finishAffinity(MainActivity.this);
+                                System.exit(0);
+                                break;
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                };
+                dialog.setPositiveButton(R.string.dialog_settings_info_ok, clickListener);
+                dialog.show();
+                Log.i("Debug", "Permission Allowed");
             }
             else
             {
-                Toast.makeText(context_this, "0 : " + Integer.toString(grantResults[0]) + ", 1 : " + Integer.toString(grantResults[1]), Toast.LENGTH_SHORT).show();
+                dialog = new AlertDialog.Builder(this);
+                dialog.setTitle(R.string.dialog_main_restart_title_no);
+                dialog.setMessage(R.string.dialog_main_restart_context_no);
+                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which)
+                        {
+                            case AlertDialog.BUTTON_POSITIVE:
+                            {
+                                ActivityCompat.finishAffinity(MainActivity.this);
+                                System.exit(0);
+                                break;
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                };
+                dialog.setPositiveButton(R.string.dialog_settings_info_ok, clickListener);
+                dialog.show();
+                Log.i("Debug", "Permission Denied");
             }
         }
     }
@@ -138,6 +179,14 @@ public class MainActivity extends AppCompatActivity {
 
         curFolderGridView = (GridView)findViewById(R.id.main_curFolderFileList);
         curFolderFileList = new ArrayList<>();
+        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.main_swipeRefresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                curFolderFiles();
+                refreshLayout.setRefreshing(false);
+            }
+        });
 
         clickListener = new AdapterView.OnItemClickListener() {
             @Override
@@ -202,11 +251,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_READ_STORAGE);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_STORAGE);
                 }
                 else
                 {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_WRITE_STORAGE);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_STORAGE);
                 }
             }
             else
@@ -233,26 +282,31 @@ public class MainActivity extends AppCompatActivity {
         if(!file.exists())
             file.mkdir();
         curFolderURL = file.getPath();
+        Log.e("Debug", "file path : " + curFolderURL);
     }
 
     private void curFolderFiles()
     {
-        File file = new File(curFolderURL);
-        File files[] = file.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith(Constant.FILE_EXTENSION);
-            }
-        });
-        curFolderFileList.clear();
-        if(files != null)
-            for(int i = 0; i < files.length; i++)
-                curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+        if(permissionChecker)
+        {
+            File file = new File(curFolderURL);
+            File files[] = file.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    return pathname.getName().endsWith(Constant.FILE_EXTENSION);
+                }
+            });
 
-        curFileAdapter = new TextFileAdaptor(this, curFolderFileList);
-        curFolderGridView.setAdapter(curFileAdapter);
-        curFolderGridView.setOnItemClickListener(clickListener);
-        curFolderGridView.setOnItemLongClickListener(longClickListener);
+            curFolderFileList.clear();
+            if(files != null)
+                for(int i = 0; i < files.length; i++)
+                    curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+
+            curFileAdapter = new TextFileAdaptor(this, curFolderFileList);
+            curFolderGridView.setAdapter(curFileAdapter);
+            curFolderGridView.setOnItemClickListener(clickListener);
+            curFolderGridView.setOnItemLongClickListener(longClickListener);
+        }
     }
 
     private void deleteFile(final int index)
@@ -294,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("Debug", "onResume");
         if(permissionChecker)
             curFolderFiles();
     }

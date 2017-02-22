@@ -109,4 +109,8 @@
     <string name="settings_help_title_ect">ETC.</string>
     <string name="settings_help_etc_filecolor">Color files in an external file explorer</string>
     <string name="help_etc_filecolor">There are three colors in a file.\nRed : Opening files does not guarantee stability (over 1 MB or more)\nYellow : File is opened but a little slower (500 KB or more files)\nBlack : File files that ensure file opening (500 KB files)\n(MB = 1024 KB)</string>
+    <string name="dialog_main_restart_title">Exit</string>
+    <string name="dialog_main_restart_context">Exit to acquire permission.\n(Please restart after shutdown.)</string>
+    <string name="dialog_main_restart_title_no">Warning</string>
+    <string name="dialog_main_restart_context_no">If you don\'t have permission, you won\'t be able to use it.</string>
 </resources>
