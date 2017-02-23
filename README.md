@@ -7,10 +7,10 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.2.22)
+## What's New? (Last updated 2017.2.23)
 ```
- 1) Update Android version 6.0(or over) support
- 2) Apply "Swipe Refresh"
+ 1) Optimized codes
+ 2) Bug fix(Failed to get permission from Android 6.0, over, or some settings)
 ```
 ## Next Updates
 ```
