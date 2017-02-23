@@ -49,6 +49,7 @@ public class MemoActivity extends AppCompatActivity {
     private Drawable drawableModifiedComplete;
     private InputMethodManager inputMethodManager;
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL) {
             if(fileSize <= Constant.SAFE_LOAD_CAPACITY * Constant.KILOBYTE)
@@ -177,6 +178,88 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        writeLog();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if((fileSize <= Constant.SAFE_LOAD_CAPACITY) && isModified())
+        {
+            DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which)
+                    {
+                        case AlertDialog.BUTTON_POSITIVE:
+                        {
+                            switch (memoType)
+                            {
+                                case Constant.MEMO_TYPE_NEW:
+                                {
+                                    AlertDialog openDialog = createSeletor(Constant.SELECTOR_TYPE_SAVE).create();
+                                    openDialog.show();
+                                    break;
+                                }
+                                case Constant.MEMO_TYPE_OPEN_EXTERNAL:
+                                {
+                                    txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
+                                    finish();
+                                    break;
+                                }
+                                case Constant.MEMO_TYPE_OPEN_INTERNAL:
+                                {
+                                    txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
+                                    finish();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case AlertDialog.BUTTON_NEGATIVE:
+                        {
+                            switch (memoType)
+                            {
+                                case Constant.MEMO_TYPE_NEW:
+                                {
+                                    finish();
+                                    break;
+                                }
+                                case Constant.MEMO_TYPE_OPEN_INTERNAL:
+                                {
+                                    writeLog();
+                                    finish();
+                                    break;
+                                }
+                                case Constant.MEMO_TYPE_OPEN_EXTERNAL:
+                                {
+                                    finish();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    dialog.dismiss();
+                }
+            };
+            alert = new AlertDialog.Builder(this);
+            alert.setTitle(R.string.memo_alert_modified_title);
+            alert.setMessage(R.string.memo_alert_modified_context);
+            alert.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
+            alert.setNegativeButton(R.string.memo_alert_modified_btnDiscard, clickListener);
+            alert.show();
+        }
+        else
+        {
+            writeLog();
+            super.onBackPressed();
+            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+        }
+    }
+
     private AlertDialog.Builder createSeletor(final int type)
     {
         AlertDialog.Builder openSelector = new AlertDialog.Builder(this);
@@ -261,85 +344,5 @@ public class MemoActivity extends AppCompatActivity {
         Log.e("Debug", "memoIndex : " + memoIndex);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        writeLog();
-    }
 
-    @Override
-    public void onBackPressed() {
-        if((fileSize <= Constant.SAFE_LOAD_CAPACITY) && isModified())
-        {
-            DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which)
-                    {
-                        case AlertDialog.BUTTON_POSITIVE:
-                        {
-                            switch (memoType)
-                            {
-                                case Constant.MEMO_TYPE_NEW:
-                                {
-                                    AlertDialog openDialog = createSeletor(Constant.SELECTOR_TYPE_SAVE).create();
-                                    openDialog.show();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_EXTERNAL:
-                                {
-                                    txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
-                                    finish();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_INTERNAL:
-                                {
-                                    txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
-                                    finish();
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case AlertDialog.BUTTON_NEGATIVE:
-                        {
-                            switch (memoType)
-                            {
-                                case Constant.MEMO_TYPE_NEW:
-                                {
-                                    finish();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_INTERNAL:
-                                {
-                                    writeLog();
-                                    finish();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_EXTERNAL:
-                                {
-                                    finish();
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-                    dialog.dismiss();
-                }
-            };
-            alert = new AlertDialog.Builder(this);
-            alert.setTitle(R.string.memo_alert_modified_title);
-            alert.setMessage(R.string.memo_alert_modified_context);
-            alert.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
-            alert.setNegativeButton(R.string.memo_alert_modified_btnDiscard, clickListener);
-            alert.show();
-        }
-        else
-        {
-            writeLog();
-            super.onBackPressed();
-            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-        }
-    }
 }

@@ -8,5 +8,4 @@ package com.eskeptor.openTextViewer;
 class ErrorCode
 {
     public static int NO_FOLDER = 1;    // 제거하려는 파일이 없을 때
-
 }

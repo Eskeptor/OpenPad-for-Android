@@ -29,7 +29,8 @@ public class HelpContentsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         super.onBackPressed();
         overridePendingTransition(0,0);
     }

@@ -24,7 +24,8 @@ class FolderViewHolder
     public TextView count;
 }
 
-public class FolderAdaptor extends BaseAdapter {
+public class FolderAdaptor extends BaseAdapter
+{
     private Context context;
 
     private ArrayList<Folder> folders;
@@ -52,22 +53,26 @@ public class FolderAdaptor extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return folders.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(int position)
+    {
         return folders.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         FolderViewHolder holder;
 
         if(convertView == null)
@@ -97,7 +102,9 @@ public class FolderAdaptor extends BaseAdapter {
         {
             holder.image.setImageDrawable(drawableFolderNormal);
         }
+
         holder.name.setText(folders.get(position).name);
+
         if(folders.get(position).count == Constant.FOLDER_TYPE_EXTERNAL)
         {
             holder.count.setText(null);

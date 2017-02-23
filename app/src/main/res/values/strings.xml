@@ -99,7 +99,7 @@
     <string name="help_folder_default">If you run an application \" More than once \", it automatically creates a folder called \" OpenPad \", which creates a default folder for \" Basic \" folders.\nThis folder does not delete the \" Deleted \" function from the \" OpenPad \" feature, and will be recreated again if it is deleted.\n(Note that notes can not be recovered when deleted.)</string>
     <string name="help_folder_create">You can add folders by pressing the \" Add Folder \" button on the top right.\nThe name of the folder can not be duplicated and can not create a folder called \" Basic \".</string>
     <string name="help_folder_delete">Like delete memo, you can delete it by pressing the corresponding folder for more than 1 second.\nIf you delete a folder, all the notes in the folder will be deleted.\n(However, the default folder and file explorer can not be deleted.)</string>
-    <string name="help_folder_external">Allows you to retrieve files (. txt) from a path other than the default folder (OpenPad).\nHowever, all files imported from an external file explorer are imported temporarily into \"EUC-KR → UTF-8\".\nSo, if you leave the memo window, there is a change if there is no change.\nAlso, if you call the \" UTF-8 \" file, the file will be broken.\n(This part will be updated later)</string>
+    <string name="help_folder_external">Allows you to retrieve files (. txt) from a path other than the default folder (OpenPad).\nHowever, all files imported from an external file explorer are imported temporarily into \"EUC-KR → UTF-8\".\nSo, if you leave the memo window, there is no change in the change, even if there are no changes.</string>
     <string name="help_memo_savelength">The maximum length of the letter is unspecified.\n\" Up to 500,000 characters in English, \" and \" 250,000 characters in Korean letters, \" will be saved.\nHowever, if you pass beyond this, you will not be able to guarantee stability.</string>
     <string name="help_memo_fontcolor">Color color is not supported for \"after update list\".\nInstead, the theme updates are scheduled to be included with the theme.</string>
     <string name="settings_help_memo_edit">Edit Memo</string>
@@ -113,4 +113,9 @@
     <string name="dialog_main_restart_context">Exit to acquire permission.\n(Please restart after shutdown.)</string>
     <string name="dialog_main_restart_title_no">Warning</string>
     <string name="dialog_main_restart_context_no">If you don\'t have permission, you won\'t be able to use it.</string>
+    <string name="dialog_main_first_title">Welcome</string>
+    <string name="dialog_main_first_context">Thank you for your first use.\nPlease check \" Help \".\n(Setup - Help)
+    </string>
+    <string name="dialog_settings_info_homepage">If you like this program, visit my homepage.\n(http://eskeptor.tistory.com)</string>
+    <string name="folder_title">Select Folder</string>
 </resources>

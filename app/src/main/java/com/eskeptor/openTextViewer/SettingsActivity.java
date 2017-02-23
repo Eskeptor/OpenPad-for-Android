@@ -179,8 +179,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         String copyright = getResources().getString(R.string.dialog_settings_info_copyright);
                         String license = getResources().getString(R.string.dialog_settings_info_license);
                         String icons = getResources().getString(R.string.dialog_settings_info_icon);
+                        String homepage = getResources().getString(R.string.dialog_settings_info_homepage);
                         String line = "\n";
-                        dialog.setMessage(copyright + line + license + line + icons);
+
+                        dialog.setMessage(copyright + line + license + line + icons + line + homepage);
                         dialog.setPositiveButton(getResources().getString(R.string.dialog_settings_info_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -231,6 +233,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         if(actionBar != null)
         {
             actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setTitle(R.string.settings_title);
         }
     }
 
@@ -249,8 +252,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();
         activeScene = Constant.SETTINGS_ACTIVESCREEN_MAIN;
 
-        pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, 0);
-
+        pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         editor = pref.edit();
     }
 

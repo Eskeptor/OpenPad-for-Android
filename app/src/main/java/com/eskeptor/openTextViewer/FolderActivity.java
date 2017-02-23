@@ -24,7 +24,8 @@ import java.util.ArrayList;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-public class FolderActivity extends AppCompatActivity {
+public class FolderActivity extends AppCompatActivity
+{
     private ArrayList<Folder> folders;
     private FolderAdaptor folderAdaptor;
     private Context context_this;
@@ -35,37 +36,38 @@ public class FolderActivity extends AppCompatActivity {
     private AdapterView.OnItemClickListener clickListener;
     private AdapterView.OnItemLongClickListener longClickListener;
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_folder, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id)
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == R.id.menu_folderAdd)
         {
-            case R.id.menu_folderAdd:
-            {
-                createNewFolder();
-                return true;
-            }
+            createNewFolder();
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder);
 
         context_this = getApplicationContext();
+
+        setTitle(R.string.folder_title);
         folderList = (ListView)findViewById(R.id.folder_list) ;
         folders = new ArrayList<>();
         clickListener = new AdapterView.OnItemClickListener() {
@@ -109,12 +111,8 @@ public class FolderActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
         folders.clear();
         folderList = null;
@@ -168,28 +166,21 @@ public class FolderActivity extends AppCompatActivity {
         final EditText editText = (EditText)layout.findViewById(R.id.dialog_folder_input);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which)
+            public void onClick(DialogInterface dialog, int which)
+            {
+                if(which == AlertDialog.BUTTON_POSITIVE)
                 {
-                    case AlertDialog.BUTTON_POSITIVE:
+                    newFolderName = editText.getText().toString();
+                    if(!newFolderName.equals(""))
                     {
-                        newFolderName = editText.getText().toString();
-                        if(!newFolderName.equals(""))
+                        File file = new File(Constant.APP_INTERNAL_URL + File.separator + newFolderName);
+                        if(file.exists())
+                            Toast.makeText(context_this, R.string.dialog_folder_toast_exist, Toast.LENGTH_SHORT).show();
+                        else
                         {
-                            File file = new File(Constant.APP_INTERNAL_URL + File.separator + newFolderName);
-                            if(file.exists())
-                                Toast.makeText(context_this, R.string.dialog_folder_toast_exist, Toast.LENGTH_SHORT).show();
-                            else
-                            {
-                                file.mkdir();
-                                refreshList();
-                            }
+                            file.mkdir();
+                            refreshList();
                         }
-                        break;
-                    }
-                    case AlertDialog.BUTTON_NEGATIVE:
-                    {
-                        break;
                     }
                 }
                 dialog.dismiss();
@@ -208,26 +199,24 @@ public class FolderActivity extends AppCompatActivity {
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which)
+                if(which == AlertDialog.BUTTON_POSITIVE)
                 {
-                    case AlertDialog.BUTTON_POSITIVE:
+                    File file = new File(folders.get(index).url);
+                    if(file.exists())
                     {
-                        File file = new File(folders.get(index).url);
-                        if(file.exists())
-                            if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && file.delete())
-                            {
-                                Toast.makeText(context_this, getResources().getString(R.string.dialog_folder_toast_delete), Toast.LENGTH_SHORT).show();
-                                refreshList();
-                            }
-                            else
-                                Toast.makeText(context_this, getResources().getString(R.string.folder_toast_remove_defaultfolder), Toast.LENGTH_SHORT).show();
+                        if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && file.delete())
+                        {
+                            Toast.makeText(context_this, getResources().getString(R.string.dialog_folder_toast_delete), Toast.LENGTH_SHORT).show();
+                            refreshList();
+                        }
                         else
-                            Toast.makeText(context_this, "Error code : " + ErrorCode.NO_FOLDER, Toast.LENGTH_SHORT).show();
-                        break;
+                        {
+                            Toast.makeText(context_this, getResources().getString(R.string.folder_toast_remove_defaultfolder), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    case AlertDialog.BUTTON_NEGATIVE:
+                    else
                     {
-                        break;
+                        Toast.makeText(context_this, "Error code : " + ErrorCode.NO_FOLDER, Toast.LENGTH_SHORT).show();
                     }
                 }
                 dialog.dismiss();

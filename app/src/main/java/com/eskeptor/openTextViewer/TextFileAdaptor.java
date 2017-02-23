@@ -21,7 +21,8 @@ class TextFileViewHolder
     public TextView date;
 }
 
-public class TextFileAdaptor extends BaseAdapter {
+public class TextFileAdaptor extends BaseAdapter
+{
     private Context context;
     private ArrayList<TextFile> textFiles;
 
@@ -32,22 +33,26 @@ public class TextFileAdaptor extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return textFiles.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(int position)
+    {
         return textFiles.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         TextFileViewHolder holder;
 
         if(convertView == null)

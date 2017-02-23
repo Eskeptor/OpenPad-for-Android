@@ -14,6 +14,10 @@ class Constant
     public static final String APP_INTERNAL_URL = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "OpenPad";
     public static final String APP_SETTINGS_PREFERENCE = "Setting_Pref";
     public static final String APP_DEV_MAILADDRESS = "skyvvv624@gmail.com";
+    public static final String APP_FIRST_SETUP_PREFERENCE = "isFirst_Pref";
+
+    public static final boolean APP_FIRST_EXECUTE = false;
+    public static final boolean APP_TWICE_EXECUTE = true;
 
     public static final float SETTINGS_DEFAULT_VALUE_TEXT_SIZE = 18F;
 
@@ -45,9 +49,6 @@ class Constant
     public static final int REQUEST_CODE_OPEN_FOLDER = 3;
     public static final int REQUEST_CODE_APP_PERMISSION_STORAGE = 4;
 
-    public static final int FILE_OPEN_TYPE_INTERNAL = 1;
-    public static final int FILE_OPEN_TYPE_EXTERNAL = 2;
-
     public static final String REGEX = "^[_a-zA-Z0-9.]*$";
 
     public static final long WAIT_FOR_SECOND = 2000L;
@@ -60,6 +61,7 @@ class Constant
     public static final int SETTINGS_ACTIVESCREEN_HELP = 3;
     public static final int SETTINGS_ACTIVESCREEN_HELP_CONTENTS = 4;
 
+    public static final String BASIC_FILE_UNIT = "KB";
     public static final long MEGABYTE = 1048576L;
     public static final long KILOBYTE = 1024L;
     public static final long SAFE_LOAD_CAPACITY = 500L;

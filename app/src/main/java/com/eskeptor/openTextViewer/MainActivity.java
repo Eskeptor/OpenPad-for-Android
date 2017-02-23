@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -35,7 +36,8 @@ import java.util.ArrayList;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
     private long backPressedTime;
     private String curFolderURL;
     private SwipeRefreshLayout refreshLayout;
@@ -48,37 +50,35 @@ public class MainActivity extends AppCompatActivity {
     private AdapterView.OnItemLongClickListener longClickListener;
     private Context context_this;
     private FloatingActionButton fab;
-    private boolean permissionChecker;
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    private static SharedPreferences pref;
+    private static SharedPreferences.Editor editor;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id)
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == android.R.id.home)
         {
-            case android.R.id.home:
-            {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.setClass(context_this, FolderActivity.class);
-                startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_FOLDER);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-                return true;
-            }
-            case R.id.menu_main_settings:
-            {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.setClass(context_this, SettingsActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_top, R.anim.anim_slide_out_bottom);
-                return true;
-            }
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setClass(context_this, FolderActivity.class);
+            startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_FOLDER);
+            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+        }
+        else if(item.getItemId() == R.id.menu_main_settings)
+        {
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setClass(context_this, SettingsActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_slide_in_top, R.anim.anim_slide_out_bottom);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -87,14 +87,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK)
         {
-            switch (requestCode)
+            if(requestCode == Constant.REQUEST_CODE_OPEN_FOLDER)
             {
-                case Constant.REQUEST_CODE_OPEN_FOLDER:
-                {
-                    curFolderURL = data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
-                    curFolderFiles();
-                    break;
-                }
+                curFolderURL = data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
+                curFolderFiles();
             }
         }
     }
@@ -107,9 +103,6 @@ public class MainActivity extends AppCompatActivity {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED)
             {
-                /*permissionChecker = true;
-                defaultFolderCheck();
-                curFolderFiles();*/
                 dialog = new AlertDialog.Builder(this);
                 dialog.setTitle(R.string.dialog_main_restart_title);
                 dialog.setMessage(R.string.dialog_main_restart_context);
@@ -140,14 +133,10 @@ public class MainActivity extends AppCompatActivity {
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which)
+                        if(which == AlertDialog.BUTTON_POSITIVE)
                         {
-                            case AlertDialog.BUTTON_POSITIVE:
-                            {
-                                ActivityCompat.finishAffinity(MainActivity.this);
-                                System.exit(0);
-                                break;
-                            }
+                            ActivityCompat.finishAffinity(MainActivity.this);
+                            System.exit(0);
                         }
                         dialog.dismiss();
                     }
@@ -160,20 +149,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         context_this = getApplicationContext();
 
+        pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
+        editor = pref.edit();
+
         if(Build.VERSION.SDK_INT >= 21)
+        {
             folderIcon = getResources().getDrawable(R.drawable.ic_folder_open_white, null);
+        }
         else
+        {
             folderIcon = getResources().getDrawable(R.drawable.ic_folder_open_white);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(folderIcon);
 
@@ -182,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.main_swipeRefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh()
+            {
                 curFolderFiles();
                 refreshLayout.setRefreshing(false);
             }
@@ -205,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
         longClickListener = new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+            {
                 deleteFile(position);
                 return true;
             }
@@ -214,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.main_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.setClass(context_this, MemoActivity.class);
@@ -229,16 +228,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - backPressedTime;
 
         if(0 <= intervalTime && Constant.WAIT_FOR_SECOND >= intervalTime)
+        {
             super.onBackPressed();
+        }
         else
         {
             backPressedTime = tempTime;
             Toast.makeText(this, getResources().getString(R.string.back_press), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(pref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE))
+        {
+            curFolderFiles();
         }
     }
 
@@ -262,14 +273,14 @@ public class MainActivity extends AppCompatActivity {
             {
                 defaultFolderCheck();
                 curFolderFiles();
-                permissionChecker = true;
+                checkFirstExcecute();
             }
         }
         else
         {
             defaultFolderCheck();
             curFolderFiles();
-            permissionChecker = true;
+            checkFirstExcecute();
         }
     }
 
@@ -277,36 +288,40 @@ public class MainActivity extends AppCompatActivity {
     {
         File file = new File(Constant.APP_INTERNAL_URL);
         if(!file.exists())
+        {
             file.mkdir();
+        }
         file = new File(Constant.APP_INTERNAL_URL + File.separator+ Constant.FOLDER_DEFAULT_NAME);
         if(!file.exists())
+        {
             file.mkdir();
+        }
         curFolderURL = file.getPath();
-        Log.e("Debug", "file path : " + curFolderURL);
     }
 
     private void curFolderFiles()
     {
-        if(permissionChecker)
+        File file = new File(curFolderURL);
+        File files[] = file.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname)
+            {
+                return pathname.getName().endsWith(Constant.FILE_EXTENSION);
+            }
+        });
+
+        curFolderFileList.clear();
+        if(files != null)
         {
-            File file = new File(curFolderURL);
-            File files[] = file.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    return pathname.getName().endsWith(Constant.FILE_EXTENSION);
-                }
-            });
-
-            curFolderFileList.clear();
-            if(files != null)
-                for(int i = 0; i < files.length; i++)
-                    curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
-
-            curFileAdapter = new TextFileAdaptor(this, curFolderFileList);
-            curFolderGridView.setAdapter(curFileAdapter);
-            curFolderGridView.setOnItemClickListener(clickListener);
-            curFolderGridView.setOnItemLongClickListener(longClickListener);
+            for(int i = 0; i < files.length; i++)
+            {
+                curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+            }
         }
+        curFileAdapter = new TextFileAdaptor(this, curFolderFileList);
+        curFolderGridView.setAdapter(curFileAdapter);
+        curFolderGridView.setOnItemClickListener(clickListener);
+        curFolderGridView.setOnItemLongClickListener(longClickListener);
     }
 
     private void deleteFile(final int index)
@@ -316,26 +331,27 @@ public class MainActivity extends AppCompatActivity {
         dialog.setMessage(R.string.dialog_file_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which)
+            public void onClick(DialogInterface dialog, int which)
+            {
+                if(which == AlertDialog.BUTTON_POSITIVE)
                 {
-                    case AlertDialog.BUTTON_POSITIVE:
+                    File file = new File(curFolderFileList.get(index).url);
+                    if(file.exists())
                     {
-                        File file = new File(curFolderFileList.get(index).url);
-                        if(file.exists())
-                            if(file.delete())
-                            {
-                                Toast.makeText(context_this, getResources().getString(R.string.dialog_file_toast_delete), Toast.LENGTH_SHORT).show();
-                                curFolderFiles();
-                            }
-                            else
-                                Toast.makeText(context_this, "Error code : " + ErrorCode.NO_FOLDER, Toast.LENGTH_SHORT).show();
-                        break;
+                        if(file.delete())
+                        {
+                            Toast.makeText(context_this, getResources().getString(R.string.dialog_file_toast_delete), Toast.LENGTH_SHORT).show();
+                            curFolderFiles();
+                        }
+                        else
+                        {
+                            Toast.makeText(context_this, "Error code : " + ErrorCode.NO_FOLDER, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    case AlertDialog.BUTTON_NEGATIVE:
-                    {
-                        break;
-                    }
+                }
+                else if(which == AlertDialog.BUTTON_NEGATIVE)
+                {
+
                 }
                 dialog.dismiss();
             }
@@ -345,11 +361,26 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("Debug", "onResume");
-        if(permissionChecker)
-            curFolderFiles();
+    private void checkFirstExcecute()
+    {
+        if(!pref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE))
+        {
+            dialog = new AlertDialog.Builder(this);
+            dialog.setTitle(R.string.dialog_main_first_title);
+            dialog.setMessage(R.string.dialog_main_first_context);
+            DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(which == AlertDialog.BUTTON_POSITIVE)
+                    {
+                        editor.putBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_TWICE_EXECUTE);
+                        editor.commit();
+                    }
+                    dialog.dismiss();
+                }
+            };
+            dialog.setPositiveButton(R.string.dialog_settings_info_ok, clickListener);
+            dialog.show();
+        }
     }
 }

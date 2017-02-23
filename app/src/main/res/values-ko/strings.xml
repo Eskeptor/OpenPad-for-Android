@@ -99,7 +99,7 @@
     <string name="help_folder_default">어플리케이션을 \"1회 이상\" 실행시키면 자동으로 \"OpenPad\"라는 폴더가 생기며, 이 폴더에 \"Basic\"이라는 기본폴더가 생깁니다.\n이 폴더는 \"메모장\"에서 제공하는 \"폴더 삭제\"기능으로 삭제되지 않으며 삭제하더라도 다시 생성됩니다.\n(삭제하게 되면 메모들은 복구할 수 없습니다.)</string>
     <string name="help_folder_create">오른쪽 상단의 \"폴더 추가 버튼\"을 누르면 폴더를 추가할 수 있습니다.\n폴더의 이름은 중복될 수 없으며, \"Basic\"이라는 폴더를 생성할 수 없습니다.</string>
     <string name="help_folder_delete">메모 삭제와 마찬가지로, 해당 폴더를 \"1초 이상\"누르면 삭제할 수 있습니다.\n폴더를 삭제하면 폴더에 있던 메모들도 전부 삭제됩니다.\n(단, 기본 폴더와 파일 탐색기는 삭제할 수 없습니다.)</string>
-    <string name="help_folder_external">기본폴더(OpenPad)이외의 경로의 파일(.txt)을 불러올 수 있습니다.\n단, 외부 파일 탐색기로 불러온 파일은 전부 \"EUC-KR → UTF-8\"로 임시로 변환되어 불러옵니다.\n그래서 메모 창을 빠져나올시, 변경사항이 없더라도 변경사항이 있다고 뜹니다.\n또한 \"UTF-8\" 파일을 불러올 경우 파일이 깨져보이게니다.\n(이 부분은 추후 업데이트 예정)</string>
+    <string name="help_folder_external">기본폴더(OpenPad)이외의 경로의 파일(.txt)을 불러올 수 있습니다.\n단, 외부 파일 탐색기로 불러온 파일은 전부 \"EUC-KR → UTF-8\"로 임시로 변환되어 불러옵니다.\n그래서 메모 창을 빠져나올시, 변경사항이 없더라도 변경사항이 있다고 뜰 수 있습니다.</string>
     <string name="help_memo_savelength">최대 글자 길이는 정해져있지 않습니다.\n\"영어로 500,000자\", \"한글로 250,000자\" 까지는 안정적이게 저장이 됩니다.\n하지만 이 이상 글자수가 넘어가게 되면 안정성을 보장할 수 없습니다.</string>
     <string name="help_memo_fontcolor">"글자 색상은 지원 예정사항에 없습니다.\n그 대신 테마 업데이트가 예정되어있기 때문에 테마와 함께 제공될 예정입니다.  "</string>
     <string name="settings_help_memo_edit">메모 수정</string>
@@ -113,4 +113,8 @@
     <string name="dialog_main_restart_context">권한 획득을 위해 종료합니다.\n(종료 후에 재시작 해주세요.)</string>
     <string name="dialog_main_restart_title_no">경고</string>
     <string name="dialog_main_restart_context_no">권한이 없으면 이용할 수 없습니다.</string>
+    <string name="dialog_main_first_title">환영합니다.</string>
+    <string name="dialog_main_first_context">처음 이용해주셔서 감사합니다.\n꼭 \"도움말\"을 확인해주세요.\n(설정 - 도움말)</string>
+    <string name="dialog_settings_info_homepage">만약에 이 프로그램이 마음에 든다면 홈페이지에 방문해보세요.\n(http://eskeptor.tistory.com)</string>
+    <string name="folder_title">폴더 선택</string>
 </resources>

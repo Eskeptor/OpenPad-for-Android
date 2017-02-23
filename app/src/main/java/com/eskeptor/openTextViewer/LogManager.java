@@ -1,7 +1,5 @@
 package com.eskeptor.openTextViewer;
 
-import android.util.Log;
-
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -9,7 +7,8 @@ import java.nio.channels.FileChannel;
 /**
  * Created by narut on 2017-02-20.
  */
-public class LogManager {
+public class LogManager
+{
 
     public boolean saveLog(final String strData, final String filename)
     {
@@ -29,7 +28,6 @@ public class LogManager {
             buffer.put(strData.getBytes());
             buffer.flip();
             channel.write(buffer);
-
         }
         catch (Exception e) {e.printStackTrace();}
         finally {

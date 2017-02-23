@@ -11,7 +11,8 @@ import java.util.Date;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-public class TextFile {
+public class TextFile
+{
     String title;
     String url;
     String context_oneline;

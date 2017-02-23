@@ -24,7 +24,8 @@ class FileObjectViewHolder
     public TextView size;
 }
 
-public class FileObjectAdaptor extends BaseAdapter {
+public class FileObjectAdaptor extends BaseAdapter
+{
     private Context context;
 
     private ArrayList<FileObject> fileObjects;
@@ -55,22 +56,26 @@ public class FileObjectAdaptor extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
+    public int getCount()
+    {
         return fileObjects.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(int position)
+    {
         return fileObjects.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         FileObjectViewHolder holder;
 
         if(convertView == null)
@@ -96,17 +101,17 @@ public class FileObjectAdaptor extends BaseAdapter {
         else if(fileObjects.get(position).type == Constant.BROWSER_IMAGE_TYPE_OVER1)
         {
             holder.image.setImageDrawable(drawableOver1File);
-            holder.size.setText(fileObjects.get(position).size + "KB");
+            holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
         }
         else if(fileObjects.get(position).type == Constant.BROWSER_IMAGE_TYPE_OVER2)
         {
             holder.image.setImageDrawable(drawableOver2File);
-            holder.size.setText(fileObjects.get(position).size + "KB");
+            holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
         }
         else
         {
             holder.image.setImageDrawable(drawableNormalFile);
-            holder.size.setText(fileObjects.get(position).size + "KB");
+            holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
         }
 
         holder.name.setText(fileObjects.get(position).name);

@@ -8,7 +8,8 @@ import java.io.File;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-public class Folder {
+public class Folder
+{
     String name;
     String url;
     int count;

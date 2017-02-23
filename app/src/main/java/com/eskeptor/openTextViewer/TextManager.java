@@ -21,7 +21,7 @@ import java.security.MessageDigest;
 public class TextManager
 {
     private boolean fileopen;
-    private boolean saved ;
+    private boolean saved;
     private String fileopen_name;
     private String MD5;
     private String format;
@@ -75,7 +75,6 @@ public class TextManager
                 buffer.put(strData.getBytes());
                 buffer.flip();
                 channel.write(buffer);
-
             }
             catch (Exception e) {e.printStackTrace();}
             finally {
@@ -97,7 +96,6 @@ public class TextManager
                 buffer.put(strData.getBytes());
                 buffer.flip();
                 channel.write(buffer);
-
             }
             catch (Exception e) {e.printStackTrace();}
             finally {
@@ -109,7 +107,6 @@ public class TextManager
                 catch (Exception e){e.printStackTrace();}
             }
         }
-
         saved = true;
         return true;
     }
@@ -135,17 +132,14 @@ public class TextManager
                     if(formatDetector(byteBuffer) != null)
                     {
                         format = Constant.ENCODE_TYPE_UTF8;
-                        Log.e("Debug", "UTF-8");
                     }
                     else
                     {
                         format = Constant.ENCODE_TYPE_EUCKR;
-                        Log.e("Debug", "EUC-KR");
                     }
                     fileopen = true;
                     fileopen_name = filename;
                     MD5 = createMD5(byteBuffer.array());
-                    Log.i("Debug", "Open MD5 : " + MD5);
                     return new String(byteBuffer.array(), format);
                 }
                 else
@@ -171,7 +165,6 @@ public class TextManager
 
     public String createMD5(final byte[] message)
     {
-        Log.d("Debug", "message length : " + message.length);
         MessageDigest messageDigest;
         StringBuilder sbuilder = new StringBuilder();
         CharBuffer charBuffer = null;
@@ -193,7 +186,6 @@ public class TextManager
 
     public String createMD5(final String message)
     {
-        Log.d("Debug", "message length : " + message.length());
         MessageDigest messageDigest;
         StringBuilder sbuilder = new StringBuilder();
         try
