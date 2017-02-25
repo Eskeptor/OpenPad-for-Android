@@ -46,8 +46,20 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_help_title_ect">
         <Preference
+            android:title="@string/settings_help_etc_abouthelp"
+            android:key="settings_key_etc_abouthelp" />
+        <Preference
+            android:title="@string/settings_help_etc_backup"
+            android:key="settings_key_etc_backup" />
+        <Preference
             android:title="@string/settings_help_etc_filecolor"
             android:key="settings_key_etc_filecolor" />
+        <Preference
+            android:title="@string/settings_help_etc_permission"
+            android:key="settings_key_etc_permission"/>
+        <Preference
+            android:title="@string/settings_help_etc_ad"
+            android:key="settings_key_etc_ad" />
 
     </PreferenceCategory>
 </PreferenceScreen>

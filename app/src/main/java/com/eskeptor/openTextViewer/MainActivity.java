@@ -1,6 +1,7 @@
 package com.eskeptor.openTextViewer;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,12 +20,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.Toast;
+import android.util.TypedValue;
+import android.view.*;
+import android.widget.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 
 import java.io.File;
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity
     private AdapterView.OnItemLongClickListener longClickListener;
     private Context context_this;
     private FloatingActionButton fab;
+
+    private AdView adView;
+    private AdRequest adRequest;
 
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
@@ -104,8 +109,8 @@ public class MainActivity extends AppCompatActivity
                     grantResults[1] == PackageManager.PERMISSION_GRANTED)
             {
                 dialog = new AlertDialog.Builder(this);
-                dialog.setTitle(R.string.dialog_main_restart_title);
-                dialog.setMessage(R.string.dialog_main_restart_context);
+                dialog.setTitle(R.string.main_dialog_restart_title);
+                dialog.setMessage(R.string.main_dialog_restart_context);
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -121,15 +126,14 @@ public class MainActivity extends AppCompatActivity
                         dialog.dismiss();
                     }
                 };
-                dialog.setPositiveButton(R.string.dialog_settings_info_ok, clickListener);
+                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
                 dialog.show();
-                Log.i("Debug", "Permission Allowed");
             }
             else
             {
                 dialog = new AlertDialog.Builder(this);
-                dialog.setTitle(R.string.dialog_main_restart_title_no);
-                dialog.setMessage(R.string.dialog_main_restart_context_no);
+                dialog.setTitle(R.string.main_dialog_restart_title_no);
+                dialog.setMessage(R.string.main_dialog_restart_context_no);
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -141,9 +145,8 @@ public class MainActivity extends AppCompatActivity
                         dialog.dismiss();
                     }
                 };
-                dialog.setPositiveButton(R.string.dialog_settings_info_ok, clickListener);
+                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
                 dialog.show();
-                Log.i("Debug", "Permission Denied");
             }
         }
     }
@@ -240,7 +243,7 @@ public class MainActivity extends AppCompatActivity
         else
         {
             backPressedTime = tempTime;
-            Toast.makeText(this, getResources().getString(R.string.back_press), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.back_press, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -274,6 +277,7 @@ public class MainActivity extends AppCompatActivity
                 defaultFolderCheck();
                 curFolderFiles();
                 checkFirstExcecute();
+                adMob();
             }
         }
         else
@@ -281,6 +285,7 @@ public class MainActivity extends AppCompatActivity
             defaultFolderCheck();
             curFolderFiles();
             checkFirstExcecute();
+            adMob();
         }
     }
 
@@ -327,8 +332,8 @@ public class MainActivity extends AppCompatActivity
     private void deleteFile(final int index)
     {
         dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.dialog_file_title_delete);
-        dialog.setMessage(R.string.dialog_file_message_question_delete);
+        dialog.setTitle(R.string.file_dialog_title_delete);
+        dialog.setMessage(R.string.file_dialog_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -340,7 +345,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         if(file.delete())
                         {
-                            Toast.makeText(context_this, getResources().getString(R.string.dialog_file_toast_delete), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context_this, R.string.file_dialog_toast_delete, Toast.LENGTH_SHORT).show();
                             curFolderFiles();
                         }
                         else
@@ -356,8 +361,8 @@ public class MainActivity extends AppCompatActivity
                 dialog.dismiss();
             }
         };
-        dialog.setNegativeButton(R.string.dialog_folder_button_cancel, clickListener);
-        dialog.setPositiveButton(R.string.dialog_folder_button_delete, clickListener);
+        dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
+        dialog.setPositiveButton(R.string.folder_dialog_button_delete, clickListener);
         dialog.show();
     }
 
@@ -366,8 +371,8 @@ public class MainActivity extends AppCompatActivity
         if(!pref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE))
         {
             dialog = new AlertDialog.Builder(this);
-            dialog.setTitle(R.string.dialog_main_first_title);
-            dialog.setMessage(R.string.dialog_main_first_context);
+            dialog.setTitle(R.string.main_dialog_first_title);
+            dialog.setMessage(R.string.main_dialog_first_context);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -379,8 +384,38 @@ public class MainActivity extends AppCompatActivity
                     dialog.dismiss();
                 }
             };
-            dialog.setPositiveButton(R.string.dialog_settings_info_ok, clickListener);
+            dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
             dialog.show();
         }
+    }
+
+    private void adMob()
+    {
+        if(pref.getBoolean(Constant.APP_ADMOB_VISIBLE, true))
+        {
+            MobileAds.initialize(context_this, getResources().getString(R.string.app_id));
+            adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            adView = (AdView)findViewById(R.id.adView);
+
+            adView.setEnabled(true);
+            adView.setVisibility(View.VISIBLE);
+            adView.loadAd(adRequest);
+            CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0,0, DPtoPixel(16), DPtoPixel(70));
+            layoutParams.gravity = Gravity.END | Gravity.BOTTOM;
+            fab.setLayoutParams(layoutParams);
+        }
+        else
+        {
+            CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0,0, DPtoPixel(16), DPtoPixel(16));
+            layoutParams.gravity = Gravity.END | Gravity.BOTTOM;
+            fab.setLayoutParams(layoutParams);
+        }
+    }
+
+    private int DPtoPixel(final int DP)
+    {
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DP, context_this.getResources().getDisplayMetrics());
     }
 }

@@ -7,10 +7,11 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.2.23)
+## What's New? (Last updated 2017.2.25)
 ```
- 1) Optimized codes
- 2) Bug fix(Failed to get permission from Android 6.0, over, or some settings)
+ 1) Optimized codes(Memory leak)
+ 2) Version update(alpha → beta)
+ 3) Add AdMob
 ```
 ## Next Updates
 ```

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,8 +51,10 @@ public class MemoActivity extends AppCompatActivity {
     private InputMethodManager inputMethodManager;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
+        {
             if(fileSize <= Constant.SAFE_LOAD_CAPACITY * Constant.KILOBYTE)
             {
                 getMenuInflater().inflate(R.menu.menu_memo, menu);
@@ -63,51 +66,67 @@ public class MemoActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id)
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == R.id.menu_memo_modified)
         {
-            case R.id.menu_memo_modified:
+            if(editText.isFocusable())
             {
-                Log.e("Debug", "isFocusable : " + Boolean.toString(editText.isFocusable()));
-                if(editText.isFocusable())
-                {
-                    editText.setFocusable(false);
-                    editMenu.setIcon(drawableModified);
-                    inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                }
-                else
-                {
-                    editText.setFocusable(true);
-                    editText.setFocusableInTouchMode(true);
-                    editText.requestFocus();
-                    editMenu.setIcon(drawableModifiedComplete);
-                    inputMethodManager.showSoftInput(editText, 0);
-                }
-
-                return true;
+                editText.setFocusable(false);
+                editMenu.setIcon(drawableModified);
+                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
             }
+            else
+            {
+                editText.setFocusable(true);
+                editText.setFocusableInTouchMode(true);
+                editText.requestFocus();
+                editMenu.setIcon(drawableModifiedComplete);
+                inputMethodManager.showSoftInput(editText, 0);
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         if(resultCode == RESULT_OK)
         {
-            if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE || requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE)
+            if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE)
             {
                 String folderURL = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
                 String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_EXTENSION;
-                txtManager.saveText(editText.getText().toString(), folderURL + fileName);
-                finish();
+                if(txtManager.saveText(editText.getText().toString(), folderURL + fileName))
+                {
+                    Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName), Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName), Toast.LENGTH_SHORT).show();
+                }
             }
+            else if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE)
+            {
+                String folderURL = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
+                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_EXTENSION;
+                if(txtManager.saveText(editText.getText().toString(), folderURL + fileName))
+                {
+                    Toast.makeText(context_this, R.string.memo_toast_saveSuccess_internal, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(context_this, R.string.memo_toast_saveFail_internal, Toast.LENGTH_SHORT).show();
+                }
+            }
+            finish();
         }
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo);
 
@@ -125,7 +144,6 @@ public class MemoActivity extends AppCompatActivity {
 
         if(memoType == Constant.MEMO_TYPE_NEW)
         {
-            Log.e("Debug", "New File");
             lastLog = new File(openFolderURL + File.separator + Constant.LOG_FILE_COUNT);
             if(!lastLog.exists())
             {
@@ -134,7 +152,6 @@ public class MemoActivity extends AppCompatActivity {
                     lastLog.createNewFile();
                     memoIndex = 1;
                     logManager.saveLog(Integer.toString(memoIndex), lastLog.getPath());
-                    Log.e("Debug", "Create Log");
                 }
                 catch (IOException ioe){ioe.printStackTrace();}
             }
@@ -142,13 +159,10 @@ public class MemoActivity extends AppCompatActivity {
             {
                 try
                 {
-                    Log.e("Debug", logManager.openLog(lastLog.getPath()));
                     memoIndex = Integer.parseInt(logManager.openLog(lastLog.getPath()));
-                    Log.e("Debug", "Get Log");
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                    Log.e("Debug", "Exception!! : " + logManager.openLog(lastLog.getPath()));
                 }
             }
             txtManager.initManager();
@@ -158,7 +172,6 @@ public class MemoActivity extends AppCompatActivity {
         }
         else if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
         {
-            Log.e("Debug", "Open File");
             openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
             openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
             setTitle(openFileName);
@@ -184,6 +197,7 @@ public class MemoActivity extends AppCompatActivity {
         writeLog();
     }
 
+
     @Override
     public void onBackPressed() {
         if((fileSize <= Constant.SAFE_LOAD_CAPACITY) && isModified())
@@ -191,56 +205,52 @@ public class MemoActivity extends AppCompatActivity {
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    switch (which)
+                    if(which == AlertDialog.BUTTON_POSITIVE)
                     {
-                        case AlertDialog.BUTTON_POSITIVE:
+                        if(memoType == Constant.MEMO_TYPE_NEW)
                         {
-                            switch (memoType)
-                            {
-                                case Constant.MEMO_TYPE_NEW:
-                                {
-                                    AlertDialog openDialog = createSeletor(Constant.SELECTOR_TYPE_SAVE).create();
-                                    openDialog.show();
-                                    break;
+                            alert = new AlertDialog.Builder(MemoActivity.this);
+                            alert.setTitle(R.string.memo_alert_save_context);
+                            alert.setItems(R.array.main_selectalert, new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == Constant.MEMO_SAVE_SELECT_TYPE_EXTERNAL)
+                                    {
+                                        Intent intent = new Intent();
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                        intent.setClass(context_this, FileBrowserActivity.class);
+                                        intent.setType("text/plain");
+                                        intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
+                                        startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
+                                    }
+                                    else if(which == Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL)
+                                    {
+                                        if(txtManager.isFileopen())
+                                        {
+                                            txtManager.saveText(editText.getText().toString(), openFileURL);
+                                        }
+                                        else
+                                        {
+                                            openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_EXTENSION);
+                                            txtManager.saveText(editText.getText().toString(), openFileURL);
+                                            memoIndex++;
+                                            writeLog();
+                                        }
+                                        finish();
+                                    }
+                                    dialog.dismiss();
                                 }
-                                case Constant.MEMO_TYPE_OPEN_EXTERNAL:
-                                {
-                                    txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
-                                    finish();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_INTERNAL:
-                                {
-                                    txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
-                                    finish();
-                                    break;
-                                }
-                            }
-                            break;
+                            });
                         }
-                        case AlertDialog.BUTTON_NEGATIVE:
+                        else if(memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL || memoType == Constant.MEMO_TYPE_OPEN_INTERNAL)
                         {
-                            switch (memoType)
-                            {
-                                case Constant.MEMO_TYPE_NEW:
-                                {
-                                    finish();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_INTERNAL:
-                                {
-                                    writeLog();
-                                    finish();
-                                    break;
-                                }
-                                case Constant.MEMO_TYPE_OPEN_EXTERNAL:
-                                {
-                                    finish();
-                                    break;
-                                }
-                            }
-                            break;
+                            txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name());
+                            finish();
                         }
+                    }
+                    else if(which == AlertDialog.BUTTON_NEGATIVE)
+                    {
+                        finish();
                     }
                     dialog.dismiss();
                 }
@@ -260,66 +270,10 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
-    private AlertDialog.Builder createSeletor(final int type)
-    {
-        AlertDialog.Builder openSelector = new AlertDialog.Builder(this);
-        openSelector.setTitle(R.string.memo_alert_save_context);
-        openSelector.setItems(R.array.main_selectalert, new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                    {
-                        Intent intent = new Intent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.setClass(context_this, FileBrowserActivity.class);
-                        intent.setType("text/plain");
-                        switch (type)
-                        {
-                            case Constant.SELECTOR_TYPE_SAVE:
-                            {
-                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
-                                startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
-                                break;
-                            }
-                            case Constant.SELECTOR_TYPE_OPEN:
-                            {
-                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_OPEN_EXTERNAL);
-                                startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    case 1:
-                    {
-                        if(txtManager.isFileopen())
-                        {
-                            txtManager.saveText(editText.getText().toString(), openFileURL);
-                        }
-                        else
-                        {
-                            openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_EXTENSION);
-                            txtManager.saveText(editText.getText().toString(), openFileURL);
-                            memoIndex++;
-                            writeLog();
-                            Log.e("Debug", "isn't open");
-                        }
-                        finish();
-                        break;
-                    }
-                }
-                dialog.dismiss();
-            }
-        });
-        return openSelector;
-    }
-
     private boolean isModified() {
         if (memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
         {
-            String md5 = md5 = txtManager.createMD5(editText.getText().toString());
-            Log.i("Debug", "Detect MD5 : " + md5);
+            String md5 = txtManager.createMD5(editText.getText().toString());
             if(!txtManager.getMD5().equals(md5))
             {
                 return true;
@@ -341,8 +295,5 @@ public class MemoActivity extends AppCompatActivity {
             }
         }
         catch(Exception e){e.printStackTrace();}
-        Log.e("Debug", "memoIndex : " + memoIndex);
     }
-
-
 }

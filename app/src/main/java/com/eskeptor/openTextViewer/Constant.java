@@ -15,6 +15,7 @@ class Constant
     public static final String APP_SETTINGS_PREFERENCE = "Setting_Pref";
     public static final String APP_DEV_MAILADDRESS = "skyvvv624@gmail.com";
     public static final String APP_FIRST_SETUP_PREFERENCE = "isFirst_Pref";
+    public static final String APP_ADMOB_VISIBLE = "adMob_Pref";
 
     public static final boolean APP_FIRST_EXECUTE = false;
     public static final boolean APP_TWICE_EXECUTE = true;
@@ -30,6 +31,8 @@ class Constant
     public static final int MEMO_TYPE_NEW = 1;
     public static final int MEMO_TYPE_OPEN_INTERNAL = 2;
     public static final int MEMO_TYPE_OPEN_EXTERNAL = 3;
+    public static final int MEMO_SAVE_SELECT_TYPE_EXTERNAL = 0;
+    public static final int MEMO_SAVE_SELECT_TYPE_INTERNAL = 1;
 
     public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
     public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 3;
@@ -40,16 +43,13 @@ class Constant
     public static final int BROWSER_IMAGE_TYPE_OVER1 = 3;
     public static final int BROWSER_IMAGE_TYPE_OVER2 = 4;
 
-    public static final int SELECTOR_TYPE_SAVE = 1;
-    public static final int SELECTOR_TYPE_OPEN = 2;
-
     public static final int REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE = 0;
     public static final int REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE = 1;
     public static final int REQUEST_CODE_OPEN_FILE_EXTERNAL = 2;
     public static final int REQUEST_CODE_OPEN_FOLDER = 3;
     public static final int REQUEST_CODE_APP_PERMISSION_STORAGE = 4;
 
-    public static final String REGEX = "^[_a-zA-Z0-9.]*$";
+    public static final String REGEX = "^[_a-zA-Z0-9.ㄱ-ㅎㅏ-ㅣ가-힣]*$";
 
     public static final long WAIT_FOR_SECOND = 2000L;
     public static final String FILE_EXTENSION = ".txt";

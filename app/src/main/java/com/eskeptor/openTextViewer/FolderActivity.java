@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ public class FolderActivity extends AppCompatActivity
     private ArrayList<Folder> folders;
     private FolderAdaptor folderAdaptor;
     private Context context_this;
+    private EditText editText;
     private int folders_length;
     private String newFolderName;
     private AlertDialog.Builder dialog;
@@ -45,10 +47,42 @@ public class FolderActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        View layout;
         if(item.getItemId() == R.id.menu_folderAdd)
         {
-            createNewFolder();
+            layout = LayoutInflater.from(this).inflate(R.layout.dialog_folder_create, null);
+            dialog = new AlertDialog.Builder(this);
+            dialog.setTitle(R.string.folder_dialog_title_create);
+            dialog.setView(layout);
+            editText = (EditText)layout.findViewById(R.id.dialog_folder_input);
+            DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if(which == AlertDialog.BUTTON_POSITIVE)
+                    {
+                        newFolderName = editText.getText().toString();
+                        if(!newFolderName.equals(""))
+                        {
+                            File file = new File(Constant.APP_INTERNAL_URL + File.separator + newFolderName);
+                            if(file.exists())
+                                Toast.makeText(context_this, R.string.folder_dialog_toast_exist, Toast.LENGTH_SHORT).show();
+                            else
+                            {
+                                file.mkdir();
+                                refreshList();
+                            }
+                        }
+                    }
+                    dialog.dismiss();
+                }
+            };
+            dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
+            dialog.setPositiveButton(R.string.folder_dialog_button_create, clickListener);
+            dialog.show();
         }
+
+        layout = null;
         return super.onOptionsItemSelected(item);
     }
 
@@ -110,15 +144,6 @@ public class FolderActivity extends AppCompatActivity
         refreshList();
     }
 
-    @Override
-    protected void onStop()
-    {
-        super.onStop();
-        folders.clear();
-        folderList = null;
-        finish();
-    }
-
     private int checkFolderType(final File file)
     {
         if(file.getName().equals(Constant.FOLDER_DEFAULT_NAME))
@@ -157,45 +182,11 @@ public class FolderActivity extends AppCompatActivity
         folderList.setOnItemLongClickListener(longClickListener);
     }
 
-    private void createNewFolder()
-    {
-        View layout = LayoutInflater.from(this).inflate(R.layout.dialog_folder_create, null);
-        dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.dialog_folder_title_create);
-        dialog.setView(layout);
-        final EditText editText = (EditText)layout.findViewById(R.id.dialog_folder_input);
-        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                if(which == AlertDialog.BUTTON_POSITIVE)
-                {
-                    newFolderName = editText.getText().toString();
-                    if(!newFolderName.equals(""))
-                    {
-                        File file = new File(Constant.APP_INTERNAL_URL + File.separator + newFolderName);
-                        if(file.exists())
-                            Toast.makeText(context_this, R.string.dialog_folder_toast_exist, Toast.LENGTH_SHORT).show();
-                        else
-                        {
-                            file.mkdir();
-                            refreshList();
-                        }
-                    }
-                }
-                dialog.dismiss();
-            }
-        };
-        dialog.setNegativeButton(R.string.dialog_folder_button_cancel, clickListener);
-        dialog.setPositiveButton(R.string.dialog_folder_button_create, clickListener);
-        dialog.show();
-    }
-
     private void deleteFolder(final int index)
     {
         dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.dialog_folder_title_delete);
-        dialog.setMessage(R.string.dialog_folder_message_question_delete);
+        dialog.setTitle(R.string.folder_dialog_title_delete);
+        dialog.setMessage(R.string.folder_dialog_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -206,12 +197,12 @@ public class FolderActivity extends AppCompatActivity
                     {
                         if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && file.delete())
                         {
-                            Toast.makeText(context_this, getResources().getString(R.string.dialog_folder_toast_delete), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context_this, R.string.folder_dialog_toast_delete, Toast.LENGTH_SHORT).show();
                             refreshList();
                         }
                         else
                         {
-                            Toast.makeText(context_this, getResources().getString(R.string.folder_toast_remove_defaultfolder), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context_this, R.string.folder_toast_remove_defaultfolder, Toast.LENGTH_SHORT).show();
                         }
                     }
                     else
@@ -222,8 +213,8 @@ public class FolderActivity extends AppCompatActivity
                 dialog.dismiss();
             }
         };
-        dialog.setNegativeButton(R.string.dialog_folder_button_cancel, clickListener);
-        dialog.setPositiveButton(R.string.dialog_folder_button_delete, clickListener);
+        dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
+        dialog.setPositiveButton(R.string.folder_dialog_button_delete, clickListener);
         dialog.show();
     }
 }

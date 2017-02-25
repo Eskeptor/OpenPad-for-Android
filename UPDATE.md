@@ -1,3 +1,9 @@
+## Update 2017.2.25
+```
+ 1) Optimized codes(Memory leak)
+ 2) Version update(alpha → beta)
+ 3) Add AdMob
+```
 ## Update 2017.2.23
 ```
  1) Optimized codes

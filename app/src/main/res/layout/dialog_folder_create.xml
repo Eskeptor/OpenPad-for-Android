@@ -9,6 +9,6 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/dialog_folder_input"
-        android:hint="@string/dialog_folder_hint_add"
+        android:hint="@string/folder_dialog_hint_add"
         android:singleLine="true" />
 </LinearLayout>

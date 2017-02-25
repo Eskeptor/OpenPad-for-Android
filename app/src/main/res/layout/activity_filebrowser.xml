@@ -31,10 +31,10 @@
             android:id="@+id/browser_etxtSave"
             android:layout_weight="1"
             android:background="@android:drawable/edit_text"
-            android:hint="@string/browser_etxtSaveHint" />
+            android:hint="@string/filebrowser_etxtSaveHint" />
 
         <Button
-            android:text="@string/browser_btnSave"
+            android:text="@string/filebrowser_btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/browser_btnSave"

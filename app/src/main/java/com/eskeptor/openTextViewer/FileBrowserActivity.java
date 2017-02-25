@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,7 @@ import java.util.regex.Pattern;
 public class FileBrowserActivity extends AppCompatActivity
 {
     private TextView txtPath;
-    private ListView lvFilecontrol;
+    private ListView fileList;
     private Spinner menu_spinner;
     private LinearLayout saveLayout;
     private Button btnSave;
@@ -69,25 +70,25 @@ public class FileBrowserActivity extends AppCompatActivity
         sortType = Constant.BROWSER_MENU_SORT_ASC;
 
         txtPath = (TextView)findViewById(R.id.browser_txtPath);
-        lvFilecontrol = (ListView)findViewById(R.id.browser_lvFilecontrol);
+        fileList = (ListView)findViewById(R.id.browser_lvFilecontrol);
         saveLayout = (LinearLayout)findViewById(R.id.browser_saveLayout);
         etxtSave = (EditText)findViewById(R.id.browser_etxtSave);
 
         if(browserType == Constant.BROWSER_TYPE_OPEN_EXTERNAL)
         {
-            setTitle(R.string.browser_name_open);
+            setTitle(R.string.filebrowser_name_open);
             saveLayout.setVisibility(View.GONE);
         }
         else if(browserType == Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE)
         {
-            setTitle(R.string.browser_name_save);
+            setTitle(R.string.filebrowser_name_save);
             saveLayout.setVisibility(View.VISIBLE);
             btnSave = (Button)findViewById(R.id.browser_btnSave);
         }
 
         getDirectory(str_root);
 
-        lvFilecontrol.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        fileList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
@@ -106,8 +107,8 @@ public class FileBrowserActivity extends AppCompatActivity
                     if(file.length() >= Constant.MEGABYTE)
                     {
                         dialog = new AlertDialog.Builder(FileBrowserActivity.this);
-                        dialog.setTitle(R.string.dialog_filebrower_alert_title);
-                        dialog.setMessage(R.string.dialog_filebrowser_alert_context);
+                        dialog.setTitle(R.string.filebrowser_dialog_alert_title);
+                        dialog.setMessage(R.string.filebrowser_dialog_alert_context);
                         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
@@ -130,7 +131,7 @@ public class FileBrowserActivity extends AppCompatActivity
                             }
                         };
                         dialog.setPositiveButton(R.string.memo_btnOpen, clickListener);
-                        dialog.setNegativeButton(R.string.dialog_folder_button_cancel, clickListener);
+                        dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
                         dialog.show();
                     }
                     else
@@ -209,15 +210,46 @@ public class FileBrowserActivity extends AppCompatActivity
             pattern = Pattern.compile(Constant.REGEX);
             if(!etxtSave.getText().toString().equals("") && pattern.matcher(etxtSave.getText().toString()).matches())
             {
-                Intent intent = new Intent();
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, str_filename + File.separator);
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL, etxtSave.getText().toString());
-                setResult(RESULT_OK, intent);
-                finish();
+                if(!isExist(etxtSave.getText().toString()))
+                {
+                    Intent intent = new Intent();
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, str_filename + File.separator);
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL, etxtSave.getText().toString());
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                else
+                {
+                    dialog = new AlertDialog.Builder(FileBrowserActivity.this);
+                    dialog.setTitle(R.string.filebrowser_dialog_exist_title);
+                    dialog.setMessage(R.string.filebrowser_dialog_exist_context);
+                    DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            if(which == AlertDialog.BUTTON_POSITIVE)
+                            {
+                                Intent intent = new Intent();
+                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, str_filename + File.separator);
+                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL, etxtSave.getText().toString());
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                            else if(which == AlertDialog.BUTTON_NEGATIVE)
+                            {
+                                etxtSave.setText("");
+                            }
+                            dialog.dismiss();
+                        }
+                    };
+                    dialog.setPositiveButton(R.string.filebrowser_dialog_exist_overwrite, clickListener);
+                    dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
+                    dialog.show();
+                }
             }
             else
             {
-                Toast.makeText(this, getResources().getString(R.string.browser_toast_error_regex), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.filebrowser_toast_error_regex, Toast.LENGTH_SHORT).show();
                 etxtSave.setText("");
             }
         }
@@ -225,6 +257,10 @@ public class FileBrowserActivity extends AppCompatActivity
 
     public void getDirectory(final String dir)
     {
+        if(fileObjects != null && !fileObjects.isEmpty())
+        {
+            fileObjects.clear();
+        }
         fileObjects = new ArrayList<>();
 
         File file = new File(dir);
@@ -272,9 +308,9 @@ public class FileBrowserActivity extends AppCompatActivity
             }
         }
 
-        txtPath.setText(getResources().getString(R.string.browser_Location) + " " + dir);
+        txtPath.setText(getResources().getString(R.string.filebrowser_Location) + " " + dir);
         fileObjectAdaptor = new FileObjectAdaptor(this, fileObjects);
-        lvFilecontrol.setAdapter(fileObjectAdaptor);
+        fileList.setAdapter(fileObjectAdaptor);
         str_filename = dir;
     }
 
@@ -294,5 +330,17 @@ public class FileBrowserActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    private boolean isExist(final String filename)
+    {
+        for(int i = 0; i < fileObjects.size(); i++)
+        {
+            if(filename.equals(fileObjects.get(i).name))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
