@@ -4,11 +4,12 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/dialog_folder_input"
-        android:hint="@string/folder_dialog_hint_add"
-        android:singleLine="true" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/dialog_folder_input"
+            android:hint="@string/folder_dialog_hint_add"
+            android:singleLine="true" android:textColor="@color/Black"
+            android:textColorHint="@color/common_google_signin_btn_text_light_default"/>
 </LinearLayout>

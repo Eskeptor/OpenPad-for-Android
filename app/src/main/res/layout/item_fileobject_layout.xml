@@ -11,18 +11,19 @@
         android:id="@+id/item_fileobj_image" />
 
     <TextView
-        android:text="TextView"
-        android:textSize="15sp"
-        android:layout_width="wrap_content"
-        android:layout_height="40sp"
-        android:id="@+id/item_fileobj_name"
-        android:layout_weight="1"
-        android:gravity="center_vertical" />
+            android:text="TextView"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:id="@+id/item_fileobj_name"
+            android:layout_weight="1"
+            android:gravity="center_vertical" android:textColor="@color/common_google_signin_btn_text_light_default"/>
 
     <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40sp"
-        android:id="@+id/item_fileobj_size"
-        android:gravity="right|center_vertical" />
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:id="@+id/item_fileobj_size"
+            android:gravity="right|center_vertical"
+            android:textColor="@color/common_google_signin_btn_text_light_default"/>
 </LinearLayout>

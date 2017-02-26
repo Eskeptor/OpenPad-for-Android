@@ -37,6 +37,7 @@ public class MemoActivity extends AppCompatActivity {
     private EditText editText;
     private TextManager txtManager;
     private LogManager logManager;
+    private Runnable runnable;
 
     private File lastLog;
     private AlertDialog.Builder alert;
@@ -175,9 +176,18 @@ public class MemoActivity extends AppCompatActivity {
             openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
             openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
             setTitle(openFileName);
-            String txtData = txtManager.openText(openFileURL);
-            editText.setText(txtData);
-            editText.setFocusable(false);
+
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    String txtData = txtManager.openText(openFileURL);
+                    editText.setText(txtData);
+                    editText.setFocusable(false);
+                }
+            };
+
+            runOnUiThread(runnable);
+
             if(Build.VERSION.SDK_INT >= 21)
             {
                 drawableModified = getResources().getDrawable(R.drawable.ic_modifiy_white_24dp, null);
@@ -207,6 +217,8 @@ public class MemoActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     if(which == AlertDialog.BUTTON_POSITIVE)
                     {
+                        Log.e("Debug", "which : " + Integer.toString(which));
+                        Log.e("Debug", "memoType : " + Integer.toString(memoType));
                         if(memoType == Constant.MEMO_TYPE_NEW)
                         {
                             alert = new AlertDialog.Builder(MemoActivity.this);
@@ -241,6 +253,7 @@ public class MemoActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             });
+                            alert.show();
                         }
                         else if(memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL || memoType == Constant.MEMO_TYPE_OPEN_INTERNAL)
                         {

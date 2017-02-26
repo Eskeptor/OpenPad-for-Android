@@ -23,7 +23,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     private static AlertDialog.Builder dialog;
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
-
+    private static Help helpAct;
+    private static FontSettings fontSettingAct;
+    private static Settings settingsAct;
 
     public static class Help extends PreferenceFragment
     {
@@ -78,7 +80,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                     intent.putExtra(Constant.INTENT_EXTRA_HELP_INDEX, preference.getKey());
                     startActivity(intent);
                     getActivity().overridePendingTransition(0,0);
-                    activeScene = Constant.SETTINGS_ACTIVESCREEN_HELP_CONTENTS;
                     return false;
                 }
             };
@@ -115,7 +116,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             textSize = findPreference("settings_key_font_fontsize");
             textSize.setSummary(Float.toString(pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
             textSize.setDefaultValue(Float.toString(pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
-            //textSize.setSummary();
             clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -206,7 +206,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                     }
                     else if(preference.getKey().equals("settings_key_font"))
                     {
-                        getFragmentManager().beginTransaction().replace(android.R.id.content, new FontSettings()).commit();
+                        getFragmentManager().beginTransaction().replace(android.R.id.content, fontSettingAct).commit();
                         activeScene = Constant.SETTINGS_ACTIVESCREEN_FONT;
                     }
                     else if(preference.getKey().equals("settings_key_bugreport"))
@@ -221,7 +221,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                     }
                     else if(preference.getKey().equals("settings_key_help"))
                     {
-                        getFragmentManager().beginTransaction().replace(android.R.id.content, new Help()).commit();
+                        getFragmentManager().beginTransaction().replace(android.R.id.content, helpAct).commit();
                         activeScene = Constant.SETTINGS_ACTIVESCREEN_HELP;
                     }
                     return false;
@@ -283,7 +283,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();
+
+        helpAct = new Help();
+        fontSettingAct = new FontSettings();
+        settingsAct = new Settings();
+
+        getFragmentManager().beginTransaction().replace(android.R.id.content, settingsAct).commit();
         activeScene = Constant.SETTINGS_ACTIVESCREEN_MAIN;
 
         pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
@@ -292,21 +297,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
 
     @Override
     public void onBackPressed() {
+        Log.e("Debug", "activeScene : " + Integer.toString(activeScene));
         if(activeScene == Constant.SETTINGS_ACTIVESCREEN_MAIN)
         {
             super.onBackPressed();
             overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-        }
-        else if(activeScene == Constant.SETTINGS_ACTIVESCREEN_HELP_CONTENTS)
-        {
-            getFragmentManager().beginTransaction().replace(android.R.id.content, new Help()).commit();
-            activeScene = Constant.SETTINGS_ACTIVESCREEN_HELP;
+            Log.e("Debug", "Change activeScene : " + Integer.toString(activeScene));
         }
         else
         {
             getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();
             activeScene = Constant.SETTINGS_ACTIVESCREEN_MAIN;
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+            Log.e("Debug", "Change activeScene : " + Integer.toString(activeScene));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        helpAct = null;
+        fontSettingAct = null;
+        settingsAct = null;
+        dialog = null;
+        pref = null;
+        editor = null;
     }
 }

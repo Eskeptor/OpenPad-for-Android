@@ -7,11 +7,11 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.2.25)
+## What's New? (Last updated 2017.2.26)
 ```
- 1) Optimized codes(Memory leak)
- 2) Version update(alpha → beta)
- 3) Add AdMob
+ 1) Version update(beta → release)
+ 2) Optimized codes(Memory leak, Optimize thread)
+ 3) Bug fix(Save function)
 ```
 ## Next Updates
 ```

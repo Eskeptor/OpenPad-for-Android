@@ -1,7 +1,6 @@
 package com.eskeptor.openTextViewer;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
@@ -46,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private GridView curFolderGridView;
     private TextFileAdaptor curFileAdapter;
     private ArrayList<TextFile> curFolderFileList;
+    private Runnable refreshListRunnable;
     private Drawable folderIcon;
     private AlertDialog.Builder dialog;
     private AdapterView.OnItemClickListener clickListener;
@@ -95,7 +94,10 @@ public class MainActivity extends AppCompatActivity
             if(requestCode == Constant.REQUEST_CODE_OPEN_FOLDER)
             {
                 curFolderURL = data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
-                curFolderFiles();
+                if(curFolderURL != null)
+                {
+                    runOnUiThread(refreshListRunnable);
+                }
             }
         }
     }
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onRefresh()
             {
-                curFolderFiles();
+                runOnUiThread(refreshListRunnable);
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -227,6 +229,32 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        refreshListRunnable = new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(curFolderURL);
+                File files[] = file.listFiles(new FileFilter() {
+                    @Override
+                    public boolean accept(File pathname)
+                    {
+                        return pathname.getName().endsWith(Constant.FILE_EXTENSION);
+                    }
+                });
+
+                curFolderFileList.clear();
+                if(files != null)
+                {
+                    for(int i = 0; i < files.length; i++)
+                    {
+                        curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+                    }
+                }
+                curFileAdapter = new TextFileAdaptor(context_this, curFolderFileList);
+                curFolderGridView.setAdapter(curFileAdapter);
+                curFolderGridView.setOnItemClickListener(clickListener);
+                curFolderGridView.setOnItemLongClickListener(longClickListener);
+            }
+        };
         checkPermission();
     }
 
@@ -252,7 +280,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(pref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE))
         {
-            curFolderFiles();
+            runOnUiThread(refreshListRunnable);
         }
     }
 
@@ -275,7 +303,7 @@ public class MainActivity extends AppCompatActivity
             else
             {
                 defaultFolderCheck();
-                curFolderFiles();
+                runOnUiThread(refreshListRunnable);
                 checkFirstExcecute();
                 adMob();
             }
@@ -283,7 +311,7 @@ public class MainActivity extends AppCompatActivity
         else
         {
             defaultFolderCheck();
-            curFolderFiles();
+            runOnUiThread(refreshListRunnable);
             checkFirstExcecute();
             adMob();
         }
@@ -304,31 +332,6 @@ public class MainActivity extends AppCompatActivity
         curFolderURL = file.getPath();
     }
 
-    private void curFolderFiles()
-    {
-        File file = new File(curFolderURL);
-        File files[] = file.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname)
-            {
-                return pathname.getName().endsWith(Constant.FILE_EXTENSION);
-            }
-        });
-
-        curFolderFileList.clear();
-        if(files != null)
-        {
-            for(int i = 0; i < files.length; i++)
-            {
-                curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
-            }
-        }
-        curFileAdapter = new TextFileAdaptor(this, curFolderFileList);
-        curFolderGridView.setAdapter(curFileAdapter);
-        curFolderGridView.setOnItemClickListener(clickListener);
-        curFolderGridView.setOnItemLongClickListener(longClickListener);
-    }
-
     private void deleteFile(final int index)
     {
         dialog = new AlertDialog.Builder(this);
@@ -346,7 +349,8 @@ public class MainActivity extends AppCompatActivity
                         if(file.delete())
                         {
                             Toast.makeText(context_this, R.string.file_dialog_toast_delete, Toast.LENGTH_SHORT).show();
-                            curFolderFiles();
+                            //curFolderFiles();
+                            runOnUiThread(refreshListRunnable);
                         }
                         else
                         {
@@ -394,7 +398,8 @@ public class MainActivity extends AppCompatActivity
         if(pref.getBoolean(Constant.APP_ADMOB_VISIBLE, true))
         {
             MobileAds.initialize(context_this, getResources().getString(R.string.app_id));
-            adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            //adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+            adRequest = new AdRequest.Builder().build();
             adView = (AdView)findViewById(R.id.adView);
 
             adView.setEnabled(true);

@@ -1,3 +1,9 @@
+## Update 2017.2.26
+```
+ 1) Version update(beta → release)
+ 2) Optimized codes(Memory leak, Optimize thread)
+ 3) Bug fix(Save function)
+```
 ## Update 2017.2.25
 ```
  1) Optimized codes(Memory leak)
