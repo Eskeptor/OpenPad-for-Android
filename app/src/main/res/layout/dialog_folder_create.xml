@@ -11,5 +11,6 @@
             android:id="@+id/dialog_folder_input"
             android:hint="@string/folder_dialog_hint_add"
             android:singleLine="true" android:textColor="@color/Black"
-            android:textColorHint="@color/common_google_signin_btn_text_light_default"/>
+            android:textColorHint="@color/common_google_signin_btn_text_light_default"
+            android:background="@drawable/edittext" android:layout_margin="10dp"/>
 </LinearLayout>

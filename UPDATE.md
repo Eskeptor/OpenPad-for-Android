@@ -3,6 +3,7 @@
  1) Version update(beta → release)
  2) Optimized codes(Memory leak, Optimize thread)
  3) Bug fix(Save function)
+ 4) Black generation dialog in creating folders on several devices.
 ```
 ## Update 2017.2.25
 ```
