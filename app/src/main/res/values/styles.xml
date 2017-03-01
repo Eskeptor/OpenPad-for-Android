@@ -13,6 +13,93 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Item.FileObject" parent="AppTheme">
+        <item name="android:textColor">#90000000</item>
+    </style>
+    <style name="AppTheme.Item.FileObject.File" parent="AppTheme.Item.FileObject">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="AppTheme.Item.FileObject.Size" parent="AppTheme.Item.FileObject">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40sp</item>
+        <item name="android:gravity">end|center_vertical</item>
+    </style>
+
+    <style name="AppTheme.Item.Folder" parent="AppTheme">
+        <item name="android:textColor">#90000000</item>
+    </style>
+    <style name="AppTheme.Item.Folder.Name" parent="AppTheme.Item.Folder">
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="AppTheme.Item.Folder.Count" parent="AppTheme.Item.Folder">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">40sp</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:gravity">end|center_vertical</item>
+    </style>
+
+    <style name="AppTheme.Item.TextFile" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="AppTheme.Item.TextFile.Title" parent="AppTheme.Item.TextFile">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    <style name="AppTheme.Item.TextFile.Context" parent="AppTheme.Item.TextFile">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#90000000</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    <style name="AppTheme.Item.TextFile.Date">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#90000000</item>
+    </style>
+
+    <style name="AppTheme.Dialog.FolderCreate" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">textPersonName</item>
+        <item name="android:ems">10</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColorHint">#90000000</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="AppTheme.Activity.Memo.EditText" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">top</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
+    <style name="AppTheme.Activity.Help.HelpContents" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="AppTheme.Activity.Help.HelpContents.Title" parent="AppTheme.Activity.Help.HelpContents">
+        <item name="android:textColor">#ff4081</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+    <style name="AppTheme.Activity.Help.HelpContents.Context" parent="AppTheme.Activity.Help.HelpContents">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

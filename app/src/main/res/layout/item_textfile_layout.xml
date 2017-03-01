@@ -5,20 +5,13 @@
 
     <TextView
             android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/Black"
-            android:id="@+id/item_textfile_title" android:maxLines="1"/>
+            android:id="@+id/item_textfile_title"
+            style="@style/AppTheme.Item.TextFile.Title"/>
 
     <TextView
             android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:id="@+id/item_textfile_context"
-            android:maxLines="1" android:textColor="@color/common_google_signin_btn_text_light_default"/>
+            style="@style/AppTheme.Item.TextFile.Context"/>
 
     <Space
         android:layout_width="match_parent"
@@ -26,9 +19,6 @@
 
     <TextView
             android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
             android:id="@+id/item_textfile_date"
-            android:textColor="@color/common_google_signin_btn_text_light_default"/>
+            style="@style/AppTheme.Item.TextFile.Date"/>
 </LinearLayout>

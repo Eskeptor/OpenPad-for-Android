@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_paint_pen"
+        android:title="pen"
+        android:icon="@drawable/ic_modifiy_white_24dp"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_paint_eraser"
+        android:title="eraser"
+        android:icon="@drawable/ic_crop_portrait_white_24dp"
+        app:showAsAction="ifRoom"/>
+</menu>

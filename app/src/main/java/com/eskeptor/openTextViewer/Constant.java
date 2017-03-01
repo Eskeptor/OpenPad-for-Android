@@ -61,6 +61,9 @@ class Constant
     public static final int SETTINGS_ACTIVESCREEN_HELP = 3;
     public static final int SETTINGS_ACTIVESCREEN_HELP_CONTENTS = 4;
 
+    public static final float PAINT_MINIMUM_PIXEL = 4.0f;
+    public static final float PAINT_ERASER_PIXEL = 6.0f;
+
     public static final String BASIC_FILE_UNIT = "KB";
     public static final long MEGABYTE = 1048576L;
     public static final long KILOBYTE = 1024L;

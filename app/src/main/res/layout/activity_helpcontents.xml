@@ -10,16 +10,11 @@
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/help_txtTitle"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp" />
+        style="@style/AppTheme.Activity.Help.HelpContents.Title"/>
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/help_contexts"
-        android:textSize="18sp" />
+        style="@style/AppTheme.Activity.Help.HelpContents.Context"/>
 </LinearLayout>

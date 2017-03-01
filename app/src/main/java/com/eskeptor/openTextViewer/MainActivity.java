@@ -214,18 +214,47 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+
         fab = (FloatingActionButton) findViewById(R.id.main_add);
         fab.setOnClickListener(new View.OnClickListener() {
+            PopupMenu addFabMenu;
+            MenuInflater menuInflater;
+            Menu menu;
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.setClass(context_this, MemoActivity.class);
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
-                startActivity(intent);
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                if(addFabMenu == null && menuInflater == null && menu == null)
+                {
+                    addFabMenu = new PopupMenu(context_this, view);
+                    menuInflater = addFabMenu.getMenuInflater();
+                    menu = addFabMenu.getMenu();
+                    menuInflater.inflate(R.menu.menu_main_add, menu);
+                }
+                addFabMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId() == R.id.menu_main_add_text)
+                        {
+                            Intent intent = new Intent();
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.setClass(context_this, MemoActivity.class);
+                            intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
+                            intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        }
+                        else
+                        {
+                            Intent intent = new Intent();
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.setClass(context_this, PaintActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        }
+                        return false;
+                    }
+                });
+                addFabMenu.show();
             }
         });
 
@@ -257,6 +286,8 @@ public class MainActivity extends AppCompatActivity
         };
         checkPermission();
     }
+
+
 
     @Override
     public void onBackPressed()

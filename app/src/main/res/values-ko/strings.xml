@@ -131,4 +131,6 @@
     <string name="settings_help_etc_ad_context">어플리케이션내에 배너형식으로 달려있는 \"구글 AdMob\" 광고입니다.\n가끔.. 광고를 한 번씩 눌러주시면 좋겠는데 말이죠..</string>
     <string name="settings_help_etc_backup">백업</string>
     <string name="settings_help_etc_backup_context">모든 메모는 텍스트 파일(.txt)로 저장됩니다.\n메모의 저장경로는 \"OpenPad\" 폴더에 저장됩니다.\n그러므로 \"OpenPad\" 폴더를 다른 저장소에 백업하시면 됩니다.</string>
+    <string name="menu_main_add_text_title">텍스트</string>
+    <string name="menu_main_add_paint_title">페인트</string>
 </resources>
