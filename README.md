@@ -1,6 +1,6 @@
 # OpenPad
-## About this project
-This is my personal notepad project.
+## Google Play
+[Download OpenPad](https://play.google.com/store/apps/details?id=com.eskeptor.openTextViewer)
 ## Features
 ```
  1) Low memory(Very light)
