@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -272,7 +271,7 @@ public class FileBrowserActivity extends AppCompatActivity
                 public boolean accept(File pathname)
                 {
                     String name = pathname.getName();
-                    return pathname.isDirectory() || name.endsWith(Constant.FILE_EXTENSION);
+                    return pathname.isDirectory() || name.endsWith(Constant.FILE_TEXT_EXTENSION);
                 }
             });
         }

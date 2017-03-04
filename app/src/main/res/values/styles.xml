@@ -100,6 +100,18 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="AppTheme.Activity.Paint.Brush.SeekBar" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <style name="AppTheme.Activity.Paint.Brush.Text" parent="AppTheme">
+        <item name="android:layout_width">80sp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

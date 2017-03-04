@@ -7,9 +7,9 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.1)
+## What's New? (Last updated 2017.3.4)
 ```
- 1) Add test function(paint)
+ 1) Update paint memo(save and load)
 ```
 ## Next Updates
 ```

@@ -5,11 +5,104 @@
         android:id="@+id/activity_paint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context="com.eskeptor.openTextViewer.PaintActivity"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/paint_brush_seekLayout">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            >
+
+            <TextView
+                android:text="@string/paint_txtBrushSize"
+                android:id="@+id/paint_brush_txtSize"
+                style="@style/AppTheme.Activity.Paint.Brush.Text"
+                />
+
+            <SeekBar
+                android:id="@+id/paint_brush_seekSize"
+                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:text="@string/paint_txtBrushRed"
+                android:id="@+id/paint_brush_txtRed"
+                style="@style/AppTheme.Activity.Paint.Brush.Text"/>
+
+            <SeekBar
+                android:id="@+id/paint_brush_seekRed"
+                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:text="@string/paint_txtBrushGreen"
+                android:id="@+id/paint_brush_txtGreen"
+                style="@style/AppTheme.Activity.Paint.Brush.Text"/>
+
+            <SeekBar
+                android:id="@+id/paint_brush_seekGreen"
+                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:text="@string/paint_txtBrushBlue"
+                android:id="@+id/paint_brush_txtBlue"
+                style="@style/AppTheme.Activity.Paint.Brush.Text"/>
+
+            <SeekBar
+                android:id="@+id/paint_brush_seekBlue"
+                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/paint_eraser_seekLayout"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <TextView
+            android:text="@string/paint_txtBrushSize"
+            android:id="@+id/paint_eraser_txtSize"
+            style="@style/AppTheme.Activity.Paint.Brush.Text"/>
+
+        <SeekBar
+            android:id="@+id/paint_eraser_seekSize"
+            style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+    </LinearLayout>
 
 </LinearLayout>

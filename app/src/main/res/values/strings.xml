@@ -189,4 +189,9 @@
     </string>
     <string name="menu_main_add_text_title">Text</string>
     <string name="menu_main_add_paint_title">Paint</string>
+    <string name="paint_txtBrushSize">Size : %d</string>
+    <string name="paint_txtBrushRed" translatable="false">Red : %d</string>
+    <string name="paint_txtBrushGreen" translatable="false">Green : %d</string>
+    <string name="paint_txtBrushBlue" translatable="false">Blue : %d</string>
+    <string name="file_imagememo">Pictorial Memo</string>
 </resources>

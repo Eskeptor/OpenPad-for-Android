@@ -1,3 +1,7 @@
+## Update 2017.3.1
+```
+ 1) Add test function(paint)
+```
 ## Update 2017.2.26
 ```
  1) Version update(beta → release)

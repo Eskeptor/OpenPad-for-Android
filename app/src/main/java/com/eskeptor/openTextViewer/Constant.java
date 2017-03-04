@@ -49,20 +49,26 @@ class Constant
     public static final int REQUEST_CODE_OPEN_FOLDER = 3;
     public static final int REQUEST_CODE_APP_PERMISSION_STORAGE = 4;
 
+    public static final int LISTVIEW_FILE_TYPE_TEXT = 1;
+    public static final int LISTVIEW_FILE_TYPE_IMAGE = 2;
+
     public static final String REGEX = "^[_a-zA-Z0-9.ㄱ-ㅎㅏ-ㅣ가-힣]*$";
 
     public static final long WAIT_FOR_SECOND = 2000L;
-    public static final String FILE_EXTENSION = ".txt";
-
-    public static final String LOG_FILE_COUNT = "lastCount.log";
+    public static final String FILE_TEXT_EXTENSION = ".txt";
+    public static final String FILE_IMAGE_EXTENSION = ".png";
+    public static final String FILE_LOG_COUNT = "lastCount.log";
 
     public static final int SETTINGS_ACTIVESCREEN_MAIN = 1;
     public static final int SETTINGS_ACTIVESCREEN_FONT = 2;
     public static final int SETTINGS_ACTIVESCREEN_HELP = 3;
     public static final int SETTINGS_ACTIVESCREEN_HELP_CONTENTS = 4;
 
-    public static final float PAINT_MINIMUM_PIXEL = 4.0f;
-    public static final float PAINT_ERASER_PIXEL = 6.0f;
+    public static final float PAINT_MINIMUM_LINE_LENGTH_PIXEL = 0.0f;
+    public static final float PAINT_ERASER_WIDTH_PIXEL = 20.0f;
+    public static final float PAINT_DEFAULT_WIDTH_PIXEL = 10.0f;
+    public static final float PAINT_MAXIMUM_WIDTH = 40.0f;
+    public static final int PAINT_COLOR_MAX = 255;
 
     public static final String BASIC_FILE_UNIT = "KB";
     public static final long MEGABYTE = 1048576L;

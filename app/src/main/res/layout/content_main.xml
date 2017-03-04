@@ -19,10 +19,11 @@
         android:layout_height="match_parent"
         android:id="@+id/main_swipeRefresh">
         <GridView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/main_curFolderFileList"
-                android:numColumns="2" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_curFolderFileList"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"/>
     </android.support.v4.widget.SwipeRefreshLayout>
     <com.google.android.gms.ads.AdView
             android:id="@+id/adView"

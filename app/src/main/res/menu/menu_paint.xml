@@ -2,13 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_paint_undo"
+        android:title="undo"
+        android:icon="@drawable/ic_undo_white_24dp"
+        app:showAsAction="always"
+        />
+    <item
         android:id="@+id/menu_paint_pen"
         android:title="pen"
         android:icon="@drawable/ic_modifiy_white_24dp"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_paint_eraser"
         android:title="eraser"
         android:icon="@drawable/ic_crop_portrait_white_24dp"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_paint_reset"
+        android:title="reset"
+        android:icon="@drawable/ic_delete_sweep_white_24dp"
+        app:showAsAction="always"/>
 </menu>

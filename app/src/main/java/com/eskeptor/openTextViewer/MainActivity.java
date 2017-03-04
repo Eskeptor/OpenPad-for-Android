@@ -18,6 +18,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity
     private String curFolderURL;
     private SwipeRefreshLayout refreshLayout;
     private GridView curFolderGridView;
-    private TextFileAdaptor curFileAdapter;
-    private ArrayList<TextFile> curFolderFileList;
+    private MainFileAdaptor curFileAdapter;
+    private ArrayList<MainFile> curFolderFileList;
     private Runnable refreshListRunnable;
     private Drawable folderIcon;
     private AlertDialog.Builder dialog;
@@ -195,7 +196,14 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.setClass(context_this, MemoActivity.class);
+                if(curFolderFileList.get(position).type == Constant.LISTVIEW_FILE_TYPE_IMAGE)
+                {
+                    intent.setClass(context_this, PaintActivity.class);
+                }
+                else
+                {
+                    intent.setClass(context_this, MemoActivity.class);
+                }
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, curFolderFileList.get(position).url);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, curFolderFileList.get(position).title);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
@@ -248,6 +256,8 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.setClass(context_this, PaintActivity.class);
+                            intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
+                            intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                         }
@@ -266,7 +276,8 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public boolean accept(File pathname)
                     {
-                        return pathname.getName().endsWith(Constant.FILE_EXTENSION);
+                        return pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION) ||
+                                pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION);
                     }
                 });
 
@@ -275,10 +286,11 @@ public class MainActivity extends AppCompatActivity
                 {
                     for(int i = 0; i < files.length; i++)
                     {
-                        curFolderFileList.add(new TextFile(files[i], getResources().getString(R.string.file_noname), new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+                        curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                                new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
                     }
                 }
-                curFileAdapter = new TextFileAdaptor(context_this, curFolderFileList);
+                curFileAdapter = new MainFileAdaptor(context_this, curFolderFileList);
                 curFolderGridView.setAdapter(curFileAdapter);
                 curFolderGridView.setOnItemClickListener(clickListener);
                 curFolderGridView.setOnItemLongClickListener(longClickListener);
@@ -286,8 +298,6 @@ public class MainActivity extends AppCompatActivity
         };
         checkPermission();
     }
-
-
 
     @Override
     public void onBackPressed()

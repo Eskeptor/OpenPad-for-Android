@@ -98,7 +98,7 @@ public class MemoActivity extends AppCompatActivity {
             if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE)
             {
                 String folderURL = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
-                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_EXTENSION;
+                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
                 if(txtManager.saveText(editText.getText().toString(), folderURL + fileName))
                 {
                     Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName), Toast.LENGTH_SHORT).show();
@@ -111,7 +111,7 @@ public class MemoActivity extends AppCompatActivity {
             else if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE)
             {
                 String folderURL = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
-                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_EXTENSION;
+                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
                 if(txtManager.saveText(editText.getText().toString(), folderURL + fileName))
                 {
                     Toast.makeText(context_this, R.string.memo_toast_saveSuccess_internal, Toast.LENGTH_SHORT).show();
@@ -145,7 +145,7 @@ public class MemoActivity extends AppCompatActivity {
 
         if(memoType == Constant.MEMO_TYPE_NEW)
         {
-            lastLog = new File(openFolderURL + File.separator + Constant.LOG_FILE_COUNT);
+            lastLog = new File(openFolderURL + File.separator + Constant.FILE_LOG_COUNT);
             if(!lastLog.exists())
             {
                 try
@@ -243,7 +243,7 @@ public class MemoActivity extends AppCompatActivity {
                                         }
                                         else
                                         {
-                                            openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_EXTENSION);
+                                            openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_TEXT_EXTENSION);
                                             txtManager.saveText(editText.getText().toString(), openFileURL);
                                             memoIndex++;
                                             writeLog();
