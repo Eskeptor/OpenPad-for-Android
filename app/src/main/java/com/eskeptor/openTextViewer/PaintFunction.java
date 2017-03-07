@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 /**
  * Created by narut on 2017-03-01.
  */
+/*
 public class PaintFunction extends View{
     private float curX;
     private float curY;
@@ -225,3 +226,4 @@ public class PaintFunction extends View{
         return modified;
     }
 }
+*/

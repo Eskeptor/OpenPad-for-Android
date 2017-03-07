@@ -7,9 +7,11 @@ This is my personal notepad project.
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.4)
+## What's New? (Last updated 2017.3.7)
 ```
- 1) Update paint memo(save and load)
+ 1) Change main layout(GridView → RecycleView)
+ 2) Change refresh(main's list)
+ 3) Bug fix(The pictorial notes were not counting in the folder activity)
 ```
 ## Next Updates
 ```

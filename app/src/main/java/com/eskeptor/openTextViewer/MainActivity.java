@@ -17,6 +17,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -42,14 +44,15 @@ public class MainActivity extends AppCompatActivity
     private long backPressedTime;
     private String curFolderURL;
     private SwipeRefreshLayout refreshLayout;
-    private GridView curFolderGridView;
+    private StaggeredGridLayoutManager layoutManager;
+    private RecyclerView curFolderGridView;
+    private RecyclerViewPadding recyclerViewPadding;
+    private ClickAction clickAction;
     private MainFileAdaptor curFileAdapter;
     private ArrayList<MainFile> curFolderFileList;
     private Runnable refreshListRunnable;
     private Drawable folderIcon;
     private AlertDialog.Builder dialog;
-    private AdapterView.OnItemClickListener clickListener;
-    private AdapterView.OnItemLongClickListener longClickListener;
     private Context context_this;
     private FloatingActionButton fab;
 
@@ -97,7 +100,8 @@ public class MainActivity extends AppCompatActivity
                 curFolderURL = data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
                 if(curFolderURL != null)
                 {
-                    runOnUiThread(refreshListRunnable);
+                    refreshList();
+                    curFileAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -179,21 +183,23 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(folderIcon);
 
-        curFolderGridView = (GridView)findViewById(R.id.main_curFolderFileList);
+        curFolderGridView = (RecyclerView)findViewById(R.id.main_curFolderFileList);
         curFolderFileList = new ArrayList<>();
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.main_swipeRefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh()
             {
-                runOnUiThread(refreshListRunnable);
+                curFileAdapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
             }
         });
+        layoutManager = new StaggeredGridLayoutManager(2,1);
 
-        clickListener = new AdapterView.OnItemClickListener() {
+
+        clickAction = new ClickAction() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View view, int position) {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 if(curFolderFileList.get(position).type == Constant.LISTVIEW_FILE_TYPE_IMAGE)
@@ -211,17 +217,13 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
             }
-        };
 
-        longClickListener = new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onLongClick(View view, int position) {
                 deleteFile(position);
-                return true;
             }
         };
-
+        recyclerViewPadding = new RecyclerViewPadding(10, 5, 5);
 
         fab = (FloatingActionButton) findViewById(R.id.main_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -271,29 +273,15 @@ public class MainActivity extends AppCompatActivity
         refreshListRunnable = new Runnable() {
             @Override
             public void run() {
-                File file = new File(curFolderURL);
-                File files[] = file.listFiles(new FileFilter() {
-                    @Override
-                    public boolean accept(File pathname)
-                    {
-                        return pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION) ||
-                                pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION);
-                    }
-                });
-
-                curFolderFileList.clear();
-                if(files != null)
-                {
-                    for(int i = 0; i < files.length; i++)
-                    {
-                        curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
-                                new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
-                    }
-                }
-                curFileAdapter = new MainFileAdaptor(context_this, curFolderFileList);
+                refreshList();
+                curFileAdapter = new MainFileAdaptor(curFolderFileList);
+                curFileAdapter.setClickAction(clickAction);
+                layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                layoutManager.invalidateSpanAssignments();
+                curFolderGridView.setHasFixedSize(true);
+                curFolderGridView.setLayoutManager(layoutManager);
                 curFolderGridView.setAdapter(curFileAdapter);
-                curFolderGridView.setOnItemClickListener(clickListener);
-                curFolderGridView.setOnItemLongClickListener(longClickListener);
+                curFolderGridView.addItemDecoration(recyclerViewPadding);
             }
         };
         checkPermission();
@@ -321,7 +309,8 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(pref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE))
         {
-            runOnUiThread(refreshListRunnable);
+            refreshList();
+            curFileAdapter.notifyDataSetChanged();
         }
     }
 
@@ -390,8 +379,11 @@ public class MainActivity extends AppCompatActivity
                         if(file.delete())
                         {
                             Toast.makeText(context_this, R.string.file_dialog_toast_delete, Toast.LENGTH_SHORT).show();
-                            //curFolderFiles();
-                            runOnUiThread(refreshListRunnable);
+                            curFolderFileList.remove(index);
+                            curFolderGridView.removeViewAt(index);
+                            curFileAdapter.notifyItemRemoved(index);
+                            curFileAdapter.notifyItemRangeChanged(index, curFolderFileList.size());
+                            curFileAdapter.notifyDataSetChanged();
                         }
                         else
                         {
@@ -409,6 +401,29 @@ public class MainActivity extends AppCompatActivity
         dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
         dialog.setPositiveButton(R.string.folder_dialog_button_delete, clickListener);
         dialog.show();
+    }
+
+    private void refreshList()
+    {
+        curFolderFileList.clear();
+        File file = new File(curFolderURL);
+        File files[] = file.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname)
+            {
+                return pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION) ||
+                        pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION);
+            }
+        });
+
+        if(files != null)
+        {
+            for(int i = 0; i < files.length; i++)
+            {
+                curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                        new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+            }
+        }
     }
 
     private void checkFirstExcecute()

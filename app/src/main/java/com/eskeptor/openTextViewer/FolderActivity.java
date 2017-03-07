@@ -162,7 +162,8 @@ public class FolderActivity extends AppCompatActivity
                     folders.add(new Folder(files[i].getName(), files[i].listFiles(new FileFilter() {
                         @Override
                         public boolean accept(File pathname) {
-                            return pathname.isFile() && pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION);
+                            return pathname.isFile() && (pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                    || pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
                         }
                     }).length, checkFolderType(files[i]), context_this));
                 }

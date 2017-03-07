@@ -1,3 +1,7 @@
+## Update 2017.3.4
+```
+ 1) Update paint memo(save and load)
+```
 ## Update 2017.3.1
 ```
  1) Add test function(paint)

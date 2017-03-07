@@ -201,21 +201,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="E:\Study\AndroidProject\Practice_FileIO\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4ea21dec8619bfb7aa834f0e27b17ccca4ac88db">
-        <dex dex="E:\Study\AndroidProject\Practice_FileIO\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_3e8c4209b5615ee56cc07e5c019d5f993298fc93\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="E:\Study\AndroidProject\Practice_FileIO\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.1.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
         <dex dex="E:\Study\AndroidProject\Practice_FileIO\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-25.1.0_c79363f5a756d1badb020aa49d41340d159e64ee\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\Study\AndroidProject\Practice_FileIO\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4ea21dec8619bfb7aa834f0e27b17ccca4ac88db">
+        <dex dex="E:\Study\AndroidProject\Practice_FileIO\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_3e8c4209b5615ee56cc07e5c019d5f993298fc93\classes.dex" />
     </item>
     <item
         is-multidex="true"
