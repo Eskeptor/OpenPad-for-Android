@@ -22,6 +22,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PaintActivity extends AppCompatActivity {
     private PaintFunction paintFunction;
@@ -125,7 +126,7 @@ public class PaintActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(final SeekBar seekBar) {
 
             }
 
@@ -194,17 +195,15 @@ public class PaintActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_paint, menu);
         undo = menu.findItem(R.id.menu_paint_undo);
         undo.setVisible(false);
-
-        //todo 버튼 활성화 비활성화 연동시키기
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         if(item.getItemId() == R.id.menu_paint_pen)
         {
             paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
@@ -240,6 +239,11 @@ public class PaintActivity extends AppCompatActivity {
         else if(item.getItemId() == R.id.menu_paint_reset)
         {
             paintFunction.resetPaint();
+        }
+        else if(item.getItemId() == R.id.menu_paint_undo)
+        {
+            paintFunction.undoCanvas();
+            paintFunction.invalidate();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -392,6 +396,8 @@ public class PaintActivity extends AppCompatActivity {
         private Canvas canvas;
         private Path path;
         private Bitmap bitmap;
+        private ArrayList<Path> paths;
+        private int paths_idx;
 
         private int screenWidth;
         private int screenHeight;
@@ -452,7 +458,13 @@ public class PaintActivity extends AppCompatActivity {
                 canvas.drawARGB(Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX);
             }
 
-            Log.e("Debug", "save count : " + Integer.toString(canvas.getSaveCount()));
+            if(paths != null)
+            {
+                paths.clear();
+                paths = null;
+            }
+            paths = new ArrayList<>();
+            paths_idx = 0;
 
             if(path != null)
             {
@@ -478,21 +490,23 @@ public class PaintActivity extends AppCompatActivity {
 
         @Override
         protected void onDraw(final Canvas canvas) {
-            if(bitmap != null)
+            for(Path path : paths)
             {
-                canvas.drawBitmap(bitmap, 0, 0, null);
+                canvas.drawPath(path, paint);
             }
+            canvas.drawPath(path, paint);
         }
 
         @Override
         protected void onDetachedFromWindow() {
+            super.onDetachedFromWindow();
             if(bitmap != null)
                 bitmap.recycle();
             bitmap = null;
             path = null;
             canvas = null;
             paint = null;
-            super.onDetachedFromWindow();
+            paths.clear();
         }
 
         @Override
@@ -506,7 +520,6 @@ public class PaintActivity extends AppCompatActivity {
                 path.moveTo(curX, curY);
                 prevX = curX;
                 prevY = curY;
-                canvas.drawPoint(curX, curY, paint);
                 invalidate();
                 return true;
             }
@@ -517,29 +530,36 @@ public class PaintActivity extends AppCompatActivity {
                     path.quadTo(prevX, prevY, curX, curY);
                     prevX = curX;
                     prevY = curY;
-                    canvas.drawPath(path, paint);
                 }
                 invalidate();
                 return true;
             }
             else if((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP)
             {
+                paths.add(new Path(path));
+                paths_idx++;
                 undo.setVisible(true);
+                invalidate();
             }
+
             modified = true;
             return false;
         }
 
         public void setColor(final int color)
         {
+            draw(canvas);
             curColor = color;
             paint.setColor(curColor);
+            invalidate();
         }
 
         public void setLineWidth(final float lineWidth)
         {
+            draw(canvas);
             curLineWidth = lineWidth;
             paint.setStrokeWidth(curLineWidth);
+            invalidate();
         }
 
         public void resetPaint()
@@ -547,7 +567,6 @@ public class PaintActivity extends AppCompatActivity {
             reset();
             setColor(curColor);
             invalidate();
-            Log.e("Debug", "save count : " + Integer.toString(canvas.getSaveCount()));
         }
 
         public boolean isFileopen()
@@ -578,6 +597,7 @@ public class PaintActivity extends AppCompatActivity {
         public void savePaint(final String dir)
         {
             FileOutputStream fos = null;
+            this.draw(canvas);
             try
             {
                 fos = new FileOutputStream(new File(dir));
@@ -593,6 +613,20 @@ public class PaintActivity extends AppCompatActivity {
         public boolean isModified()
         {
             return modified;
+        }
+
+        public void undoCanvas()
+        {
+            if(paths_idx != 0)
+            {
+                paths.remove(--paths_idx);
+                path.reset();
+            }
+            if(paths_idx == 0)
+            {
+                undo.setVisible(false);
+            }
+            invalidate();
         }
     }
 }

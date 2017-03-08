@@ -61,8 +61,7 @@
     <string name="settings_information_infosummary">Program information and version.</string>
     <string name="settings_dialog_info_title">About Openpad</string>
     <string name="settings_dialog_info_copyright">Copyright © 2017 Jeon Ye Chan</string>
-    <string name="settings_dialog_info_license">This program is affected by the \"GNU GPL v3 License \" license.
-    </string>
+    <string name="settings_dialog_info_license">This program is affected by the \"GNU GPL v3 License \" license.</string>
     <string name="settings_dialog_info_icon">Icons : https://material.io/icons/</string>
     <string name="settings_dialog_info_ok">OK</string>
     <string name="settings_information_version">Version</string>
@@ -92,70 +91,30 @@
     <string name="folder_externalBrowser">Open External File Explorer</string>
     <string name="settings_help_memo_savelengthlimited">Maximum length of character</string>
     <string name="settings_help_memo_fontcolor">Font Color</string>
-    <string name="settings_help_main_list_context">By default, you\'ll see notes in the default folder when you run
-        OpenPad.\nYou can call up the other folders by pressing the Folder button.
-    </string>
-    <string name="settings_help_main_memocreate_context">You can add a new note by pressing the \" Add button (+) \" at
-        the bottom right-hand corner of the main screen.\nNote that these additional notes can be stored in the default
-        folder (OpenPad/Basic) of the application and stored on the external path.
-    </string>
-    <string name="settings_help_main_delete_context">You can delete the corresponding notes in the main notes by
-        pressing them for more than 1 second.\nDelete will also be deleted from the actual mobile phone memory when
-        deleted.\n(You can not restore it again.)
-    </string>
-    <string name="settings_help_folder_list_context">Displays the folder in the folder (OpenPad) of the
-        application.\nThe default folder (OpenPad) can not be deleted and will be recreated if it is erased.\nFolders
-        list consist of \" Default Folder \", \" External File Explorer \" and newly created folders.
-    </string>
-    <string name="settings_help_folder_default_context">If you run an application \" More than once \", it automatically
-        creates a folder called \" OpenPad \", which creates a default folder for \" Basic \" folders.\nThis folder does
-        not delete the \" Deleted \" function from the \" OpenPad \" feature, and will be recreated again if it is
-        deleted.\n(Note that notes can not be recovered when deleted.)
-    </string>
-    <string name="settings_help_folder_create_context">You can add folders by pressing the \" Add Folder \" button on
-        the top right.\nThe name of the folder can not be duplicated and can not create a folder called \" Basic \".
-    </string>
-    <string name="settings_help_folder_delete_context">Like delete memo, you can delete it by pressing the corresponding
-        folder for more than 1 second.\nIf you delete a folder, all the notes in the folder will be deleted.\n(However,
-        the default folder and file explorer can not be deleted.)
-    </string>
-    <string name="settings_help_folder_external_context">Allows you to retrieve files (. txt) from a path other than the
-        default folder (OpenPad).\nHowever, all files imported from an external file explorer are imported temporarily
-        into \"EUC-KR → UTF-8\".\nSo, if you leave the memo window, there is no change in the change, even if there are
-        no changes.
-    </string>
-    <string name="settings_help_memo_savelength_context">The maximum length of the letter is unspecified.\n\" Up to
-        500,000 characters in English, \" and \" 250,000 characters in Korean letters, \" will be saved.\nHowever, if
-        you pass beyond this, you will not be able to guarantee stability.
-    </string>
-    <string name="settings_help_memo_fontcolor_context">Color color is not supported for \"after update
-        list\".\nInstead, the theme updates are scheduled to be included with the theme.
-    </string>
+    <string name="settings_help_main_list_context">By default, you\'ll see notes in the default folder when you run OpenPad.\nYou can call up the other folders by pressing the Folder button.</string>
+    <string name="settings_help_main_memocreate_context">You can add a new note by pressing the \" Add button (+) \" at the bottom right-hand corner of the main screen.\nYou can add text memo and pictorial memo (beta function).\nNote that these additional notes can be stored in the default folder (OpenPad/Basic) of the application and stored on the external path.</string>
+    <string name="settings_help_main_delete_context">You can delete the corresponding notes in the main notes by pressing them for more than 1 second.\nDelete will also be deleted from the actual mobile phone memory when deleted.\n(You can not restore it again.)</string>
+    <string name="settings_help_folder_list_context">Displays the folder in the folder (OpenPad) of the application.\nThe default folder (OpenPad) can not be deleted and will be recreated if it is erased.\nFolders list consist of \" Default Folder \", \" External File Explorer \" and newly created folders.</string>
+    <string name="settings_help_folder_default_context">If you run an application \" More than once \", it automatically creates a folder called \" OpenPad \", which creates a default folder for \" Basic \" folders.\nThis folder does not delete the \" Deleted \" function from the \" OpenPad \" feature, and will be recreated again if it is deleted.\n(Note that notes can not be recovered when deleted.)</string>
+    <string name="settings_help_folder_create_context">You can add folders by pressing the \" Add Folder \" button on the top right.\nThe name of the folder can not be duplicated and can not create a folder called \" Basic \".</string>
+    <string name="settings_help_folder_delete_context">Like delete memo, you can delete it by pressing the corresponding folder for more than 1 second.\nIf you delete a folder, all the notes in the folder will be deleted.\n(However, the default folder and file explorer can not be deleted.)</string>
+    <string name="settings_help_folder_external_context">Allows you to retrieve files (. txt) from a path other than the default folder (OpenPad).\nHowever, all files imported from an external file explorer are imported temporarily into \"EUC-KR → UTF-8\".\nSo, if you leave the memo window, there is no change in the change, even if there are no changes.</string>
+    <string name="settings_help_memo_savelength_context">The maximum length of the letter is unspecified.\n\" Up to 500,000 characters in English, \" and \" 250,000 characters in Korean letters, \" will be saved.\nHowever, if you pass beyond this, you will not be able to guarantee stability.</string>
+    <string name="settings_help_memo_fontcolor_context">Color color is not supported for \"after update list\".\nInstead, the theme updates are scheduled to be included with the theme.</string>
     <string name="settings_help_memo_edit">Edit Memo</string>
-    <string name="settings_help_memo_edit_context">Press the \" Edit button \" on the top right to enter the correction
-        mode.\nOnce you have modified it, press and hold the \" Save button \" button on the top right.\nThe file will
-        then be stored in the \" UTF-8 \" format.\n(However, if the open file is over 500 KB, it can not be edited.)
-    </string>
+    <string name="settings_help_memo_edit_context">Press the \" Edit button \" on the top right to enter the correction mode.\nOnce you have modified it, press and hold the \" Save button \" button on the top right.\nThe file will then be stored in the \" UTF-8 \" format.\n(However, if the open file is over 500 KB, it can not be edited.)</string>
     <string name="settings_help_main_openfolder">Open Folder</string>
-    <string name="settings_help_main_openfolder_context">Press the \" Open Folder \" button on the top left corner to
-        view the notes contained in that folder.
-    </string>
+    <string name="settings_help_main_openfolder_context">Press the \" Open Folder \" button on the top left corner to view the notes contained in that folder.</string>
     <string name="settings_help_title_ect">ETC.</string>
     <string name="settings_help_etc_filecolor">Color files in an external file explorer</string>
-    <string name="settings_help_etc_filecolor_context">There are three colors in a file.\nRed : Opening files does not
-        guarantee stability (over 1 MB or more)\nYellow : File is opened but a little slower (500 KB or more
-        files)\nBlack : File files that ensure file opening (500 KB files)\n(MB = 1024 KB)
-    </string>
+    <string name="settings_help_etc_filecolor_context">There are three colors in a file.\nRed : Opening files does not guarantee stability (over 1 MB or more)\nYellow : File is opened but a little slower (500 KB or more files)\nBlack : File files that ensure file opening (500 KB files)\n(MB = 1024 KB)</string>
     <string name="main_dialog_restart_title">Exit</string>
     <string name="main_dialog_restart_context">Exit to acquire permission.\n(Please restart after shutdown.)</string>
     <string name="main_dialog_restart_title_no">Warning</string>
     <string name="main_dialog_restart_context_no">If you don\'t have permission, you won\'t be able to use it.</string>
     <string name="main_dialog_first_title">Welcome</string>
-    <string name="main_dialog_first_context">Thank you for your first use.\nPlease check \" Help \".\n(Setup - Help)
-    </string>
-    <string name="settings_dialog_info_homepage">If you like this program, visit my
-        homepage.\n(http://eskeptor.tistory.com)
-    </string>
+    <string name="main_dialog_first_context">Thank you for your first use.\nPlease check \" Help \".\n(Setup - Help)</string>
+    <string name="settings_dialog_info_homepage">If you like this program, visit my homepage.\n(http://eskeptor.tistory.com)</string>
     <string name="folder_title">Select Folder</string>
     <string name="filebrowser_dialog_exist_title">File Detection</string>
     <string name="filebrowser_dialog_exist_context">File already exists.\nOverwrite file?</string>
@@ -163,30 +122,18 @@
     <string name="memo_toast_saveSuccess_internal">The memo has been saved.</string>
     <string name="memo_toast_saveFail_internal">The memo can not be saved.</string>
     <string name="settings_help_etc_permission">Acquiring android permissions</string>
-    <string name="settings_help_etc_permission_context">Read the file and acquire permissions for
-        writing.\n(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)\nYou can not use the application unless you allow
-        permission from the Android 6.0 or later.\nAdditionally, get Internet access rights.\n(Advertising)
-    </string>
+    <string name="settings_help_etc_permission_context">Read the file and acquire permissions for writing.\n(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)\nYou can not use the application unless you allow permission from the Android 6.0 or later.\nAdditionally, get Internet access rights.\n(Advertising)</string>
     <string name="settings_help_etc_abouthelp">About Help</string>
-    <string name="settings_help_etc_abouthelp_context">Help seems very loose, right?\nI have not intentionally inserted
-        the picture.\nTo reduce the capacity of the application and to make it as light as possible.\nHowever, you can
-        easily find it through writing.\nIf you have any questions about helping me, please let me know by using \"Bug
-        reports\".\nI\'ll give you a reply.
-    </string>
+    <string name="settings_help_etc_abouthelp_context">Help seems very loose, right?\nI have not intentionally inserted the picture.\nTo reduce the capacity of the application and to make it as light as possible.\nHowever, you can easily find it through writing.\nIf you have any questions about helping me, please let me know by using \"Bug reports\".\nI\'ll give you a reply.</string>
     <string name="admob_id" translatable="false">ca-app-pub-1548111636350528/4836697095</string>
     <string name="settings_general_admob">Advertisement display</string>
     <string name="settings_general_admobsummary">Enable or disable the Advertisement.</string>
     <string name="settings_general_admob_dialog_context">Please restart this application.</string>
     <string name="settings_help_etc_ad">Advertisement</string>
-    <string name="settings_help_etc_ad_context">\" Google AdMob \" ads that run on banner formats within the
-        app.\nSometimes, I would like to press an ad once again..
-    </string>
+    <string name="settings_help_etc_ad_context">\" Google AdMob \" ads that run on banner formats within the app.\nSometimes, I would like to press an ad once again..</string>
     <string name="app_id" translatable="false">ca-app-pub-1548111636350528~6453031094</string>
     <string name="settings_help_etc_backup">Backup</string>
-    <string name="settings_help_etc_backup_context">All memos are saved in a text file (. txt).\nThe storage path for
-        the note is stored in the \" OpenPad \" folder.\nTherefore, you can backup the \" OpenPad \" folder to another
-        store.
-    </string>
+    <string name="settings_help_etc_backup_context">All memos are saved in a text file (. txt).\nThe storage path for the note is stored in the \" OpenPad \" folder.\nTherefore, you can backup the \" OpenPad \" folder to another store.</string>
     <string name="menu_main_add_text_title">Text</string>
     <string name="menu_main_add_paint_title">Paint</string>
     <string name="paint_txtBrushSize">Size : %d</string>
@@ -194,4 +141,5 @@
     <string name="paint_txtBrushGreen" translatable="false">Green : %d</string>
     <string name="paint_txtBrushBlue" translatable="false">Blue : %d</string>
     <string name="file_imagememo">Pictorial Memo</string>
+    <string name="main_dialog_update_title">Update List</string>
 </resources>

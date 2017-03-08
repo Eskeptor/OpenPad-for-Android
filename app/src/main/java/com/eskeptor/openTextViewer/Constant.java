@@ -1,5 +1,6 @@
 package com.eskeptor.openTextViewer;
 
+import android.os.Build;
 import android.os.Environment;
 
 import java.io.File;
@@ -16,6 +17,8 @@ class Constant
     public static final String APP_DEV_MAILADDRESS = "skyvvv624@gmail.com";
     public static final String APP_FIRST_SETUP_PREFERENCE = "isFirst_Pref";
     public static final String APP_ADMOB_VISIBLE = "adMob_Pref";
+    public static final String APP_VERSION_CHECK = "version_Pref";
+    public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;
 
     public static final boolean APP_FIRST_EXECUTE = false;
     public static final boolean APP_TWICE_EXECUTE = true;

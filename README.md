@@ -7,11 +7,11 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.7)
+## What's New? (Last updated 2017.3.8)
 ```
- 1) Change main layout(GridView → RecycleView)
- 2) Change refresh(main's list)
- 3) Bug fix(The pictorial notes were not counting in the folder activity)
+ 1) Pictorial memo(add undo function)
+ 2) Add update list
+ 3) Bug fix(Add Folder Adding Folder On Some Devices)
 ```
 ## Next Updates
 ```

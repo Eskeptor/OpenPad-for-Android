@@ -27,10 +27,7 @@ import android.widget.*;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-
-
-import java.io.File;
-import java.io.FileFilter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -439,6 +436,48 @@ public class MainActivity extends AppCompatActivity
                     if(which == AlertDialog.BUTTON_POSITIVE)
                     {
                         editor.putBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_TWICE_EXECUTE);
+                        editor.commit();
+                    }
+                    dialog.dismiss();
+                }
+            };
+            dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
+            dialog.show();
+        }
+        if(!pref.getString(Constant.APP_VERSION_CHECK, "1.0.0").equals(Constant.APP_LASTED_VERSION))
+        {
+            InputStream inputStream = null;
+            ByteArrayOutputStream byteArrayOutputStream = null;
+            String update = "";
+
+            try
+            {
+                inputStream = getResources().openRawResource(R.raw.update);
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                int i;
+                while((i = inputStream.read()) != -1)
+                {
+                    byteArrayOutputStream.write(i);
+                }
+                update = byteArrayOutputStream.toString();
+            }
+            catch (Exception e) { e.printStackTrace(); }
+            finally {
+                try{byteArrayOutputStream.close();}
+                catch (Exception e){e.printStackTrace();}
+                try{inputStream.close();}
+                catch (Exception e){e.printStackTrace();}
+            }
+
+            dialog = new AlertDialog.Builder(this);
+            dialog.setTitle(R.string.main_dialog_update_title);
+            dialog.setMessage(update);
+            DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(which == AlertDialog.BUTTON_POSITIVE)
+                    {
+                        editor.putString(Constant.APP_VERSION_CHECK, Constant.APP_LASTED_VERSION);
                         editor.commit();
                     }
                     dialog.dismiss();

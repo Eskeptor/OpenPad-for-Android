@@ -297,19 +297,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
 
     @Override
     public void onBackPressed() {
-        Log.e("Debug", "activeScene : " + Integer.toString(activeScene));
         if(activeScene == Constant.SETTINGS_ACTIVESCREEN_MAIN)
         {
             super.onBackPressed();
             overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-            Log.e("Debug", "Change activeScene : " + Integer.toString(activeScene));
         }
         else
         {
             getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();
             activeScene = Constant.SETTINGS_ACTIVESCREEN_MAIN;
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-            Log.e("Debug", "Change activeScene : " + Integer.toString(activeScene));
         }
     }
 

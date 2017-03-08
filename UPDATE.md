@@ -1,3 +1,9 @@
+## Update 2017.3.7
+```
+ 1) Change main layout(GridView → RecycleView)
+ 2) Change refresh(main's list)
+ 3) Bug fix(The pictorial notes were not counting in the folder activity)
+```
 ## Update 2017.3.4
 ```
  1) Update paint memo(save and load)

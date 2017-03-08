@@ -47,14 +47,13 @@ public class FolderActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        View layout;
         if(item.getItemId() == R.id.menu_folderAdd)
         {
-            layout = LayoutInflater.from(context_this).inflate(R.layout.dialog_folder_create, null);
             dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.folder_dialog_title_create);
-            dialog.setView(layout);
+            View layout = LayoutInflater.from(context_this).inflate(R.layout.dialog_folder_create, null);
             editText = (EditText)layout.findViewById(R.id.dialog_folder_input);
+            dialog.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
@@ -82,8 +81,6 @@ public class FolderActivity extends AppCompatActivity
             dialog.setPositiveButton(R.string.folder_dialog_button_create, clickListener);
             dialog.show();
         }
-
-        layout = null;
         return super.onOptionsItemSelected(item);
     }
 

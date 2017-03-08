@@ -91,7 +91,7 @@
     <string name="settings_help_memo_savelengthlimited">최대 글자 길이</string>
     <string name="settings_help_memo_fontcolor">글자 색상</string>
     <string name="settings_help_main_list_context">기본적으로 메모장을 실행시키면 \"기본 폴더\"에 있는 메모들을 보여줍니다.\n폴더 버튼을 눌러서 다른폴더의 메모들을 불러올 수 있습니다.</string>
-    <string name="settings_help_main_memocreate_context">메인화면의 우측 하단의 \"추가 버튼(+)\"을 누르면 메모를 새롭게 추가할 수 있습니다.\n이렇게 추가된 메모는 어플리케이션의 기본폴더(OpenPad/Basic)에 저장하거나 외부 경로에 저장할 수 있습니다.</string>
+    <string name="settings_help_main_memocreate_context">메인화면의 우측 하단의 \"추가 버튼(+)\"을 누르면 메모를 새롭게 추가할 수 있습니다.\n메모는 텍스트메모와 그림메모(베타기능)를 추가할 수 있습니다.\n이렇게 추가된 메모는 어플리케이션의 기본폴더(OpenPad/Basic)에 저장하거나 외부 경로에 저장할 수 있습니다.</string>
     <string name="settings_help_main_delete_context">메인의 해당메모를 \"1초 이상\" 누르면 삭제할 수 있습니다.\n삭제할 시 실제 핸드폰메모리에서도 삭제가 됩니다.\n(다시 복구할 수 없습니다.)</string>
     <string name="settings_help_folder_list_context">어플리케이션의 메모용 폴더(OpenPad)에 있는 폴더를 보여줍니다.\n기본폴더(OpenPad/Basic)는 삭제할 수 없으며 혹여나 지워지더라도 다시 생성됩니다.\n폴더 목록은 \"기본 폴더\", \"외부 파일 탐색기\"와 새로 생성한 폴더들로 구성됩니다.</string>
     <string name="settings_help_folder_default_context">어플리케이션을 \"1회 이상\" 실행시키면 자동으로 \"OpenPad\"라는 폴더가 생기며, 이 폴더에 \"Basic\"이라는 기본폴더가 생깁니다.\n이 폴더는 \"메모장\"에서 제공하는 \"폴더 삭제\"기능으로 삭제되지 않으며 삭제하더라도 다시 생성됩니다.\n(삭제하게 되면 메모들은 복구할 수 없습니다.)</string>
@@ -135,4 +135,5 @@
     <string name="menu_main_add_paint_title">페인트</string>
     <string name="paint_txtBrushSize">크기 : %d</string>
     <string name="file_imagememo">그림 메모</string>
+    <string name="main_dialog_update_title">업데이트 내역</string>
 </resources>
