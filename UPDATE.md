@@ -1,3 +1,13 @@
+## Update 2017.3.9
+```
+ 1) Bug fix (saved pictorial memos not opened)
+```
+## Update 2017.3.8
+```
+ 1) Pictorial memo(add undo function)
+ 2) Add update list
+ 3) Bug fix(Add Folder Adding Folder On Some Devices)
+```
 ## Update 2017.3.7
 ```
  1) Change main layout(GridView → RecycleView)

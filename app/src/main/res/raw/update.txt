@@ -1,3 +1,1 @@
-1) Add image memos (Beta)
-2) Change the main screen layout
-3) Optimization
+1) Bug fix (saved pictorial memos not opened)

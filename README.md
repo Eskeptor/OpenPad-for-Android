@@ -7,17 +7,13 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.8)
+## What's New? (Last updated 2017.3.10)
 ```
- 1) Pictorial memo(add undo function)
- 2) Add update list
- 3) Bug fix(Add Folder Adding Folder On Some Devices)
+ 1) Fix bug(I parted the paint between the eraser and the brush)
 ```
-## Next Updates
+## Known Bugs
 ```
- 1) Optimize performance
- 2) Optimize all codes
- 3) Add widget function
+ 1) When you change from the brush to the eraser, you change it to the eraser.
 ```
 ## Development environment
 #### 1st environment

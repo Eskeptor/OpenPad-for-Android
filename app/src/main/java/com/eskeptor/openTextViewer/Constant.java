@@ -72,6 +72,8 @@ class Constant
     public static final float PAINT_DEFAULT_WIDTH_PIXEL = 10.0f;
     public static final float PAINT_MAXIMUM_WIDTH = 40.0f;
     public static final int PAINT_COLOR_MAX = 255;
+    public static final int PAINT_TYPE_BRUSH = 1;
+    public static final int PAINT_TYPE_ERASER = 2;
 
     public static final String BASIC_FILE_UNIT = "KB";
     public static final long MEGABYTE = 1048576L;
