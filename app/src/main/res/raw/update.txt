@@ -1,1 +1,3 @@
-1) Bug fix (saved pictorial memos not opened)
+1) Add features : individual erasing the eraser and the pen
+2) Add features : individual colors of the pen
+3) Add features : Undo

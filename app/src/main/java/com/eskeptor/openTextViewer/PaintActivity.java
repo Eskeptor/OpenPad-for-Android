@@ -131,7 +131,7 @@ public class PaintActivity extends AppCompatActivity {
                 if(seekBar == brushSeekSize)
                 {
                     curBrushValue = seekBar.getProgress();
-                    paintFunction.setLineWidth(curBrushValue, Constant.PAINT_TYPE_BRUSH);
+                    paintFunction.setLineWidth(curBrushValue);
                 }
                 if(seekBar == brushSeekRed)
                 {
@@ -151,7 +151,7 @@ public class PaintActivity extends AppCompatActivity {
                 if(seekBar == eraserSeekSize)
                 {
                     curEraserSize = seekBar.getProgress();
-                    paintFunction.setLineWidth(curEraserSize, Constant.PAINT_TYPE_ERASER);
+                    paintFunction.setLineWidth(curEraserSize);
                 }
             }
         };
@@ -202,8 +202,8 @@ public class PaintActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         if(item.getItemId() == R.id.menu_paint_pen)
         {
-            paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
             paintFunction.changePaint(Constant.PAINT_TYPE_BRUSH);
+            paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
             if(brushLayout.getVisibility() == View.VISIBLE)
             {
                 brushLayout.setVisibility(View.GONE);
@@ -389,20 +389,16 @@ public class PaintActivity extends AppCompatActivity {
 
         private Paint canvasPaint;
         private Paint brushPaint;
-        private Paint erasePaint;
         private Canvas canvas;
         private Path path;
         private Bitmap bitmap;
-        private ArrayList<Path> brushPaths;
-        private ArrayList<Path> eraserPaths;
-        private int brushPathsIdx;
-        private int eraserPathsIdx;
-        private boolean paintStatus;
+        private BrushObject brushObject;
 
         private int screenWidth;
         private int screenHeight;
 
         private int curColor;
+        private float curSize;
 
         private boolean fileopen;
         private String folderUrl;
@@ -456,21 +452,14 @@ public class PaintActivity extends AppCompatActivity {
                 canvas.drawARGB(Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX);
             }
 
-            if(brushPaths != null)
+            if(brushObject != null)
             {
-                brushPaths.clear();
-                brushPaths = null;
+                brushObject.init();
             }
-            brushPaths = new ArrayList<>();
-            brushPathsIdx = 0;
-
-            if(eraserPaths != null)
+            else
             {
-                eraserPaths.clear();
-                eraserPaths = null;
+                brushObject = new BrushObject();
             }
-            eraserPaths = new ArrayList<>();
-            eraserPathsIdx = 0;
 
             if(path != null)
             {
@@ -499,48 +488,14 @@ public class PaintActivity extends AppCompatActivity {
             brushPaint.setStrokeCap(Paint.Cap.ROUND);
             brushPaint.setAntiAlias(true);
 
-            if(erasePaint != null)
-            {
-                erasePaint.reset();
-                erasePaint = null;
-            }
-            erasePaint = new Paint();
-            erasePaint.setAlpha(Constant.PAINT_COLOR_MAX);
-            erasePaint.setDither(true);
-            erasePaint.setStrokeWidth(Constant.PAINT_ERASER_WIDTH_PIXEL);
-            erasePaint.setStrokeJoin(Paint.Join.ROUND);
-            erasePaint.setStyle(Paint.Style.STROKE);
-            erasePaint.setStrokeCap(Paint.Cap.ROUND);
-            erasePaint.setAntiAlias(true);
-            erasePaint.setColor(Color.WHITE);
-
-            paintStatus = true;
-
-            setLineWidth(Constant.PAINT_DEFAULT_WIDTH_PIXEL, Constant.PAINT_TYPE_BRUSH);
-            setLineWidth(Constant.PAINT_ERASER_WIDTH_PIXEL, Constant.PAINT_TYPE_ERASER);
+            setLineWidth(Constant.PAINT_DEFAULT_WIDTH_PIXEL);
         }
 
         @Override
         protected void onDraw(final Canvas canvas) {
             if(bitmap != null)
+            {
                 canvas.drawBitmap(bitmap, 0, 0, canvasPaint);
-            int size = brushPaths.size();
-            for(int i = 0; i < size; i++)
-            {
-                canvas.drawPath(brushPaths.get(i), brushPaint);
-            }
-            size = eraserPaths.size();
-            for(int i = 0; i < size; i++)
-            {
-                canvas.drawPath(eraserPaths.get(i), erasePaint);
-            }
-            if(paintStatus)
-            {
-                canvas.drawPath(path, brushPaint);
-            }
-            else
-            {
-                canvas.drawPath(path, erasePaint);
             }
         }
 
@@ -553,7 +508,7 @@ public class PaintActivity extends AppCompatActivity {
             path = null;
             canvas = null;
             brushPaint = null;
-            brushPaths.clear();
+            brushObject.init();
         }
 
         @Override
@@ -578,21 +533,16 @@ public class PaintActivity extends AppCompatActivity {
                     prevX = curX;
                     prevY = curY;
                 }
+                canvas.drawPath(path, brushPaint);
                 invalidate();
                 return true;
             }
             else if((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP)
             {
-                if(paintStatus)
-                {
-                    brushPaths.add(new Path(path));
-                    brushPathsIdx++;
-                }
-                else
-                {
-                    eraserPaths.add(new Path(path));
-                    eraserPathsIdx++;
-                }
+                brushObject.brushPaths.add(new Path(path));
+                brushObject.brushSizes.add(brushPaint.getStrokeWidth());
+                brushObject.brushColor.add(curColor);
+                brushObject.brushPathsIdx++;
                 undo.setVisible(true);
                 invalidate();
             }
@@ -608,16 +558,10 @@ public class PaintActivity extends AppCompatActivity {
             invalidate();
         }
 
-        public void setLineWidth(final float lineWidth, final int type)
+        public void setLineWidth(final float lineWidth)
         {
-            if(type == Constant.PAINT_TYPE_BRUSH)
-            {
-                brushPaint.setStrokeWidth(lineWidth);
-            }
-            else
-            {
-                erasePaint.setStrokeWidth(lineWidth);
-            }
+            curSize = lineWidth;
+            brushPaint.setStrokeWidth(curSize);
             invalidate();
         }
 
@@ -671,33 +615,16 @@ public class PaintActivity extends AppCompatActivity {
 
         public void undoCanvas()
         {
-            if(paintStatus)
+            if(brushObject.brushPathsIdx != 0)
             {
-                if(brushPathsIdx != 0)
-                {
-                    brushPaths.remove(--brushPathsIdx);
-                    path.reset();
-                }
-                else if(eraserPathsIdx != 0)
-                {
-                    eraserPaths.remove(--eraserPathsIdx);
-                    path.reset();
-                }
+                brushObject.brushPaths.remove(--brushObject.brushPathsIdx);
+                brushObject.brushSizes.remove(brushObject.brushPathsIdx);
+                brushObject.brushColor.remove(brushObject.brushPathsIdx);
+                path.reset();
+                drawLine();
             }
-            else
-            {
-                if(eraserPathsIdx != 0)
-                {
-                    eraserPaths.remove(--eraserPathsIdx);
-                    path.reset();
-                }
-                else if(brushPathsIdx != 0)
-                {
-                    brushPaths.remove(--brushPathsIdx);
-                    path.reset();
-                }
-            }
-            if(brushPathsIdx == 0 && eraserPathsIdx == 0)
+
+            if(brushObject.brushPathsIdx == 0)
             {
                 undo.setVisible(false);
             }
@@ -708,13 +635,57 @@ public class PaintActivity extends AppCompatActivity {
         {
             if(type == Constant.PAINT_TYPE_BRUSH)
             {
-                paintStatus = true;
+                brushPaint.setColor(curColor);
             }
             else
             {
-                paintStatus = false;
+                curColor = Color.WHITE;
+                brushPaint.setColor(curColor);
             }
             invalidate();
+        }
+
+        private void drawLine()
+        {
+            if(fileopen)
+            {
+                if(bitmap != null)
+                {
+                    bitmap.recycle();
+                    bitmap = null;
+                }
+                bitmap = BitmapFactory.decodeFile(filename).copy(Bitmap.Config.ARGB_8888, true);
+            }
+            else
+            {
+                if(bitmap != null)
+                {
+                    bitmap.recycle();
+                    bitmap = null;
+                }
+                bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
+            }
+
+            if(canvas != null)
+            {
+                canvas = null;
+            }
+            canvas = new Canvas(bitmap);
+            if(!fileopen)
+            {
+                canvas.drawARGB(Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX);
+            }
+
+            int idx = brushObject.brushPathsIdx;
+            for(int i = 0; i < idx; i++)
+            {
+                brushPaint.setStrokeWidth(brushObject.brushSizes.get(i));
+                brushPaint.setColor(brushObject.brushColor.get(i));
+                Log.e("Debug", "color : " + Integer.toString(brushObject.brushColor.get(i)));
+                canvas.drawPath(brushObject.brushPaths.get(i), brushPaint);
+            }
+            //brushPaint.setColor(curColor);
+            brushPaint.setStrokeWidth(curSize);
         }
     }
 }

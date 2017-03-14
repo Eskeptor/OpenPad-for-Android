@@ -7,13 +7,15 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.10)
+## What's New? (Last updated 2017.3.14)
 ```
- 1) Fix bug(I parted the paint between the eraser and the brush)
+ 1) Add(individual erasing the eraser and the pen)
+ 2) Add(individual colors of the pen)
+ 3) Add(Undo)
 ```
 ## Known Bugs
 ```
- 1) When you change from the brush to the eraser, you change it to the eraser.
+ 1) Tell me
 ```
 ## Development environment
 #### 1st environment

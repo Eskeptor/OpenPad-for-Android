@@ -1,3 +1,7 @@
+## Update 2017.3.10
+```
+ 1) Fix bug(I parted the paint between the eraser and the brush)
+```
 ## Update 2017.3.9
 ```
  1) Bug fix (saved pictorial memos not opened)
