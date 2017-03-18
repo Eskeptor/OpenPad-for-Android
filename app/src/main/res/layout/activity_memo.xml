@@ -10,22 +10,59 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         >
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/memo_scroll">
 
             <EditText
                 android:hint="@string/memo_etxtHint"
                 android:id="@+id/memo_etxtMain"
                 android:background="@drawable/edittext"
                 android:textSize="18sp"
-                style="@style/AppTheme.Activity.Memo.EditText">
+                style="@style/AppTheme.Activity.Memo.EditText"
+                android:padding="5dp">
             </EditText>
         </ScrollView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="bottom"
+            android:id="@+id/memo_layoutButton">
+
+            <Button
+                android:text="@string/memo_btnPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/memo_btnPrev"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button"
+                android:onClick="onClick"/>
+
+            <Button
+                android:text="@string/memo_btnTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/memo_btnTop"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button"
+                android:onClick="onClick"/>
+
+            <Button
+                android:text="@string/memo_btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/memo_btnNext"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button"
+                android:onClick="onClick"/>
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -9,9 +9,8 @@
 ```
 ## What's New? (Last updated 2017.3.18)
 ```
- 1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
- 2) Bug fix(Opening a "Folder Create" on Android 4.4 Only causes a forced end to end closure)
- 3) Working(More than 500 KB is being worked to secure files.)
+ 1) Improve load function(More than 500 KB is being worked to secure files.)
+    (But korean does not support fully.)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

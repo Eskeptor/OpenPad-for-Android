@@ -142,4 +142,7 @@
     <string name="paint_txtBrushBlue" translatable="false">Blue : %d</string>
     <string name="file_imagememo">Pictorial Memo</string>
     <string name="main_dialog_update_title">Update List</string>
+    <string name="memo_btnPrev" translatable="false">&lt;</string>
+    <string name="memo_btnNext" translatable="false">&gt;</string>
+    <string name="memo_btnTop">Top</string>
 </resources>

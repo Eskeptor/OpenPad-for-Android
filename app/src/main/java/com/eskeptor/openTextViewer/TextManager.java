@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
@@ -25,6 +26,8 @@ public class TextManager
     private String fileopen_name;
     private String MD5;
     private String format;
+    private long strBlockLength;
+    private int curBlockIndex;
 
     public TextManager()
     {
@@ -38,6 +41,8 @@ public class TextManager
         saved = false;
         MD5 = "";
         format = "";
+        strBlockLength = 0;
+        curBlockIndex = -1;
     }
 
     public String getFileopen_name()
@@ -61,7 +66,8 @@ public class TextManager
         {
             return false;
         }
-        FileOutputStream fos = null;
+        RandomAccessFile randomAccessFile = null;
+//        FileOutputStream fos = null;
         FileChannel channel = null;
         ByteBuffer buffer = null;
 
@@ -69,9 +75,12 @@ public class TextManager
         {
             try
             {
-                fos = new FileOutputStream(new File(fileopen_name));
-                channel = fos.getChannel();
+                randomAccessFile = new RandomAccessFile(new File(fileopen_name), "rw");
+//                fos = new FileOutputStream(new File(fileopen_name));
+//                channel = fos.getChannel();
+                channel = randomAccessFile.getChannel();
                 buffer = ByteBuffer.allocateDirect(strData.getBytes().length);
+                randomAccessFile.seek(curBlockIndex * Constant.TEXTMANAGER_BUFFER);
                 buffer.put(strData.getBytes());
                 buffer.flip();
                 channel.write(buffer);
@@ -82,7 +91,7 @@ public class TextManager
                 catch (Exception e){e.printStackTrace();}
                 try{channel.close();}
                 catch (Exception e){e.printStackTrace();}
-                try{fos.close();}
+                try{randomAccessFile.close();}
                 catch (Exception e){e.printStackTrace();}
             }
         }
@@ -90,8 +99,10 @@ public class TextManager
         {
             try
             {
-                fos = new FileOutputStream(new File(filename));
-                channel = fos.getChannel();
+//                fos = new FileOutputStream(new File(filename));
+//                channel = fos.getChannel();
+                randomAccessFile = new RandomAccessFile(new File(filename), "rw");
+                channel = randomAccessFile.getChannel();
                 buffer = ByteBuffer.allocateDirect(strData.getBytes().length);
                 buffer.put(strData.getBytes());
                 buffer.flip();
@@ -103,7 +114,7 @@ public class TextManager
                 catch (Exception e){e.printStackTrace();}
                 try{channel.close();}
                 catch (Exception e){e.printStackTrace();}
-                try{fos.close();}
+                try{randomAccessFile.close();}
                 catch (Exception e){e.printStackTrace();}
             }
         }
@@ -111,36 +122,48 @@ public class TextManager
         return true;
     }
 
-    public String openText(final String filename)
+    public String openText(final String filename, final int sens)
     {
         if(filename != null)
         {
-            FileInputStream fis = null;
+            RandomAccessFile randomAccessFile = null;
+//            FileInputStream fis = null;
             FileChannel channel = null;
             ByteBuffer byteBuffer = null;
 
             try
             {
-                fis = new FileInputStream(new File(filename));
+                randomAccessFile = new RandomAccessFile(new File(filename), "rw");
+//                fis = new FileInputStream(new File(filename));
+//                channel = fis.getChannel();
+                channel = randomAccessFile.getChannel();
+//                byteBuffer = ByteBuffer.allocateDirect((int)channel.size());
+                byteBuffer = ByteBuffer.allocateDirect(Constant.TEXTMANAGER_BUFFER);
+                strBlockLength = randomAccessFile.length() / Constant.TEXTMANAGER_BUFFER + (randomAccessFile.length() % Constant.TEXTMANAGER_BUFFER == 0 ? 0 : 1);
 
-                channel = fis.getChannel();
-                byteBuffer = ByteBuffer.allocateDirect((int)channel.size());
-                if(fis.available() != 0)
+                if(randomAccessFile.length() != 0)
                 {
-                    channel.read(byteBuffer);
-                    byteBuffer.flip();
-                    if(formatDetector(byteBuffer) != null)
+                    if(curBlockIndex < strBlockLength)
                     {
-                        format = Constant.ENCODE_TYPE_UTF8;
+                        curBlockIndex += sens;
+                        Log.e("Debug", "curBlockIndex:" + Integer.toString(curBlockIndex));
+                        randomAccessFile.seek(curBlockIndex * Constant.TEXTMANAGER_BUFFER);
+                        channel.read(byteBuffer);
+                        byteBuffer.flip();
+                        if(formatDetector(byteBuffer) != null)
+                        {
+                            format = Constant.ENCODE_TYPE_UTF8;
+                        }
+                        else
+                        {
+                            format = Constant.ENCODE_TYPE_EUCKR;
+                        }
+                        Log.e("Debug", "format:" + format);
+                        fileopen = true;
+                        fileopen_name = filename;
+                        MD5 = createMD5(byteBuffer.array());
+                        return new String(byteBuffer.array(), format);
                     }
-                    else
-                    {
-                        format = Constant.ENCODE_TYPE_EUCKR;
-                    }
-                    fileopen = true;
-                    fileopen_name = filename;
-                    MD5 = createMD5(byteBuffer.array());
-                    return new String(byteBuffer.array(), format);
                 }
                 else
                 {
@@ -155,8 +178,10 @@ public class TextManager
                 catch (Exception e){e.printStackTrace();}
                 try{channel.close();}
                 catch (Exception e){e.printStackTrace();}
-                try{fis.close();}
+                try{randomAccessFile.close();}
                 catch (Exception e){e.printStackTrace();}
+//                try{fis.close();}
+//                catch (Exception e){e.printStackTrace();}
             }
 
         }
@@ -216,5 +241,15 @@ public class TextManager
             return null;
         }
         return charBuffer;
+    }
+
+    public int getCurBlockIndex()
+    {
+        return curBlockIndex;
+    }
+
+    public long getStrBlockLength()
+    {
+        return strBlockLength;
     }
 }

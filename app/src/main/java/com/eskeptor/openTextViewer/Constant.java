@@ -36,6 +36,8 @@ class Constant
     public static final int MEMO_TYPE_OPEN_EXTERNAL = 3;
     public static final int MEMO_SAVE_SELECT_TYPE_EXTERNAL = 0;
     public static final int MEMO_SAVE_SELECT_TYPE_INTERNAL = 1;
+    public static final int MEMO_BLOCK_NEXT = 1;
+    public static final int MEMO_BLOCK_PREV = -1;
 
     public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
     public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 3;
@@ -83,6 +85,8 @@ class Constant
     public static final String ENCODE_TYPE_UTF8 = "UTF-8";
     public static final String ENCODE_TYPE_EUCKR = "EUC-KR";
 
+    public static final int TEXTMANAGER_BUFFER = 8192;
+
     /* 여기서 부터는 Intent에 쓰이는 것들 */
     public static final String INTENT_EXTRA_MEMO_OPEN_FILEURL = "MEMO_OPEN_FILEURL";
     public static final String INTENT_EXTRA_MEMO_OPEN_FILENAME = "MEMO_OPEN_FILENAME";
@@ -90,7 +94,6 @@ class Constant
     public static final String INTENT_EXTRA_MEMO_OPEN_FOLDERURL = "MEMO_OPEN_FOLDERURL";
     public static final String INTENT_EXTRA_BROWSER_TYPE = "BROWSER_TYPE";
     public static final String INTENT_EXTRA_CURRENT_FOLDERURL = "CURRENT_FOLDERURL";
-    public static final String INTENT_EXTRA_FILE_SIZE = "FILE_SIZE";
     public static final String INTENT_EXTRA_MEMO_SAVE_FOLDERURL = "MEMO_SAVE_FOLDERURL";
     public static final String INTENT_EXTRA_MEMO_SAVE_FILEURL = "MEMO_SAVE_FILEURL";
     public static final String INTENT_EXTRA_HELP_INDEX = "HELP_INDEX";

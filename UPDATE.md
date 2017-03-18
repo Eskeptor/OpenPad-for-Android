@@ -1,3 +1,8 @@
+## Update 2017.3.18
+```
+ 1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
+ 2) Bug fix(Opening a "Folder Create" on Android 4.4 Only causes a forced end to end closure)
+```
 ## Update 2017.3.14
 ```
  1) Add(individual erasing the eraser and the pen)

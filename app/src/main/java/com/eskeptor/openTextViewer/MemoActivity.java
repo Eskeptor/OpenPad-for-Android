@@ -13,9 +13,9 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +32,17 @@ public class MemoActivity extends AppCompatActivity {
 
     private int memoType;
     private int memoIndex;
-    private long fileSize;
 
     private EditText editText;
     private TextManager txtManager;
     private LogManager logManager;
-    private Runnable runnable;
+    private Runnable nextRunnable;
+    private Runnable prevRunnable;
+    private LinearLayout btnLayout;
+    private ScrollView scrollView;
+    private Button btnPrev;
+    private Button btnNext;
+    private Button btnTop;
 
     private File lastLog;
     private AlertDialog.Builder alert;
@@ -56,12 +61,9 @@ public class MemoActivity extends AppCompatActivity {
     {
         if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
         {
-            if(fileSize <= Constant.SAFE_LOAD_CAPACITY * Constant.KILOBYTE)
-            {
-                getMenuInflater().inflate(R.menu.menu_memo, menu);
-                editMenu = menu.findItem(R.id.menu_memo_modified);
-                editMenu.setIcon(drawableModified);
-            }
+            getMenuInflater().inflate(R.menu.menu_memo, menu);
+            editMenu = menu.findItem(R.id.menu_memo_modified);
+            editMenu.setIcon(drawableModified);
         }
         return true;
     }
@@ -141,7 +143,7 @@ public class MemoActivity extends AppCompatActivity {
         txtManager = new TextManager();
         logManager = new LogManager();
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
-        fileSize = getIntent().getLongExtra(Constant.INTENT_EXTRA_FILE_SIZE, 0L);
+        btnLayout = (LinearLayout)findViewById(R.id.memo_layoutButton);
 
         if(memoType == Constant.MEMO_TYPE_NEW)
         {
@@ -167,6 +169,7 @@ public class MemoActivity extends AppCompatActivity {
                 }
             }
             txtManager.initManager();
+            btnLayout.setVisibility(View.GONE);
             setTitle(R.string.memo_title_newFile);
             editText.setText("");
             editText.setFocusable(true);
@@ -177,16 +180,39 @@ public class MemoActivity extends AppCompatActivity {
             openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
             setTitle(openFileName);
 
-            runnable = new Runnable() {
+
+            nextRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    String txtData = txtManager.openText(openFileURL);
+                    String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_NEXT);
                     editText.setText(txtData);
                     editText.setFocusable(false);
+
+                }
+            };
+            prevRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_PREV);
+                    editText.setText(txtData);
+                    editText.setFocusable(false);
+
                 }
             };
 
-            runOnUiThread(runnable);
+            runOnUiThread(nextRunnable);
+
+            btnLayout.setVisibility(View.VISIBLE);
+            btnPrev = (Button)findViewById(R.id.memo_btnPrev);
+            btnTop = (Button)findViewById(R.id.memo_btnTop);
+            btnNext = (Button)findViewById(R.id.memo_btnNext);
+            scrollView = (ScrollView)findViewById(R.id.memo_scroll);
+            btnPrev.setEnabled(false);
+            if(txtManager.getStrBlockLength() <= 1)
+            {
+                btnNext.setEnabled(false);
+            }
+
 
             if(Build.VERSION.SDK_INT >= 21)
             {
@@ -210,7 +236,7 @@ public class MemoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if((fileSize <= Constant.SAFE_LOAD_CAPACITY) && isModified())
+        if(isModified())
         {
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
@@ -308,5 +334,43 @@ public class MemoActivity extends AppCompatActivity {
             }
         }
         catch(Exception e){e.printStackTrace();}
+    }
+
+    public void onClick(final View v)
+    {
+        if(v.getId() == R.id.memo_btnPrev)
+        {
+            runOnUiThread(prevRunnable);
+            buttonEnabler();
+        }
+        else if(v.getId() == R.id.memo_btnTop)
+        {
+            scrollView.smoothScrollTo(0, 0);
+        }
+        else if(v.getId() == R.id.memo_btnNext)
+        {
+            runOnUiThread(nextRunnable);
+            buttonEnabler();
+        }
+    }
+
+    private void buttonEnabler()
+    {
+        if(txtManager.getCurBlockIndex() - 1 <= -1)
+        {
+            btnPrev.setEnabled(false);
+        }
+        else
+        {
+            btnPrev.setEnabled(true);
+        }
+        if(txtManager.getCurBlockIndex() + 1 >= txtManager.getStrBlockLength())
+        {
+            btnNext.setEnabled(false);
+        }
+        else
+        {
+            btnNext.setEnabled(true);
+        }
     }
 }
