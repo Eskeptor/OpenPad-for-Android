@@ -10,7 +10,8 @@
 ## What's New? (Last updated 2017.3.18)
 ```
  1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
- 2) Working(More than 500 KB is being worked to secure files.)
+ 2) Bug fix(Opening a "Folder Create" on Android 4.4 Only causes a forced end to end closure)
+ 3) Working(More than 500 KB is being worked to secure files.)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

@@ -1,1 +1,2 @@
 1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
+2) Bug fix(Opening a "Folder Create" on Android 4.4 Only causes a forced end to end closure)
