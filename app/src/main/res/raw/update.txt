@@ -1,3 +1,1 @@
-1) Add features : individual erasing the eraser and the pen
-2) Add features : individual colors of the pen
-3) Add features : Undo
+1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)

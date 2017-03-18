@@ -1,3 +1,9 @@
+## Update 2017.3.14
+```
+ 1) Add(individual erasing the eraser and the pen)
+ 2) Add(individual colors of the pen)
+ 3) Add(Undo)
+```
 ## Update 2017.3.10
 ```
  1) Fix bug(I parted the paint between the eraser and the brush)

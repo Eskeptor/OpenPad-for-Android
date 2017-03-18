@@ -10,16 +10,29 @@
         android:layout_width="wrap_content"
         android:layout_height="40sp"
         app:srcCompat="@drawable/ic_folder_open_black"
-        android:id="@+id/item_folder_image" />
+        android:id="@+id/item_folder_image"
+        tools:ignore="ContentDescription"/>
 
     <TextView
-            android:text="TextView"
+        android:textColor="@color/SemiBlack"
+        android:textSize="20sp"
+        android:layout_width="0dp"
+        android:layout_height="40sp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+            android:text=""
             android:id="@+id/item_folder_name"
-            style="@style/AppTheme.Item.Folder.Name"/>
+            />
 
     <TextView
-            android:text="TextView"
+        android:textColor="@color/SemiBlack"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:layout_weight="0"
+        android:gravity="center_vertical"
+            android:text=""
             android:id="@+id/item_folder_count"
-            style="@style/AppTheme.Item.Folder.Count"/>
+            />
 
 </LinearLayout>

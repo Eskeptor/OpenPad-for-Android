@@ -7,12 +7,13 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.14)
+## What's New? (Last updated 2017.3.18)
 ```
- 1) Add(individual erasing the eraser and the pen)
- 2) Add(individual colors of the pen)
- 3) Add(Undo)
+ 1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
+ 2) Working(More than 500 KB is being worked to secure files.)
 ```
+## Lasted Update List
+[View Lists](./UPDATE.md)
 ## Known Bugs
 ```
  1) Tell me

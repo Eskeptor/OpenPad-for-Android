@@ -4,9 +4,10 @@
               android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/dialog_folder_input"
-        android:hint="@string/folder_dialog_hint_add"
-        android:background="@drawable/edittext"
-        style="@style/AppTheme.Dialog.FolderCreate"/>
-</LinearLayout>
+<EditText
+    android:id="@+id/dialog_folder_input"
+    android:hint="@string/folder_dialog_hint_add"
+    android:background="@drawable/edittext"
+    style="@style/AppTheme.Dialog.FolderCreate"
+    android:textAppearance="@style/TextAppearance.AppCompat"/>
+    </LinearLayout>
