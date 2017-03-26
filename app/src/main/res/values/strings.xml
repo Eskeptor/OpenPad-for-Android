@@ -54,18 +54,18 @@
     <string name="file_dialog_toast_delete">Deleted file.</string>
     <string name="settings_title">Settings</string>
     <string name="settings_separator_information">Program Information</string>
-    <string name="settings_information_info">Info</string>
+    <string name="settings_information_info_title">Info</string>
     <string name="settings_separator_general">General</string>
-    <string name="settings_general_font">Font</string>
-    <string name="settings_general_fontsummary">General settings for fonts.</string>
-    <string name="settings_information_infosummary">Program information and version.</string>
+    <string name="settings_general_font_title">Font</string>
+    <string name="settings_general_font_summary">General settings for fonts.</string>
+    <string name="settings_information_info_summary">Program information and version.</string>
     <string name="settings_dialog_info_title">About Openpad</string>
     <string name="settings_dialog_info_copyright">Copyright © 2017 Jeon Ye Chan</string>
     <string name="settings_dialog_info_license">This program is affected by the \"GNU GPL v3 License \" license.</string>
     <string name="settings_dialog_info_icon">Icons : https://material.io/icons/</string>
     <string name="settings_dialog_info_ok">OK</string>
-    <string name="settings_information_version">Version</string>
-    <string name="settings_information_versionsummary">Program Version</string>
+    <string name="settings_information_version_title">Version</string>
+    <string name="settings_information_version_summary">Program Version</string>
     <string name="filebrowser_dialog_alert_title">Warning</string>
     <string name="filebrowser_dialog_alert_context">This file goes over 1 MB.\nWould you like to open it?</string>
     <string name="settings_font_fontsize">Font Size</string>
@@ -73,10 +73,10 @@
     <string name="settings_font_fonttype">Font type(Custom Font)</string>
     <string name="testing_temporary">Future update scheduled.</string>
     <string name="settings_information_bug_title">Bug Report</string>
-    <string name="settings_information_bugsummary">Report the bug to the developer.</string>
+    <string name="settings_information_bug_summary">Report the bug to the developer.</string>
     <string name="folder_toast_remove_defaultfolder">The default folder can not be removed.</string>
-    <string name="settings_information_help">Help</string>
-    <string name="settings_information_helpsummary">How to use a program.</string>
+    <string name="settings_information_help_title">Help</string>
+    <string name="settings_information_help_summary">How to use a program.</string>
     <string name="settings_help_title_main">Main Screen(Activity)</string>
     <string name="settings_help_title_folder">Folder Screen(Activity)</string>
     <string name="settings_help_title_text">Memo Screen(Activity)</string>
@@ -145,4 +145,9 @@
     <string name="memo_btnPrev" translatable="false">&lt;</string>
     <string name="memo_btnNext" translatable="false">&gt;</string>
     <string name="memo_btnTop">Top</string>
+    <string name="settings_separator_expfunc">Experimental Function</string>
+    <string name="settings_expfunc_enhanceIO_title">Enhanced file open</string>
+    <string name="settings_expfunc_enhanceIO_summary">Securely open files over 500 KB</string>
+    <string name="settings_dialog_expfunc_title">Warning</string>
+    <string name="settings_dialog_expfunc_context">This function is a test version and can be unstable.</string>
 </resources>

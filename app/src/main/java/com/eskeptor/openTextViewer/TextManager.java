@@ -122,32 +122,59 @@ public class TextManager
         return true;
     }
 
-    public String openText(final String filename, final int sens)
+    public String openText(final String filename, final int sens, final boolean enhance)
     {
         if(filename != null)
         {
             RandomAccessFile randomAccessFile = null;
-//            FileInputStream fis = null;
+            FileInputStream fis = null;
             FileChannel channel = null;
             ByteBuffer byteBuffer = null;
 
             try
             {
-                randomAccessFile = new RandomAccessFile(new File(filename), "rw");
-//                fis = new FileInputStream(new File(filename));
-//                channel = fis.getChannel();
-                channel = randomAccessFile.getChannel();
-//                byteBuffer = ByteBuffer.allocateDirect((int)channel.size());
-                byteBuffer = ByteBuffer.allocateDirect(Constant.TEXTMANAGER_BUFFER);
-                strBlockLength = randomAccessFile.length() / Constant.TEXTMANAGER_BUFFER + (randomAccessFile.length() % Constant.TEXTMANAGER_BUFFER == 0 ? 0 : 1);
-
-                if(randomAccessFile.length() != 0)
+                if(enhance)
                 {
-                    if(curBlockIndex < strBlockLength)
+                    randomAccessFile = new RandomAccessFile(new File(filename), "r");
+                    channel = randomAccessFile.getChannel();
+                    byteBuffer = ByteBuffer.allocateDirect(Constant.TEXTMANAGER_BUFFER);
+                    strBlockLength = randomAccessFile.length() / Constant.TEXTMANAGER_BUFFER + (randomAccessFile.length() % Constant.TEXTMANAGER_BUFFER == 0 ? 0 : 1);
+                    if(randomAccessFile.length() != 0)
                     {
-                        curBlockIndex += sens;
-                        Log.e("Debug", "curBlockIndex:" + Integer.toString(curBlockIndex));
-                        randomAccessFile.seek(curBlockIndex * Constant.TEXTMANAGER_BUFFER);
+                        if(curBlockIndex < strBlockLength)
+                        {
+                            curBlockIndex += sens;
+                            randomAccessFile.seek(curBlockIndex * Constant.TEXTMANAGER_BUFFER);
+                            channel.read(byteBuffer);
+                            byteBuffer.flip();
+                            if(formatDetector(byteBuffer) != null)
+                            {
+                                format = Constant.ENCODE_TYPE_UTF8;
+                            }
+                            else
+                            {
+                                format = Constant.ENCODE_TYPE_EUCKR;
+                            }
+                            Log.e("Debug", "format:" + format);
+                            fileopen = true;
+                            fileopen_name = filename;
+                            MD5 = createMD5(byteBuffer.array(), enhance);
+                            return new String(byteBuffer.array(), format);
+                        }
+                    }
+                    else
+                    {
+                        fileopen = false;
+                        fileopen_name = "";
+                    }
+                }
+                else
+                {
+                    fis = new FileInputStream(new File(filename));
+                    channel = fis.getChannel();
+                    byteBuffer = ByteBuffer.allocateDirect((int)channel.size());
+                    if(fis.available() != 0)
+                    {
                         channel.read(byteBuffer);
                         byteBuffer.flip();
                         if(formatDetector(byteBuffer) != null)
@@ -161,34 +188,43 @@ public class TextManager
                         Log.e("Debug", "format:" + format);
                         fileopen = true;
                         fileopen_name = filename;
-                        MD5 = createMD5(byteBuffer.array());
+                        MD5 = createMD5(byteBuffer.array(), enhance);
                         return new String(byteBuffer.array(), format);
                     }
+                    else
+                    {
+                        fileopen = false;
+                        fileopen_name = "";
+                    }
                 }
-                else
-                {
-                    fileopen = false;
-                    fileopen_name = "";
-                }
-
             }
             catch (Exception e){e.printStackTrace();}
             finally {
-                try{byteBuffer.clear();}
-                catch (Exception e){e.printStackTrace();}
-                try{channel.close();}
-                catch (Exception e){e.printStackTrace();}
-                try{randomAccessFile.close();}
-                catch (Exception e){e.printStackTrace();}
-//                try{fis.close();}
-//                catch (Exception e){e.printStackTrace();}
+                if(enhance)
+                {
+                    try{byteBuffer.clear();}
+                    catch (Exception e){e.printStackTrace();}
+                    try{channel.close();}
+                    catch (Exception e){e.printStackTrace();}
+                    try{randomAccessFile.close();}
+                    catch (Exception e){e.printStackTrace();}
+                }
+                else
+                {
+                    try{byteBuffer.clear();}
+                    catch (Exception e){e.printStackTrace();}
+                    try{channel.close();}
+                    catch (Exception e){e.printStackTrace();}
+                    try{fis.close();}
+                    catch (Exception e){e.printStackTrace();}
+                }
             }
 
         }
         return "";
     }
 
-    public String createMD5(final byte[] message)
+    public String createMD5(final byte[] message, final boolean enhance)
     {
         MessageDigest messageDigest;
         StringBuilder sbuilder = new StringBuilder();
@@ -196,8 +232,13 @@ public class TextManager
         try
         {
             messageDigest = MessageDigest.getInstance("MD5");
-            charBuffer = Charset.forName(format).newDecoder().decode(ByteBuffer.wrap(message));
-            messageDigest.update(charBuffer.toString().getBytes());
+            if(!enhance)
+            {
+                charBuffer = Charset.forName(format).newDecoder().decode(ByteBuffer.wrap(message));
+                messageDigest.update(charBuffer.toString().getBytes());
+            }
+            else
+                messageDigest.update(message);
             byte[] hash = messageDigest.digest();
             for (int i = 0; i < hash.length; i++)
             {
@@ -205,7 +246,13 @@ public class TextManager
             }
         }
         catch (Exception e){e.printStackTrace();}
-        finally {charBuffer.clear();}
+        finally {
+            if(!enhance)
+            {
+                try{charBuffer.clear();}
+                catch (Exception e){e.printStackTrace();}
+            }
+        }
         return sbuilder.toString();
     }
 
@@ -252,4 +299,6 @@ public class TextManager
     {
         return strBlockLength;
     }
+
+
 }

@@ -103,34 +103,19 @@ public class FileBrowserActivity extends AppCompatActivity
                 }
                 else if(file.isFile())
                 {
-                    if(file.length() >= Constant.MEGABYTE)
+                    if(file.length() >= Constant.TEXTMANAGER_BUFFER)
                     {
-                        dialog = new AlertDialog.Builder(FileBrowserActivity.this);
-                        dialog.setTitle(R.string.filebrowser_dialog_alert_title);
-                        dialog.setMessage(R.string.filebrowser_dialog_alert_context);
-                        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                if(which == AlertDialog.BUTTON_POSITIVE)
-                                {
-                                    Intent intent = new Intent();
+                        Intent intent = new Intent();
 
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                    intent.setClass(context_this, MemoActivity.class);
-                                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(position).url);
-                                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
-                                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
-                                    startActivity(intent);
-                                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                                    finish();
-                                }
-                                dialog.dismiss();
-                            }
-                        };
-                        dialog.setPositiveButton(R.string.memo_btnOpen, clickListener);
-                        dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
-                        dialog.show();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.setClass(context_this, MemoActivity.class);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(position).url);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, true);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        finish();
                     }
                     else
                     {

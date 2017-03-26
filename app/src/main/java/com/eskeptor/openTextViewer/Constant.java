@@ -19,6 +19,7 @@ class Constant
     public static final String APP_ADMOB_VISIBLE = "adMob_Pref";
     public static final String APP_VERSION_CHECK = "version_Pref";
     public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;
+    public static final String APP_EXPERIMENT_ENHANCEIO = "experiment_enhanceIO_Pref";
 
     public static final boolean APP_FIRST_EXECUTE = false;
     public static final boolean APP_TWICE_EXECUTE = true;
@@ -85,7 +86,7 @@ class Constant
     public static final String ENCODE_TYPE_UTF8 = "UTF-8";
     public static final String ENCODE_TYPE_EUCKR = "EUC-KR";
 
-    public static final int TEXTMANAGER_BUFFER = 8192;
+    public static final int TEXTMANAGER_BUFFER = 3000;
 
     /* 여기서 부터는 Intent에 쓰이는 것들 */
     public static final String INTENT_EXTRA_MEMO_OPEN_FILEURL = "MEMO_OPEN_FILEURL";
@@ -97,4 +98,5 @@ class Constant
     public static final String INTENT_EXTRA_MEMO_SAVE_FOLDERURL = "MEMO_SAVE_FOLDERURL";
     public static final String INTENT_EXTRA_MEMO_SAVE_FILEURL = "MEMO_SAVE_FILEURL";
     public static final String INTENT_EXTRA_HELP_INDEX = "HELP_INDEX";
+    public static final String INTENT_EXTRA_MEMO_DIVIDE = "MEMO_OPEN_DIVIDE";
 }

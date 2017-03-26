@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/settings_general_font">
+    <PreferenceCategory android:title="@string/settings_general_font_title">
 
         <Preference
             android:title="@string/settings_font_fontsize"

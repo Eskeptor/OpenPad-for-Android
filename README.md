@@ -7,10 +7,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.3.18)
+## What's New? (Last updated 2017.3.26)
 ```
- 1) Improve load function(More than 500 KB is being worked to secure files.)
-    (But korean does not support fully.)
+ 1) Adding an experiment function (Enable enabled by setup)
+ 2) Memory optimization
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

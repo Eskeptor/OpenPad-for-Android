@@ -175,6 +175,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         private Preference bugreport;
         private Preference help;
         private CheckBoxPreference admob;
+        private CheckBoxPreference enhanceIO;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -187,6 +188,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             bugreport = findPreference("settings_key_bugreport");
             help = findPreference("settings_key_help");
             admob = (CheckBoxPreference)findPreference("settings_key_admob");
+            enhanceIO = (CheckBoxPreference)findPreference("settings_key_enhanceIO");
             clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -239,6 +241,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         dialog.setPositiveButton(R.string.settings_dialog_info_ok, null);
                         dialog.show();
                     }
+                    else if(preference.getKey().equals("settings_key_enhanceIO"))
+                    {
+                        if(enhanceIO.isChecked())
+                        {
+                            dialog = new AlertDialog.Builder(getActivity());
+                            dialog.setTitle(R.string.settings_dialog_expfunc_title);
+                            dialog.setMessage(R.string.settings_dialog_expfunc_context);
+                            dialog.setPositiveButton(R.string.settings_dialog_info_ok, null);
+                            dialog.show();
+                        }
+                    }
                     return false;
                 }
             };
@@ -251,12 +264,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
 
             admob.setOnPreferenceClickListener(checkClickListener);
             admob.setChecked(pref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
+            enhanceIO.setOnPreferenceClickListener(checkClickListener);
+            enhanceIO.setChecked(pref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false));
         }
 
         @Override
         public void onPause() {
             super.onPause();
             editor.putBoolean(Constant.APP_ADMOB_VISIBLE, admob.isChecked());
+            editor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, enhanceIO.isChecked());
             editor.commit();
         }
     }

@@ -180,37 +180,61 @@ public class MemoActivity extends AppCompatActivity {
             openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
             setTitle(openFileName);
 
-
-            nextRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_NEXT);
-                    editText.setText(txtData);
-                    editText.setFocusable(false);
-
-                }
-            };
-            prevRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_PREV);
-                    editText.setText(txtData);
-                    editText.setFocusable(false);
-
-                }
-            };
-
-            runOnUiThread(nextRunnable);
-
-            btnLayout.setVisibility(View.VISIBLE);
-            btnPrev = (Button)findViewById(R.id.memo_btnPrev);
-            btnTop = (Button)findViewById(R.id.memo_btnTop);
-            btnNext = (Button)findViewById(R.id.memo_btnNext);
-            scrollView = (ScrollView)findViewById(R.id.memo_scroll);
-            btnPrev.setEnabled(false);
-            if(txtManager.getStrBlockLength() <= 1)
+            final boolean enhance = pref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false);
+            if(enhance)
             {
-                btnNext.setEnabled(false);
+                nextRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_NEXT, enhance);
+                        editText.setText(txtData);
+                        editText.setFocusable(false);
+
+                    }
+                };
+                prevRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_PREV, enhance);
+                        editText.setText(txtData);
+                        editText.setFocusable(false);
+                    }
+                };
+
+                runOnUiThread(nextRunnable);
+
+                boolean divide = getIntent().getBooleanExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, false);
+
+                if(divide)
+                {
+                    btnLayout.setVisibility(View.VISIBLE);
+                    btnPrev = (Button)findViewById(R.id.memo_btnPrev);
+                    btnTop = (Button)findViewById(R.id.memo_btnTop);
+                    btnNext = (Button)findViewById(R.id.memo_btnNext);
+                    scrollView = (ScrollView)findViewById(R.id.memo_scroll);
+                    btnPrev.setEnabled(false);
+                    if(txtManager.getStrBlockLength() <= 1)
+                    {
+                        btnNext.setEnabled(false);
+                    }
+                }
+                else
+                {
+                    btnLayout.setVisibility(View.GONE);
+                }
+            }
+            else
+            {
+                nextRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        String txtData = txtManager.openText(openFileURL, 0, enhance);
+                        editText.setText(txtData);
+                        editText.setFocusable(false);
+                    }
+                };
+                runOnUiThread(nextRunnable);
+                btnLayout.setVisibility(View.GONE);
             }
 
 
@@ -341,6 +365,7 @@ public class MemoActivity extends AppCompatActivity {
         if(v.getId() == R.id.memo_btnPrev)
         {
             runOnUiThread(prevRunnable);
+            scrollView.scrollTo(0,0);
             buttonEnabler();
         }
         else if(v.getId() == R.id.memo_btnTop)
@@ -350,6 +375,7 @@ public class MemoActivity extends AppCompatActivity {
         else if(v.getId() == R.id.memo_btnNext)
         {
             runOnUiThread(nextRunnable);
+            scrollView.scrollTo(0,0);
             buttonEnabler();
         }
     }

@@ -4,8 +4,8 @@
     <PreferenceCategory android:title="@string/settings_separator_general">
 
         <Preference
-            android:title="@string/settings_general_font"
-            android:summary="@string/settings_general_fontsummary"
+            android:title="@string/settings_general_font_title"
+            android:summary="@string/settings_general_font_summary"
             android:key="settings_key_font"/>
         <CheckBoxPreference
                 android:defaultValue="true"
@@ -17,21 +17,29 @@
     <PreferenceCategory android:title="@string/settings_separator_information">
 
         <Preference
-            android:title="@string/settings_information_info"
-            android:summary="@string/settings_information_infosummary"
+            android:title="@string/settings_information_info_title"
+            android:summary="@string/settings_information_info_summary"
             android:key="settings_key_info"/>
         <Preference
-            android:title="@string/settings_information_version"
-            android:summary="@string/settings_information_versionsummary"
+            android:title="@string/settings_information_version_title"
+            android:summary="@string/settings_information_version_summary"
             android:key="settings_key_version" />
         <Preference
-            android:title="@string/settings_information_help"
-            android:summary="@string/settings_information_helpsummary"
+            android:title="@string/settings_information_help_title"
+            android:summary="@string/settings_information_help_summary"
             android:key="settings_key_help" />
         <Preference
             android:title="@string/settings_information_bug_title"
-            android:summary="@string/settings_information_bugsummary"
+            android:summary="@string/settings_information_bug_summary"
             android:key="settings_key_bugreport" />
 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_separator_expfunc">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:title="@string/settings_expfunc_enhanceIO_title"
+            android:summary="@string/settings_expfunc_enhanceIO_summary"
+            android:key="settings_key_enhanceIO"/>
     </PreferenceCategory>
 </PreferenceScreen>
