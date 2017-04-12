@@ -1,3 +1,9 @@
+## Update 2017.4.12 - Build 1.2.4
+```
+ 1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
+ 2) Widget (But, not yet linked to notes)
+    (Not included in "Build 1.2.4")
+```
 ## Update 2017.3.26 - Build 1.2.3
 ```
  1) Adding an experiment function (Enable enabled by setup)

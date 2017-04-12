@@ -10,7 +10,7 @@ import java.io.File;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-class Constant
+public class Constant
 {
     public static final String APP_INTERNAL_URL = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "OpenPad";
     public static final String APP_SETTINGS_PREFERENCE = "Setting_Pref";
@@ -20,6 +20,32 @@ class Constant
     public static final String APP_VERSION_CHECK = "version_Pref";
     public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;
     public static final String APP_EXPERIMENT_ENHANCEIO = "experiment_enhanceIO_Pref";
+
+    public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
+    public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
+    public static final String WIDGET_TITLE_FONT_COLOR_BLUE = "widget_title_font_color_b_Pref";
+    public static final String WIDGET_TITLE_BACK_COLOR_RED = "widget_title_back_color_r_Pref";
+    public static final String WIDGET_TITLE_BACK_COLOR_GREEN = "widget_title_back_color_g_Pref";
+    public static final String WIDGET_TITLE_BACK_COLOR_BLUE = "widget_title_back_color_b_Pref";
+    public static final String WIDGET_CONTEXT_FONT_COLOR_RED = "widget_context_font_color_r_Pref";
+    public static final String WIDGET_CONTEXT_FONT_COLOR_GREEN = "widget_context_font_color_g_Pref";
+    public static final String WIDGET_CONTEXT_FONT_COLOR_BLUE = "widget_context_font_color_b_Pref";
+    public static final String WIDGET_CONTEXT_BACK_COLOR_RED = "widget_context_back_color_r_Pref";
+    public static final String WIDGET_CONTEXT_BACK_COLOR_GREEN = "widget_context_back_color_g_Pref";
+    public static final String WIDGET_CONTEXT_BACK_COLOR_BLUE = "widget_context_back_color_b_Pref";
+
+    public static final int WIDGET_TITLE_FONT_COLOR_RED_DEFAULT = 1;
+    public static final int WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT = 1;
+    public static final int WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT = 1;
+    public static final int WIDGET_TITLE_BACK_COLOR_RED_DEFAULT = 239;
+    public static final int WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT = 239;
+    public static final int WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT = 239;
+    public static final int WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT = 20;
+    public static final int WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT = 20;
+    public static final int WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT = 20;
+    public static final int WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT = 255;
+    public static final int WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT = 255;
+    public static final int WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT = 255;
 
     public static final boolean APP_FIRST_EXECUTE = false;
     public static final boolean APP_TWICE_EXECUTE = true;

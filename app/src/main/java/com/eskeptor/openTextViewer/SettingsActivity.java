@@ -215,11 +215,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                     {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         String[] address = {Constant.APP_DEV_MAILADDRESS};
-                        intent.setType("plain/text");
+                        intent.setType("message/rfc822");
                         intent.putExtra(Intent.EXTRA_EMAIL, address);
                         intent.putExtra(Intent.EXTRA_SUBJECT, "");
                         intent.putExtra(Intent.EXTRA_TEXT, "");
-                        startActivity(intent);
+                        startActivity(Intent.createChooser(intent, getString(R.string.settings_information_bug_email_choose)));
                     }
                     else if(preference.getKey().equals("settings_key_help"))
                     {

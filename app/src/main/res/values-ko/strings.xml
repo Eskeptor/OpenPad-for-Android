@@ -142,4 +142,15 @@
     <string name="settings_expfunc_enhanceIO_summary">500KB가 넘는 파일을 안전하게 열기</string>
     <string name="settings_dialog_expfunc_title">경고</string>
     <string name="settings_dialog_expfunc_context">이 기능은 테스트중이기 때문에 불안정할 수 있습니다.</string>
+    <string name="widget_config_preview">미리보기</string>
+    <string name="widget_config_customize">색상 변경</string>
+    <string name="widget_config_customize_tap1_title">제목(날짜)</string>
+    <string name="widget_config_customize_tap2_title">내용</string>
+    <string name="widget_config_customize_tap1_sub1">배경</string>
+    <string name="widget_config_customize_tap1_sub2">글자</string>
+    <string name="widget_config_btnReset">기본값</string>
+    <string name="widget_config_btnAdd">위젯 추가</string>
+    <string name="widget_config_btnLast">최근값</string>
+    <string name="widget_title_new">새 메모</string>
+    <string name="settings_information_bug_email_choose">이메일 클라이언트 선택</string>
 </resources>

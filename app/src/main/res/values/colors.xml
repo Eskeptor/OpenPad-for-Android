@@ -4,7 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
     <color name="Black">#000000</color>
-    <color name="SemiBlack">#90000000</color>
+    <color name="SemiBlack">#141414</color>
     <color name="itemUp">#00000000</color>
     <color name="itemDown">#1f000000</color>
+    <color name="White">#ffffff</color>
+    <color name="WhiteGray">#EFEFEF</color>
+    <color name="Transparent">#00ff0000</color>
 </resources>

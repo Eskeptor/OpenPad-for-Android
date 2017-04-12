@@ -362,17 +362,18 @@ public class MemoActivity extends AppCompatActivity {
 
     public void onClick(final View v)
     {
-        if(v.getId() == R.id.memo_btnPrev)
+        int id = v.getId();
+        if(id == R.id.memo_btnPrev)
         {
             runOnUiThread(prevRunnable);
             scrollView.scrollTo(0,0);
             buttonEnabler();
         }
-        else if(v.getId() == R.id.memo_btnTop)
+        else if(id == R.id.memo_btnTop)
         {
             scrollView.smoothScrollTo(0, 0);
         }
-        else if(v.getId() == R.id.memo_btnNext)
+        else if(id == R.id.memo_btnNext)
         {
             runOnUiThread(nextRunnable);
             scrollView.scrollTo(0,0);

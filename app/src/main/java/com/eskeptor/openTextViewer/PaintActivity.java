@@ -200,10 +200,12 @@ public class PaintActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if(item.getItemId() == R.id.menu_paint_pen)
+        int id = item.getItemId();
+        if(id == R.id.menu_paint_pen)
         {
             paintFunction.changePaint(Constant.PAINT_TYPE_BRUSH);
             paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
+            paintFunction.setLineWidth(curBrushValue);
             if(brushLayout.getVisibility() == View.VISIBLE)
             {
                 brushLayout.setVisibility(View.GONE);
@@ -217,9 +219,10 @@ public class PaintActivity extends AppCompatActivity {
                 brushLayout.setVisibility(View.VISIBLE);
             }
         }
-        else if(item.getItemId() == R.id.menu_paint_eraser)
+        else if(id == R.id.menu_paint_eraser)
         {
             paintFunction.changePaint(Constant.PAINT_TYPE_ERASER);
+            paintFunction.setLineWidth(curEraserSize);
             if(eraserLayout.getVisibility() == View.VISIBLE)
             {
                 eraserLayout.setVisibility(View.GONE);
@@ -233,11 +236,11 @@ public class PaintActivity extends AppCompatActivity {
                 eraserLayout.setVisibility(View.VISIBLE);
             }
         }
-        else if(item.getItemId() == R.id.menu_paint_reset)
+        else if(id == R.id.menu_paint_reset)
         {
             paintFunction.resetPaint();
         }
-        else if(item.getItemId() == R.id.menu_paint_undo)
+        else if(id == R.id.menu_paint_undo)
         {
             paintFunction.undoCanvas();
             paintFunction.invalidate();

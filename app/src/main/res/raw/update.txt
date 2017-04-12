@@ -1,2 +1,1 @@
-1) Adding an experiment function (Enable enabled by setup)
-2) Memory optimization
+1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).

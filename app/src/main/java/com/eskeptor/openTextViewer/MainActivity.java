@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if(item.getItemId() == android.R.id.home)
+        int id = item.getItemId();
+        if(id == android.R.id.home)
         {
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_FOLDER);
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
         }
-        else if(item.getItemId() == R.id.menu_main_settings)
+        else if(id == R.id.menu_main_settings)
         {
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

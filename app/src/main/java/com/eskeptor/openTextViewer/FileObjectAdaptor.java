@@ -93,17 +93,19 @@ public class FileObjectAdaptor extends BaseAdapter
             holder = (FileObjectViewHolder)convertView.getTag();
         }
 
-        if(fileObjects.get(position).type == Constant.BROWSER_IMAGE_TYPE_FOLDER)
+        int type = fileObjects.get(position).type;
+
+        if(type == Constant.BROWSER_IMAGE_TYPE_FOLDER)
         {
             holder.image.setImageDrawable(drawableFolder);
             holder.size.setText("");
         }
-        else if(fileObjects.get(position).type == Constant.BROWSER_IMAGE_TYPE_OVER1)
+        else if(type == Constant.BROWSER_IMAGE_TYPE_OVER1)
         {
             holder.image.setImageDrawable(drawableOver1File);
             holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
         }
-        else if(fileObjects.get(position).type == Constant.BROWSER_IMAGE_TYPE_OVER2)
+        else if(type == Constant.BROWSER_IMAGE_TYPE_OVER2)
         {
             holder.image.setImageDrawable(drawableOver2File);
             holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);

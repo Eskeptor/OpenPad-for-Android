@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="16dp"
+              android:background="@color/White">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_config_preview"
+        android:id="@+id/widget_config_preview"
+        style="@style/AppTheme.Activity.Help.HelpContents.Title"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/WhiteGray"
+        android:id="@+id/widget_config_preview_mainlayout">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/WhiteGray"
+            android:id="@+id/widget_config_preview_titlelayout">
+
+            <TextView
+                android:text="memo date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/widget_config_preview_memodate"
+                android:layout_margin="8sp"
+                android:textSize="20sp"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/White"
+            android:layout_margin="2sp"
+            android:id="@+id/widget_config_preview_contextlayout">
+
+            <TextView
+                android:text="memo context"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/widget_config_preview_memocontext"
+                android:textSize="18sp"
+                android:layout_margin="6sp"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp"/>
+
+    <TextView
+        android:text="@string/widget_config_customize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/widget_config_customize"
+        style="@style/AppTheme.Activity.Help.HelpContents.Title"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TabHost
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/widget_config_tabhost">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:text="@string/widget_config_customize_tap1_sub1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal|bold"
+                            android:textSize="15sp"
+                            android:layout_marginTop="2sp"/>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushRed"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_back_txtRed"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_back_seekRed"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushGreen"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_back_txtGreen"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_back_seekGreen"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushBlue"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_back_txtBlue"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_back_seekBlue"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="12sp"/>
+
+                        <TextView
+                            android:text="@string/widget_config_customize_tap1_sub2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal|bold"
+                            android:textSize="15sp"/>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushRed"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_font_txtRed"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_font_seekRed"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushGreen"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_font_txtGreen"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_font_seekGreen"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushBlue"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_font_txtBlue"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab1_font_seekBlue"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:text="@string/widget_config_customize_tap1_sub1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal|bold"
+                            android:textSize="15sp"
+                            android:layout_marginTop="2sp"
+                            />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushRed"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_back_txtRed"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_back_seekRed"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushGreen"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_back_txtGreen"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_back_seekGreen"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushBlue"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_back_txtBlue"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_back_seekBlue"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="12sp"/>
+
+                        <TextView
+                            android:text="@string/widget_config_customize_tap1_sub2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal|bold"
+                            android:textSize="15sp"
+                            />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushRed"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_font_txtRed"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_font_seekRed"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushGreen"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_font_txtGreen"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_font_seekGreen"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:text="@string/paint_txtBrushBlue"
+                                android:layout_width="80sp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_font_txtBlue"
+                                android:layout_weight="0"
+                                android:gravity="left|center_vertical"/>
+
+                            <SeekBar
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/widget_config_tab2_font_seekBlue"
+                                android:layout_weight="1"
+                                android:max="255"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/widget_config_btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/widget_config_btnAdd"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:onClick="onClick"/>
+
+        <Button
+            android:text="@string/widget_config_btnLast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/widget_config_btnLast"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:onClick="onClick"/>
+
+        <Button
+            android:text="@string/widget_config_btnReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/widget_config_btnReset"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:onClick="onClick"/>
+    </LinearLayout>
+
+</LinearLayout>

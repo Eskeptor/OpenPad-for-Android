@@ -5,12 +5,12 @@
 ```
  1) Low memory(Very light)
  2) There is no need for Internet connection.(but no sync function.)
- 3) Text Viewer function(using embedded file explorer)
+ 3) Text Viewer function(using embedded file explorer)1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
 ```
-## What's New? (Last updated 2017.3.26)
+## What's New? (Last updated 2017.4.12)
 ```
- 1) Adding an experiment function (Enable enabled by setup)
- 2) Memory optimization
+ 1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
+ 2) Widget (But, not yet linked to notes)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

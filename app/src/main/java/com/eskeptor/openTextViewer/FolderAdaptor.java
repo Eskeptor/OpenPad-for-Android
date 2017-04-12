@@ -90,11 +90,12 @@ public class FolderAdaptor extends BaseAdapter
             holder = (FolderViewHolder)convertView.getTag();
         }
 
-        if(folders.get(position).type == Constant.FOLDER_TYPE_DEFAULT)
+        int type = folders.get(position).type;
+        if(type == Constant.FOLDER_TYPE_DEFAULT)
         {
             holder.image.setImageDrawable(drawableFolderRoot);
         }
-        else if(folders.get(position).type == Constant.FOLDER_TYPE_EXTERNAL)
+        else if(type == Constant.FOLDER_TYPE_EXTERNAL)
         {
             holder.image.setImageDrawable(drawableFolderExternal);
         }
