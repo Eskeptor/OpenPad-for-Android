@@ -161,4 +161,5 @@
     <string name="widget_config_btnLast">Latest Value</string>
     <string name="widget_title_new">New Memo</string>
     <string name="settings_information_bug_email_choose">Choose an Email client</string>
+    <string name="folder_widget">Widget Folder</string>
 </resources>

@@ -1,3 +1,9 @@
+## Update 2017.4.27 - Build 1.2.5
+```
+ 1) Fix the bug (File modifications made to open files were not modified when the file was disabled).
+ 2) Change the default alignment method to the most recent date
+    (Not included in "Build 1.2.5")
+```
 ## Update 2017.4.12 - Build 1.2.4
 ```
  1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).

@@ -60,14 +60,14 @@ public class TextManager
         return MD5;
     }
 
-    public boolean saveText(final String strData, final String filename)
+    public boolean saveText(final String strData, final String filename, final boolean enhance)
     {
         if(strData == null || strData.isEmpty())
         {
             return false;
         }
         RandomAccessFile randomAccessFile = null;
-//        FileOutputStream fos = null;
+        FileOutputStream fos = null;
         FileChannel channel = null;
         ByteBuffer buffer = null;
 
@@ -75,12 +75,19 @@ public class TextManager
         {
             try
             {
-                randomAccessFile = new RandomAccessFile(new File(fileopen_name), "rw");
-//                fos = new FileOutputStream(new File(fileopen_name));
-//                channel = fos.getChannel();
-                channel = randomAccessFile.getChannel();
                 buffer = ByteBuffer.allocateDirect(strData.getBytes().length);
-                randomAccessFile.seek(curBlockIndex * Constant.TEXTMANAGER_BUFFER);
+                if(enhance)
+                {
+                    randomAccessFile = new RandomAccessFile(new File(fileopen_name), "rw");
+                    channel = randomAccessFile.getChannel();
+                    randomAccessFile.seek(curBlockIndex * Constant.TEXTMANAGER_BUFFER);
+                }
+                else
+                {
+                    fos = new FileOutputStream(new File(fileopen_name));
+                    channel = fos.getChannel();
+                }
+
                 buffer.put(strData.getBytes());
                 buffer.flip();
                 channel.write(buffer);
@@ -91,19 +98,33 @@ public class TextManager
                 catch (Exception e){e.printStackTrace();}
                 try{channel.close();}
                 catch (Exception e){e.printStackTrace();}
-                try{randomAccessFile.close();}
-                catch (Exception e){e.printStackTrace();}
+                if(randomAccessFile != null)
+                {
+                    try{randomAccessFile.close();}
+                    catch (Exception e){e.printStackTrace();}
+                }
+                else
+                {
+                    try{fos.close();}
+                    catch (Exception e){e.printStackTrace();}
+                }
             }
         }
         else
         {
             try
             {
-//                fos = new FileOutputStream(new File(filename));
-//                channel = fos.getChannel();
-                randomAccessFile = new RandomAccessFile(new File(filename), "rw");
-                channel = randomAccessFile.getChannel();
                 buffer = ByteBuffer.allocateDirect(strData.getBytes().length);
+                if(enhance)
+                {
+                    randomAccessFile = new RandomAccessFile(new File(filename), "rw");
+                    channel = randomAccessFile.getChannel();
+                }
+                else
+                {
+                    fos = new FileOutputStream(new File(filename));
+                    channel = fos.getChannel();
+                }
                 buffer.put(strData.getBytes());
                 buffer.flip();
                 channel.write(buffer);

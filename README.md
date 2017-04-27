@@ -5,12 +5,13 @@
 ```
  1) Low memory(Very light)
  2) There is no need for Internet connection.(but no sync function.)
- 3) Text Viewer function(using embedded file explorer)1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
+ 3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.4.12)
+## What's New? (Last updated 2017.4.27)
 ```
- 1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
- 2) Widget (But, not yet linked to notes)
+ 1) Fix the bug (File modifications made to open files were not modified when the file was disabled).
+ 2) Change the default alignment method to the most recent date
+    (Not included in "Build 1.2.5")
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

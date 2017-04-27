@@ -221,7 +221,8 @@ public class FolderActivity extends AppCompatActivity
                     File file = new File(folders.get(index).url);
                     if(file.exists())
                     {
-                        if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && file.delete())
+                        if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)
+                                && file.delete())
                         {
                             Toast.makeText(context_this, R.string.folder_dialog_toast_delete, Toast.LENGTH_SHORT).show();
                             runOnUiThread(refreshRunnable);

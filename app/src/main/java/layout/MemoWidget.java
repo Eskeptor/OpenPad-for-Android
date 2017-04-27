@@ -3,12 +3,16 @@ package layout;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.eskeptor.openTextViewer.Constant;
+import com.eskeptor.openTextViewer.MemoActivity;
 import com.eskeptor.openTextViewer.R;
+
+import java.io.File;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -42,6 +46,18 @@ public class MemoWidget extends AppWidgetProvider {
         views.setInt(R.id.widget_title_layout, "setBackgroundColor", Color.rgb(titleBackRed, titleBackGreen, titleBackBlue));
         views.setTextColor(R.id.widget_context, Color.rgb(contextFontRed, contextFontGreen, contextFontBlue));
         views.setInt(R.id.widget_mainLayout, "setBackgroundColor", Color.rgb(contextBackRed, contextBackGreen, contextBackBlue));
+
+        File file = new File(Constant.APP_WIDGET_URL);
+        if(!file.exists())
+        {
+            file.mkdir();
+        }
+
+        Intent intent = new Intent(context, MemoActivity.class);
+        intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
+        intent.putExtra(Constant.INTENT_EXTRA_MEMO_ISWIDGET, true);
+        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, Constant.APP_WIDGET_URL);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

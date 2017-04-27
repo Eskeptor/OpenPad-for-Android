@@ -18,8 +18,9 @@ public class MainFile
     String context_oneline;
     String date;
     int type;
+    boolean isLinkedWidget;
 
-    public MainFile(final File file, final String txtFileNoName, final String imgName, final SimpleDateFormat format)
+    public MainFile(final File file, final String txtFileNoName, final String imgName, final SimpleDateFormat format, final boolean Linked)
     {
         if(file.getName().endsWith(Constant.FILE_IMAGE_EXTENSION))
         {
@@ -29,6 +30,8 @@ public class MainFile
         {
             type = Constant.LISTVIEW_FILE_TYPE_TEXT;
         }
+
+        isLinkedWidget = Linked;
 
         if(type == Constant.LISTVIEW_FILE_TYPE_IMAGE)
         {

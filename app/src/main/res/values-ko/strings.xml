@@ -153,4 +153,5 @@
     <string name="widget_config_btnLast">최근값</string>
     <string name="widget_title_new">새 메모</string>
     <string name="settings_information_bug_email_choose">이메일 클라이언트 선택</string>
+    <string name="folder_widget">위젯 폴더</string>
 </resources>

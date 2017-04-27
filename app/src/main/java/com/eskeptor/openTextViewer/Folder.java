@@ -16,13 +16,16 @@ public class Folder
     int type;
     public Folder(final String name, final int count, final int type, final Context context)
     {
-        if(!name.equals(Constant.FOLDER_DEFAULT_NAME))
+        if(!name.equals(Constant.FOLDER_DEFAULT_NAME) && !name.equals(Constant.FOLDER_WIDGET_NAME))
         {
             this.name = name;
         }
         else
         {
-            this.name = context.getResources().getString(R.string.folder_default);
+            if(name.equals(Constant.FOLDER_WIDGET_NAME))
+                this.name = context.getResources().getString(R.string.folder_widget);
+            else
+                this.name = context.getResources().getString(R.string.folder_default);
         }
 
         this.count = count;

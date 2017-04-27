@@ -30,6 +30,9 @@ import com.google.android.gms.ads.MobileAds;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Created by eskeptor on 17. 1. 28.
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -347,11 +351,21 @@ public class MainActivity extends AppCompatActivity
 
     private void defaultFolderCheck()
     {
+        // 어플의 기본 폴더 체크
         File file = new File(Constant.APP_INTERNAL_URL);
         if(!file.exists())
         {
             file.mkdir();
         }
+
+        // 어플의 위젯용 폴더 체크
+        file = new File(Constant.APP_WIDGET_URL);
+        if(!file.exists())
+        {
+            file.mkdir();
+        }
+
+        // 어플의 기본 메모 폴더 체크
         file = new File(Constant.APP_INTERNAL_URL + File.separator+ Constant.FOLDER_DEFAULT_NAME);
         if(!file.exists())
         {
@@ -414,12 +428,18 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        sortFileArray(files);
+
         if(files != null)
         {
             for(int i = 0; i < files.length; i++)
             {
-                curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
-                        new SimpleDateFormat(getResources().getString(R.string.file_dateformat))));
+                if(files[i].getName().charAt(0) == 'w')
+                    curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                            new SimpleDateFormat(getResources().getString(R.string.file_dateformat)), true));
+                else
+                    curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                            new SimpleDateFormat(getResources().getString(R.string.file_dateformat)), false));
             }
         }
     }
@@ -518,5 +538,19 @@ public class MainActivity extends AppCompatActivity
     private int DPtoPixel(final int DP)
     {
         return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DP, context_this.getResources().getDisplayMetrics());
+    }
+
+    private void sortFileArray(File[] files)
+    {
+        // 최근 날짜순으로 정렬
+        Arrays.sort(files, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2)
+            {
+                Date d1 = new Date(o1.lastModified());
+                Date d2 = new Date(o2.lastModified());
+                return d2.compareTo(d1);
+            }
+        });
     }
 }
