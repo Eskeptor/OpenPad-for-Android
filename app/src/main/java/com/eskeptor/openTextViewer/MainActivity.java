@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fab;
 
     private AdView adView;
-    private AdRequest adRequest;
 
     private static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
@@ -316,6 +315,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        refreshLayout = null;
+        layoutManager = null;
+        curFolderGridView = null;
+        clickAction = null;
+        curFileAdapter = null;
+        if(!curFolderFileList.isEmpty())
+            curFolderFileList.clear();
+        curFolderFileList = null;
+        refreshListRunnable = null;
+        folderIcon = null;
+        if(dialog != null)
+            dialog = null;
+        context_this = null;
+        if(adView != null)
+            adView = null;
+        pref = null;
+        editor = null;
+    }
+
     private void checkPermission()
     {
         if(Build.VERSION.SDK_INT >= 23)
@@ -399,7 +420,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         else
                         {
-                            Toast.makeText(context_this, "Error code : " + ErrorCode.NO_FOLDER, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context_this, getString(R.string.error_folder_not_exist), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -515,7 +536,7 @@ public class MainActivity extends AppCompatActivity
         {
             MobileAds.initialize(context_this, getResources().getString(R.string.app_id));
             //adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-            adRequest = new AdRequest.Builder().build();
+            AdRequest adRequest = new AdRequest.Builder().build();
             adView = (AdView)findViewById(R.id.adView);
 
             adView.setEnabled(true);

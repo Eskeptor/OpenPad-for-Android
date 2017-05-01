@@ -21,6 +21,7 @@ public class Constant
     public static final String APP_INTERNAL_URL = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "OpenPad";
     public static final String APP_WIDGET_URL = APP_INTERNAL_URL + File.separator + FOLDER_WIDGET_NAME;
     public static final String APP_SETTINGS_PREFERENCE = "Setting_Pref";
+    public static final String APP_WIDGET_PREFERENCE = "Widget_Pref";
     public static final String APP_DEV_MAILADDRESS = "skyvvv624@gmail.com";
     public static final String APP_FIRST_SETUP_PREFERENCE = "isFirst_Pref";
     public static final String APP_ADMOB_VISIBLE = "adMob_Pref";

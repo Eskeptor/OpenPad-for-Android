@@ -29,7 +29,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
 
     public static class Help extends PreferenceFragment
     {
-        private Preference.OnPreferenceClickListener clickListener;
         private Preference main_list;
         private Preference main_memoCreate;
         private Preference main_delete;
@@ -71,7 +70,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_permission = findPreference("settings_key_etc_permission");
             etc_ad = findPreference("settings_key_etc_ad");
 
-            clickListener = new Preference.OnPreferenceClickListener() {
+            Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent();
@@ -102,11 +101,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_permission.setOnPreferenceClickListener(clickListener);
             etc_ad.setOnPreferenceClickListener(clickListener);
         }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            main_list = null;
+            main_memoCreate = null;
+            main_delete = null;
+            main_openfolder = null;
+            folder_list = null;
+            folder_default = null;
+            folder_create = null;
+            folder_delete = null;
+            folder_external = null;
+            memo_saveLength = null;
+            memo_fontColor = null;
+            memo_edit = null;
+            etc_abouthelp = null;
+            etc_backup = null;
+            etc_filecolor = null;
+            etc_permission = null;
+            etc_ad = null;
+        }
     }
 
     public static class FontSettings extends PreferenceFragment
     {
-        private Preference.OnPreferenceClickListener clickListener;
         private Preference textSize;
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -116,7 +136,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             textSize = findPreference("settings_key_font_fontsize");
             textSize.setSummary(Float.toString(pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
             textSize.setDefaultValue(Float.toString(pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
-            clickListener = new Preference.OnPreferenceClickListener() {
+            Preference.OnPreferenceClickListener  clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     if(preference.getKey().equals("settings_key_font_fontsize"))
@@ -167,15 +187,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
 
     public static class Settings extends PreferenceFragment
     {
-        private Preference.OnPreferenceClickListener clickListener;
-        private CheckBoxPreference.OnPreferenceClickListener checkClickListener;
         private Preference info;
         private Preference font;
         private Preference version;
         private Preference bugreport;
         private Preference help;
+        private Preference updateList;
         private CheckBoxPreference admob;
         private CheckBoxPreference enhanceIO;
+
+        private long pressTime = 0;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -187,9 +208,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             font = findPreference("settings_key_font");
             bugreport = findPreference("settings_key_bugreport");
             help = findPreference("settings_key_help");
+            updateList = findPreference("settings_key_updatelist");
             admob = (CheckBoxPreference)findPreference("settings_key_admob");
             enhanceIO = (CheckBoxPreference)findPreference("settings_key_enhanceIO");
-            clickListener = new Preference.OnPreferenceClickListener() {
+
+            Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     if(preference.getKey().equals("settings_key_info"))
@@ -226,11 +249,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         getFragmentManager().beginTransaction().replace(android.R.id.content, helpAct).commit();
                         activeScene = Constant.SETTINGS_ACTIVESCREEN_HELP;
                     }
+                    else if(preference.getKey().equals("settings_key_updatelist"))
+                    {
+                        Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.setClass(getActivity(), UpdateListActivity.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(0,0);
+                    }
+                    else if(preference.getKey().equals("settings_key_version"))
+                    {
+                        if (System.currentTimeMillis() > pressTime + 1000) {
+                            pressTime = System.currentTimeMillis();
+                            return false;
+                        }
+                        if (System.currentTimeMillis() <= pressTime + 1000) {
+                            Intent intent = new Intent();
+                            intent.setClass(getActivity(), HiddenActivity.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(0,0);
+                        }
+                    }
                     return false;
                 }
             };
 
-            checkClickListener = new CheckBoxPreference.OnPreferenceClickListener() {
+            CheckBoxPreference.OnPreferenceClickListener checkClickListener = new CheckBoxPreference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     if(preference.getKey().equals("settings_key_admob"))
@@ -260,6 +304,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             font.setOnPreferenceClickListener(clickListener);
             bugreport.setOnPreferenceClickListener(clickListener);
             help.setOnPreferenceClickListener(clickListener);
+            updateList.setOnPreferenceClickListener(clickListener);
+            version.setOnPreferenceClickListener(clickListener);
             version.setSummary(BuildConfig.VERSION_NAME);
 
             admob.setOnPreferenceClickListener(checkClickListener);
@@ -274,6 +320,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             editor.putBoolean(Constant.APP_ADMOB_VISIBLE, admob.isChecked());
             editor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, enhanceIO.isChecked());
             editor.commit();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            info = null;
+            font = null;
+            version = null;
+            bugreport = null;
+            help = null;
+            updateList = null;
+            admob = null;
+            enhanceIO = null;
         }
     }
 
@@ -332,7 +391,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         helpAct = null;
         fontSettingAct = null;
         settingsAct = null;
-        dialog = null;
+        if(dialog != null)
+            dialog = null;
         pref = null;
         editor = null;
     }

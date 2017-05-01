@@ -261,29 +261,50 @@ public class MemoActivity extends AppCompatActivity {
         writeLog();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        editText = null;
+        txtManager = null;
+        logManager = null;
+        nextRunnable = null;
+        prevRunnable = null;
+        btnLayout = null;
+        btnPrev = null;
+        btnNext = null;
+        btnTop = null;
+        scrollView = null;
+        alert = null;
+        context_this = null;
+        pref = null;
+        editMenu = null;
+        drawableModified = null;
+        drawableModifiedComplete = null;
+        inputMethodManager = null;
+    }
 
     @Override
     public void onBackPressed() {
         if(isModified())
         {
-            DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(which == AlertDialog.BUTTON_POSITIVE)
-                    {
-                        Log.e("Debug", "which : " + Integer.toString(which));
-                        Log.e("Debug", "memoType : " + Integer.toString(memoType));
-                        if(memoType == Constant.MEMO_TYPE_NEW)
+            if(isWidget)
+            {
+                openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_TEXT_EXTENSION);
+                txtManager.saveText(editText.getText().toString(), Constant.WIDGET_LINKED_TOKEN + openFileURL, enhance);
+                memoIndex++;
+                writeLog();
+                finish();
+            }
+            else
+            {
+                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == AlertDialog.BUTTON_POSITIVE)
                         {
-                            if(isWidget)
-                            {
-                                openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_TEXT_EXTENSION);
-                                txtManager.saveText(editText.getText().toString(), Constant.WIDGET_LINKED_TOKEN + openFileURL, enhance);
-                                memoIndex++;
-                                writeLog();
-                                finish();
-                            }
-                            else
+                            Log.e("Debug", "which : " + Integer.toString(which));
+                            Log.e("Debug", "memoType : " + Integer.toString(memoType));
+                            if(memoType == Constant.MEMO_TYPE_NEW)
                             {
                                 alert = new AlertDialog.Builder(MemoActivity.this);
                                 alert.setTitle(R.string.memo_alert_save_context);
@@ -319,26 +340,26 @@ public class MemoActivity extends AppCompatActivity {
                                 });
                                 alert.show();
                             }
+                            else if(memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL || memoType == Constant.MEMO_TYPE_OPEN_INTERNAL)
+                            {
+                                txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name(), enhance);
+                                finish();
+                            }
                         }
-                        else if(memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL || memoType == Constant.MEMO_TYPE_OPEN_INTERNAL)
+                        else if(which == AlertDialog.BUTTON_NEGATIVE)
                         {
-                            txtManager.saveText(editText.getText().toString(), txtManager.getFileopen_name(), enhance);
                             finish();
                         }
+                        dialog.dismiss();
                     }
-                    else if(which == AlertDialog.BUTTON_NEGATIVE)
-                    {
-                        finish();
-                    }
-                    dialog.dismiss();
-                }
-            };
-            alert = new AlertDialog.Builder(this);
-            alert.setTitle(R.string.memo_alert_modified_title);
-            alert.setMessage(R.string.memo_alert_modified_context);
-            alert.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
-            alert.setNegativeButton(R.string.memo_alert_modified_btnDiscard, clickListener);
-            alert.show();
+                };
+                alert = new AlertDialog.Builder(this);
+                alert.setTitle(R.string.memo_alert_modified_title);
+                alert.setMessage(R.string.memo_alert_modified_context);
+                alert.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
+                alert.setNegativeButton(R.string.memo_alert_modified_btnDiscard, clickListener);
+                alert.show();
+            }
         }
         else
         {

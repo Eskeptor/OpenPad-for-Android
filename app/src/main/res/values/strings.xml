@@ -162,4 +162,9 @@
     <string name="widget_title_new">New Memo</string>
     <string name="settings_information_bug_email_choose">Choose an Email client</string>
     <string name="folder_widget">Widget Folder</string>
+    <string name="settings_information_updatelist_title">Update History</string>
+    <string name="settings_information_updatelist_summary">Shows the update contents.</string>
+    <string name="hidden_title" translatable="false">Remember 0416</string>
+    <string name="error_folder_not_exist">Folder does not exist.</string>
+
 </resources>

@@ -1,3 +1,9 @@
+## Update 2017.5.1 - Build 1.2.6
+```
+ 1) Add Update List (Settings)
+ 2) Fix Memory Leak
+ 3) Default alignment of main screen memos to date priority
+```
 ## Update 2017.4.27 - Build 1.2.5
 ```
  1) Fix the bug (File modifications made to open files were not modified when the file was disabled).

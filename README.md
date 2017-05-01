@@ -7,11 +7,11 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.4.27)
+## What's New? (Last updated 2017.5.1)
 ```
- 1) Fix the bug (File modifications made to open files were not modified when the file was disabled).
- 2) Change the default alignment method to the most recent date
-    (Not included in "Build 1.2.5")
+  1) Add Update List (Settings)
+  2) Fix Memory Leak
+  3) Default alignment of main screen memos to date priority
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -43,4 +43,4 @@
  GNU General Public License 3
 ```
 ## Good Bye!!
-Compiled by IntelliJ IDEA Comunity 2017.1 EAP and Android SDK
+Compiled by IntelliJ IDEA Comunity 2017.1.3 EAP and Android SDK

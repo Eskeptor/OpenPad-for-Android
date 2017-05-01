@@ -36,7 +36,10 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent"/>
         <activity android:name=".PaintActivity"/>
-
+        <activity android:name=".UpdateListActivity">
+        </activity>
+        <activity android:name=".HiddenActivity">
+        </activity>
         <receiver android:name="layout.MemoWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

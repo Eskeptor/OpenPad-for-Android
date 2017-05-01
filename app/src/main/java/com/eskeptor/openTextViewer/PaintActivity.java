@@ -44,8 +44,6 @@ public class PaintActivity extends AppCompatActivity {
 
     private AlertDialog.Builder alert;
 
-    private SeekBar.OnSeekBarChangeListener seekBarChangeListener;
-
     private int curEraserSize;
     private int curBrushValue;
     private int curRedValue;
@@ -96,7 +94,7 @@ public class PaintActivity extends AppCompatActivity {
         brushTxtGreen = (TextView)findViewById(R.id.paint_brush_txtGreen);
         brushTxtBlue = (TextView)findViewById(R.id.paint_brush_txtBlue);
 
-        seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(seekBar == brushSeekSize)
@@ -252,6 +250,23 @@ public class PaintActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         paintFunction = null;
+        drawLayout = null;
+        brushLayout = null;
+        eraserLayout = null;
+        brushSeekSize = null;
+        brushSeekRed = null;
+        brushSeekGreen = null;
+        brushSeekBlue = null;
+        eraserSeekSize = null;
+        brushTxtSize = null;
+        brushTxtRed = null;
+        brushTxtGreen = null;
+        brushTxtBlue = null;
+        eraserTxtSize = null;
+        context_this = null;
+        if(alert != null)
+            alert = null;
+        logManager = null;
         undo = null;
         System.gc();
     }

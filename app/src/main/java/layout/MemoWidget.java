@@ -1,5 +1,6 @@
 package layout;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.widget.RemoteViews;
 import com.eskeptor.openTextViewer.Constant;
+import com.eskeptor.openTextViewer.MainActivity;
 import com.eskeptor.openTextViewer.MemoActivity;
 import com.eskeptor.openTextViewer.R;
 
@@ -21,11 +23,13 @@ import static android.content.Context.MODE_PRIVATE;
  * App Widget Configuration implemented in {@link MemoWidgetConfigureActivity MemoWidgetConfigureActivity}
  */
 public class MemoWidget extends AppWidgetProvider {
+    private static SharedPreferences pref;
+    private static SharedPreferences.Editor editor;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        SharedPreferences pref = context.getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
-        //SharedPreferences.Editor editor = pref.edit();
+        pref = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE, MODE_PRIVATE);
+        editor = pref.edit();
 
         int titleBackRed = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
         int titleBackGreen = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
@@ -47,7 +51,8 @@ public class MemoWidget extends AppWidgetProvider {
         views.setTextColor(R.id.widget_context, Color.rgb(contextFontRed, contextFontGreen, contextFontBlue));
         views.setInt(R.id.widget_mainLayout, "setBackgroundColor", Color.rgb(contextBackRed, contextBackGreen, contextBackBlue));
 
-        File file = new File(Constant.APP_WIDGET_URL);
+
+        /*File file = new File(Constant.APP_WIDGET_URL);
         if(!file.exists())
         {
             file.mkdir();
@@ -57,7 +62,11 @@ public class MemoWidget extends AppWidgetProvider {
         intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
         intent.putExtra(Constant.INTENT_EXTRA_MEMO_ISWIDGET, true);
         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, Constant.APP_WIDGET_URL);
+        intent*/
 
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        views.setOnClickPendingIntent(R.id.widget_mainLayout, pendingIntent);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -65,6 +74,7 @@ public class MemoWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -88,4 +98,3 @@ public class MemoWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 }
-

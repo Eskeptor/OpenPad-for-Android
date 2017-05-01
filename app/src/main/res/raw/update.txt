@@ -1,1 +1,5 @@
-1) Fix the bug (File modifications made to open files were not modified when the file was disabled).
+Update Notifications)
+The following updates will update the version (1.x→2.0).
+This update will change the way you save notes.
+So, please back up your memos before the next update.
+(backup method : Setting - Help)

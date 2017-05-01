@@ -37,9 +37,7 @@ public class FileBrowserActivity extends AppCompatActivity
 {
     private TextView txtPath;
     private ListView fileList;
-    private Spinner menu_spinner;
     private LinearLayout saveLayout;
-    private Button btnSave;
     private EditText etxtSave;
 
     private String str_filename;
@@ -50,8 +48,6 @@ public class FileBrowserActivity extends AppCompatActivity
 
     private int browserType;
     private int sortType;
-
-    private Pattern pattern;
 
     private Context context_this;
     private AlertDialog.Builder dialog;
@@ -82,7 +78,6 @@ public class FileBrowserActivity extends AppCompatActivity
         {
             setTitle(R.string.filebrowser_name_save);
             saveLayout.setVisibility(View.VISIBLE);
-            btnSave = (Button)findViewById(R.id.browser_btnSave);
         }
 
         getDirectory(str_root);
@@ -140,7 +135,7 @@ public class FileBrowserActivity extends AppCompatActivity
     {
         getMenuInflater().inflate(R.menu.menu_filebrowser, menu);
         MenuItem item = menu.findItem(R.id.menu_spinner);
-        menu_spinner = (Spinner) MenuItemCompat.getActionView(item);
+        Spinner menu_spinner = (Spinner) MenuItemCompat.getActionView(item);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.menu_spinner_sort, R.layout.spinner_layout);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -185,11 +180,27 @@ public class FileBrowserActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        txtPath = null;
+        fileList = null;
+        saveLayout = null;
+        etxtSave = null;
+        if(!fileObjects.isEmpty())
+            fileObjects.clear();
+        fileObjects = null;
+        fileObjectAdaptor = null;
+        if(dialog != null)
+            dialog = null;
+        context_this = null;
+    }
+
     public void onClick(View v)
     {
         if(v.getId() == R.id.browser_btnSave)
         {
-            pattern = Pattern.compile(Constant.REGEX);
+            Pattern pattern = Pattern.compile(Constant.REGEX);
             if(!etxtSave.getText().toString().equals("") && pattern.matcher(etxtSave.getText().toString()).matches())
             {
                 if(!isExist(etxtSave.getText().toString()))
@@ -291,6 +302,10 @@ public class FileBrowserActivity extends AppCompatActivity
         }
 
         txtPath.setText(getResources().getString(R.string.filebrowser_Location) + " " + dir);
+
+        if(fileObjectAdaptor != null)
+            fileObjectAdaptor = null;
+
         fileObjectAdaptor = new FileObjectAdaptor(this, fileObjects);
         fileList.setAdapter(fileObjectAdaptor);
         str_filename = dir;

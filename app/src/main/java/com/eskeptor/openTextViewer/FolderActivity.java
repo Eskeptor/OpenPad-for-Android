@@ -183,7 +183,6 @@ public class FolderActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if(dialog != null)
         {
             dialog = null;
@@ -197,6 +196,9 @@ public class FolderActivity extends AppCompatActivity
         folders = null;
         context_this = null;
         refreshRunnable = null;
+        editText = null;
+        clickListener = null;
+        longClickListener = null;
     }
 
     private int checkFolderType(final File file)
@@ -234,7 +236,7 @@ public class FolderActivity extends AppCompatActivity
                     }
                     else
                     {
-                        Toast.makeText(context_this, "Error code : " + ErrorCode.NO_FOLDER, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context_this, getString(R.string.error_folder_not_exist), Toast.LENGTH_SHORT).show();
                     }
                 }
                 dialog.dismiss();

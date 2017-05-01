@@ -112,7 +112,7 @@ public class MemoWidgetConfigureActivity extends Activity {
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED);
 
-        pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
+        pref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE, MODE_PRIVATE);
         editor = pref.edit();
 
         setContentView(R.layout.memo_widget_configure);
@@ -353,7 +353,6 @@ public class MemoWidgetConfigureActivity extends Activity {
         // If this activity was started with an intent without an app widget ID, finish with an error.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
-            return;
         }
 
     }

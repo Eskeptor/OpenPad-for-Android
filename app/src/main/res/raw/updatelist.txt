@@ -1,0 +1,39 @@
+1.2.6
+1) Add Update List (Settings)
+2) Fix Memory Leak
+3) Default alignment of main screen memos to date priority
+
+1.2.5
+1) Fix the bug (File modifications made to open files were not modified when the file was disabled).
+
+1.2.4
+1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
+
+1.2.3
+1) Adding an experiment function (Enable enabled by setup)
+2) Memory optimization
+
+1.2.2
+1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
+2) Bug fix(Opening a "Folder Create" on Android 4.4 Only causes a forced end to end closure)
+
+1.2.1
+1) Bug fix(Opening a "Folder" on Android 4.4 Only causes a forced end to end closure)
+
+1.2.0
+1) Add features : individual erasing the eraser and the pen
+2) Add features : individual colors of the pen
+3) Add features : Undo
+
+1.1.0
+1) Add pictorial memo(Beta function)
+2) Add update list
+3) Bug fix(Add Folder Adding Folder On Some circumstances)
+4) Bug fix(Font couldn't be seen in some circumstances)
+5) Memory Optimized
+
+1.0.1
+1) Bug fix(Black generation dialog in creating folders on several devices.)
+
+1.0.0
+1) Released

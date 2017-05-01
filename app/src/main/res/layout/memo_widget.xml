@@ -2,7 +2,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/White"
-    >
+                android:padding="@dimen/widget_margin">
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,20 +27,13 @@
                 android:textStyle="normal|bold"/>
         </FrameLayout>
 
-
-        <ScrollView
+        <TextView
+            android:id="@+id/widget_context"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/widget_context"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textSize="18sp"
-                />
-        </ScrollView>
-
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="18sp"
+            />
     </LinearLayout>
 
 </RelativeLayout>

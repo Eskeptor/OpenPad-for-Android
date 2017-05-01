@@ -94,6 +94,7 @@ public class FileObjectAdaptor extends BaseAdapter
         }
 
         int type = fileObjects.get(position).type;
+        String size = Long.toString(fileObjects.get(position).size) + Constant.BASIC_FILE_UNIT;
 
         if(type == Constant.BROWSER_IMAGE_TYPE_FOLDER)
         {
@@ -103,17 +104,17 @@ public class FileObjectAdaptor extends BaseAdapter
         else if(type == Constant.BROWSER_IMAGE_TYPE_OVER1)
         {
             holder.image.setImageDrawable(drawableOver1File);
-            holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
+            holder.size.setText(size);
         }
         else if(type == Constant.BROWSER_IMAGE_TYPE_OVER2)
         {
             holder.image.setImageDrawable(drawableOver2File);
-            holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
+            holder.size.setText(size);
         }
         else
         {
             holder.image.setImageDrawable(drawableNormalFile);
-            holder.size.setText(fileObjects.get(position).size + Constant.BASIC_FILE_UNIT);
+            holder.size.setText(size);
         }
 
         holder.name.setText(fileObjects.get(position).name);

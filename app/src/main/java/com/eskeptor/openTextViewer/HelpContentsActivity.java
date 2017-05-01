@@ -35,6 +35,13 @@ public class HelpContentsActivity extends AppCompatActivity
         overridePendingTransition(0,0);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        txtTitle = null;
+        txtContexts = null;
+    }
+
     private void helpDetector()
     {
         if(helpIndex.equals("settings_key_main_list"))
