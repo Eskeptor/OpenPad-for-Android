@@ -9,8 +9,8 @@ import java.io.InputStream;
 
 public class HiddenActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_hidden);
 
         setTitle(R.string.hidden_title);
@@ -32,10 +32,20 @@ public class HiddenActivity extends AppCompatActivity {
         }
         catch (Exception e) { e.printStackTrace(); }
         finally {
-            try{byteArrayOutputStream.close();}
-            catch (Exception e){e.printStackTrace();}
-            try{inputStream.close();}
-            catch (Exception e){e.printStackTrace();}
+            if (byteArrayOutputStream != null) {
+                try {
+                    byteArrayOutputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         TextView hidden = (TextView)findViewById(R.id.hidden_txt);

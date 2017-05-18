@@ -107,7 +107,7 @@
     <string name="settings_help_main_openfolder_context">Press the \" Open Folder \" button on the top left corner to view the notes contained in that folder.</string>
     <string name="settings_help_title_ect">ETC.</string>
     <string name="settings_help_etc_filecolor">Color files in an external file explorer</string>
-    <string name="settings_help_etc_filecolor_context">There are three colors in a file.\nRed : Opening files does not guarantee stability (over 1 MB or more)\nYellow : File is opened but a little slower (500 KB or more files)\nBlack : File files that ensure file opening (500 KB files)\n(MB = 1024 KB)</string>
+    <string name="settings_help_etc_filecolor_context">There are three colors in a file.\nRed : Opening files does not guarantee stability (over 1 MB or more)\nYellow : File is opened but a little slower (500 KB or more files)\nBlack : File files that ensure file opening (500 KB files)\n(MB = 1024 KB)\nHowever, in the "Enhanced Open File" mode, you can open any file of any capacity.</string>
     <string name="main_dialog_restart_title">Exit</string>
     <string name="main_dialog_restart_context">Exit to acquire permission.\n(Please restart after shutdown.)</string>
     <string name="main_dialog_restart_title_no">Warning</string>
@@ -145,7 +145,7 @@
     <string name="memo_btnPrev" translatable="false">&lt;</string>
     <string name="memo_btnNext" translatable="false">&gt;</string>
     <string name="memo_btnTop">Top</string>
-    <string name="settings_separator_expfunc">Experimental Function</string>
+    <string name="settings_separator_expfunc">Enhanced Feature</string>
     <string name="settings_expfunc_enhanceIO_title">Enhanced file open</string>
     <string name="settings_expfunc_enhanceIO_summary">Securely open files over 500 KB</string>
     <string name="settings_dialog_expfunc_title">Warning</string>
@@ -166,5 +166,14 @@
     <string name="settings_information_updatelist_summary">Shows the update contents.</string>
     <string name="hidden_title" translatable="false">Remember 0416</string>
     <string name="error_folder_not_exist">Folder does not exist.</string>
-
+    <string name="menu_memo_charsetChange">Change Print Format</string>
+    <string-array name="menu_memo_charset">
+        <item>EUC-KR</item>
+        <item>UTF-8</item>
+    </string-array>
+    <string name="settings_expfunc_enhanceIO_Line_title">Number of sentences</string>
+    <string name="settings_expfunc_enhanceIO_Line_summary">Sets the number of sentences that are loaded at a time.</string>
+    <string name="settings_dialog_expfunc_enhanceIO_Line">Recommended : 100 ~ 300</string>
+    <string name="settings_help_etc_fontbroken">Font Garbled</string>
+    <string name="settings_help_etc_fontbroken_context">Depending on the encoding method, the file may appear to be garbled.\nOpen the garbled file by opening the " Change Print Format " by pressing the menu button (...) in the upper right corner of the right.</string>
 </resources>

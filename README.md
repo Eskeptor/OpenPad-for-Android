@@ -7,11 +7,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.5.1)
+## What's New? (Last updated 2017.5.18)
 ```
-  1) Add Update List (Settings)
-  2) Fix Memory Leak
-  3) Default alignment of main screen memos to date priority
+ 1) Add "Enhanced File Open"(Released Version)
+ 2) Changing output format can be changed(EUC-KR <-> UTF-8)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -43,4 +42,4 @@
  GNU General Public License 3
 ```
 ## Good Bye!!
-Compiled by IntelliJ IDEA Comunity 2017.1.3 EAP and Android SDK
+Compiled by Android Studio 2.3.2

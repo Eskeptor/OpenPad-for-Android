@@ -45,5 +45,10 @@
             android:title="@string/settings_expfunc_enhanceIO_title"
             android:summary="@string/settings_expfunc_enhanceIO_summary"
             android:key="settings_key_enhanceIO"/>
+        <Preference
+            android:enabled="false"
+            android:key="settings_key_enhanceIO_Line"
+            android:summary="@string/settings_expfunc_enhanceIO_Line_summary"
+            android:title="@string/settings_expfunc_enhanceIO_Line_title" />
     </PreferenceCategory>
 </PreferenceScreen>

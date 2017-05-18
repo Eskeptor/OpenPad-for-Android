@@ -1,4 +1,8 @@
-Update Notifications)
+1.2.7 Update)
+Add "Enhanced File Open"(Released Version, Not Beta)
+Changing output format can be changed(EUC-KR <-> UTF-8)
+
+Big Update Notifications)
 The following updates will update the version (1.x→2.0).
 This update will change the way you save notes.
 So, please back up your memos before the next update.

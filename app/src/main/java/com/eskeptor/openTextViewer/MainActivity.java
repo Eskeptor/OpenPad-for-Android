@@ -20,10 +20,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
+import com.eskeptor.openTextViewer.datatype.MainFileObject;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerViewPadding recyclerViewPadding;
     private ClickAction clickAction;
     private MainFileAdaptor curFileAdapter;
-    private ArrayList<MainFile> curFolderFileList;
+    private ArrayList<MainFileObject> curFolderFileList;
     private Runnable refreshListRunnable;
     private Drawable folderIcon;
     private AlertDialog.Builder dialog;
@@ -63,16 +63,16 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public boolean onCreateOptionsMenu(Menu _menu)
     {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, _menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onOptionsItemSelected(MenuItem _item)
     {
-        int id = item.getItemId();
+        int id = _item.getItemId();
         if(id == android.R.id.home)
         {
             Intent intent = new Intent();
@@ -89,16 +89,16 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_top, R.anim.anim_slide_out_bottom);
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(_item);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK)
+    protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+        if(_resultCode == RESULT_OK)
         {
-            if(requestCode == Constant.REQUEST_CODE_OPEN_FOLDER)
+            if(_requestCode == Constant.REQUEST_CODE_OPEN_FOLDER)
             {
-                curFolderURL = data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
+                curFolderURL = _data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
                 if(curFolderURL != null)
                 {
                     refreshList();
@@ -109,20 +109,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE)
+    public void onRequestPermissionsResult(int _requestCode, @NonNull String[] _permissions, @NonNull int[] _grantResults) {
+        super.onRequestPermissionsResult(_requestCode, _permissions, _grantResults);
+        if(_requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE)
         {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            if(_grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    _grantResults[1] == PackageManager.PERMISSION_GRANTED)
             {
                 dialog = new AlertDialog.Builder(this);
                 dialog.setTitle(R.string.main_dialog_restart_title);
                 dialog.setMessage(R.string.main_dialog_restart_context);
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which)
+                    public void onClick(DialogInterface _dialog, int _which) {
+                        switch (_which)
                         {
                             case AlertDialog.BUTTON_POSITIVE:
                             {
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
                                 break;
                             }
                         }
-                        dialog.dismiss();
+                        _dialog.dismiss();
                     }
                 };
                 dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
@@ -144,13 +144,13 @@ public class MainActivity extends AppCompatActivity
                 dialog.setMessage(R.string.main_dialog_restart_context_no);
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == AlertDialog.BUTTON_POSITIVE)
+                    public void onClick(DialogInterface _dialog, int _which) {
+                        if(_which == AlertDialog.BUTTON_POSITIVE)
                         {
                             ActivityCompat.finishAffinity(MainActivity.this);
                             System.exit(0);
                         }
-                        dialog.dismiss();
+                        _dialog.dismiss();
                     }
                 };
                 dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
@@ -160,9 +160,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle _savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_main);
 
         context_this = getApplicationContext();
@@ -200,10 +200,10 @@ public class MainActivity extends AppCompatActivity
 
         clickAction = new ClickAction() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(View _view, int _position) {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                if(curFolderFileList.get(position).type == Constant.LISTVIEW_FILE_TYPE_IMAGE)
+                if(curFolderFileList.get(_position).type == Constant.LISTVIEW_FILE_TYPE_IMAGE)
                 {
                     intent.setClass(context_this, PaintActivity.class);
                 }
@@ -211,8 +211,8 @@ public class MainActivity extends AppCompatActivity
                 {
                     intent.setClass(context_this, MemoActivity.class);
                 }
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, curFolderFileList.get(position).url);
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, curFolderFileList.get(position).title);
+                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, curFolderFileList.get(_position).url);
+                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, curFolderFileList.get(_position).title);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                 startActivity(intent);
@@ -220,8 +220,8 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onLongClick(View view, int position) {
-                deleteFile(position);
+            public void onLongClick(View _view, int _position) {
+                deleteFile(_position);
             }
         };
         recyclerViewPadding = new RecyclerViewPadding(10, 5, 5);
@@ -243,8 +243,8 @@ public class MainActivity extends AppCompatActivity
                 }
                 addFabMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId() == R.id.menu_main_add_text)
+                    public boolean onMenuItemClick(MenuItem _item) {
+                        if(_item.getItemId() == R.id.menu_main_add_text)
                         {
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -395,27 +395,27 @@ public class MainActivity extends AppCompatActivity
         curFolderURL = file.getPath();
     }
 
-    private void deleteFile(final int index)
+    private void deleteFile(final int _index)
     {
         dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.file_dialog_title_delete);
         dialog.setMessage(R.string.file_dialog_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
+            public void onClick(DialogInterface _dialog, int _which)
             {
-                if(which == AlertDialog.BUTTON_POSITIVE)
+                if(_which == AlertDialog.BUTTON_POSITIVE)
                 {
-                    File file = new File(curFolderFileList.get(index).url);
+                    File file = new File(curFolderFileList.get(_index).url);
                     if(file.exists())
                     {
                         if(file.delete())
                         {
                             Toast.makeText(context_this, R.string.file_dialog_toast_delete, Toast.LENGTH_SHORT).show();
-                            curFolderFileList.remove(index);
-                            curFolderGridView.removeViewAt(index);
-                            curFileAdapter.notifyItemRemoved(index);
-                            curFileAdapter.notifyItemRangeChanged(index, curFolderFileList.size());
+                            curFolderFileList.remove(_index);
+                            curFolderGridView.removeViewAt(_index);
+                            curFileAdapter.notifyItemRemoved(_index);
+                            curFileAdapter.notifyItemRangeChanged(_index, curFolderFileList.size());
                             curFileAdapter.notifyDataSetChanged();
                         }
                         else
@@ -424,11 +424,11 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
-                else if(which == AlertDialog.BUTTON_NEGATIVE)
+                else if(_which == AlertDialog.BUTTON_NEGATIVE)
                 {
 
                 }
-                dialog.dismiss();
+                _dialog.dismiss();
             }
         };
         dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
@@ -442,10 +442,10 @@ public class MainActivity extends AppCompatActivity
         File file = new File(curFolderURL);
         File files[] = file.listFiles(new FileFilter() {
             @Override
-            public boolean accept(File pathname)
+            public boolean accept(File _pathname)
             {
-                return pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION) ||
-                        pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION);
+                return _pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION) ||
+                        _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION);
             }
         });
 
@@ -456,10 +456,10 @@ public class MainActivity extends AppCompatActivity
             for(int i = 0; i < files.length; i++)
             {
                 if(files[i].getName().charAt(0) == 'w')
-                    curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                    curFolderFileList.add(new MainFileObject(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
                             new SimpleDateFormat(getResources().getString(R.string.file_dateformat)), true));
                 else
-                    curFolderFileList.add(new MainFile(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                    curFolderFileList.add(new MainFileObject(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
                             new SimpleDateFormat(getResources().getString(R.string.file_dateformat)), false));
             }
         }
@@ -474,13 +474,13 @@ public class MainActivity extends AppCompatActivity
             dialog.setMessage(R.string.main_dialog_first_context);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(which == AlertDialog.BUTTON_POSITIVE)
+                public void onClick(DialogInterface _dialog, int _which) {
+                    if(_which == AlertDialog.BUTTON_POSITIVE)
                     {
                         editor.putBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_TWICE_EXECUTE);
                         editor.commit();
                     }
-                    dialog.dismiss();
+                    _dialog.dismiss();
                 }
             };
             dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
@@ -505,10 +505,20 @@ public class MainActivity extends AppCompatActivity
             }
             catch (Exception e) { e.printStackTrace(); }
             finally {
-                try{byteArrayOutputStream.close();}
-                catch (Exception e){e.printStackTrace();}
-                try{inputStream.close();}
-                catch (Exception e){e.printStackTrace();}
+                if (byteArrayOutputStream != null) {
+                    try {
+                        byteArrayOutputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             dialog = new AlertDialog.Builder(this);
@@ -516,13 +526,13 @@ public class MainActivity extends AppCompatActivity
             dialog.setMessage(update);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(which == AlertDialog.BUTTON_POSITIVE)
+                public void onClick(DialogInterface _dialog, int _which) {
+                    if(_which == AlertDialog.BUTTON_POSITIVE)
                     {
                         editor.putString(Constant.APP_VERSION_CHECK, Constant.APP_LASTED_VERSION);
                         editor.commit();
                     }
-                    dialog.dismiss();
+                    _dialog.dismiss();
                 }
             };
             dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
@@ -556,20 +566,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private int DPtoPixel(final int DP)
+    private int DPtoPixel(final int _DP)
     {
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DP, context_this.getResources().getDisplayMetrics());
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _DP, context_this.getResources().getDisplayMetrics());
     }
 
-    private void sortFileArray(File[] files)
+    private void sortFileArray(File[] _files)
     {
         // 최근 날짜순으로 정렬
-        Arrays.sort(files, new Comparator<File>() {
+        Arrays.sort(_files, new Comparator<File>() {
             @Override
-            public int compare(File o1, File o2)
+            public int compare(File _o1, File _o2)
             {
-                Date d1 = new Date(o1.lastModified());
-                Date d2 = new Date(o2.lastModified());
+                Date d1 = new Date(_o1.lastModified());
+                Date d2 = new Date(_o2.lastModified());
                 return d2.compareTo(d1);
             }
         });

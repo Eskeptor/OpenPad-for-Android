@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.eskeptor.openTextViewer.datatype.FileObject;
 
 import java.util.ArrayList;
 
@@ -34,24 +35,24 @@ public class FileObjectAdaptor extends BaseAdapter
     private Drawable drawableOver1File;
     private Drawable drawableOver2File;
 
-    public FileObjectAdaptor(final Context context, final ArrayList<FileObject> fileObjects)
+    public FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects)
     {
-        this.context = context;
-        this.fileObjects = fileObjects;
+        this.context = _context;
+        this.fileObjects = _fileObjects;
 
         if(Build.VERSION.SDK_INT >= 21)
         {
-            drawableFolder = context.getResources().getDrawable(R.drawable.ic_folder_black_24dp, null);
-            drawableNormalFile = context.getResources().getDrawable(R.drawable.ic_note_normal, null);
-            drawableOver1File = context.getResources().getDrawable(R.drawable.ic_note_over1, null);
-            drawableOver2File = context.getResources().getDrawable(R.drawable.ic_note_over2, null);
+            drawableFolder = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp, null);
+            drawableNormalFile = _context.getResources().getDrawable(R.drawable.ic_note_normal, null);
+            drawableOver1File = _context.getResources().getDrawable(R.drawable.ic_note_over1, null);
+            drawableOver2File = _context.getResources().getDrawable(R.drawable.ic_note_over2, null);
         }
         else
         {
-            drawableFolder = context.getResources().getDrawable(R.drawable.ic_folder_black_24dp);
-            drawableNormalFile = context.getResources().getDrawable(R.drawable.ic_note_normal);
-            drawableOver1File = context.getResources().getDrawable(R.drawable.ic_note_over1);
-            drawableOver2File = context.getResources().getDrawable(R.drawable.ic_note_over2);
+            drawableFolder = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp);
+            drawableNormalFile = _context.getResources().getDrawable(R.drawable.ic_note_normal);
+            drawableOver1File = _context.getResources().getDrawable(R.drawable.ic_note_over1);
+            drawableOver2File = _context.getResources().getDrawable(R.drawable.ic_note_over2);
         }
     }
 
@@ -62,39 +63,39 @@ public class FileObjectAdaptor extends BaseAdapter
     }
 
     @Override
-    public Object getItem(int position)
+    public Object getItem(int _position)
     {
-        return fileObjects.get(position);
+        return fileObjects.get(_position);
     }
 
     @Override
-    public long getItemId(int position)
+    public long getItemId(int _position)
     {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int _position, View _convertView, ViewGroup _parent)
     {
         FileObjectViewHolder holder;
 
-        if(convertView == null)
+        if(_convertView == null)
         {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_fileobject_layout, null);
+            _convertView = LayoutInflater.from(context).inflate(R.layout.item_fileobject_layout, null);
             holder = new FileObjectViewHolder();
-            holder.image = (ImageView)convertView.findViewById(R.id.item_fileobj_image);
-            holder.name = (TextView)convertView.findViewById(R.id.item_fileobj_name);
-            holder.size = (TextView)convertView.findViewById(R.id.item_fileobj_size);
+            holder.image = (ImageView)_convertView.findViewById(R.id.item_fileobj_image);
+            holder.name = (TextView)_convertView.findViewById(R.id.item_fileobj_name);
+            holder.size = (TextView)_convertView.findViewById(R.id.item_fileobj_size);
 
-            convertView.setTag(holder);
+            _convertView.setTag(holder);
         }
         else
         {
-            holder = (FileObjectViewHolder)convertView.getTag();
+            holder = (FileObjectViewHolder)_convertView.getTag();
         }
 
-        int type = fileObjects.get(position).type;
-        String size = Long.toString(fileObjects.get(position).size) + Constant.BASIC_FILE_UNIT;
+        int type = fileObjects.get(_position).type;
+        String size = Long.toString(fileObjects.get(_position).size) + Constant.BASIC_FILE_UNIT;
 
         if(type == Constant.BROWSER_IMAGE_TYPE_FOLDER)
         {
@@ -117,8 +118,8 @@ public class FileObjectAdaptor extends BaseAdapter
             holder.size.setText(size);
         }
 
-        holder.name.setText(fileObjects.get(position).name);
+        holder.name.setText(fileObjects.get(_position).name);
 
-        return convertView;
+        return _convertView;
     }
 }

@@ -16,9 +16,9 @@ public class HelpContentsActivity extends AppCompatActivity
     private String helpIndex;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle _savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_helpcontents);
 
         txtTitle = (TextView)findViewById(R.id.help_txtTitle);
@@ -128,6 +128,11 @@ public class HelpContentsActivity extends AppCompatActivity
         {
             txtTitle.setText(R.string.settings_help_etc_ad);
             txtContexts.setText(R.string.settings_help_etc_ad_context);
+        }
+        else if(helpIndex.equals("settings_key_etc_fontbroken"))
+        {
+            txtTitle.setText(R.string.settings_help_etc_fontbroken);
+            txtContexts.setText(R.string.settings_help_etc_fontbroken_context);
         }
     }
 }

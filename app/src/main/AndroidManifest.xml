@@ -40,21 +40,7 @@
         </activity>
         <activity android:name=".HiddenActivity">
         </activity>
-        <receiver android:name="layout.MemoWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/memo_widget_info"/>
-        </receiver>
-
-        <activity android:name="layout.MemoWidgetConfigureActivity">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import com.eskeptor.openTextViewer.textManager.LogManager;
+import com.eskeptor.openTextViewer.textManager.TextManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +36,7 @@ public class MemoActivity extends AppCompatActivity {
     private int memoIndex;
     private boolean isWidget;
     private boolean enhance;
+    private int formatType;
 
     private EditText editText;
     private TextManager txtManager;
@@ -59,21 +62,22 @@ public class MemoActivity extends AppCompatActivity {
     private InputMethodManager inputMethodManager;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public boolean onCreateOptionsMenu(Menu _menu)
     {
         if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
         {
-            getMenuInflater().inflate(R.menu.menu_memo, menu);
-            editMenu = menu.findItem(R.id.menu_memo_modified);
+            getMenuInflater().inflate(R.menu.menu_memo, _menu);
+            editMenu = _menu.findItem(R.id.menu_memo_modified);
             editMenu.setIcon(drawableModified);
         }
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onOptionsItemSelected(MenuItem _item)
     {
-        if(item.getItemId() == R.id.menu_memo_modified)
+        int id = _item.getItemId();
+        if(id == R.id.menu_memo_modified)
         {
             if(editText.isFocusable())
             {
@@ -91,18 +95,34 @@ public class MemoActivity extends AppCompatActivity {
             }
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        else if(id == R.id.menu_memo_charsetchange)
+        {
+            alert = new AlertDialog.Builder(MemoActivity.this);
+            alert.setTitle(R.string.menu_memo_charsetChange);
+            alert.setItems(R.array.menu_memo_charset, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface _dialog, int _which) {
+                    String txtData = txtManager.openText(openFileURL, 0, enhance, _which);
+                    editText.setText(txtData);
+                    formatType = _which;
+                    _dialog.dismiss();
+                }
+            });
+            alert.show();
+
+        }
+        return super.onOptionsItemSelected(_item);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int _requestCode, int _resultCode, Intent _data)
     {
-        if(resultCode == RESULT_OK)
+        if(_resultCode == RESULT_OK)
         {
-            if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE)
+            if(_requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE)
             {
-                String folderURL = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
-                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
+                String folderURL = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
+                String fileName = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
                 if(txtManager.saveText(editText.getText().toString(), folderURL + fileName, enhance))
                 {
                     Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName), Toast.LENGTH_SHORT).show();
@@ -112,10 +132,10 @@ public class MemoActivity extends AppCompatActivity {
                     Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName), Toast.LENGTH_SHORT).show();
                 }
             }
-            else if(requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE)
+            else if(_requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE)
             {
-                String folderURL = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
-                String fileName = data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
+                String folderURL = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
+                String fileName = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
                 if(txtManager.saveText(editText.getText().toString(), folderURL + fileName, enhance))
                 {
                     Toast.makeText(context_this, R.string.memo_toast_saveSuccess_internal, Toast.LENGTH_SHORT).show();
@@ -130,9 +150,9 @@ public class MemoActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle _savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_memo);
 
         context_this = getApplicationContext();
@@ -148,6 +168,7 @@ public class MemoActivity extends AppCompatActivity {
         logManager = new LogManager();
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         btnLayout = (LinearLayout)findViewById(R.id.memo_layoutButton);
+        formatType = Constant.ENCODE_TYPE_UTF8;
 
         if(memoType == Constant.MEMO_TYPE_NEW)
         {
@@ -190,16 +211,17 @@ public class MemoActivity extends AppCompatActivity {
                 nextRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_NEXT, enhance);
+                        txtManager.setLines(pref.getInt("Lines", Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
+                        String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_NEXT, enhance, formatType);
                         editText.setText(txtData);
                         editText.setFocusable(false);
-
                     }
                 };
                 prevRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_PREV, enhance);
+                        txtManager.setLines(pref.getInt("Lines", Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
+                        String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_PREV, enhance, formatType);
                         editText.setText(txtData);
                         editText.setFocusable(false);
                     }
@@ -217,7 +239,7 @@ public class MemoActivity extends AppCompatActivity {
                     btnNext = (Button)findViewById(R.id.memo_btnNext);
                     scrollView = (ScrollView)findViewById(R.id.memo_scroll);
                     btnPrev.setEnabled(false);
-                    if(txtManager.getStrBlockLength() <= 1)
+                    if(!txtManager.isNext())
                     {
                         btnNext.setEnabled(false);
                     }
@@ -232,7 +254,7 @@ public class MemoActivity extends AppCompatActivity {
                 nextRunnable = new Runnable() {
                     @Override
                     public void run() {
-                        String txtData = txtManager.openText(openFileURL, 0, enhance);
+                        String txtData = txtManager.openText(openFileURL, 0, enhance, formatType);
                         editText.setText(txtData);
                         editText.setFocusable(false);
                     }
@@ -265,6 +287,7 @@ public class MemoActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         editText = null;
+        txtManager.initManager();
         txtManager = null;
         logManager = null;
         nextRunnable = null;
@@ -299,10 +322,10 @@ public class MemoActivity extends AppCompatActivity {
             {
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == AlertDialog.BUTTON_POSITIVE)
+                    public void onClick(DialogInterface _dialog, int _which) {
+                        if(_which == AlertDialog.BUTTON_POSITIVE)
                         {
-                            Log.e("Debug", "which : " + Integer.toString(which));
+                            Log.e("Debug", "which : " + Integer.toString(_which));
                             Log.e("Debug", "memoType : " + Integer.toString(memoType));
                             if(memoType == Constant.MEMO_TYPE_NEW)
                             {
@@ -310,8 +333,8 @@ public class MemoActivity extends AppCompatActivity {
                                 alert.setTitle(R.string.memo_alert_save_context);
                                 alert.setItems(R.array.main_selectalert, new DialogInterface.OnClickListener(){
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if(which == Constant.MEMO_SAVE_SELECT_TYPE_EXTERNAL)
+                                    public void onClick(DialogInterface _dialog, int _which) {
+                                        if(_which == Constant.MEMO_SAVE_SELECT_TYPE_EXTERNAL)
                                         {
                                             Intent intent = new Intent();
                                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -320,7 +343,7 @@ public class MemoActivity extends AppCompatActivity {
                                             intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
                                             startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
                                         }
-                                        else if(which == Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL)
+                                        else if(_which == Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL)
                                         {
                                             if(txtManager.isFileopen())
                                             {
@@ -335,7 +358,7 @@ public class MemoActivity extends AppCompatActivity {
                                             }
                                             finish();
                                         }
-                                        dialog.dismiss();
+                                        _dialog.dismiss();
                                     }
                                 });
                                 alert.show();
@@ -346,11 +369,11 @@ public class MemoActivity extends AppCompatActivity {
                                 finish();
                             }
                         }
-                        else if(which == AlertDialog.BUTTON_NEGATIVE)
+                        else if(_which == AlertDialog.BUTTON_NEGATIVE)
                         {
                             finish();
                         }
-                        dialog.dismiss();
+                        _dialog.dismiss();
                     }
                 };
                 alert = new AlertDialog.Builder(this);
@@ -396,9 +419,9 @@ public class MemoActivity extends AppCompatActivity {
         catch(Exception e){e.printStackTrace();}
     }
 
-    public void onClick(final View v)
+    public void onClick(final View _v)
     {
-        int id = v.getId();
+        int id = _v.getId();
         if(id == R.id.memo_btnPrev)
         {
             runOnUiThread(prevRunnable);
@@ -419,7 +442,7 @@ public class MemoActivity extends AppCompatActivity {
 
     private void buttonEnabler()
     {
-        if(txtManager.getCurBlockIndex() - 1 <= -1)
+        if(!txtManager.isPrev())
         {
             btnPrev.setEnabled(false);
         }
@@ -427,7 +450,7 @@ public class MemoActivity extends AppCompatActivity {
         {
             btnPrev.setEnabled(true);
         }
-        if(txtManager.getCurBlockIndex() + 1 >= txtManager.getStrBlockLength())
+        if(!txtManager.isNext())
         {
             btnNext.setEnabled(false);
         }

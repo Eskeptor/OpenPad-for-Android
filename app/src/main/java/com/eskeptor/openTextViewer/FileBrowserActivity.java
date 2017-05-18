@@ -13,13 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.eskeptor.openTextViewer.datatype.FileObject;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -53,9 +53,9 @@ public class FileBrowserActivity extends AppCompatActivity
     private AlertDialog.Builder dialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle _savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_filebrowser);
 
         context_this = getApplicationContext();
@@ -85,15 +85,15 @@ public class FileBrowserActivity extends AppCompatActivity
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
+            public void onItemClick(AdapterView<?> _parent, View _view, final int _position, long _id)
             {
-                final File file = new File(fileObjects.get(position).url);
+                final File file = new File(fileObjects.get(_position).url);
 
                 if(file.isDirectory())
                 {
                     if(file.canRead())
                     {
-                        getDirectory(fileObjects.get(position).url);
+                        getDirectory(fileObjects.get(_position).url);
                     }
                 }
                 else if(file.isFile())
@@ -104,7 +104,7 @@ public class FileBrowserActivity extends AppCompatActivity
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.setClass(context_this, MemoActivity.class);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(position).url);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(_position).url);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, true);
@@ -118,7 +118,7 @@ public class FileBrowserActivity extends AppCompatActivity
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.setClass(context_this, MemoActivity.class);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(position).url);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(_position).url);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
                         startActivity(intent);
@@ -131,10 +131,10 @@ public class FileBrowserActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public boolean onCreateOptionsMenu(Menu _menu)
     {
-        getMenuInflater().inflate(R.menu.menu_filebrowser, menu);
-        MenuItem item = menu.findItem(R.id.menu_spinner);
+        getMenuInflater().inflate(R.menu.menu_filebrowser, _menu);
+        MenuItem item = _menu.findItem(R.id.menu_spinner);
         Spinner menu_spinner = (Spinner) MenuItemCompat.getActionView(item);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.menu_spinner_sort, R.layout.spinner_layout);
@@ -142,14 +142,14 @@ public class FileBrowserActivity extends AppCompatActivity
         menu_spinner.setAdapter(adapter);
         menu_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            public void onItemSelected(AdapterView<?> _parent, View _view, int _position, long _id)
             {
-                if(position == Constant.BROWSER_MENU_SORT_ASC)
+                if(_position == Constant.BROWSER_MENU_SORT_ASC)
                 {
                     sortType = Constant.BROWSER_MENU_SORT_ASC;
                     getDirectory(str_filename);
                 }
-                else if(position == Constant.BROWSER_MENU_SORT_DES)
+                else if(_position == Constant.BROWSER_MENU_SORT_DES)
                 {
                     sortType = Constant.BROWSER_MENU_SORT_DES;
                     getDirectory(str_filename);
@@ -157,10 +157,7 @@ public class FileBrowserActivity extends AppCompatActivity
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-
-            }
+            public void onNothingSelected(AdapterView<?> _parent) {}
         });
 
         return true;
@@ -196,9 +193,9 @@ public class FileBrowserActivity extends AppCompatActivity
         context_this = null;
     }
 
-    public void onClick(View v)
+    public void onClick(View _v)
     {
-        if(v.getId() == R.id.browser_btnSave)
+        if(_v.getId() == R.id.browser_btnSave)
         {
             Pattern pattern = Pattern.compile(Constant.REGEX);
             if(!etxtSave.getText().toString().equals("") && pattern.matcher(etxtSave.getText().toString()).matches())
@@ -218,9 +215,9 @@ public class FileBrowserActivity extends AppCompatActivity
                     dialog.setMessage(R.string.filebrowser_dialog_exist_context);
                     DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which)
+                        public void onClick(DialogInterface _dialog, int _which)
                         {
-                            if(which == AlertDialog.BUTTON_POSITIVE)
+                            if(_which == AlertDialog.BUTTON_POSITIVE)
                             {
                                 Intent intent = new Intent();
                                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, str_filename + File.separator);
@@ -228,11 +225,11 @@ public class FileBrowserActivity extends AppCompatActivity
                                 setResult(RESULT_OK, intent);
                                 finish();
                             }
-                            else if(which == AlertDialog.BUTTON_NEGATIVE)
+                            else if(_which == AlertDialog.BUTTON_NEGATIVE)
                             {
                                 etxtSave.setText("");
                             }
-                            dialog.dismiss();
+                            _dialog.dismiss();
                         }
                     };
                     dialog.setPositiveButton(R.string.filebrowser_dialog_exist_overwrite, clickListener);
@@ -248,7 +245,7 @@ public class FileBrowserActivity extends AppCompatActivity
         }
     }
 
-    public void getDirectory(final String dir)
+    public void getDirectory(final String _dir)
     {
         if(fileObjects != null && !fileObjects.isEmpty())
         {
@@ -256,16 +253,16 @@ public class FileBrowserActivity extends AppCompatActivity
         }
         fileObjects = new ArrayList<>();
 
-        File file = new File(dir);
+        File file = new File(_dir);
         File files[];
         if(browserType == Constant.BROWSER_TYPE_OPEN_EXTERNAL)
         {
             files = file.listFiles(new FileFilter() {
                 @Override
-                public boolean accept(File pathname)
+                public boolean accept(File _pathname)
                 {
-                    String name = pathname.getName();
-                    return pathname.isDirectory() || name.endsWith(Constant.FILE_TEXT_EXTENSION);
+                    String name = _pathname.getName();
+                    return _pathname.isDirectory() || name.endsWith(Constant.FILE_TEXT_EXTENSION);
                 }
             });
         }
@@ -273,9 +270,9 @@ public class FileBrowserActivity extends AppCompatActivity
         {
             files = file.listFiles(new FileFilter() {
                 @Override
-                public boolean accept(File pathname)
+                public boolean accept(File _pathname)
                 {
-                    return pathname.isDirectory();
+                    return _pathname.isDirectory();
                 }
             });
         }
@@ -301,39 +298,39 @@ public class FileBrowserActivity extends AppCompatActivity
             }
         }
 
-        txtPath.setText(getResources().getString(R.string.filebrowser_Location) + " " + dir);
+        txtPath.setText(getResources().getString(R.string.filebrowser_Location) + " " + _dir);
 
         if(fileObjectAdaptor != null)
             fileObjectAdaptor = null;
 
         fileObjectAdaptor = new FileObjectAdaptor(this, fileObjects);
         fileList.setAdapter(fileObjectAdaptor);
-        str_filename = dir;
+        str_filename = _dir;
     }
 
-    private void sortFileArray(File[] files, final int sortType)
+    private void sortFileArray(File[] _files, final int _sortType)
     {
-        Arrays.sort(files, new Comparator<File>() {
+        Arrays.sort(_files, new Comparator<File>() {
             @Override
-            public int compare(File o1, File o2)
+            public int compare(File _o1, File _o2)
             {
-                if(sortType == Constant.BROWSER_MENU_SORT_ASC)
+                if(_sortType == Constant.BROWSER_MENU_SORT_ASC)
                 {
-                    return (o1.getName().compareTo(o2.getName()));
+                    return (_o1.getName().compareTo(_o2.getName()));
                 }
                 else
                 {
-                    return (o2.getName().compareTo(o1.getName()));
+                    return (_o2.getName().compareTo(_o1.getName()));
                 }
             }
         });
     }
 
-    private boolean isExist(final String filename)
+    private boolean isExist(final String _filename)
     {
         for(int i = 0; i < fileObjects.size(); i++)
         {
-            if(filename.equals(fileObjects.get(i).name))
+            if(_filename.equals(fileObjects.get(i).name))
             {
                 return true;
             }

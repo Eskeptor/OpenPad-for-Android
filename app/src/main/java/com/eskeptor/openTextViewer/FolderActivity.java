@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
+import com.eskeptor.openTextViewer.datatype.FolderObject;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 public class FolderActivity extends AppCompatActivity
 {
-    private ArrayList<Folder> folders;
+    private ArrayList<FolderObject> folders;
     private FolderAdaptor folderAdaptor;
     private Context context_this;
     private EditText editText;
@@ -38,16 +39,16 @@ public class FolderActivity extends AppCompatActivity
     private AdapterView.OnItemClickListener clickListener;
     private AdapterView.OnItemLongClickListener longClickListener;
 
-    public boolean onCreateOptionsMenu(Menu menu)
+    public boolean onCreateOptionsMenu(Menu _menu)
     {
-        getMenuInflater().inflate(R.menu.menu_folder, menu);
+        getMenuInflater().inflate(R.menu.menu_folder, _menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onOptionsItemSelected(MenuItem _item)
     {
-        if(item.getItemId() == R.id.menu_folderAdd)
+        if(_item.getItemId() == R.id.menu_folderAdd)
         {
             dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.folder_dialog_title_create);
@@ -56,9 +57,9 @@ public class FolderActivity extends AppCompatActivity
             dialog.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which)
+                public void onClick(DialogInterface _dialog, int _which)
                 {
-                    if(which == AlertDialog.BUTTON_POSITIVE)
+                    if(_which == AlertDialog.BUTTON_POSITIVE)
                     {
                         newFolderName = editText.getText().toString();
                         if(!newFolderName.equals(""))
@@ -74,14 +75,14 @@ public class FolderActivity extends AppCompatActivity
                             }
                         }
                     }
-                    dialog.dismiss();
+                    _dialog.dismiss();
                 }
             };
             dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
             dialog.setPositiveButton(R.string.folder_dialog_button_create, clickListener);
             dialog.show();
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(_item);
     }
 
     @Override
@@ -93,9 +94,9 @@ public class FolderActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle _savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_folder);
 
         context_this = getApplicationContext();
@@ -105,8 +106,8 @@ public class FolderActivity extends AppCompatActivity
         folders = new ArrayList<>();
         clickListener = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == folders_length)
+            public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+                if(_position == folders_length)
                 {
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -118,7 +119,7 @@ public class FolderActivity extends AppCompatActivity
                 else
                 {
                     Intent intent = new Intent();
-                    intent.putExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL, folders.get(position).url);
+                    intent.putExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL, folders.get(_position).url);
                     setResult(RESULT_OK, intent);
                 }
                 finish();
@@ -127,15 +128,15 @@ public class FolderActivity extends AppCompatActivity
         };
         longClickListener = new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> _parent, View _view, int _position, long _id) {
 
-                if(position == folders_length)
+                if(_position == folders_length)
                 {
                     return false;
                 }
                 else
                 {
-                    deleteFolder(position);
+                    deleteFolder(_position);
                     return true;
                 }
             }
@@ -147,8 +148,8 @@ public class FolderActivity extends AppCompatActivity
                 File file = new File(Constant.APP_INTERNAL_URL);
                 File files[] = file.listFiles(new FileFilter() {
                     @Override
-                    public boolean accept(File pathname) {
-                        return pathname.isDirectory();
+                    public boolean accept(File _pathname) {
+                        return _pathname.isDirectory();
                     }
                 });
                 folders_length = files.length;
@@ -156,16 +157,16 @@ public class FolderActivity extends AppCompatActivity
                 folders.clear();
                 for(int i = 0; i < files.length; i++)
                 {
-                    folders.add(new Folder(files[i].getName(), files[i].listFiles(new FileFilter() {
+                    folders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                         @Override
-                        public boolean accept(File pathname) {
-                            return pathname.isFile() && (pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
-                                    || pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
+                        public boolean accept(File _pathname) {
+                            return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                    || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
                         }
                     }).length, checkFolderType(files[i]), context_this));
                 }
                 // 파일 브라우저 연결
-                folders.add(new Folder(getResources().getString(R.string.folder_externalBrowser), Constant.FOLDER_TYPE_EXTERNAL, Constant.FOLDER_TYPE_EXTERNAL, null));
+                folders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), Constant.FOLDER_TYPE_EXTERNAL, Constant.FOLDER_TYPE_EXTERNAL, null));
                 if(folderAdaptor == null)
                 {
                     folderAdaptor = new FolderAdaptor(context_this, folders);
@@ -201,26 +202,26 @@ public class FolderActivity extends AppCompatActivity
         longClickListener = null;
     }
 
-    private int checkFolderType(final File file)
+    private int checkFolderType(final File _file)
     {
-        if(file.getName().equals(Constant.FOLDER_DEFAULT_NAME))
+        if(_file.getName().equals(Constant.FOLDER_DEFAULT_NAME))
         {
             return Constant.FOLDER_TYPE_DEFAULT;
         }
         return Constant.FOLDER_TYPE_CUSTOM;
     }
 
-    private void deleteFolder(final int index)
+    private void deleteFolder(final int _index)
     {
         dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.folder_dialog_title_delete);
         dialog.setMessage(R.string.folder_dialog_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(which == AlertDialog.BUTTON_POSITIVE)
+            public void onClick(DialogInterface _dialog, int _which) {
+                if(_which == AlertDialog.BUTTON_POSITIVE)
                 {
-                    File file = new File(folders.get(index).url);
+                    File file = new File(folders.get(_index).url);
                     if(file.exists())
                     {
                         if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)
@@ -239,7 +240,7 @@ public class FolderActivity extends AppCompatActivity
                         Toast.makeText(context_this, getString(R.string.error_folder_not_exist), Toast.LENGTH_SHORT).show();
                     }
                 }
-                dialog.dismiss();
+                _dialog.dismiss();
             }
         };
         dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);

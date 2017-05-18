@@ -106,7 +106,7 @@
     <string name="settings_help_main_openfolder_context">좌측 상단의 \"폴더 열기\"버튼을 누르면 해당 폴더에 들어있는 메모를 볼 수 있습니다.</string>
     <string name="settings_help_title_ect">기타 사항</string>
     <string name="settings_help_etc_filecolor">외부 파일탐색기에서 메모파일의 색상</string>
-    <string name="settings_help_etc_filecolor_context">파일의 색은 3가지 입니다.\n빨간색 : 파일 열기에 안정성을 보장하지 않음(1MB 이상 파일)\n노란색 : 파일은 열어지나 조금은 느려짐(500KB 이상 파일)\n검정색 : 파일 열기에 안정성을 보장하는 파일(500KB 미만 파일)\n(1MB = 1024KB)</string>
+    <string name="settings_help_etc_filecolor_context">파일의 색은 3가지 입니다.\n빨간색 : 파일 열기에 안정성을 보장하지 않음(1MB 이상 파일)\n노란색 : 파일은 열어지나 조금은 느려짐(500KB 이상 파일)\n검정색 : 파일 열기에 안정성을 보장하는 파일(500KB 미만 파일)\n(1MB = 1024KB)\n(하지만 "향상된 파일열기" 모드에서는 어떤용량의 파일이든 열 수 있습니다.)</string>
     <string name="main_dialog_restart_title">종료</string>
     <string name="main_dialog_restart_context">권한 획득을 위해 종료합니다.\n(종료 후에 재시작 해주세요.)</string>
     <string name="main_dialog_restart_title_no">경고</string>
@@ -137,7 +137,7 @@
     <string name="file_imagememo">그림 메모</string>
     <string name="main_dialog_update_title">업데이트 내역</string>
     <string name="memo_btnTop">맨 위로</string>
-    <string name="settings_separator_expfunc">실험중인 기능</string>
+    <string name="settings_separator_expfunc">향상된 기능</string>
     <string name="settings_expfunc_enhanceIO_title">향상된 파일 열기</string>
     <string name="settings_expfunc_enhanceIO_summary">500KB가 넘는 파일을 안전하게 열기</string>
     <string name="settings_dialog_expfunc_title">경고</string>
@@ -157,4 +157,14 @@
     <string name="settings_information_updatelist_title">업데이트 내역</string>
     <string name="settings_information_updatelist_summary">업데이트 내용을 보여줍니다.</string>
     <string name="error_folder_not_exist">폴더가 존재하지 않습니다.</string>
+    <string name="menu_memo_charsetChange">출력 포멧 변경</string>
+    <string-array name="menu_memo_charset">
+        <item>EUC-KR</item>
+        <item>UTF-8</item>
+    </string-array>
+    <string name="settings_expfunc_enhanceIO_Line_title">문장의 개수</string>
+    <string name="settings_expfunc_enhanceIO_Line_summary">한 번에 불러 오는 문장의 수를 설정합니다.</string>
+    <string name="settings_dialog_expfunc_enhanceIO_Line">권장 : 100 ~ 200</string>
+    <string name="settings_help_etc_fontbroken">글씨 깨짐</string>
+    <string name="settings_help_etc_fontbroken_context">인코딩 방식에 따라서 파일이 깨져보일수 있습니다.\n깨진 파일을 열어서 오른쪽 상단의 메뉴버튼(...)을 눌러서 "출력 포멧 변경"을 선택하여 인코딩을 변경해보세요.</string>
 </resources>

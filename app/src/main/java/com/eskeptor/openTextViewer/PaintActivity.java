@@ -18,11 +18,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import com.eskeptor.openTextViewer.datatype.BrushObject;
+import com.eskeptor.openTextViewer.textManager.LogManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class PaintActivity extends AppCompatActivity {
     private PaintFunction paintFunction;
@@ -63,8 +64,8 @@ public class PaintActivity extends AppCompatActivity {
     private static MenuItem undo;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(final Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_paint);
 
         context_this = getApplicationContext();
@@ -96,59 +97,59 @@ public class PaintActivity extends AppCompatActivity {
 
         SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(seekBar == brushSeekSize)
+            public void onProgressChanged(SeekBar _seekBar, int _progress, boolean _fromUser) {
+                if(_seekBar == brushSeekSize)
                 {
-                    brushTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), progress));
+                    brushTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), _progress));
                 }
-                if(seekBar == brushSeekRed)
+                if(_seekBar == brushSeekRed)
                 {
-                    brushTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
+                    brushTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), _progress));
                 }
-                if(seekBar == brushSeekGreen)
+                if(_seekBar == brushSeekGreen)
                 {
-                    brushTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
+                    brushTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), _progress));
                 }
-                if(seekBar == brushSeekBlue)
+                if(_seekBar == brushSeekBlue)
                 {
-                    brushTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
+                    brushTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), _progress));
                 }
-                if(seekBar == eraserSeekSize)
+                if(_seekBar == eraserSeekSize)
                 {
-                    eraserTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), progress));
+                    eraserTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), _progress));
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(final SeekBar seekBar) {
+            public void onStartTrackingTouch(final SeekBar _seekBar) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if(seekBar == brushSeekSize)
+            public void onStopTrackingTouch(SeekBar _seekBar) {
+                if(_seekBar == brushSeekSize)
                 {
-                    curBrushValue = seekBar.getProgress();
+                    curBrushValue = _seekBar.getProgress();
                     paintFunction.setLineWidth(curBrushValue);
                 }
-                if(seekBar == brushSeekRed)
+                if(_seekBar == brushSeekRed)
                 {
-                    curRedValue = seekBar.getProgress();
+                    curRedValue = _seekBar.getProgress();
                     paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
                 }
-                if(seekBar == brushSeekGreen)
+                if(_seekBar == brushSeekGreen)
                 {
-                    curGreenValue = seekBar.getProgress();
+                    curGreenValue = _seekBar.getProgress();
                     paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
                 }
-                if(seekBar == brushSeekBlue)
+                if(_seekBar == brushSeekBlue)
                 {
-                    curBlueValue = seekBar.getProgress();
+                    curBlueValue = _seekBar.getProgress();
                     paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
                 }
-                if(seekBar == eraserSeekSize)
+                if(_seekBar == eraserSeekSize)
                 {
-                    curEraserSize = seekBar.getProgress();
+                    curEraserSize = _seekBar.getProgress();
                     paintFunction.setLineWidth(curEraserSize);
                 }
             }
@@ -189,16 +190,16 @@ public class PaintActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_paint, menu);
-        undo = menu.findItem(R.id.menu_paint_undo);
+    public boolean onCreateOptionsMenu(final Menu _menu) {
+        getMenuInflater().inflate(R.menu.menu_paint, _menu);
+        undo = _menu.findItem(R.id.menu_paint_undo);
         undo.setVisible(false);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem _item) {
+        int id = _item.getItemId();
         if(id == R.id.menu_paint_pen)
         {
             paintFunction.changePaint(Constant.PAINT_TYPE_BRUSH);
@@ -243,7 +244,7 @@ public class PaintActivity extends AppCompatActivity {
             paintFunction.undoCanvas();
             paintFunction.invalidate();
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(_item);
     }
 
     @Override
@@ -277,8 +278,8 @@ public class PaintActivity extends AppCompatActivity {
         {
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(which == AlertDialog.BUTTON_POSITIVE)
+                public void onClick(DialogInterface _dialog, int _which) {
+                    if(_which == AlertDialog.BUTTON_POSITIVE)
                     {
                         if(memoType == Constant.MEMO_TYPE_NEW)
                         {
@@ -286,8 +287,8 @@ public class PaintActivity extends AppCompatActivity {
                             alert.setTitle(R.string.memo_alert_save_context);
                             alert.setItems(R.array.main_selectalert, new DialogInterface.OnClickListener(){
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if(which == Constant.MEMO_SAVE_SELECT_TYPE_EXTERNAL)
+                                public void onClick(DialogInterface _dialog, int _which) {
+                                    if(_which == Constant.MEMO_SAVE_SELECT_TYPE_EXTERNAL)
                                     {
                                         Intent intent = new Intent();
                                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -296,7 +297,7 @@ public class PaintActivity extends AppCompatActivity {
                                         intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
                                         startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
                                     }
-                                    else if(which == Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL)
+                                    else if(_which == Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL)
                                     {
                                         if(paintFunction.isFileopen())
                                         {
@@ -311,7 +312,7 @@ public class PaintActivity extends AppCompatActivity {
                                         }
                                         finish();
                                     }
-                                    dialog.dismiss();
+                                    _dialog.dismiss();
                                 }
                             });
                             alert.show();
@@ -322,11 +323,11 @@ public class PaintActivity extends AppCompatActivity {
                             finish();
                         }
                     }
-                    else if(which == AlertDialog.BUTTON_NEGATIVE)
+                    else if(_which == AlertDialog.BUTTON_NEGATIVE)
                     {
                         finish();
                     }
-                    dialog.dismiss();
+                    _dialog.dismiss();
                 }
             };
             alert = new AlertDialog.Builder(this);
@@ -423,18 +424,18 @@ public class PaintActivity extends AppCompatActivity {
         private String filename;
         private boolean modified;
 
-        public PaintFunction(final Context context)
+        public PaintFunction(final Context _context)
         {
-            super(context);
-            DisplayMetrics displayMetrics = context.getApplicationContext().getResources().getDisplayMetrics();
+            super(_context);
+            DisplayMetrics displayMetrics = _context.getApplicationContext().getResources().getDisplayMetrics();
             screenWidth = displayMetrics.widthPixels;
             screenHeight = displayMetrics.heightPixels;
         }
 
-        public PaintFunction(final Context context, final AttributeSet attributeSet)
+        public PaintFunction(final Context _context, final AttributeSet _attributeSet)
         {
-            super(context, attributeSet);
-            DisplayMetrics displayMetrics = context.getApplicationContext().getResources().getDisplayMetrics();
+            super(_context, _attributeSet);
+            DisplayMetrics displayMetrics = _context.getApplicationContext().getResources().getDisplayMetrics();
             screenWidth = displayMetrics.widthPixels;
             screenHeight = displayMetrics.heightPixels;
         }
@@ -510,10 +511,10 @@ public class PaintActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onDraw(final Canvas canvas) {
+        protected void onDraw(final Canvas _canvas) {
             if(bitmap != null)
             {
-                canvas.drawBitmap(bitmap, 0, 0, canvasPaint);
+                _canvas.drawBitmap(bitmap, 0, 0, canvasPaint);
             }
         }
 
@@ -530,11 +531,11 @@ public class PaintActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean onTouchEvent(final MotionEvent event) {
-            curX = event.getX();
-            curY = event.getY();
+        public boolean onTouchEvent(final MotionEvent _event) {
+            curX = _event.getX();
+            curY = _event.getY();
 
-            if((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
+            if((_event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN)
             {
                 path.reset();
                 path.moveTo(curX, curY);
@@ -543,7 +544,7 @@ public class PaintActivity extends AppCompatActivity {
                 invalidate();
                 return true;
             }
-            else if((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_MOVE)
+            else if((_event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_MOVE)
             {
                 if(Math.abs(curX - prevX) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(curY - prevY) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL)
                 {
@@ -555,7 +556,7 @@ public class PaintActivity extends AppCompatActivity {
                 invalidate();
                 return true;
             }
-            else if((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP)
+            else if((_event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP)
             {
                 brushObject.brushPaths.add(new Path(path));
                 brushObject.brushSizes.add(brushPaint.getStrokeWidth());
@@ -569,16 +570,16 @@ public class PaintActivity extends AppCompatActivity {
             return false;
         }
 
-        public void setColor(final int color)
+        public void setColor(final int _color)
         {
-            curColor = color;
+            curColor = _color;
             brushPaint.setColor(curColor);
             invalidate();
         }
 
-        public void setLineWidth(final float lineWidth)
+        public void setLineWidth(final float _lineWidth)
         {
-            curSize = lineWidth;
+            curSize = _lineWidth;
             brushPaint.setStrokeWidth(curSize);
             invalidate();
         }
@@ -595,34 +596,39 @@ public class PaintActivity extends AppCompatActivity {
             return fileopen;
         }
 
-        public void setBitmap(final int memoType, final String folderUrl, @Nullable final String fileName)
+        public void setBitmap(final int _memoType, final String _folderUrl, @Nullable final String _fileName)
         {
-            if(memoType == Constant.MEMO_TYPE_NEW)
+            if(_memoType == Constant.MEMO_TYPE_NEW)
             {
-                this.folderUrl = folderUrl;
+                this.folderUrl = _folderUrl;
                 fileopen = false;
             }
             else
             {
-                this.filename = folderUrl;
+                this.filename = _folderUrl;
                 fileopen = true;
             }
             reset();
         }
 
-        public void savePaint(final String dir)
+        public void savePaint(final String _dir)
         {
             FileOutputStream fos = null;
             this.draw(canvas);
             try
             {
-                fos = new FileOutputStream(new File(dir));
+                fos = new FileOutputStream(new File(_dir));
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             }
             catch (Exception e){e.printStackTrace();}
             finally {
-                try{fos.close();}
-                catch (Exception e){e.printStackTrace();}
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 
@@ -649,9 +655,9 @@ public class PaintActivity extends AppCompatActivity {
             invalidate();
         }
 
-        public void changePaint(final int type)
+        public void changePaint(final int _type)
         {
-            if(type == Constant.PAINT_TYPE_BRUSH)
+            if(_type == Constant.PAINT_TYPE_BRUSH)
             {
                 brushPaint.setColor(curColor);
             }
@@ -699,10 +705,8 @@ public class PaintActivity extends AppCompatActivity {
             {
                 brushPaint.setStrokeWidth(brushObject.brushSizes.get(i));
                 brushPaint.setColor(brushObject.brushColor.get(i));
-                Log.e("Debug", "color : " + Integer.toString(brushObject.brushColor.get(i)));
                 canvas.drawPath(brushObject.brushPaths.get(i), brushPaint);
             }
-            //brushPaint.setColor(curColor);
             brushPaint.setStrokeWidth(curSize);
         }
     }

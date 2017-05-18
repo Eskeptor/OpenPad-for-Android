@@ -9,8 +9,8 @@ import java.io.InputStream;
 
 public class UpdateListActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_update_list);
 
         InputStream inputStream = null;
@@ -30,10 +30,20 @@ public class UpdateListActivity extends AppCompatActivity {
         }
         catch (Exception e) { e.printStackTrace(); }
         finally {
-            try{byteArrayOutputStream.close();}
-            catch (Exception e){e.printStackTrace();}
-            try{inputStream.close();}
-            catch (Exception e){e.printStackTrace();}
+            if (byteArrayOutputStream != null){
+                try {
+                    byteArrayOutputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         TextView updatelist = (TextView)findViewById(R.id.updateList_contents);

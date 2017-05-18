@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.eskeptor.openTextViewer.datatype.FolderObject;
 
 import java.util.ArrayList;
 
@@ -28,27 +29,27 @@ public class FolderAdaptor extends BaseAdapter
 {
     private Context context;
 
-    private ArrayList<Folder> folders;
+    private ArrayList<FolderObject> folders;
     private Drawable drawableFolderNormal;
     private Drawable drawableFolderRoot;
     private Drawable drawableFolderExternal;
 
-    public FolderAdaptor(final Context context, final ArrayList<Folder> folders)
+    public FolderAdaptor(final Context _context, final ArrayList<FolderObject> _folders)
     {
-        this.context = context;
-        this.folders = folders;
+        this.context = _context;
+        this.folders = _folders;
 
         if(Build.VERSION.SDK_INT >= 21)
         {
-            drawableFolderNormal = context.getResources().getDrawable(R.drawable.ic_folder_black_24dp, null);
-            drawableFolderRoot = context.getResources().getDrawable(R.drawable.ic_folder_shared_black_24dp, null);
-            drawableFolderExternal = context.getResources().getDrawable(R.drawable.ic_folder_open_black, null);
+            drawableFolderNormal = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp, null);
+            drawableFolderRoot = _context.getResources().getDrawable(R.drawable.ic_folder_shared_black_24dp, null);
+            drawableFolderExternal = _context.getResources().getDrawable(R.drawable.ic_folder_open_black, null);
         }
         else
         {
-            drawableFolderNormal = context.getResources().getDrawable(R.drawable.ic_folder_black_24dp);
-            drawableFolderRoot = context.getResources().getDrawable(R.drawable.ic_folder_shared_black_24dp);
-            drawableFolderExternal = context.getResources().getDrawable(R.drawable.ic_folder_open_black);
+            drawableFolderNormal = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp);
+            drawableFolderRoot = _context.getResources().getDrawable(R.drawable.ic_folder_shared_black_24dp);
+            drawableFolderExternal = _context.getResources().getDrawable(R.drawable.ic_folder_open_black);
         }
     }
 
@@ -59,38 +60,38 @@ public class FolderAdaptor extends BaseAdapter
     }
 
     @Override
-    public Object getItem(int position)
+    public Object getItem(int _position)
     {
-        return folders.get(position);
+        return folders.get(_position);
     }
 
     @Override
-    public long getItemId(int position)
+    public long getItemId(int _position)
     {
         return 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int _position, View _convertView, ViewGroup _parent)
     {
         FolderViewHolder holder;
 
-        if(convertView == null)
+        if(_convertView == null)
         {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_folder_layout, null);
+            _convertView = LayoutInflater.from(context).inflate(R.layout.item_folder_layout, null);
             holder = new FolderViewHolder();
-            holder.image = (ImageView)convertView.findViewById(R.id.item_folder_image);
-            holder.name = (TextView)convertView.findViewById(R.id.item_folder_name);
-            holder.count = (TextView)convertView.findViewById(R.id.item_folder_count);
+            holder.image = (ImageView)_convertView.findViewById(R.id.item_folder_image);
+            holder.name = (TextView)_convertView.findViewById(R.id.item_folder_name);
+            holder.count = (TextView)_convertView.findViewById(R.id.item_folder_count);
 
-            convertView.setTag(holder);
+            _convertView.setTag(holder);
         }
         else
         {
-            holder = (FolderViewHolder)convertView.getTag();
+            holder = (FolderViewHolder)_convertView.getTag();
         }
 
-        int type = folders.get(position).type;
+        int type = folders.get(_position).type;
         if(type == Constant.FOLDER_TYPE_DEFAULT)
         {
             holder.image.setImageDrawable(drawableFolderRoot);
@@ -104,17 +105,17 @@ public class FolderAdaptor extends BaseAdapter
             holder.image.setImageDrawable(drawableFolderNormal);
         }
 
-        holder.name.setText(folders.get(position).name);
+        holder.name.setText(folders.get(_position).name);
 
-        if(folders.get(position).count == Constant.FOLDER_TYPE_EXTERNAL)
+        if(folders.get(_position).count == Constant.FOLDER_TYPE_EXTERNAL)
         {
             holder.count.setText(null);
         }
         else
         {
-            holder.count.setText(Integer.toString(folders.get(position).count));
+            holder.count.setText(Integer.toString(folders.get(_position).count));
         }
 
-        return convertView;
+        return _convertView;
     }
 }

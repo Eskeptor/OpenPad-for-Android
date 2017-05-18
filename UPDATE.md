@@ -1,3 +1,9 @@
+## Update 2017.5.18 - Build 1.2.7
+```
+ 1) Add "Enhanced File Open"(Released Version)
+    (Not Beta)
+ 2) Changing output format can be changed(EUC-KR <-> UTF-8)
+```
 ## Update 2017.5.1 - Build 1.2.6
 ```
  1) Add Update List (Settings)

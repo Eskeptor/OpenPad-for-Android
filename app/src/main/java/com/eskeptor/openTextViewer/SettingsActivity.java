@@ -46,10 +46,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         private Preference etc_filecolor;
         private Preference etc_permission;
         private Preference etc_ad;
+        private Preference etc_fontbroken;
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreate(Bundle _savedInstanceState) {
+            super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings_help);
 
             main_list = findPreference("settings_key_main_list");
@@ -69,14 +70,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_filecolor = findPreference("settings_key_etc_filecolor");
             etc_permission = findPreference("settings_key_etc_permission");
             etc_ad = findPreference("settings_key_etc_ad");
+            etc_fontbroken = findPreference("settings_key_etc_fontbroken");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
+                public boolean onPreferenceClick(Preference _preference) {
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.setClass(getActivity(), HelpContentsActivity.class);
-                    intent.putExtra(Constant.INTENT_EXTRA_HELP_INDEX, preference.getKey());
+                    intent.putExtra(Constant.INTENT_EXTRA_HELP_INDEX, _preference.getKey());
                     startActivity(intent);
                     getActivity().overridePendingTransition(0,0);
                     return false;
@@ -100,6 +102,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_filecolor.setOnPreferenceClickListener(clickListener);
             etc_permission.setOnPreferenceClickListener(clickListener);
             etc_ad.setOnPreferenceClickListener(clickListener);
+            etc_fontbroken.setOnPreferenceClickListener(clickListener);
         }
 
         @Override
@@ -122,6 +125,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_filecolor = null;
             etc_permission = null;
             etc_ad = null;
+            etc_fontbroken = null;
         }
     }
 
@@ -129,8 +133,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     {
         private Preference textSize;
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreate(Bundle _savedInstanceState) {
+            super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings_font);
 
             textSize = findPreference("settings_key_font_fontsize");
@@ -138,8 +142,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             textSize.setDefaultValue(Float.toString(pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
             Preference.OnPreferenceClickListener  clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if(preference.getKey().equals("settings_key_font_fontsize"))
+                public boolean onPreferenceClick(Preference _preference) {
+                    if(_preference.getKey().equals("settings_key_font_fontsize"))
                     {
                         dialog = new AlertDialog.Builder(getActivity());
                         dialog.setTitle(getResources().getString(R.string.settings_font_fontsize));
@@ -150,24 +154,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         picker.setValue((int)pref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE));
                         picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
-                            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                                if(oldVal != newVal)
+                            public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
+                                if(_oldVal != _newVal)
                                 {
-                                    editor.putFloat("FontSize", newVal);
-                                    textSize.setSummary(Integer.toString(newVal));
+                                    editor.putFloat("FontSize", _newVal);
+                                    textSize.setSummary(Integer.toString(_newVal));
                                 }
                             }
                         });
                         dialog.setView(picker);
                         dialog.setPositiveButton(getResources().getString(R.string.settings_dialog_info_ok), new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which)
+                            public void onClick(DialogInterface _dialog, int _which) {
+                                switch (_which)
                                 {
                                     case AlertDialog.BUTTON_POSITIVE:
                                         break;
                                 }
-                                dialog.dismiss();
+                                _dialog.dismiss();
                             }
                         });
                         dialog.show();
@@ -195,12 +199,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         private Preference updateList;
         private CheckBoxPreference admob;
         private CheckBoxPreference enhanceIO;
+        private Preference enhanceIOLine;
 
         private long pressTime = 0;
 
         @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreate(Bundle _savedInstanceState) {
+            super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
 
             info = findPreference("settings_key_info");
@@ -211,11 +216,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             updateList = findPreference("settings_key_updatelist");
             admob = (CheckBoxPreference)findPreference("settings_key_admob");
             enhanceIO = (CheckBoxPreference)findPreference("settings_key_enhanceIO");
+            enhanceIOLine = findPreference("settings_key_enhanceIO_Line");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if(preference.getKey().equals("settings_key_info"))
+                public boolean onPreferenceClick(Preference _preference) {
+                    if(_preference.getKey().equals("settings_key_info"))
                     {
                         dialog = new AlertDialog.Builder(getActivity());
                         dialog.setTitle(getResources().getString(R.string.settings_dialog_info_title));
@@ -229,12 +235,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         dialog.setPositiveButton(R.string.settings_dialog_info_ok, null);
                         dialog.show();
                     }
-                    else if(preference.getKey().equals("settings_key_font"))
+                    else if(_preference.getKey().equals("settings_key_font"))
                     {
                         getFragmentManager().beginTransaction().replace(android.R.id.content, fontSettingAct).commit();
                         activeScene = Constant.SETTINGS_ACTIVESCREEN_FONT;
                     }
-                    else if(preference.getKey().equals("settings_key_bugreport"))
+                    else if(_preference.getKey().equals("settings_key_bugreport"))
                     {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         String[] address = {Constant.APP_DEV_MAILADDRESS};
@@ -244,12 +250,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         intent.putExtra(Intent.EXTRA_TEXT, "");
                         startActivity(Intent.createChooser(intent, getString(R.string.settings_information_bug_email_choose)));
                     }
-                    else if(preference.getKey().equals("settings_key_help"))
+                    else if(_preference.getKey().equals("settings_key_help"))
                     {
                         getFragmentManager().beginTransaction().replace(android.R.id.content, helpAct).commit();
                         activeScene = Constant.SETTINGS_ACTIVESCREEN_HELP;
                     }
-                    else if(preference.getKey().equals("settings_key_updatelist"))
+                    else if(_preference.getKey().equals("settings_key_updatelist"))
                     {
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -257,7 +263,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         startActivity(intent);
                         getActivity().overridePendingTransition(0,0);
                     }
-                    else if(preference.getKey().equals("settings_key_version"))
+                    else if(_preference.getKey().equals("settings_key_version"))
                     {
                         if (System.currentTimeMillis() > pressTime + 1000) {
                             pressTime = System.currentTimeMillis();
@@ -270,14 +276,46 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                             getActivity().overridePendingTransition(0,0);
                         }
                     }
+                    else if(_preference.getKey().equals("settings_key_enhanceIO_Line"))
+                    {
+                        dialog = new AlertDialog.Builder(getActivity());
+                        dialog.setTitle(getResources().getString(R.string.settings_expfunc_enhanceIO_Line_title));
+                        dialog.setMessage(getResources().getString(R.string.settings_dialog_expfunc_enhanceIO_Line));
+                        NumberPicker picker = new NumberPicker(getActivity());
+                        picker.setMaxValue(500);
+                        picker.setMinValue(10);
+                        picker.setValue(pref.getInt("Lines", Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
+                        picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                            @Override
+                            public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
+                                if(_oldVal != _newVal)
+                                {
+                                    editor.putInt("Lines", _newVal);
+                                }
+                            }
+                        });
+                        dialog.setView(picker);
+                        dialog.setPositiveButton(getResources().getString(R.string.settings_dialog_info_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface _dialog, int _which) {
+                                switch (_which)
+                                {
+                                    case AlertDialog.BUTTON_POSITIVE:
+                                        break;
+                                }
+                                _dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    }
                     return false;
                 }
             };
 
             CheckBoxPreference.OnPreferenceClickListener checkClickListener = new CheckBoxPreference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if(preference.getKey().equals("settings_key_admob"))
+                public boolean onPreferenceClick(Preference _preference) {
+                    if(_preference.getKey().equals("settings_key_admob"))
                     {
                         dialog = new AlertDialog.Builder(getActivity());
                         dialog.setTitle(R.string.settings_general_admob);
@@ -285,15 +323,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                         dialog.setPositiveButton(R.string.settings_dialog_info_ok, null);
                         dialog.show();
                     }
-                    else if(preference.getKey().equals("settings_key_enhanceIO"))
+                    else if(_preference.getKey().equals("settings_key_enhanceIO"))
                     {
-                        if(enhanceIO.isChecked())
+                        /*if(enhanceIO.isChecked())
                         {
                             dialog = new AlertDialog.Builder(getActivity());
                             dialog.setTitle(R.string.settings_dialog_expfunc_title);
                             dialog.setMessage(R.string.settings_dialog_expfunc_context);
                             dialog.setPositiveButton(R.string.settings_dialog_info_ok, null);
                             dialog.show();
+                        }*/
+                        if(enhanceIO.isChecked())
+                        {
+                            enhanceIOLine.setEnabled(true);
+                        }
+                        else
+                        {
+                            enhanceIOLine.setEnabled(false);
                         }
                     }
                     return false;
@@ -307,11 +353,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             updateList.setOnPreferenceClickListener(clickListener);
             version.setOnPreferenceClickListener(clickListener);
             version.setSummary(BuildConfig.VERSION_NAME);
+            enhanceIOLine.setOnPreferenceClickListener(clickListener);
 
             admob.setOnPreferenceClickListener(checkClickListener);
             admob.setChecked(pref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
             enhanceIO.setOnPreferenceClickListener(checkClickListener);
             enhanceIO.setChecked(pref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false));
+            enhanceIOLine.setEnabled(enhanceIO.isChecked());
         }
 
         @Override
@@ -347,16 +395,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     }
 
     @Override
-    protected boolean isValidFragment(String fragmentName) {
-        return PreferenceFragment.class.getName().equals(fragmentName)
-                || FontSettings.class.getName().equals(fragmentName)
-                || Settings.class.getName().equals(fragmentName)
-                || Help.class.getName().equals(fragmentName);
+    protected boolean isValidFragment(String _fragmentName) {
+        return PreferenceFragment.class.getName().equals(_fragmentName)
+                || FontSettings.class.getName().equals(_fragmentName)
+                || Settings.class.getName().equals(_fragmentName)
+                || Help.class.getName().equals(_fragmentName);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle _savedInstanceState) {
+        super.onCreate(_savedInstanceState);
         setupActionBar();
 
         helpAct = new Help();

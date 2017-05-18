@@ -1,8 +1,6 @@
 package com.eskeptor.openTextViewer;
 
-import android.os.Build;
 import android.os.Environment;
-
 import java.io.File;
 
 /**
@@ -59,7 +57,7 @@ public class Constant
     public static final boolean APP_TWICE_EXECUTE = true;
 
     public static final float SETTINGS_DEFAULT_VALUE_TEXT_SIZE = 18F;
-    
+    public static final int SETTINGS_DEFAULT_VALUE_TEXT_LINES = 200;
 
     public static final int MEMO_TYPE_NEW = 1;
     public static final int MEMO_TYPE_OPEN_INTERNAL = 2;
@@ -114,8 +112,8 @@ public class Constant
     public static final long KILOBYTE = 1024L;
     public static final long SAFE_LOAD_CAPACITY = 500L;
 
-    public static final String ENCODE_TYPE_UTF8 = "UTF-8";
-    public static final String ENCODE_TYPE_EUCKR = "EUC-KR";
+    public static final int ENCODE_TYPE_EUCKR = 0;
+    public static final int ENCODE_TYPE_UTF8 = 1;
 
     public static final int TEXTMANAGER_BUFFER = 3000;
 

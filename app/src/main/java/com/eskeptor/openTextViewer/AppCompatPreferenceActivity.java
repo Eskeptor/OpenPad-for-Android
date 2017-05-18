@@ -22,18 +22,18 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
     private AppCompatDelegate mDelegate;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle _savedInstanceState)
     {
         getDelegate().installViewFactory();
-        getDelegate().onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
+        getDelegate().onCreate(_savedInstanceState);
+        super.onCreate(_savedInstanceState);
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState)
+    protected void onPostCreate(Bundle _savedInstanceState)
     {
-        super.onPostCreate(savedInstanceState);
-        getDelegate().onPostCreate(savedInstanceState);
+        super.onPostCreate(_savedInstanceState);
+        getDelegate().onPostCreate(_savedInstanceState);
     }
 
     public ActionBar getSupportActionBar()
@@ -41,9 +41,9 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
         return getDelegate().getSupportActionBar();
     }
 
-    public void setSupportActionBar(@Nullable Toolbar toolbar)
+    public void setSupportActionBar(@Nullable Toolbar _toolbar)
     {
-        getDelegate().setSupportActionBar(toolbar);
+        getDelegate().setSupportActionBar(_toolbar);
     }
 
     @Override
@@ -53,27 +53,27 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
     }
 
     @Override
-    public void setContentView(@LayoutRes int layoutResID)
+    public void setContentView(@LayoutRes int _layoutResID)
     {
-        getDelegate().setContentView(layoutResID);
+        getDelegate().setContentView(_layoutResID);
     }
 
     @Override
-    public void setContentView(View view)
+    public void setContentView(View _view)
     {
-        getDelegate().setContentView(view);
+        getDelegate().setContentView(_view);
     }
 
     @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params)
+    public void setContentView(View _view, ViewGroup.LayoutParams _params)
     {
-        getDelegate().setContentView(view, params);
+        getDelegate().setContentView(_view, _params);
     }
 
     @Override
-    public void addContentView(View view, ViewGroup.LayoutParams params)
+    public void addContentView(View _view, ViewGroup.LayoutParams _params)
     {
-        getDelegate().addContentView(view, params);
+        getDelegate().addContentView(_view, _params);
     }
 
     @Override
@@ -84,17 +84,17 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity
     }
 
     @Override
-    protected void onTitleChanged(CharSequence title, int color)
+    protected void onTitleChanged(CharSequence _title, int _color)
     {
-        super.onTitleChanged(title, color);
-        getDelegate().setTitle(title);
+        super.onTitleChanged(_title, _color);
+        getDelegate().setTitle(_title);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
+    public void onConfigurationChanged(Configuration _newConfig)
     {
-        super.onConfigurationChanged(newConfig);
-        getDelegate().onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(_newConfig);
+        getDelegate().onConfigurationChanged(_newConfig);
     }
 
     @Override
