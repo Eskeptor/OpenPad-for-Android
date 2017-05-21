@@ -13,6 +13,7 @@ import java.util.Date;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+// MainActivity에 출력되는 리스트에서 메모들을 표현하기위한 클래스
 public class MainFileObject
 {
     public String title;

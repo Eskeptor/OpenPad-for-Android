@@ -33,24 +33,23 @@ import java.util.regex.Pattern;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+// 내장된 파일 브라우저 클래스
 public class FileBrowserActivity extends AppCompatActivity
 {
-    private TextView txtPath;
-    private ListView fileList;
+    private TextView txtPath;                       // 현재 파일 경로
+    private ListView fileList;                      // 파일 리스트
+    private String str_filename;                    // 파일 이름
+    private String str_root;                        // 파일의 절대경로
+    private ArrayList<FileObject> fileObjects;      // 파일의 목록을 저장할 배열리스트
+    private FileObjectAdaptor fileObjectAdaptor;    // 파일용 커스텀 어댑터
+    private Context context_this;                   // context
+    private AlertDialog.Builder dialog;             // 다이얼로그 재활용
+    private int browserType;                        // 외부파일 불러오기, 파일 저장하기
+    private int sortType;                           // 정렬 기준
+
+    // 파일을 다른이름으로 다른폴더에 저장할 때 쓰이는 것
     private LinearLayout saveLayout;
     private EditText etxtSave;
-
-    private String str_filename;
-    private String str_root;
-
-    private ArrayList<FileObject> fileObjects;
-    private FileObjectAdaptor fileObjectAdaptor;
-
-    private int browserType;
-    private int sortType;
-
-    private Context context_this;
-    private AlertDialog.Builder dialog;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState)

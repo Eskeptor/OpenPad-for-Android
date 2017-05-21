@@ -7,10 +7,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.5.18)
+## What's New? (Last updated 2017.5.21)
 ```
- 1) Add "Enhanced File Open"(Released Version)
- 2) Changing output format can be changed(EUC-KR <-> UTF-8)
+ 1) Optimization(Enhance File Open)
+ 2) Add new menu for MemoActivity
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

@@ -31,6 +31,7 @@ public class MemoWidget extends AppWidgetProvider {
         pref = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE, MODE_PRIVATE);
         editor = pref.edit();
 
+        // TODO: 2017-05-21 위젯 연동하기
         int titleBackRed = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
         int titleBackGreen = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
         int titleBackBlue = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);

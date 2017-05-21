@@ -167,4 +167,5 @@
     <string name="settings_dialog_expfunc_enhanceIO_Line">권장 : 100 ~ 200</string>
     <string name="settings_help_etc_fontbroken">글씨 깨짐</string>
     <string name="settings_help_etc_fontbroken_context">인코딩 방식에 따라서 파일이 깨져보일수 있습니다.\n깨진 파일을 열어서 오른쪽 상단의 메뉴버튼(...)을 눌러서 "출력 포멧 변경"을 선택하여 인코딩을 변경해보세요.</string>
+    <string name="memo_txtProg_title">탐색률</string>
 </resources>

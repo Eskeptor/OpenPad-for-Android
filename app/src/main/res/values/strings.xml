@@ -146,7 +146,7 @@
     <string name="memo_btnNext" translatable="false">&gt;</string>
     <string name="memo_btnTop">Top</string>
     <string name="settings_separator_expfunc">Enhanced Feature</string>
-    <string name="settings_expfunc_enhanceIO_title">Enhanced file open</string>
+    <string name="settings_expfunc_enhanceIO_title">Enhanced File Open</string>
     <string name="settings_expfunc_enhanceIO_summary">Securely open files over 500 KB</string>
     <string name="settings_dialog_expfunc_title">Warning</string>
     <string name="settings_dialog_expfunc_context">This function is a test version and can be unstable.</string>
@@ -176,4 +176,5 @@
     <string name="settings_dialog_expfunc_enhanceIO_Line">Recommended : 100 ~ 300</string>
     <string name="settings_help_etc_fontbroken">Font Garbled</string>
     <string name="settings_help_etc_fontbroken_context">Depending on the encoding method, the file may appear to be garbled.\nOpen the garbled file by opening the " Change Print Format " by pressing the menu button (...) in the upper right corner of the right.</string>
+    <string name="memo_txtProg_title">Search Rate</string>
 </resources>

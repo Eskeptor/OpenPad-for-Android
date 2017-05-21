@@ -1,9 +1,9 @@
 package com.eskeptor.openTextViewer.textManager;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 import com.eskeptor.openTextViewer.Constant;
 import com.eskeptor.openTextViewer.datatype.MemoInfo;
+import util.TimeCheck;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -20,19 +20,23 @@ import java.util.ArrayList;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+
 public class TextManager
 {
-    private boolean fileopen;
-    private boolean saved;
-    private String fileopen_name;
-    private String MD5;
-    private String format;
-    private int prevPointer;
-    private int curPointer;
-    private int nextPointer;
-    private ArrayList<Long> pointerList;
-    private long fileSize;
-    private int lines;
+    private boolean fileopen;               // 파일이 열렸는지 체크
+    private boolean saved;                  // 파일이 저장되었는지 체크
+    private String fileopen_name;           // 현재 열린 파일의 이름
+    private String MD5;                     // 파일의 MD5값
+    private String format;                  // 파일의 포멧
+    private long fileSize;                  // 파일의 크기
+
+    // 향상된 파일열기용
+    private int prevPointer;                // 이전 포인터(배열 위치)
+    private int curPointer;                 // 현재 포인터(배열 위치)
+    private int nextPointer;                // 다음 포인터(배열 위치)
+    private ArrayList<Long> pointerList;    // randomAccessFile의 포인터를 저장할 배열리스트
+    private int lines;                      // 향상된 파일열기에서 출력할 라인
+    private float progress;                 // 진행률
 
     public TextManager()
     {
@@ -46,6 +50,7 @@ public class TextManager
         saved = false;
         MD5 = "";
         format = "";
+        progress = 0F;
         if(pointerList == null)
             pointerList = new ArrayList<>();
         else
@@ -301,6 +306,7 @@ public class TextManager
 
     public String openText(final String _filename, final int _sens, final boolean _enhance, final int _format)
     {
+        TimeCheck checker = new TimeCheck("openText");
         if(_filename != null)
         {
             RandomAccessFile randomAccessFile = null;
@@ -315,8 +321,8 @@ public class TextManager
             {
                 if(_enhance)
                 {
+                    checker.CheckStart();
                     randomAccessFile = new RandomAccessFile(new File(_filename), "r");
-                    randomAccessFile.seek(0);
                     channel = randomAccessFile.getChannel();
                     byteBuffer = ByteBuffer.allocateDirect(12);
                     String tmp;
@@ -326,6 +332,7 @@ public class TextManager
                         channel.read(byteBuffer);
                         byteBuffer.flip();
                         byteBuffer.clear();
+
 
                         if(nextPointer == 0)
                         {
@@ -370,15 +377,28 @@ public class TextManager
                                 break;
                             }
                         }
-                        pointerList.add(nextPointer, randomAccessFile.getFilePointer());
+
+                        try{
+                            pointerList.get(nextPointer);
+                        }catch (IndexOutOfBoundsException ioobe) {
+                            pointerList.add(nextPointer, randomAccessFile.getFilePointer());
+                        }
 
                         fileopen = true;
                         fileopen_name = _filename;
                         MD5 = createMD5(stringBuilder.toString());
+                        checker.CheckEnd();
                         Log.e("Debug", "openText");
                         Log.e("Debug", "prevPointer:" + pointerList.get(prevPointer) + "," + Integer.toString(prevPointer));
                         Log.e("Debug", "curPointer:" + pointerList.get(curPointer) + "," + Integer.toString(curPointer));
                         Log.e("Debug", "nextPointer:" + pointerList.get(nextPointer) + "," + Integer.toString(nextPointer));
+
+                        if(pointerList.get(nextPointer) == fileSize)
+                            progress = 100.0F;
+                        else
+                            progress = (float)pointerList.get(curPointer) / (float)fileSize * 100;
+
+                        Log.e("Debug", checker.CheckResult());
                         return new String(stringBuilder);
                     }
                     else
@@ -536,5 +556,9 @@ public class TextManager
     public void setLines(final int _lines)
     {
         lines = _lines;
+    }
+    public float getProgress()
+    {
+        return progress;
     }
 }

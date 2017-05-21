@@ -7,6 +7,8 @@ import java.nio.channels.FileChannel;
 /**
  * Created by narut on 2017-02-20.
  */
+
+// 로그파일 생성용 클래스
 public class LogManager
 {
 

@@ -1,3 +1,8 @@
+## Update 2017.5.21
+```
+ 1) Optimization(Enhance File Open)
+ 2) Add new menu for MemoActivity
+```
 ## Update 2017.5.18 - Build 1.2.7
 ```
  1) Add "Enhanced File Open"(Released Version)

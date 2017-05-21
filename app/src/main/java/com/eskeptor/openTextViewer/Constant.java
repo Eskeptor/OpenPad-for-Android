@@ -8,6 +8,8 @@ import java.io.File;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+
+// 상수만 정의되어 있는 클래스
 public class Constant
 {
     public static final String FOLDER_DEFAULT_NAME = "Basic";

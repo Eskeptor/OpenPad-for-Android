@@ -9,6 +9,7 @@ import java.io.File;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+// 파일 목록을 리스트에 표현하기 위한 클래스
 public class FileObject
 {
     // get, set을 이용하면 좋지만 직접접근이 덜 부하를 준다.

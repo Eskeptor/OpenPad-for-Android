@@ -28,37 +28,51 @@ import java.io.IOException;
  */
 
 public class MemoActivity extends AppCompatActivity {
+    // MainActivity로 부터 받아오는 파일과 관련된 변수
     private String openFileURL;
     private String openFileName;
     private String openFolderURL;
+    private int memoType;       // 새로만든 메모, 불러오기한 메모
+    private int memoIndex;      // 새로만든 메모에게 붙여줄 번호
+    private boolean enhance;    // 향상된 기능 사용할것인지
+    private int formatType;     // 텍스트, 이미지
 
-    private int memoType;
-    private int memoIndex;
+    // 위젯인지 아닌지 판단
     private boolean isWidget;
-    private boolean enhance;
-    private int formatType;
 
-    private EditText editText;
-    private TextManager txtManager;
-    private LogManager logManager;
-    private Runnable nextRunnable;
-    private Runnable prevRunnable;
-    private LinearLayout btnLayout;
-    private ScrollView scrollView;
+    private EditText editText;          // 텍스트 주체
+    private TextManager txtManager;     // 텍스트 저장 및 불러오기 담당
+    private LogManager logManager;      // 로그를 기록하는 것
+    private File lastLog;               // 로그 파일(새로메모를 만들시 붙여줄 번호)
+    private ScrollView scrollView;      // 텍스트 스크롤
+    private Context context_this;       // context용
+
+    // 향상된 불러오기의 하단 버튼
+    private ScrollView btnLayout;
     private Button btnPrev;
     private Button btnNext;
     private Button btnTop;
+    private Runnable nextRunnable;
+    private Runnable prevRunnable;
 
-    private File lastLog;
+    // TODO: 2017-05-21 손가락 2개를 이용하여 하단버튼2 올라오게 구현하기
+    // https://material.io/guidelines/patterns/scrolling-techniques.html#scrolling-techniques-app-bar-scrollable-regions
+    // 향상된 불러오기의 하단 버튼2
+    private ProgressBar progCurrent;
+    private TextView txtProgCur;
+
+    // 경고창 재활용
     private AlertDialog.Builder alert;
 
-    private Context context_this;
-
+    // pref 불러오기
     private SharedPreferences pref;
 
+    // 메뉴 아이템들
     private MenuItem editMenu;
     private Drawable drawableModified;
     private Drawable drawableModifiedComplete;
+
+    // 자동 포커스 끄기를 위한 InputMethodManager
     private InputMethodManager inputMethodManager;
 
     @Override
@@ -167,7 +181,7 @@ public class MemoActivity extends AppCompatActivity {
         txtManager = new TextManager();
         logManager = new LogManager();
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
-        btnLayout = (LinearLayout)findViewById(R.id.memo_layoutButton);
+        btnLayout = (ScrollView)findViewById(R.id.memo_layoutButton);
         formatType = Constant.ENCODE_TYPE_UTF8;
 
         if(memoType == Constant.MEMO_TYPE_NEW)
@@ -208,6 +222,8 @@ public class MemoActivity extends AppCompatActivity {
 
             if(enhance)
             {
+                progCurrent = (ProgressBar)findViewById(R.id.memo_Prog);
+                txtProgCur = (TextView)findViewById(R.id.memo_txtProg_cur);
                 nextRunnable = new Runnable() {
                     @Override
                     public void run() {
@@ -215,6 +231,9 @@ public class MemoActivity extends AppCompatActivity {
                         String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_NEXT, enhance, formatType);
                         editText.setText(txtData);
                         editText.setFocusable(false);
+                        progCurrent.setProgress((int)txtManager.getProgress());
+                        String cur = String.format("%.2f", txtManager.getProgress()) + "%";
+                        txtProgCur.setText(cur);
                     }
                 };
                 prevRunnable = new Runnable() {
@@ -224,6 +243,9 @@ public class MemoActivity extends AppCompatActivity {
                         String txtData = txtManager.openText(openFileURL, Constant.MEMO_BLOCK_PREV, enhance, formatType);
                         editText.setText(txtData);
                         editText.setFocusable(false);
+                        progCurrent.setProgress((int)txtManager.getProgress());
+                        String cur = String.format("%.2f", txtManager.getProgress()) + "%";
+                        txtProgCur.setText(cur);
                     }
                 };
 
@@ -304,6 +326,8 @@ public class MemoActivity extends AppCompatActivity {
         drawableModified = null;
         drawableModifiedComplete = null;
         inputMethodManager = null;
+        progCurrent = null;
+        txtProgCur = null;
     }
 
     @Override

@@ -28,42 +28,91 @@
             </EditText>
         </ScrollView>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <ScrollView
+            android:id="@+id/memo_layoutButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:gravity="bottom"
-            android:id="@+id/memo_layoutButton">
+            android:layout_height="50sp">
 
-            <Button
-                android:text="@string/memo_btnPrev"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/memo_btnPrev"
-                android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button"
-                android:onClick="onClick"/>
+                android:orientation="vertical">
 
-            <Button
-                android:text="@string/memo_btnTop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/memo_btnTop"
-                android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button"
-                android:onClick="onClick"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
 
-            <Button
-                android:text="@string/memo_btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/memo_btnNext"
-                android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button"
-                android:onClick="onClick"/>
-        </LinearLayout>
+                    <Button
+                        android:id="@+id/memo_btnPrev"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="@string/memo_btnPrev" />
 
+                    <Button
+                        android:id="@+id/memo_btnTop"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="@string/memo_btnTop" />
+
+                    <Button
+                        android:id="@+id/memo_btnNext"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClick"
+                        android:text="@string/memo_btnNext" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:layout_weight="0"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/memo_txtProg_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:layout_weight="0"
+                        android:padding="5sp"
+                        android:text="@string/memo_txtProg_title"
+                        android:textColor="@color/SemiBlack" />
+
+                    <ProgressBar
+                        android:id="@+id/memo_Prog"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:max="100" />
+
+                    <TextView
+                        android:id="@+id/memo_txtProg_cur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center"
+                        android:layout_weight="0"
+                        android:padding="5sp"
+                        android:text="TextView"
+                        android:textColor="@color/SemiBlack" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>
