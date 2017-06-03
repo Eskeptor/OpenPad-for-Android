@@ -35,7 +35,7 @@
 ```
  Operating System : Ubuntu 16.04 LTS 64bit
  CPU : Intel Pentium B980
- RAM : 8GB
+ RAM : 16GB
  VGA : Intel HD Graphics
  Android SDK(Min) : API 15
  Android SDK(Target and Compiled) : API 25
