@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.eskeptor.openTextViewer.Constant;
@@ -16,8 +17,6 @@ import com.eskeptor.openTextViewer.R;
  * The configuration screen for the {@link MemoWidget MemoWidget} AppWidget.
  */
 public class MemoWidgetConfigureActivity extends Activity {
-
-    private static final String PREFS_NAME = "layout.MemoWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -79,28 +78,9 @@ public class MemoWidgetConfigureActivity extends Activity {
         super();
     }
 
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
-        prefs.apply();
-    }
-
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (titleValue != null) {
-            return titleValue;
-        } else {
-            return "Test";
-        }
-    }
-
     static void deleteTitlePref(Context context, int appWidgetId) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId);
+        SharedPreferences.Editor prefs = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE, MODE_PRIVATE).edit();
+        prefs.remove(Constant.APP_WIDGET_PREFERENCE + appWidgetId);
         prefs.apply();
     }
 
@@ -112,7 +92,20 @@ public class MemoWidgetConfigureActivity extends Activity {
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED);
 
-        pref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE, MODE_PRIVATE);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+
+        // If this activity was started with an intent without an app widget ID, finish with an error.
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            finish();
+        }
+        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
+
+        pref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mAppWidgetId, MODE_PRIVATE);
         editor = pref.edit();
 
         setContentView(R.layout.memo_widget_configure);
@@ -189,6 +182,7 @@ public class MemoWidgetConfigureActivity extends Activity {
         previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
         previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
         previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
+
 
         seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -343,36 +337,14 @@ public class MemoWidgetConfigureActivity extends Activity {
         tab2FontSeekBlue.setProgress(tab2CurFontBlue);
 
         // Find the widget id from the intent.
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            mAppWidgetId = extras.getInt(
-                    AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-
-        // If this activity was started with an intent without an app widget ID, finish with an error.
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish();
-        }
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, tab1CurBackRed);
-        editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, tab1CurBackGreen);
-        editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, tab1CurBackBlue);
-        editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, tab1CurFontRed);
-        editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, tab1CurFontGreen);
-        editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, tab1CurFontBlue);
-        editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, tab2CurBackRed);
-        editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, tab2CurBackGreen);
-        editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, tab2CurBackBlue);
-        editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, tab2CurFontRed);
-        editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, tab2CurFontGreen);
-        editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, tab2CurFontBlue);
-        editor.commit();
+
+        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
     }
 
     public void onClick(View v)
@@ -412,7 +384,20 @@ public class MemoWidgetConfigureActivity extends Activity {
         }
         else if(id == R.id.widget_config_btnAdd)
         {
-            editor.commit();
+            editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, tab1CurBackRed);
+            editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, tab1CurBackGreen);
+            editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, tab1CurBackBlue);
+            editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, tab1CurFontRed);
+            editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, tab1CurFontGreen);
+            editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, tab1CurFontBlue);
+            editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, tab2CurBackRed);
+            editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, tab2CurBackGreen);
+            editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, tab2CurBackBlue);
+            editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, tab2CurFontRed);
+            editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, tab2CurFontGreen);
+            editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, tab2CurFontBlue);
+            editor.putInt(Constant.WIDGET_ID, mAppWidgetId);
+            editor.apply();
             final Context context = MemoWidgetConfigureActivity.this;
 
             // When the button is clicked, store the string locally

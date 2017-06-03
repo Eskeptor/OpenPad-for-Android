@@ -27,17 +27,17 @@ import java.util.ArrayList;
 
 public class FolderActivity extends AppCompatActivity
 {
-    private ArrayList<FolderObject> folders;
-    private FolderAdaptor folderAdaptor;
-    private Context context_this;
-    private EditText editText;
-    private int folders_length;
-    private String newFolderName;
-    private AlertDialog.Builder dialog;
-    private ListView folderList;
-    private Runnable refreshRunnable;
-    private AdapterView.OnItemClickListener clickListener;
-    private AdapterView.OnItemLongClickListener longClickListener;
+    private ArrayList<FolderObject> folders;                        // 폴더를 나열할 ArrayList
+    private FolderAdaptor folderAdaptor;                            // 폴더를 나열할 ArrayList 에 쓰일 어댑터
+    private Context context_this;                                   // context 용
+    private EditText editText;                                      // 폴더생성시 이름 넣을때 쓰는 edittext
+    private int foldersLength;                                      // 폴더의 개수
+    private String newFolderName;                                   // 새폴더 이름
+    private AlertDialog.Builder dialog;                             // 다이얼로그 재활용
+    private ListView folderList;                                    // 폴더 리스트
+    private Runnable refreshRunnable;                               // 새로고침 할때 쓰일 Runnable
+    private AdapterView.OnItemClickListener clickListener;          // 클릭 리스너(어댑터용)
+    private AdapterView.OnItemLongClickListener longClickListener;  // 롱 클릭 리스너(어댑터용)
 
     public boolean onCreateOptionsMenu(Menu _menu)
     {
@@ -107,7 +107,7 @@ public class FolderActivity extends AppCompatActivity
         clickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
-                if(_position == folders_length)
+                if(_position == foldersLength)
                 {
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -130,7 +130,7 @@ public class FolderActivity extends AppCompatActivity
             @Override
             public boolean onItemLongClick(AdapterView<?> _parent, View _view, int _position, long _id) {
 
-                if(_position == folders_length)
+                if(_position == foldersLength)
                 {
                     return false;
                 }
@@ -152,10 +152,10 @@ public class FolderActivity extends AppCompatActivity
                         return _pathname.isDirectory();
                     }
                 });
-                folders_length = files.length;
+                foldersLength = files.length;
 
                 folders.clear();
-                for(int i = 0; i < files.length; i++)
+                for(int i = 0; i < foldersLength; i++)
                 {
                     folders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                         @Override
@@ -202,6 +202,7 @@ public class FolderActivity extends AppCompatActivity
         longClickListener = null;
     }
 
+    // 폴더의 타입을 체크함(기본폴더, 일반폴더)
     private int checkFolderType(final File _file)
     {
         if(_file.getName().equals(Constant.FOLDER_DEFAULT_NAME))
@@ -211,6 +212,7 @@ public class FolderActivity extends AppCompatActivity
         return Constant.FOLDER_TYPE_CUSTOM;
     }
 
+    // 폴더 삭제
     private void deleteFolder(final int _index)
     {
         dialog = new AlertDialog.Builder(this);

@@ -14,7 +14,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/memo_scroll">
 
@@ -31,17 +31,19 @@
         <ScrollView
             android:id="@+id/memo_layoutButton"
             android:layout_width="match_parent"
-            android:layout_height="50sp">
+            android:layout_height="50sp"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="bottom"
                     android:orientation="horizontal">
 
@@ -77,15 +79,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50sp"
-                    android:layout_weight="0"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/memo_txtProg_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
-                        android:layout_weight="0"
+                        android:layout_gravity="start|center"
                         android:padding="5sp"
                         android:text="@string/memo_txtProg_title"
                         android:textColor="@color/SemiBlack" />
@@ -95,16 +96,15 @@
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_weight="1"
+                        android:layout_gravity="center"
                         android:max="100" />
 
                     <TextView
                         android:id="@+id/memo_txtProg_cur"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right|center"
-                        android:layout_weight="0"
+                        android:layout_gravity="end|center"
                         android:padding="5sp"
                         android:text="TextView"
                         android:textColor="@color/SemiBlack" />

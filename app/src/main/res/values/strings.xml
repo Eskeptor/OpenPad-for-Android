@@ -177,4 +177,6 @@
     <string name="settings_help_etc_fontbroken">Font Garbled</string>
     <string name="settings_help_etc_fontbroken_context">Depending on the encoding method, the file may appear to be garbled.\nOpen the garbled file by opening the " Change Print Format " by pressing the menu button (...) in the upper right corner of the right.</string>
     <string name="memo_txtProg_title">Search Rate</string>
+    <string name="memo_title_newWidgetMemo">For Widget</string>
+    <string name="memo_title_widget">Widget Memo</string>
 </resources>

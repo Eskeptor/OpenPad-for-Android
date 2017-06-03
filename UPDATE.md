@@ -1,3 +1,11 @@
+## Update 2017.6.2
+```
+ 1) Optimization(Save Preference)
+ 2) Add widget(Beta)
+ 3) Add gesture for MemoActivity's new menu(bottom menu)
+ 4) Changing the logic that recognizes the type of memo
+    (memoType(using intent data) → openFileURL)
+```
 ## Update 2017.5.21
 ```
  1) Optimization(Enhance File Open)

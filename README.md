@@ -7,10 +7,13 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.5.21)
+## What's New? (Last updated 2017.6.2)
 ```
- 1) Optimization(Enhance File Open)
- 2) Add new menu for MemoActivity
+ 1) Optimization(Save Preference)
+ 2) Add widget(Beta)
+ 3) Add gesture for MemoActivity's new menu(bottom menu)
+ 4) Changing the logic that recognizes the type of memo
+    (memoType(using intent data) → openFileURL)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -22,8 +25,8 @@
 #### 1st environment
 ```
  Operating System : Windows 10 Pro 64bit
- CPU : Intel i3 4160
- RAM : 8GB
+ CPU : AMD Ryzen R5 1600
+ RAM : 12GB
  VGA : Radeon HD 7770
  Android SDK(Min) : API 15
  Android SDK(Target and Compiled) : API 25

@@ -65,7 +65,7 @@
     </style>
     <style name="AppTheme.Item.TextFile.Date">
         <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/SemiBlack</item>
+        <item name="android:textColor">@color/SemiSemiBlack</item>
     </style>
 
     <style name="AppTheme.Dialog.FolderCreate" parent="AppTheme">

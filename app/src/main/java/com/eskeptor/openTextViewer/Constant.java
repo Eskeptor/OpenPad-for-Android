@@ -41,6 +41,9 @@ public class Constant
     public static final String WIDGET_CONTEXT_BACK_COLOR_RED = "widget_context_back_color_r_Pref";
     public static final String WIDGET_CONTEXT_BACK_COLOR_GREEN = "widget_context_back_color_g_Pref";
     public static final String WIDGET_CONTEXT_BACK_COLOR_BLUE = "widget_context_back_color_b_Pref";
+    public static final String WIDGET_FILE_URL = "widget_file_url";
+    public static final String WIDGET_ID = "widget_id";
+    public static final int WIDGET_MAX_LINE = 20;
 
     public static final int WIDGET_TITLE_FONT_COLOR_RED_DEFAULT = 1;
     public static final int WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT = 1;
@@ -61,9 +64,6 @@ public class Constant
     public static final float SETTINGS_DEFAULT_VALUE_TEXT_SIZE = 18F;
     public static final int SETTINGS_DEFAULT_VALUE_TEXT_LINES = 200;
 
-    public static final int MEMO_TYPE_NEW = 1;
-    public static final int MEMO_TYPE_OPEN_INTERNAL = 2;
-    public static final int MEMO_TYPE_OPEN_EXTERNAL = 3;
     public static final int MEMO_SAVE_SELECT_TYPE_EXTERNAL = 0;
     public static final int MEMO_SAVE_SELECT_TYPE_INTERNAL = 1;
     public static final int MEMO_BLOCK_NEXT = 1;
@@ -122,7 +122,7 @@ public class Constant
     /* 여기서 부터는 Intent에 쓰이는 것들 */
     public static final String INTENT_EXTRA_MEMO_OPEN_FILEURL = "MEMO_OPEN_FILEURL";
     public static final String INTENT_EXTRA_MEMO_OPEN_FILENAME = "MEMO_OPEN_FILENAME";
-    public static final String INTENT_EXTRA_MEMO_TYPE = "MEMO_TYPE";
+    //public static final String INTENT_EXTRA_MEMO_TYPE = "MEMO_TYPE";
     public static final String INTENT_EXTRA_MEMO_OPEN_FOLDERURL = "MEMO_OPEN_FOLDERURL";
     public static final String INTENT_EXTRA_BROWSER_TYPE = "BROWSER_TYPE";
     public static final String INTENT_EXTRA_CURRENT_FOLDERURL = "CURRENT_FOLDERURL";
@@ -131,4 +131,5 @@ public class Constant
     public static final String INTENT_EXTRA_HELP_INDEX = "HELP_INDEX";
     public static final String INTENT_EXTRA_MEMO_DIVIDE = "MEMO_OPEN_DIVIDE";
     public static final String INTENT_EXTRA_MEMO_ISWIDGET = "MEMO_ISWIDGET";
+    public static final String INTENT_EXTRA_WIDGET_ID = "WIDGET_ID";
 }

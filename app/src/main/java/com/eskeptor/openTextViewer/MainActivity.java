@@ -181,8 +181,11 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(folderIcon);
+        if(getSupportActionBar() != null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(folderIcon);
+        }
 
         curFolderGridView = (RecyclerView)findViewById(R.id.main_curFolderFileList);
         curFolderFileList = new ArrayList<>();
@@ -213,7 +216,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, curFolderFileList.get(_position).url);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, curFolderFileList.get(_position).title);
-                intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
+                //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -249,7 +252,7 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.setClass(context_this, MemoActivity.class);
-                            intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
+                            //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
                             intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -259,7 +262,7 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.setClass(context_this, PaintActivity.class);
-                            intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
+                            //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
                             intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -370,6 +373,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // 기본폴더 체크 메소드
     private void defaultFolderCheck()
     {
         // 어플의 기본 폴더 체크
@@ -395,6 +399,7 @@ public class MainActivity extends AppCompatActivity
         curFolderURL = file.getPath();
     }
 
+    // 파일 제거 메소드
     private void deleteFile(final int _index)
     {
         dialog = new AlertDialog.Builder(this);
@@ -424,10 +429,6 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 }
-                else if(_which == AlertDialog.BUTTON_NEGATIVE)
-                {
-
-                }
                 _dialog.dismiss();
             }
         };
@@ -436,6 +437,7 @@ public class MainActivity extends AppCompatActivity
         dialog.show();
     }
 
+    // 메인 리스트 새로고침 메소드
     private void refreshList()
     {
         curFolderFileList.clear();
@@ -465,6 +467,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // 맨 처음 설치시 확인하는 메소드
     private void checkFirstExcecute()
     {
         if(!pref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE))
@@ -540,6 +543,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // 애드몹 메소드
     private void adMob()
     {
         if(pref.getBoolean(Constant.APP_ADMOB_VISIBLE, true))
@@ -566,11 +570,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    // DP 단위를 Pixel 단위로 변경시켜주는 메소드
     private int DPtoPixel(final int _DP)
     {
         return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _DP, context_this.getResources().getDisplayMetrics());
     }
 
+    // 파일 정렬 메소드
     private void sortFileArray(File[] _files)
     {
         // 최근 날짜순으로 정렬

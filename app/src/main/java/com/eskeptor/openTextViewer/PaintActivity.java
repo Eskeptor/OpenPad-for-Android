@@ -54,7 +54,7 @@ public class PaintActivity extends AppCompatActivity {
     private String openFolderURL;
     private String openFileName;
     private String openFileURL;
-    private int memoType;
+    //private int memoType;
     private int memoIndex;
     private LogManager logManager;
     private File lastLog;
@@ -71,7 +71,9 @@ public class PaintActivity extends AppCompatActivity {
         context_this = getApplicationContext();
 
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
-        memoType = getIntent().getIntExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
+        //memoType = getIntent().getIntExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
+        openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
+        openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
 
         logManager = new LogManager();
 
@@ -281,7 +283,7 @@ public class PaintActivity extends AppCompatActivity {
                 public void onClick(DialogInterface _dialog, int _which) {
                     if(_which == AlertDialog.BUTTON_POSITIVE)
                     {
-                        if(memoType == Constant.MEMO_TYPE_NEW)
+                        if(openFileURL == null)
                         {
                             alert = new AlertDialog.Builder(PaintActivity.this);
                             alert.setTitle(R.string.memo_alert_save_context);
@@ -305,9 +307,15 @@ public class PaintActivity extends AppCompatActivity {
                                         }
                                         else
                                         {
-                                            openFileName = openFolderURL + File.separator + (memoIndex + Constant.FILE_IMAGE_EXTENSION);
+                                            openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_IMAGE_EXTENSION);
+                                            File tmpFile = new File(openFileURL);
+                                            while(tmpFile.exists())
+                                            {
+                                                memoIndex++;
+                                                openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_IMAGE_EXTENSION);
+                                                tmpFile = new File(openFileURL);
+                                            }
                                             paintFunction.savePaint(openFileName);
-                                            memoIndex++;
                                             writeLog();
                                         }
                                         finish();
@@ -317,7 +325,7 @@ public class PaintActivity extends AppCompatActivity {
                             });
                             alert.show();
                         }
-                        else if(memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL || memoType == Constant.MEMO_TYPE_OPEN_INTERNAL)
+                        else
                         {
                             paintFunction.savePaint(openFileURL);
                             finish();
@@ -358,7 +366,7 @@ public class PaintActivity extends AppCompatActivity {
 
     private void initPaint()
     {
-        if(memoType == Constant.MEMO_TYPE_NEW)
+        if(openFileURL == null)
         {
             lastLog = new File(openFolderURL + File.separator + Constant.FILE_LOG_COUNT);
             if(!lastLog.exists())
@@ -382,15 +390,15 @@ public class PaintActivity extends AppCompatActivity {
                 }
             }
             setTitle(R.string.memo_title_newFile);
-            paintFunction.setBitmap(memoType, openFolderURL, Integer.toString(memoIndex));
+            paintFunction.setBitmap((openFileURL == null), openFolderURL, Integer.toString(memoIndex));
             drawLayout.setBackgroundColor(Color.WHITE);
         }
-        else if(memoType == Constant.MEMO_TYPE_OPEN_INTERNAL || memoType == Constant.MEMO_TYPE_OPEN_EXTERNAL)
+        else
         {
             openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
             openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
             setTitle(openFileName);
-            paintFunction.setBitmap(memoType, openFileURL, null);
+            paintFunction.setBitmap((openFileURL == null), openFileURL, null);
         }
     }
 
@@ -596,9 +604,9 @@ public class PaintActivity extends AppCompatActivity {
             return fileopen;
         }
 
-        public void setBitmap(final int _memoType, final String _folderUrl, @Nullable final String _fileName)
+        public void setBitmap(final boolean _memoType, final String _folderUrl, @Nullable final String _fileName)
         {
-            if(_memoType == Constant.MEMO_TYPE_NEW)
+            if(_memoType)
             {
                 this.folderUrl = _folderUrl;
                 fileopen = false;

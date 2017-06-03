@@ -185,7 +185,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         @Override
         public void onPause() {
             super.onPause();
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -367,7 +367,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             super.onPause();
             editor.putBoolean(Constant.APP_ADMOB_VISIBLE, admob.isChecked());
             editor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, enhanceIO.isChecked());
-            editor.commit();
+            editor.apply();
         }
 
         @Override

@@ -73,10 +73,20 @@ public class MainFileObject
             }
             catch (Exception e){e.printStackTrace();}
             finally {
-                try{br.close();}
-                catch (Exception e) {e.printStackTrace();}
-                try{fr.close();}
-                catch (Exception e) {e.printStackTrace();}
+                if(br != null) {
+                    try {
+                        br.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(fr != null) {
+                    try {
+                        fr.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
