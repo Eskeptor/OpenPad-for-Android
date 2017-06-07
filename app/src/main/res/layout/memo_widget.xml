@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/White"
                 android:padding="@dimen/widget_margin">
@@ -18,13 +19,15 @@
             android:id="@+id/widget_title_layout">
 
             <TextView
-                android:text="@string/widget_title_new"
+                android:id="@+id/widget_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/widget_title"
-                android:textSize="20sp"
-                android:layout_margin="8dp"
-                android:textStyle="normal|bold"/>
+                android:layout_margin="8sp"
+                android:singleLine="true"
+                android:text="@string/widget_title_new"
+                android:textSize="18sp"
+                android:textStyle="normal|bold" />
+
         </FrameLayout>
 
         <TextView
@@ -32,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textSize="16sp" />
+            android:text="@string/widget_context_new"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </RelativeLayout>

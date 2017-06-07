@@ -21,6 +21,7 @@ public class HelpContentsActivity extends AppCompatActivity
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_helpcontents);
 
+        setTitle(R.string.settings_information_help_title);
         txtTitle = (TextView)findViewById(R.id.help_txtTitle);
         txtContexts = (TextView)findViewById(R.id.help_contexts);
 
@@ -133,6 +134,11 @@ public class HelpContentsActivity extends AppCompatActivity
         {
             txtTitle.setText(R.string.settings_help_etc_fontbroken);
             txtContexts.setText(R.string.settings_help_etc_fontbroken_context);
+        }
+        else if(helpIndex.equals("settings_key_etc_widget"))
+        {
+            txtTitle.setText(R.string.settings_help_etc_widget);
+            txtContexts.setText(R.string.settings_help_etc_widget_context);
         }
     }
 }

@@ -1,3 +1,9 @@
+## Update 2017.6.7 - Build 1.3.0
+```
+ 1) Add widget Notes feature
+ 2) Add additional menu (using gestures) in "Enhanced File Open"
+ 3) Save Storage Method
+```
 ## Update 2017.6.2
 ```
  1) Optimization(Save Preference)

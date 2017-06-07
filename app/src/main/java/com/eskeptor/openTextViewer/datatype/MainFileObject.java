@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by eskeptor on 17. 2. 4.
@@ -24,7 +25,7 @@ public class MainFileObject
     public boolean isLinkedWidget;
 
     public MainFileObject(final File _file, final String _txtFileNoName, final String _imgName,
-                          final SimpleDateFormat _format, final boolean _Linked)
+                          final String _locale, final boolean _Linked)
     {
         if(_file.getName().endsWith(Constant.FILE_IMAGE_EXTENSION))
         {
@@ -41,7 +42,13 @@ public class MainFileObject
         {
             title = _imgName;
             url = _file.getPath();
-            date = _format.format(new Date(_file.lastModified()));
+            //date = _format.format(new Date(_file.lastModified()));
+            if(_locale.equals(Locale.KOREA.getDisplayCountry()))
+                date = new SimpleDateFormat(Constant.DATE_FORMAT_MAIN_KOREA, Locale.KOREA).format(new Date(_file.lastModified()));
+            else if(_locale.equals(Locale.UK.getDisplayCountry()))
+                date = new SimpleDateFormat(Constant.DATE_FORMAT_MAIN_UK, Locale.UK).format(new Date(_file.lastModified()));
+            else
+                date = new SimpleDateFormat(Constant.DATE_FORMAT_MAIN_USA, Locale.US).format(new Date(_file.lastModified()));
         }
         else
         {
@@ -69,7 +76,12 @@ public class MainFileObject
                 }
 
                 url = _file.getPath();
-                date = _format.format(new Date(_file.lastModified()));
+                if(_locale.equals(Locale.KOREA.getDisplayCountry()))
+                    date = new SimpleDateFormat(Constant.DATE_FORMAT_MAIN_KOREA, Locale.KOREA).format(new Date(_file.lastModified()));
+                else if(_locale.equals(Locale.UK.getDisplayCountry()))
+                    date = new SimpleDateFormat(Constant.DATE_FORMAT_MAIN_UK, Locale.UK).format(new Date(_file.lastModified()));
+                else
+                    date = new SimpleDateFormat(Constant.DATE_FORMAT_MAIN_USA, Locale.US).format(new Date(_file.lastModified()));
             }
             catch (Exception e){e.printStackTrace();}
             finally {

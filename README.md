@@ -7,13 +7,11 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.6.2)
+## What's New? (Last updated 2017.6.7) - Build 1.3.0
 ```
- 1) Optimization(Save Preference)
- 2) Add widget(Beta)
- 3) Add gesture for MemoActivity's new menu(bottom menu)
- 4) Changing the logic that recognizes the type of memo
-    (memoType(using intent data) → openFileURL)
+ 1) Add widget Notes feature
+ 2) Add additional menu (using gestures) in "Enhanced File Open"
+ 3) Save Storage Method
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

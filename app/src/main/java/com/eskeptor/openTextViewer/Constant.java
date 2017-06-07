@@ -132,4 +132,11 @@ public class Constant
     public static final String INTENT_EXTRA_MEMO_DIVIDE = "MEMO_OPEN_DIVIDE";
     public static final String INTENT_EXTRA_MEMO_ISWIDGET = "MEMO_ISWIDGET";
     public static final String INTENT_EXTRA_WIDGET_ID = "WIDGET_ID";
+
+    public static final String DATE_FORMAT_WIDGET_KOREA = "yyyy년 MM월 dd일";
+    public static final String DATE_FORMAT_WIDGET_USA = "MM/dd/yyyy";
+    public static final String DATE_FORMAT_WIDGET_UK = "dd/MM/yyyy";
+    public static final String DATE_FORMAT_MAIN_KOREA = "yyyy년 MM월 dd일 hh:mm a";
+    public static final String DATE_FORMAT_MAIN_USA = "MM/dd/yyyy hh:mm a";
+    public static final String DATE_FORMAT_MAIN_UK = "dd/MM/yyyy hh:mm a";
 }

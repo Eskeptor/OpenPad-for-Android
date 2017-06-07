@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by eskeptor on 17. 1. 28.
@@ -216,7 +217,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, curFolderFileList.get(_position).url);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, curFolderFileList.get(_position).title);
-                //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_INTERNAL);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -252,7 +252,6 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.setClass(context_this, MemoActivity.class);
-                            //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
                             intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -262,7 +261,6 @@ public class MainActivity extends AppCompatActivity
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.setClass(context_this, PaintActivity.class);
-                            //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
                             intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -459,10 +457,10 @@ public class MainActivity extends AppCompatActivity
             {
                 if(files[i].getName().charAt(0) == 'w')
                     curFolderFileList.add(new MainFileObject(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
-                            new SimpleDateFormat(getResources().getString(R.string.file_dateformat)), true));
+                            Locale.getDefault().getDisplayCountry(), true));
                 else
                     curFolderFileList.add(new MainFileObject(files[i], getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
-                            new SimpleDateFormat(getResources().getString(R.string.file_dateformat)), false));
+                            Locale.getDefault().getDisplayCountry(), false));
             }
         }
     }

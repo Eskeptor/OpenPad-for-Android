@@ -26,6 +26,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     private static Help helpAct;
     private static FontSettings fontSettingAct;
     private static Settings settingsAct;
+    private static ActionBar actionBar;
 
     public static class Help extends PreferenceFragment
     {
@@ -47,11 +48,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         private Preference etc_permission;
         private Preference etc_ad;
         private Preference etc_fontbroken;
+        private Preference etc_widget;
 
         @Override
         public void onCreate(Bundle _savedInstanceState) {
             super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings_help);
+
+            actionBar.setTitle(R.string.settings_information_help_title);
 
             main_list = findPreference("settings_key_main_list");
             main_memoCreate = findPreference("settings_key_main_memocreate");
@@ -71,6 +75,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_permission = findPreference("settings_key_etc_permission");
             etc_ad = findPreference("settings_key_etc_ad");
             etc_fontbroken = findPreference("settings_key_etc_fontbroken");
+            etc_widget = findPreference("settings_key_etc_widget");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -103,6 +108,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_permission.setOnPreferenceClickListener(clickListener);
             etc_ad.setOnPreferenceClickListener(clickListener);
             etc_fontbroken.setOnPreferenceClickListener(clickListener);
+            etc_widget.setOnPreferenceClickListener(clickListener);
         }
 
         @Override
@@ -126,6 +132,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             etc_permission = null;
             etc_ad = null;
             etc_fontbroken = null;
+            actionBar.setTitle(R.string.settings_title);
         }
     }
 
@@ -386,7 +393,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
 
     private void setupActionBar()
     {
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if(actionBar != null)
         {
             actionBar.setDisplayShowHomeEnabled(true);
@@ -443,5 +450,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             dialog = null;
         pref = null;
         editor = null;
+        actionBar = null;
     }
 }

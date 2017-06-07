@@ -63,6 +63,9 @@
         <Preference
             android:title="@string/settings_help_etc_fontbroken"
             android:key="settings_key_etc_fontbroken" />
+        <Preference
+            android:title="@string/settings_help_etc_widget"
+            android:key="settings_key_etc_widget" />
 
     </PreferenceCategory>
 </PreferenceScreen>

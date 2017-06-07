@@ -202,10 +202,10 @@ public class MemoActivity extends AppCompatActivity {
         enhance = pref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false);
         isWidget = getIntent().getBooleanExtra(Constant.INTENT_EXTRA_MEMO_ISWIDGET, false);
         widgetID = getIntent().getIntExtra(Constant.INTENT_EXTRA_WIDGET_ID, 999);
-        Log.e("Debug", "getintent widget id : " + widgetID);
+//        Log.e("Debug", "getintent widget id : " + widgetID);
         pref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + widgetID, MODE_PRIVATE);
         widgetID = pref.getInt(Constant.WIDGET_ID, 0);
-        Log.e("Debug", "pref widget id : " + widgetID);
+//        Log.e("Debug", "pref widget id : " + widgetID);
 
         if(openFileURL == null)
         {
@@ -235,15 +235,16 @@ public class MemoActivity extends AppCompatActivity {
             btnLayout.setVisibility(View.GONE);
             if(isWidget)
             {
-                Log.e("Debug", "widgetID : " + widgetID);
+//                Log.e("Debug", "widgetID : " + widgetID);
                 final File tmpFile = new File(openFolderURL + File.separator + widgetID + Constant.FILE_TEXT_EXTENSION);
                 if(tmpFile.exists())
                 {
                     setTitle(R.string.memo_title_widget);
+                    openFileURL = tmpFile.getPath();
                     nextRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            String txtData = txtManager.openText(tmpFile.getPath(), 0, enhance, formatType);
+                            String txtData = txtManager.openText(openFileURL, 0, enhance, formatType);
                             editText.setText(txtData);
                             editText.setFocusable(false);
                         }
@@ -449,7 +450,6 @@ public class MemoActivity extends AppCompatActivity {
         progCurrent = null;
         txtProgCur = null;
         gestureDetectorCompat = null;
-        Log.e("Debug", "onDestroy()");
     }
 
     @Override
@@ -458,22 +458,30 @@ public class MemoActivity extends AppCompatActivity {
         {
             if(isWidget)
             {
-                openFileURL = openFolderURL + File.separator + (widgetID + Constant.FILE_TEXT_EXTENSION);
-                File tmpFile = new File(openFileURL);
-                while(tmpFile.exists())
+                int origin_id = widgetID;
+                if(openFileURL == null)
                 {
-                    widgetID++;
                     openFileURL = openFolderURL + File.separator + (widgetID + Constant.FILE_TEXT_EXTENSION);
-                    tmpFile = new File(openFileURL);
+                    File tmpFile = new File(openFileURL);
+                    while(tmpFile.exists())
+                    {
+                        widgetID++;
+                        openFileURL = openFolderURL + File.separator + (widgetID + Constant.FILE_TEXT_EXTENSION);
+                        tmpFile = new File(openFileURL);
+                    }
                 }
+                openFileURL = openFolderURL + File.separator + (widgetID + Constant.FILE_TEXT_EXTENSION);
                 txtManager.saveText(editText.getText().toString(), openFileURL, enhance);
                 writeLog();
 
-                editor = context_this.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + widgetID, MODE_PRIVATE).edit();
+                editor = context_this.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + origin_id, MODE_PRIVATE).edit();
                 editor.putString(Constant.WIDGET_FILE_URL, openFileURL);
                 editor.apply();
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context_this);
-                MemoWidget.updateAppWidget(context_this, appWidgetManager, widgetID);
+                MemoWidget.updateAppWidget(context_this, appWidgetManager, origin_id);
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, origin_id);
+                setResult(RESULT_OK, resultValue);
                 finish();
             }
             else
@@ -548,7 +556,6 @@ public class MemoActivity extends AppCompatActivity {
         }
         else
         {
-
             writeLog();
             super.onBackPressed();
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);

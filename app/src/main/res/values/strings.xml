@@ -39,7 +39,6 @@
     <string name="memo_title_newFile">New Memo</string>
     <string name="folder_default">Default Folder</string>
     <string name="file_noname">Nameless Text</string>
-    <string name="file_dateformat">dd/MM/yyyy hh:mm a</string>
     <string name="folder_dialog_hint_add">Input folder name</string>
     <string name="folder_dialog_title_create">New Folder</string>
     <string name="folder_dialog_button_create">Create</string>
@@ -159,7 +158,7 @@
     <string name="widget_config_customize_tap1_sub2">Font</string>
     <string name="widget_config_btnReset">Default Value</string>
     <string name="widget_config_btnLast">Latest Value</string>
-    <string name="widget_title_new">New Memo</string>
+    <string name="widget_title_new">New Widget Memo</string>
     <string name="settings_information_bug_email_choose">Choose an Email client</string>
     <string name="folder_widget">Widget Folder</string>
     <string name="settings_information_updatelist_title">Update History</string>
@@ -179,4 +178,7 @@
     <string name="memo_txtProg_title">Search Rate</string>
     <string name="memo_title_newWidgetMemo">For Widget</string>
     <string name="memo_title_widget">Widget Memo</string>
+    <string name="settings_help_etc_widget">Widget</string>
+    <string name="settings_help_etc_widget_context">You can easily add a widget for memo on the main screen.\nThe notes that enter the widget are stored in the \" Widget Folder(OpenPad\Widget) \".</string>
+    <string name="widget_context_new">Create a memo by tapping it.</string>
 </resources>

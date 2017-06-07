@@ -103,7 +103,7 @@ public class MemoWidgetConfigureActivity extends Activity {
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
-        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
+//        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
 
         pref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mAppWidgetId, MODE_PRIVATE);
         editor = pref.edit();
@@ -344,7 +344,7 @@ public class MemoWidgetConfigureActivity extends Activity {
     protected void onStop() {
         super.onStop();
 
-        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
+//        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
     }
 
     public void onClick(View v)

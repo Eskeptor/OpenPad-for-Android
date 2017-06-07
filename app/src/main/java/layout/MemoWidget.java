@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.LocaleList;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.RemoteViews;
 import com.eskeptor.openTextViewer.Constant;
 import com.eskeptor.openTextViewer.MemoActivity;
@@ -17,7 +19,9 @@ import com.eskeptor.openTextViewer.R;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -26,13 +30,9 @@ import static android.content.Context.MODE_PRIVATE;
  * App Widget Configuration implemented in {@link MemoWidgetConfigureActivity MemoWidgetConfigureActivity}
  */
 public class MemoWidget extends AppWidgetProvider {
-    private static SharedPreferences pref;
-    private static SharedPreferences.Editor editor;
-
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        pref = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + appWidgetId, MODE_PRIVATE);
-        editor = pref.edit();
+        SharedPreferences pref = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + appWidgetId, MODE_PRIVATE);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.memo_widget);
 
@@ -49,9 +49,9 @@ public class MemoWidget extends AppWidgetProvider {
         intent.putExtra(Constant.INTENT_EXTRA_WIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        Log.e("Debug", "current widget id(widget) : " + appWidgetId);
+        /*Log.e("Debug", "current widget id(widget) : " + appWidgetId);
         Log.e("Debug", "current widget file name : " + fileURL);
-        Log.e("Debug", "intent put id : " + intent.getExtras().getInt(Constant.INTENT_EXTRA_WIDGET_ID));
+        Log.e("Debug", "intent put id : " + intent.getExtras().getInt(Constant.INTENT_EXTRA_WIDGET_ID));*/
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_mainLayout, pendingIntent);
@@ -80,21 +80,25 @@ public class MemoWidget extends AppWidgetProvider {
             FileReader fr = null;
             BufferedReader br = null;
             int currentLine = 0;
-            String line = "";
+            final String currentCountry = Locale.getDefault().getDisplayCountry();
+            String line;
             String title = "";
             String contents = "";
             try{
                 fr = new FileReader(fileURL);
                 br = new BufferedReader(fr);
-                if((line = br.readLine()) != null)
-                {
-                    title = line;
-                }
+
+                if(currentCountry.equals(Locale.KOREA.getDisplayCountry()))
+                    title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_KOREA, Locale.KOREA).format(new Date(new File(fileURL).lastModified()));
+                else if(currentCountry.equals(Locale.UK.getDisplayCountry()))
+                    title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_UK, Locale.UK).format(new Date(new File(fileURL).lastModified()));
+                else
+                    title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_USA, Locale.US).format(new Date(new File(fileURL).lastModified()));
                 while(currentLine < Constant.WIDGET_MAX_LINE)
                 {
                     if((line = br.readLine()) != null)
                     {
-                        contents += line;
+                        contents += line + "\n";
                         currentLine++;
                     }
                     else
@@ -121,6 +125,7 @@ public class MemoWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_title, title);
             views.setTextViewText(R.id.widget_context, contents);
         }
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
