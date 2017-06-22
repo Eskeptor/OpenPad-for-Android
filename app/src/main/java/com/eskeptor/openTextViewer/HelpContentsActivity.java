@@ -41,6 +41,7 @@ public class HelpContentsActivity extends AppCompatActivity
         super.onDestroy();
         txtTitle = null;
         txtContexts = null;
+        helpIndex = null;
     }
 
     private void helpDetector()

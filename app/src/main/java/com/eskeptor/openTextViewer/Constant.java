@@ -116,6 +116,8 @@ public class Constant
 
     public static final int ENCODE_TYPE_EUCKR = 0;
     public static final int ENCODE_TYPE_UTF8 = 1;
+    public static final String ENCODE_TYPE_EUCKR_STR = "EUC-KR";
+    public static final String ENCODE_TYPE_UTF8_STR = "UTF-8";
 
     public static final int TEXTMANAGER_BUFFER = 3000;
 

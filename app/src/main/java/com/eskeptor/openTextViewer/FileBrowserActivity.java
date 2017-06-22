@@ -190,6 +190,8 @@ public class FileBrowserActivity extends AppCompatActivity
         if(dialog != null)
             dialog = null;
         context_this = null;
+        str_filename = null;
+        str_root = null;
     }
 
     public void onClick(View _v)

@@ -17,7 +17,6 @@ import com.eskeptor.openTextViewer.R;
  * The configuration screen for the {@link MemoWidget MemoWidget} AppWidget.
  */
 public class MemoWidgetConfigureActivity extends Activity {
-    private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private SharedPreferences pref;
@@ -55,25 +54,6 @@ public class MemoWidgetConfigureActivity extends Activity {
 
     private SeekBar.OnSeekBarChangeListener seekBarChangeListener;
 
-
-    /*private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            final Context context = MemoWidgetConfigureActivity.this;
-
-            // When the button is clicked, store the string locally
-
-            // It is the responsibility of the configuration activity to update the app widget
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            MemoWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
-
-            // Make sure we pass back the original appWidgetId
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
-        }
-    };*/
-
     public MemoWidgetConfigureActivity() {
         super();
     }
@@ -109,7 +89,6 @@ public class MemoWidgetConfigureActivity extends Activity {
         editor = pref.edit();
 
         setContentView(R.layout.memo_widget_configure);
-        //findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         TabHost tabHost = (TabHost)findViewById(R.id.widget_config_tabhost);
         tabHost.setup();
@@ -340,13 +319,6 @@ public class MemoWidgetConfigureActivity extends Activity {
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-//        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
-    }
-
     public void onClick(View v)
     {
         int id = v.getId();
@@ -444,6 +416,27 @@ public class MemoWidgetConfigureActivity extends Activity {
             tab2FontSeekGreen.setProgress(tab2CurFontGreen);
             tab2FontSeekBlue.setProgress(tab2CurFontBlue);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pref = null;
+        editor = null;
+        tab1BackSeekRed = null; tab1BackSeekGreen = null;   tab1BackSeekBlue = null;
+        tab1FontSeekRed = null; tab1FontSeekGreen = null;   tab1FontSeekBlue = null;
+        tab2BackSeekRed = null; tab2BackSeekGreen = null;   tab2BackSeekBlue = null;
+        tab2FontSeekRed = null; tab2FontSeekGreen = null;   tab2FontSeekBlue = null;
+        tab1BackTxtRed = null;  tab1BackTxtGreen = null;    tab1BackTxtBlue = null;
+        tab1FontTxtRed = null;  tab1FontTxtGreen = null;    tab1FontTxtBlue = null;
+        tab2BackTxtRed = null;  tab2BackTxtGreen = null;    tab2BackTxtBlue = null;
+        tab2FontTxtRed = null;  tab2FontTxtGreen = null;    tab2FontTxtBlue = null;
+        previewTxtTitle = null;
+        previewTxtContext = null;
+        previewMainLayout = null;
+        previewTitleLayout = null;
+        previewContextLayout = null;
+        seekBarChangeListener = null;
     }
 }
 

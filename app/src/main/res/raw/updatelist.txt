@@ -1,3 +1,8 @@
+1.3.1
+1) Bug fix(When Modifying Widget Note Contents)
+2) Bug fix(Where no paint memo was created)
+3) Add widget preview image
+
 1.3.0
 1) Add widget Notes feature
 2) Add additional menu (using gestures) in "Enhanced File Open"
@@ -13,10 +18,10 @@
 3) Default alignment of main screen memos to date priority
 
 1.2.5
-1) Fix the bug (File modifications made to open files were not modified when the file was disabled).
+1) Bug fix (File modifications made to open files were not modified when the file was disabled).
 
 1.2.4
-1) Fix the bug (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
+1) Bug fix (choose an eraser or brush, change the size, and change the size as a brush or an eraser).
 
 1.2.3
 1) Adding an experiment function (Enable enabled by setup)

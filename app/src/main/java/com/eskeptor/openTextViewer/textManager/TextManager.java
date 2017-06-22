@@ -50,7 +50,7 @@ public class TextManager
         saved = false;
         MD5 = "";
         format = "";
-        progress = 0F;
+        progress = 0;
         if(pointerList == null)
             pointerList = new ArrayList<>();
         else
@@ -75,121 +75,6 @@ public class TextManager
     public String getMD5()
     {
         return MD5;
-    }
-
-    public boolean saveText(final String _strData, final String _filename, final MemoInfo _info,
-                            final boolean _enhance)
-    {
-        if(_strData == null || _strData.isEmpty())
-        {
-            return false;
-        }
-        RandomAccessFile randomAccessFile = null;
-        FileOutputStream fos = null;
-        FileChannel channel = null;
-        ByteBuffer buffer = null;
-        String info = "[FileInformation:" + Boolean.toString(_info.isWidget) + "," +
-                Boolean.toString(_info.isLocked);
-
-        if(isFileopen())
-        {
-            try
-            {
-                buffer = ByteBuffer.allocateDirect(_strData.getBytes().length);
-                if(_enhance)
-                {
-                    randomAccessFile = new RandomAccessFile(new File(fileopen_name), "rw");
-                    channel = randomAccessFile.getChannel();
-                    randomAccessFile.seek(prevPointer);
-                }
-                else
-                {
-                    fos = new FileOutputStream(new File(fileopen_name));
-                    channel = fos.getChannel();
-                }
-                buffer.put(_strData.getBytes());
-                buffer.flip();
-                channel.write(buffer);
-            }
-            catch (Exception e) {e.printStackTrace();}
-            finally {
-                if (buffer != null) {
-                    try {
-                        buffer.clear();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (channel != null) {
-                    try {
-                        channel.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(randomAccessFile != null) {
-                    try {
-                        randomAccessFile.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        else
-        {
-            try
-            {
-                buffer = ByteBuffer.allocateDirect(_strData.getBytes().length);
-                if(_enhance)
-                {
-                    randomAccessFile = new RandomAccessFile(new File(_filename), "rw");
-                    channel = randomAccessFile.getChannel();
-                }
-                else
-                {
-                    fos = new FileOutputStream(new File(_filename));
-                    channel = fos.getChannel();
-                }
-                buffer.put(info.getBytes());
-                buffer.put(_strData.getBytes());
-                buffer.flip();
-                channel.write(buffer);
-            }
-            catch (Exception e) {e.printStackTrace();}
-            finally {
-                if (buffer != null) {
-                    try {
-                        buffer.clear();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (channel != null) {
-                    try {
-                        channel.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(randomAccessFile != null) {
-                    try {
-                        randomAccessFile.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        saved = true;
-        return true;
     }
 
     public boolean saveText(final String _strData, final String _filename, final boolean _enhance)
@@ -306,7 +191,7 @@ public class TextManager
 
     public String openText(final String _filename, final int _sens, final boolean _enhance, final int _format)
     {
-        TimeCheck checker = new TimeCheck("openText");
+//        TimeCheck checker = new TimeCheck("openText");
         if(_filename != null)
         {
             RandomAccessFile randomAccessFile = null;
@@ -321,7 +206,7 @@ public class TextManager
             {
                 if(_enhance)
                 {
-                    checker.CheckStart();
+//                    checker.CheckStart();
                     randomAccessFile = new RandomAccessFile(new File(_filename), "r");
                     channel = randomAccessFile.getChannel();
                     byteBuffer = ByteBuffer.allocateDirect(12);
@@ -365,7 +250,7 @@ public class TextManager
                             byteBuffer = utf.encode(tmp);
                             if(_format == Constant.ENCODE_TYPE_EUCKR)
                             {
-                                stringBuilder.append(new String(byteBuffer.array(), "EUC-KR"));
+                                stringBuilder.append(new String(byteBuffer.array(), Constant.ENCODE_TYPE_EUCKR_STR));
                             }
                             else
                             {
@@ -387,18 +272,18 @@ public class TextManager
                         fileopen = true;
                         fileopen_name = _filename;
                         MD5 = createMD5(stringBuilder.toString());
-                        checker.CheckEnd();
-                        Log.e("Debug", "openText");
-                        Log.e("Debug", "prevPointer:" + pointerList.get(prevPointer) + "," + Integer.toString(prevPointer));
-                        Log.e("Debug", "curPointer:" + pointerList.get(curPointer) + "," + Integer.toString(curPointer));
-                        Log.e("Debug", "nextPointer:" + pointerList.get(nextPointer) + "," + Integer.toString(nextPointer));
+//                        checker.CheckEnd();
+//                        Log.e("Debug", "openText");
+//                        Log.e("Debug", "prevPointer:" + pointerList.get(prevPointer) + "," + Integer.toString(prevPointer));
+//                        Log.e("Debug", "curPointer:" + pointerList.get(curPointer) + "," + Integer.toString(curPointer));
+//                        Log.e("Debug", "nextPointer:" + pointerList.get(nextPointer) + "," + Integer.toString(nextPointer));
 
                         if(pointerList.get(nextPointer) == fileSize)
                             progress = 100.0F;
                         else
                             progress = (float)pointerList.get(curPointer) / (float)fileSize * 100;
 
-                        Log.e("Debug", checker.CheckResult());
+//                        Log.e("Debug", checker.CheckResult());
                         return new String(stringBuilder);
                     }
                     else
@@ -418,13 +303,13 @@ public class TextManager
                         byteBuffer.flip();
                         if(formatDetector(byteBuffer) != null)
                         {
-                            format = "UTF-8";
+                            format = Constant.ENCODE_TYPE_UTF8_STR;
                         }
                         else
                         {
-                            format = "EUC-KR";
+                            format = Constant.ENCODE_TYPE_EUCKR_STR;
                         }
-                        Log.e("Debug", "format:" + format);
+//                        Log.e("Debug", "format:" + format);
                         fileopen = true;
                         fileopen_name = _filename;
                         MD5 = createMD5(byteBuffer.array(), _enhance);
@@ -519,7 +404,7 @@ public class TextManager
         {
             messageDigest = MessageDigest.getInstance("MD5");
             // 타입에 상관없이 UTF8인 이유는 이미 UTF8로 변환되어있는 것을 체크하기 때문
-            messageDigest.update(_message.getBytes(Charset.forName("UTF-8")));
+            messageDigest.update(_message.getBytes(Charset.forName(Constant.ENCODE_TYPE_UTF8_STR)));
             byte[] hash = messageDigest.digest();
             for (int i = 0; i < hash.length; i++)
             {
@@ -535,7 +420,7 @@ public class TextManager
         CharBuffer charBuffer = null;
         try
         {
-            CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
+            CharsetDecoder decoder = Charset.forName(Constant.ENCODE_TYPE_UTF8_STR).newDecoder();
             charBuffer = decoder.decode(_buffer);
         }
         catch (CharacterCodingException cce)

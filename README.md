@@ -7,11 +7,11 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.6.7) - Build 1.3.0
+## What's New? (Last updated 2017.6.22) - Build 1.3.1
 ```
- 1) Add widget Notes feature
- 2) Add additional menu (using gestures) in "Enhanced File Open"
- 3) Save Storage Method
+ 1) Bug fix(When Modifying Widget Note Contents)
+ 2) Bug fix(Where no paint memo was created)
+ 3) Add widget preview image
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

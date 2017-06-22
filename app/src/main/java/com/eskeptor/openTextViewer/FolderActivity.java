@@ -200,6 +200,7 @@ public class FolderActivity extends AppCompatActivity
         editText = null;
         clickListener = null;
         longClickListener = null;
+        newFolderName = null;
     }
 
     // 폴더의 타입을 체크함(기본폴더, 일반폴더)

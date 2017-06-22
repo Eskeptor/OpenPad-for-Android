@@ -71,7 +71,6 @@ public class PaintActivity extends AppCompatActivity {
         context_this = getApplicationContext();
 
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
-        //memoType = getIntent().getIntExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_NEW);
         openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
         openFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
 
@@ -183,7 +182,6 @@ public class PaintActivity extends AppCompatActivity {
                 paintFunction = new PaintFunction(context_this);
                 initPaint();
                 paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
-
                 drawLayout.addView(paintFunction);
             }
         };
@@ -243,7 +241,15 @@ public class PaintActivity extends AppCompatActivity {
         }
         else if(id == R.id.menu_paint_undo)
         {
+//            int color;
             paintFunction.undoCanvas();
+            /*color = paintFunction.curColor;
+            curRedValue = Color.red(color);
+            curGreenValue = Color.green(color);
+            curBlueValue = Color.blue(color);
+            brushSeekRed.setProgress(curRedValue);
+            brushSeekGreen.setProgress(curGreenValue);
+            brushSeekBlue.setProgress(curBlueValue);*/
             paintFunction.invalidate();
         }
         return super.onOptionsItemSelected(_item);
@@ -256,21 +262,19 @@ public class PaintActivity extends AppCompatActivity {
         drawLayout = null;
         brushLayout = null;
         eraserLayout = null;
-        brushSeekSize = null;
-        brushSeekRed = null;
-        brushSeekGreen = null;
-        brushSeekBlue = null;
-        eraserSeekSize = null;
-        brushTxtSize = null;
-        brushTxtRed = null;
-        brushTxtGreen = null;
-        brushTxtBlue = null;
-        eraserTxtSize = null;
+        brushSeekSize = null;   brushSeekRed = null;    brushSeekGreen = null;  brushSeekBlue = null;
+        eraserSeekSize = null;  eraserTxtSize = null;
+        brushTxtSize = null;    brushTxtRed = null;     brushTxtGreen = null;   brushTxtBlue = null;
         context_this = null;
         if(alert != null)
             alert = null;
         logManager = null;
         undo = null;
+        openFolderURL = null;
+        openFileName = null;
+        openFileURL = null;
+        lastLog = null;
+        runnable = null;
         System.gc();
     }
 
@@ -315,7 +319,7 @@ public class PaintActivity extends AppCompatActivity {
                                                 openFileURL = openFolderURL + File.separator + (memoIndex + Constant.FILE_IMAGE_EXTENSION);
                                                 tmpFile = new File(openFileURL);
                                             }
-                                            paintFunction.savePaint(openFileName);
+                                            paintFunction.savePaint(openFileURL);
                                             writeLog();
                                         }
                                         finish();
@@ -534,8 +538,11 @@ public class PaintActivity extends AppCompatActivity {
             bitmap = null;
             path = null;
             canvas = null;
+            canvasPaint = null;
             brushPaint = null;
             brushObject.init();
+            folderUrl = null;
+            filename = null;
         }
 
         @Override
@@ -716,6 +723,7 @@ public class PaintActivity extends AppCompatActivity {
                 canvas.drawPath(brushObject.brushPaths.get(i), brushPaint);
             }
             brushPaint.setStrokeWidth(curSize);
+            brushPaint.setColor(curColor);
         }
     }
 }

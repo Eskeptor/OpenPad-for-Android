@@ -336,6 +336,9 @@ public class MainActivity extends AppCompatActivity
             adView = null;
         pref = null;
         editor = null;
+        curFolderURL = null;
+        recyclerViewPadding = null;
+        fab = null;
     }
 
     private void checkPermission()

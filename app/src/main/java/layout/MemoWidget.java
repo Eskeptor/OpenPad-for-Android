@@ -44,6 +44,7 @@ public class MemoWidget extends AppWidgetProvider {
         String fileURL = pref.getString(Constant.WIDGET_FILE_URL, null);
 
         Intent intent = new Intent(context, MemoActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Constant.INTENT_EXTRA_MEMO_ISWIDGET, true);
         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, Constant.APP_WIDGET_URL);
         intent.putExtra(Constant.INTENT_EXTRA_WIDGET_ID, appWidgetId);

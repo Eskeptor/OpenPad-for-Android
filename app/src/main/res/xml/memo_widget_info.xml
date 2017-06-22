@@ -5,7 +5,7 @@
                     android:initialLayout="@layout/memo_widget"
                     android:minHeight="144dp"
                     android:minWidth="144dp"
-                    android:previewImage="@drawable/example_appwidget_preview"
+                    android:previewImage="@drawable/widget_preview"
                     android:resizeMode="horizontal|vertical"
                     android:updatePeriodMillis="1800000"
                     android:widgetCategory="home_screen">

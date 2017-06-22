@@ -443,6 +443,7 @@ public class MemoActivity extends AppCompatActivity {
         alert = null;
         context_this = null;
         pref = null;
+        editor = null;
         editMenu = null;
         drawableModified = null;
         drawableModifiedComplete = null;
@@ -450,6 +451,10 @@ public class MemoActivity extends AppCompatActivity {
         progCurrent = null;
         txtProgCur = null;
         gestureDetectorCompat = null;
+        lastLog = null;
+        openFileURL = null;
+        openFileName = null;
+        openFolderURL = null;
     }
 
     @Override
@@ -471,7 +476,7 @@ public class MemoActivity extends AppCompatActivity {
                     }
                 }
                 openFileURL = openFolderURL + File.separator + (widgetID + Constant.FILE_TEXT_EXTENSION);
-                txtManager.saveText(editText.getText().toString(), openFileURL, enhance);
+                txtManager.saveText(editText.getText().toString(), openFileURL, false);
                 writeLog();
 
                 editor = context_this.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + origin_id, MODE_PRIVATE).edit();
