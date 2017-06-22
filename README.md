@@ -17,8 +17,7 @@
 [View Lists](./UPDATE.md)
 ## Known Bugs
 ```
- 1) The "Test Images(EXAMPLE)" screen appears on the widget creation screen
- 2) When modifying a widget, sometimes forced shutdown occurs
+ 1) Tell me
 ```
 ## Development environment
 #### 1st environment
