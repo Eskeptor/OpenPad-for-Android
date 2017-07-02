@@ -1,4 +1,6 @@
-1.3.1 Update)
-Bug fix(When Modifying Widget Note Contents)
-Bug fix(Where no paint memo was created)
-Add widget preview image
+1.3.2 Update)
+Fix the gap list spacing on the main activity
+Adding a brush color preview in Paint memo
+
+Warnning)
+There is a bug that can not be modified while "enhanced file open".

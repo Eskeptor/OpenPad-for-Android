@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_paint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,94 +16,112 @@
         android:id="@+id/paint_brush_seekLayout">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
-                android:text="@string/paint_txtBrushSize"
-                android:id="@+id/paint_brush_txtSize"
-                style="@style/AppTheme.Activity.Paint.Brush.Text"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <SeekBar
-                android:id="@+id/paint_brush_seekSize"
-                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/paint_brush_txtSize"
+                        style="@style/AppTheme.Activity.Paint.Brush.Text"
+                        android:text="@string/paint_txtBrushSize" />
+
+                    <SeekBar
+                        android:id="@+id/paint_brush_seekSize"
+                        style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/paint_brush_txtGreen"
+                        style="@style/AppTheme.Activity.Paint.Brush.Text"
+                        android:text="@string/paint_txtBrushGreen" />
+
+                    <SeekBar
+                        android:id="@+id/paint_brush_seekGreen"
+                        style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/paint_brush_txtRed"
+                        style="@style/AppTheme.Activity.Paint.Brush.Text"
+                        android:text="@string/paint_txtBrushRed" />
+
+                    <SeekBar
+                        android:id="@+id/paint_brush_seekRed"
+                        style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/paint_brush_txtBlue"
+                        style="@style/AppTheme.Activity.Paint.Brush.Text"
+                        android:text="@string/paint_txtBrushBlue" />
+
+                    <SeekBar
+                        android:id="@+id/paint_brush_seekBlue"
+                        style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/paint_color"
+                android:layout_width="60sp"
+                android:layout_height="30sp"
+                android:layout_gravity="center"
+                android:layout_marginRight="15sp"
+                android:layout_weight="1"
+                app:srcCompat="@color/Black" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
-
-            <TextView
-                android:text="@string/paint_txtBrushRed"
-                android:id="@+id/paint_brush_txtRed"
-                style="@style/AppTheme.Activity.Paint.Brush.Text"/>
-
-            <SeekBar
-                android:id="@+id/paint_brush_seekRed"
-                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
-
-            <TextView
-                android:text="@string/paint_txtBrushGreen"
-                android:id="@+id/paint_brush_txtGreen"
-                style="@style/AppTheme.Activity.Paint.Brush.Text"/>
-
-            <SeekBar
-                android:id="@+id/paint_brush_seekGreen"
-                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
-
-            <TextView
-                android:text="@string/paint_txtBrushBlue"
-                android:id="@+id/paint_brush_txtBlue"
-                style="@style/AppTheme.Activity.Paint.Brush.Text"/>
-
-            <SeekBar
-                android:id="@+id/paint_brush_seekBlue"
-                style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/paint_eraser_seekLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/paint_eraser_seekLayout"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:orientation="horizontal">
 
         <TextView
-            android:text="@string/paint_txtBrushSize"
             android:id="@+id/paint_eraser_txtSize"
-            style="@style/AppTheme.Activity.Paint.Brush.Text"/>
+            style="@style/AppTheme.Activity.Paint.Brush.Text"
+            android:text="@string/paint_txtBrushSize" />
 
         <SeekBar
             android:id="@+id/paint_eraser_seekSize"
-            style="@style/AppTheme.Activity.Paint.Brush.SeekBar"/>
+            style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
     </LinearLayout>
 
 </LinearLayout>

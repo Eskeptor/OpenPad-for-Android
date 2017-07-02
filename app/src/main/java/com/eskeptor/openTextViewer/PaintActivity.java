@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class PaintActivity extends AppCompatActivity {
     private TextView brushTxtGreen;
     private TextView brushTxtBlue;
     private TextView eraserTxtSize;
+    private ImageView brushColor;
 
     private Context context_this;
 
@@ -95,6 +97,7 @@ public class PaintActivity extends AppCompatActivity {
         brushTxtRed = (TextView)findViewById(R.id.paint_brush_txtRed);
         brushTxtGreen = (TextView)findViewById(R.id.paint_brush_txtGreen);
         brushTxtBlue = (TextView)findViewById(R.id.paint_brush_txtBlue);
+        brushColor = (ImageView)findViewById(R.id.paint_color);
 
         SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -137,16 +140,19 @@ public class PaintActivity extends AppCompatActivity {
                 {
                     curRedValue = _seekBar.getProgress();
                     paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
+                    brushColor.setColorFilter(Color.rgb(curRedValue, curGreenValue, curBlueValue), PorterDuff.Mode.SRC);
                 }
                 if(_seekBar == brushSeekGreen)
                 {
                     curGreenValue = _seekBar.getProgress();
                     paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
+                    brushColor.setColorFilter(Color.rgb(curRedValue, curGreenValue, curBlueValue), PorterDuff.Mode.SRC);
                 }
                 if(_seekBar == brushSeekBlue)
                 {
                     curBlueValue = _seekBar.getProgress();
                     paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
+                    brushColor.setColorFilter(Color.rgb(curRedValue, curGreenValue, curBlueValue), PorterDuff.Mode.SRC);
                 }
                 if(_seekBar == eraserSeekSize)
                 {
@@ -275,6 +281,7 @@ public class PaintActivity extends AppCompatActivity {
         openFileURL = null;
         lastLog = null;
         runnable = null;
+        brushColor = null;
         System.gc();
     }
 

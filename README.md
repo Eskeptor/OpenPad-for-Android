@@ -7,17 +7,16 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.6.22) - Build 1.3.1
+## What's New? (Last updated 2017.7.2) - Build 1.3.2
 ```
- 1) Bug fix(When Modifying Widget Note Contents)
- 2) Bug fix(Where no paint memo was created)
- 3) Add widget preview image
+ 1) Fix the gap list spacing on the main activity
+ 2) Adding a brush color preview in Paint memo
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
 ## Known Bugs
 ```
- 1) Tell me
+ 1) There is a bug that can not be modified while "enhanced file open".
 ```
 ## Development environment
 #### 1st environment

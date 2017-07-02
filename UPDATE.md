@@ -1,3 +1,8 @@
+## Update 2017.7.2 - Build 1.3.2
+```
+ 1) Fix the gap list spacing on the main activity
+ 2) Adding a brush color preview in Paint memo
+```
 ## Update 2017.6.22 - Build 1.3.1
 ```
  1) Bug fix(When Modifying Widget Note Contents)
