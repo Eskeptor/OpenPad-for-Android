@@ -5,20 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.view.MenuItemCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.eskeptor.openTextViewer.datatype.FileObject;
 
 import java.io.File;
@@ -38,14 +35,19 @@ public class FileBrowserActivity extends AppCompatActivity
 {
     private TextView txtPath;                       // 현재 파일 경로
     private ListView fileList;                      // 파일 리스트
-    private String str_filename;                    // 파일 이름
-    private String str_root;                        // 파일의 절대경로
+    private String strFilename;                    // 파일 이름
+    private String strRoot;                        // 파일의 절대경로
     private ArrayList<FileObject> fileObjects;      // 파일의 목록을 저장할 배열리스트
     private FileObjectAdaptor fileObjectAdaptor;    // 파일용 커스텀 어댑터
-    private Context context_this;                   // context
+    private Context contextThis;                   // context
+    private View contextView;
     private AlertDialog.Builder dialog;             // 다이얼로그 재활용
     private int browserType;                        // 외부파일 불러오기, 파일 저장하기
     private int sortType;                           // 정렬 기준
+
+    // 메뉴 아이템
+    private MenuItem itemDES;
+    private MenuItem itemASC;
 
     // 파일을 다른이름으로 다른폴더에 저장할 때 쓰이는 것
     private LinearLayout saveLayout;
@@ -57,10 +59,11 @@ public class FileBrowserActivity extends AppCompatActivity
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_filebrowser);
 
-        context_this = getApplicationContext();
+        contextThis = getApplicationContext();
+        contextView = findViewById(R.id.activity_filebrowser);
 
         browserType = getIntent().getIntExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, 0);
-        str_root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        strRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
         sortType = Constant.BROWSER_MENU_SORT_ASC;
 
         txtPath = (TextView)findViewById(R.id.browser_txtPath);
@@ -79,7 +82,7 @@ public class FileBrowserActivity extends AppCompatActivity
             saveLayout.setVisibility(View.VISIBLE);
         }
 
-        getDirectory(str_root);
+        getDirectory(strRoot);
 
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -102,7 +105,7 @@ public class FileBrowserActivity extends AppCompatActivity
                         Intent intent = new Intent();
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.setClass(context_this, MemoActivity.class);
+                        intent.setClass(contextThis, MemoActivity.class);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(_position).url);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
                         //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
@@ -116,7 +119,7 @@ public class FileBrowserActivity extends AppCompatActivity
                         Intent intent = new Intent();
 
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.setClass(context_this, MemoActivity.class);
+                        intent.setClass(contextThis, MemoActivity.class);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, fileObjects.get(_position).url);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
                         //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
@@ -133,46 +136,45 @@ public class FileBrowserActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu _menu)
     {
         getMenuInflater().inflate(R.menu.menu_filebrowser, _menu);
-        MenuItem item = _menu.findItem(R.id.menu_spinner);
-        Spinner menu_spinner = (Spinner) MenuItemCompat.getActionView(item);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.menu_spinner_sort, R.layout.spinner_layout);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        menu_spinner.setAdapter(adapter);
-        menu_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> _parent, View _view, int _position, long _id)
-            {
-                if(_position == Constant.BROWSER_MENU_SORT_ASC)
-                {
-                    sortType = Constant.BROWSER_MENU_SORT_ASC;
-                    getDirectory(str_filename);
-                }
-                else if(_position == Constant.BROWSER_MENU_SORT_DES)
-                {
-                    sortType = Constant.BROWSER_MENU_SORT_DES;
-                    getDirectory(str_filename);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> _parent) {}
-        });
+        itemDES = _menu.findItem(R.id.menu_des);
+        itemASC = _menu.findItem(R.id.menu_asc);
+        itemASC.setChecked(true);
 
         return true;
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem _item) {
+        int id = _item.getItemId();
+
+        if(id == R.id.menu_asc)
+        {
+            sortType = Constant.BROWSER_MENU_SORT_ASC;
+            getDirectory(strFilename);
+            itemASC.setChecked(true);
+            itemDES.setChecked(false);
+        }
+        else if(id == R.id.menu_des)
+        {
+            sortType = Constant.BROWSER_MENU_SORT_DES;
+            getDirectory(strFilename);
+            itemASC.setChecked(false);
+            itemDES.setChecked(true);
+        }
+        return super.onOptionsItemSelected(_item);
+    }
+
+    @Override
     public void onBackPressed()
     {
-        if (str_filename.equals(str_root))
+        if (strFilename.equals(strRoot))
         {
             super.onBackPressed();
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
         }
         else
         {
-            getDirectory(new File(str_filename).getParent());
+            getDirectory(new File(strFilename).getParent());
         }
     }
 
@@ -189,9 +191,10 @@ public class FileBrowserActivity extends AppCompatActivity
         fileObjectAdaptor = null;
         if(dialog != null)
             dialog = null;
-        context_this = null;
-        str_filename = null;
-        str_root = null;
+        contextThis = null;
+        strFilename = null;
+        strRoot = null;
+        contextView = null;
     }
 
     public void onClick(View _v)
@@ -204,7 +207,7 @@ public class FileBrowserActivity extends AppCompatActivity
                 if(!isExist(etxtSave.getText().toString()))
                 {
                     Intent intent = new Intent();
-                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, str_filename + File.separator);
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, strFilename + File.separator);
                     intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL, etxtSave.getText().toString());
                     setResult(RESULT_OK, intent);
                     finish();
@@ -221,7 +224,7 @@ public class FileBrowserActivity extends AppCompatActivity
                             if(_which == AlertDialog.BUTTON_POSITIVE)
                             {
                                 Intent intent = new Intent();
-                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, str_filename + File.separator);
+                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL, strFilename + File.separator);
                                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL, etxtSave.getText().toString());
                                 setResult(RESULT_OK, intent);
                                 finish();
@@ -240,7 +243,7 @@ public class FileBrowserActivity extends AppCompatActivity
             }
             else
             {
-                Toast.makeText(this, R.string.filebrowser_toast_error_regex, Toast.LENGTH_SHORT).show();
+                Snackbar.make(contextView, R.string.filebrowser_toast_error_regex, Snackbar.LENGTH_SHORT).show();
                 etxtSave.setText("");
             }
         }
@@ -306,7 +309,7 @@ public class FileBrowserActivity extends AppCompatActivity
 
         fileObjectAdaptor = new FileObjectAdaptor(this, fileObjects);
         fileList.setAdapter(fileObjectAdaptor);
-        str_filename = _dir;
+        strFilename = _dir;
     }
 
     private void sortFileArray(File[] _files, final int _sortType)

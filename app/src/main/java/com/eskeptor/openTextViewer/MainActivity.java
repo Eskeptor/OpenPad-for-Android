@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +30,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity
     private Runnable refreshListRunnable;
     private Drawable folderIcon;
     private AlertDialog.Builder dialog;
-    private Context context_this;
+    private Context contextThis;
+    private View contextView;
     private FloatingActionButton fab;
 
     private AdView adView;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         {
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.setClass(context_this, FolderActivity.class);
+            intent.setClass(contextThis, FolderActivity.class);
             startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_FOLDER);
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
         }
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         {
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.setClass(context_this, SettingsActivity.class);
+            intent.setClass(contextThis, SettingsActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_top, R.anim.anim_slide_out_bottom);
         }
@@ -166,7 +168,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        context_this = getApplicationContext();
+        contextThis = getApplicationContext();
+        contextView = findViewById(R.id.content_main);
 
         pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         editor = pref.edit();
@@ -209,11 +212,11 @@ public class MainActivity extends AppCompatActivity
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 if(curFolderFileList.get(_position).type == Constant.LISTVIEW_FILE_TYPE_IMAGE)
                 {
-                    intent.setClass(context_this, PaintActivity.class);
+                    intent.setClass(contextThis, PaintActivity.class);
                 }
                 else
                 {
-                    intent.setClass(context_this, MemoActivity.class);
+                    intent.setClass(contextThis, MemoActivity.class);
                 }
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, curFolderFileList.get(_position).url);
                 intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, curFolderFileList.get(_position).title);
@@ -231,6 +234,7 @@ public class MainActivity extends AppCompatActivity
 
         fab = (FloatingActionButton) findViewById(R.id.main_add);
         fab.setOnClickListener(new View.OnClickListener() {
+            Context wrapper = new ContextThemeWrapper(contextThis, R.style.AppTheme);
             PopupMenu addFabMenu;
             MenuInflater menuInflater;
             Menu menu;
@@ -239,7 +243,7 @@ public class MainActivity extends AppCompatActivity
             {
                 if(addFabMenu == null && menuInflater == null && menu == null)
                 {
-                    addFabMenu = new PopupMenu(context_this, view);
+                    addFabMenu = new PopupMenu(wrapper, view);
                     menuInflater = addFabMenu.getMenuInflater();
                     menu = addFabMenu.getMenu();
                     menuInflater.inflate(R.menu.menu_main_add, menu);
@@ -251,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.setClass(context_this, MemoActivity.class);
+                            intent.setClass(contextThis, MemoActivity.class);
                             intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -260,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.setClass(context_this, PaintActivity.class);
+                            intent.setClass(contextThis, PaintActivity.class);
                             intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, curFolderURL);
                             startActivity(intent);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
@@ -302,7 +306,8 @@ public class MainActivity extends AppCompatActivity
         else
         {
             backPressedTime = tempTime;
-            Toast.makeText(this, R.string.back_press, Toast.LENGTH_SHORT).show();
+            Snackbar.make(contextView, R.string.back_press, Snackbar.LENGTH_SHORT).show();
+//            Toast.makeText(this, R.string.back_press, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -331,7 +336,7 @@ public class MainActivity extends AppCompatActivity
         folderIcon = null;
         if(dialog != null)
             dialog = null;
-        context_this = null;
+        contextThis = null;
         if(adView != null)
             adView = null;
         pref = null;
@@ -339,6 +344,7 @@ public class MainActivity extends AppCompatActivity
         curFolderURL = null;
         recyclerViewPadding = null;
         fab = null;
+        contextView = null;
     }
 
     private void checkPermission()
@@ -417,7 +423,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         if(file.delete())
                         {
-                            Toast.makeText(context_this, R.string.file_dialog_toast_delete, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(contextView, R.string.file_dialog_toast_delete, Snackbar.LENGTH_SHORT).show();
                             curFolderFileList.remove(_index);
                             curFolderGridView.removeViewAt(_index);
                             curFileAdapter.notifyItemRemoved(_index);
@@ -426,7 +432,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         else
                         {
-                            Toast.makeText(context_this, getString(R.string.error_folder_not_exist), Toast.LENGTH_SHORT).show();
+                            Snackbar.make(contextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -549,7 +555,7 @@ public class MainActivity extends AppCompatActivity
     {
         if(pref.getBoolean(Constant.APP_ADMOB_VISIBLE, true))
         {
-            MobileAds.initialize(context_this, getResources().getString(R.string.app_id));
+            MobileAds.initialize(contextThis, getResources().getString(R.string.app_id));
             //adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
             AdRequest adRequest = new AdRequest.Builder().build();
             adView = (AdView)findViewById(R.id.adView);
@@ -574,7 +580,7 @@ public class MainActivity extends AppCompatActivity
     // DP 단위를 Pixel 단위로 변경시켜주는 메소드
     private int DPtoPixel(final int _DP)
     {
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _DP, context_this.getResources().getDisplayMetrics());
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _DP, contextThis.getResources().getDisplayMetrics());
     }
 
     // 파일 정렬 메소드

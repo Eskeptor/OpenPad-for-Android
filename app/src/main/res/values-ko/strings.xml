@@ -172,4 +172,6 @@
     <string name="settings_help_etc_widget">위젯</string>
     <string name="settings_help_etc_widget_context">메인 화면에서 간편하게 메모용 위젯을 추가할 수 있습니다.\n위젯에 들어가는 메모는 \"위젯폴더(OpenPad/Widget)\"에 저장됩니다.</string>
     <string name="widget_context_new">탭하여 메모 생성</string>
+    <string name="filebrowser_menu_asc">오름차순</string>
+    <string name="filebrowser_menu_des">내림차순</string>
 </resources>

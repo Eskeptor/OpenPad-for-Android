@@ -3,6 +3,7 @@ package com.eskeptor.openTextViewer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 import com.eskeptor.openTextViewer.datatype.FolderObject;
 
 import java.io.File;
@@ -29,7 +29,8 @@ public class FolderActivity extends AppCompatActivity
 {
     private ArrayList<FolderObject> folders;                        // 폴더를 나열할 ArrayList
     private FolderAdaptor folderAdaptor;                            // 폴더를 나열할 ArrayList 에 쓰일 어댑터
-    private Context context_this;                                   // context 용
+    private View contextView;
+    private Context contextThis;                                    // context 용
     private EditText editText;                                      // 폴더생성시 이름 넣을때 쓰는 edittext
     private int foldersLength;                                      // 폴더의 개수
     private String newFolderName;                                   // 새폴더 이름
@@ -52,7 +53,7 @@ public class FolderActivity extends AppCompatActivity
         {
             dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.folder_dialog_title_create);
-            View layout = LayoutInflater.from(context_this).inflate(R.layout.dialog_folder_create, null);
+            View layout = LayoutInflater.from(contextThis).inflate(R.layout.dialog_folder_create, null);
             editText = (EditText)layout.findViewById(R.id.dialog_folder_input);
             dialog.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
@@ -66,7 +67,7 @@ public class FolderActivity extends AppCompatActivity
                         {
                             File file = new File(Constant.APP_INTERNAL_URL + File.separator + newFolderName);
                             if(file.exists())
-                                Toast.makeText(context_this, R.string.folder_dialog_toast_exist, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(contextView, R.string.folder_dialog_toast_exist, Snackbar.LENGTH_SHORT).show();
                             else
                             {
                                 file.mkdir();
@@ -99,7 +100,8 @@ public class FolderActivity extends AppCompatActivity
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_folder);
 
-        context_this = getApplicationContext();
+        contextThis = getApplicationContext();
+        contextView = findViewById(R.id.activity_folder);
 
         setTitle(R.string.folder_title);
         folderList = (ListView)findViewById(R.id.folder_list) ;
@@ -111,7 +113,7 @@ public class FolderActivity extends AppCompatActivity
                 {
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.setClass(context_this, FileBrowserActivity.class);
+                    intent.setClass(contextThis, FileBrowserActivity.class);
                     intent.setType("text/plain");
                     intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_OPEN_EXTERNAL);
                     startActivity(intent);
@@ -163,13 +165,13 @@ public class FolderActivity extends AppCompatActivity
                             return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
                                     || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
                         }
-                    }).length, checkFolderType(files[i]), context_this));
+                    }).length, checkFolderType(files[i]), contextThis));
                 }
                 // 파일 브라우저 연결
                 folders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), Constant.FOLDER_TYPE_EXTERNAL, Constant.FOLDER_TYPE_EXTERNAL, null));
                 if(folderAdaptor == null)
                 {
-                    folderAdaptor = new FolderAdaptor(context_this, folders);
+                    folderAdaptor = new FolderAdaptor(contextThis, folders);
                     folderList.setAdapter(folderAdaptor);
                     folderList.setOnItemClickListener(clickListener);
                     folderList.setOnItemLongClickListener(longClickListener);
@@ -195,18 +197,19 @@ public class FolderActivity extends AppCompatActivity
             folders.clear();
         }
         folders = null;
-        context_this = null;
+        contextThis = null;
         refreshRunnable = null;
         editText = null;
         clickListener = null;
         longClickListener = null;
         newFolderName = null;
+        contextView = null;
     }
 
     // 폴더의 타입을 체크함(기본폴더, 일반폴더)
     private int checkFolderType(final File _file)
     {
-        if(_file.getName().equals(Constant.FOLDER_DEFAULT_NAME))
+        if(_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME))
         {
             return Constant.FOLDER_TYPE_DEFAULT;
         }
@@ -230,17 +233,17 @@ public class FolderActivity extends AppCompatActivity
                         if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)
                                 && file.delete())
                         {
-                            Toast.makeText(context_this, R.string.folder_dialog_toast_delete, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(contextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
                             runOnUiThread(refreshRunnable);
                         }
                         else
                         {
-                            Toast.makeText(context_this, R.string.folder_toast_remove_defaultfolder, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(contextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
                         }
                     }
                     else
                     {
-                        Toast.makeText(context_this, getString(R.string.error_folder_not_exist), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(contextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
                     }
                 }
                 _dialog.dismiss();

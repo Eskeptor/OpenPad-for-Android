@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -43,7 +42,7 @@ public class PaintActivity extends AppCompatActivity {
     private TextView eraserTxtSize;
     private ImageView brushColor;
 
-    private Context context_this;
+    private Context contextThis;
 
     private AlertDialog.Builder alert;
 
@@ -70,7 +69,7 @@ public class PaintActivity extends AppCompatActivity {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_paint);
 
-        context_this = getApplicationContext();
+        contextThis = getApplicationContext();
 
         openFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         openFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
@@ -185,7 +184,7 @@ public class PaintActivity extends AppCompatActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                paintFunction = new PaintFunction(context_this);
+                paintFunction = new PaintFunction(contextThis);
                 initPaint();
                 paintFunction.setColor(Color.rgb(curRedValue, curGreenValue, curBlueValue));
                 drawLayout.addView(paintFunction);
@@ -271,7 +270,7 @@ public class PaintActivity extends AppCompatActivity {
         brushSeekSize = null;   brushSeekRed = null;    brushSeekGreen = null;  brushSeekBlue = null;
         eraserSeekSize = null;  eraserTxtSize = null;
         brushTxtSize = null;    brushTxtRed = null;     brushTxtGreen = null;   brushTxtBlue = null;
-        context_this = null;
+        contextThis = null;
         if(alert != null)
             alert = null;
         logManager = null;
@@ -305,7 +304,7 @@ public class PaintActivity extends AppCompatActivity {
                                     {
                                         Intent intent = new Intent();
                                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                        intent.setClass(context_this, FileBrowserActivity.class);
+                                        intent.setClass(contextThis, FileBrowserActivity.class);
                                         intent.setType("text/plain");
                                         intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
                                         startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);

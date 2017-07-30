@@ -7,10 +7,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.7.2) - Build 1.3.2
+## What's New? (Last updated 2017.7.30) - Build 1.3.3
 ```
- 1) Fix the gap list spacing on the main activity
- 2) Adding a brush color preview in Paint memo
+ 1) Change menu (External File Explorer)
+ 2) Change the warning message (Toast → Snackbar)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

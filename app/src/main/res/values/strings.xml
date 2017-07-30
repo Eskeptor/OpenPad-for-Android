@@ -181,4 +181,6 @@
     <string name="settings_help_etc_widget">Widget</string>
     <string name="settings_help_etc_widget_context">You can easily add a widget for memo on the main screen.\nThe notes that enter the widget are stored in the \" Widget Folder(OpenPad\Widget) \".</string>
     <string name="widget_context_new">Create a memo by tapping it.</string>
+    <string name="filebrowser_menu_asc">Ascending</string>
+    <string name="filebrowser_menu_des">Descending</string>
 </resources>

@@ -1,3 +1,8 @@
+## Update 2017.7.30 - Build 1.3.3
+```
+ 1) Change menu (External File Explorer)
+ 2) Change the warning message (Toast → Snackbar)
+```
 ## Update 2017.7.2 - Build 1.3.2
 ```
  1) Fix the gap list spacing on the main activity

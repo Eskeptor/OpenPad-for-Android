@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -52,7 +52,8 @@ public class MemoActivity extends AppCompatActivity {
     private LogManager logManager;      // 로그를 기록하는 것
     private File lastLog;               // 로그 파일(새로메모를 만들시 붙여줄 번호)
     private ScrollView scrollView;      // 텍스트 스크롤
-    private Context context_this;       // context용
+    private Context contextThis;       // context용
+    private View contextView;
 
     // 향상된 불러오기의 하단 버튼
     private ScrollView btnLayout;
@@ -152,11 +153,11 @@ public class MemoActivity extends AppCompatActivity {
                 String fileName = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
                 if(txtManager.saveText(editText.getText().toString(), folderURL + fileName, enhance))
                 {
-                    Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(contextView, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName), Snackbar.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(context_this, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(contextView, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName), Snackbar.LENGTH_SHORT).show();
                 }
             }
             else if(_requestCode == Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE)
@@ -165,11 +166,11 @@ public class MemoActivity extends AppCompatActivity {
                 String fileName = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
                 if(txtManager.saveText(editText.getText().toString(), folderURL + fileName, enhance))
                 {
-                    Toast.makeText(context_this, R.string.memo_toast_saveSuccess_internal, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(contextView, R.string.memo_toast_saveSuccess_internal, Snackbar.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    Toast.makeText(context_this, R.string.memo_toast_saveFail_internal, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(contextView, R.string.memo_toast_saveFail_internal, Snackbar.LENGTH_SHORT).show();
                 }
             }
             finish();
@@ -182,7 +183,8 @@ public class MemoActivity extends AppCompatActivity {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_memo);
 
-        context_this = getApplicationContext();
+        contextThis = getApplicationContext();
+        contextView = findViewById(R.id.activity_memo);
         pref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -341,7 +343,7 @@ public class MemoActivity extends AppCompatActivity {
                         }
                     });
 
-                    gestureDetectorCompat = new GestureDetectorCompat(context_this, new GestureDetector.OnGestureListener() {
+                    gestureDetectorCompat = new GestureDetectorCompat(contextThis, new GestureDetector.OnGestureListener() {
                         @Override
                         public boolean onDown(MotionEvent e) {
 
@@ -441,7 +443,7 @@ public class MemoActivity extends AppCompatActivity {
         btnTop = null;
         scrollView = null;
         alert = null;
-        context_this = null;
+        contextThis = null;
         pref = null;
         editor = null;
         editMenu = null;
@@ -455,6 +457,7 @@ public class MemoActivity extends AppCompatActivity {
         openFileURL = null;
         openFileName = null;
         openFolderURL = null;
+        contextView = null;
     }
 
     @Override
@@ -479,11 +482,11 @@ public class MemoActivity extends AppCompatActivity {
                 txtManager.saveText(editText.getText().toString(), openFileURL, false);
                 writeLog();
 
-                editor = context_this.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + origin_id, MODE_PRIVATE).edit();
+                editor = contextThis.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + origin_id, MODE_PRIVATE).edit();
                 editor.putString(Constant.WIDGET_FILE_URL, openFileURL);
                 editor.apply();
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context_this);
-                MemoWidget.updateAppWidget(context_this, appWidgetManager, origin_id);
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(contextThis);
+                MemoWidget.updateAppWidget(contextThis, appWidgetManager, origin_id);
                 Intent resultValue = new Intent();
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, origin_id);
                 setResult(RESULT_OK, resultValue);
@@ -507,7 +510,7 @@ public class MemoActivity extends AppCompatActivity {
                                         {
                                             Intent intent = new Intent();
                                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                            intent.setClass(context_this, FileBrowserActivity.class);
+                                            intent.setClass(contextThis, FileBrowserActivity.class);
                                             intent.setType("text/plain");
                                             intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
                                             startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
