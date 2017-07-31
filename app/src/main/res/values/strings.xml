@@ -60,7 +60,7 @@
     <string name="settings_information_info_summary">Program information and version.</string>
     <string name="settings_dialog_info_title">About Openpad</string>
     <string name="settings_dialog_info_copyright">Copyright © 2017 Jeon Ye Chan</string>
-    <string name="settings_dialog_info_license">This program is affected by the \"GNU GPL v3 License \" license.</string>
+    <string name="settings_dialog_info_license">This program is affected by the \"Apache License 2.0\" license.</string>
     <string name="settings_dialog_info_icon">Icons : https://material.io/icons/</string>
     <string name="settings_dialog_info_ok">OK</string>
     <string name="settings_information_version_title">Version</string>
@@ -113,7 +113,7 @@
     <string name="main_dialog_restart_context_no">If you don\'t have permission, you won\'t be able to use it.</string>
     <string name="main_dialog_first_title">Welcome</string>
     <string name="main_dialog_first_context">Thank you for your first use.\nPlease check \" Help \".\n(Setup - Help)</string>
-    <string name="settings_dialog_info_homepage">If you like this program, visit my homepage.\n(http://eskeptor.tistory.com)</string>
+    <string name="settings_dialog_info_homepage">If you like this program, visit my homepage.\n(http://skyvvv624.blog.me)</string>
     <string name="folder_title">Select Folder</string>
     <string name="filebrowser_dialog_exist_title">File Detection</string>
     <string name="filebrowser_dialog_exist_context">File already exists.\nOverwrite file?</string>

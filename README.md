@@ -7,10 +7,9 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.7.30) - Build 1.3.3
+## What's New? (Last updated 2017.7.31) - Build 1.3.4
 ```
- 1) Change menu (External File Explorer)
- 2) Change the warning message (Toast → Snackbar)
+ 1) Change license(GPL v3 → Apache 2.0)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -38,10 +37,18 @@
  Android SDK(Target and Compiled) : API 25
 ```
 ## License
-Copyright by Jeon Ye-Chan
+Copyright 2017 Jeon Ye-Chan
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 ```
- Apache License 2.0
- http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 ```
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ## Good Bye!!
 Compiled by Android Studio 2.3.2

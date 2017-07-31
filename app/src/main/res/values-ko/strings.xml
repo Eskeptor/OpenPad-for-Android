@@ -59,7 +59,7 @@
     <string name="settings_information_info_summary">프로그램 정보</string>
     <string name="settings_dialog_info_title">오픈패드에 대하여</string>
     <string name="settings_dialog_info_copyright">Copyright © 2017 Jeon Ye Chan</string>
-    <string name="settings_dialog_info_license">이 프로그램은 \"GNU GPL v3 License\"의 영향을 받습니다.</string>
+    <string name="settings_dialog_info_license">이 프로그램은 \"Apache License 2.0\"의 영향을 받습니다.</string>
     <string name="settings_dialog_info_icon">아이콘 : https://material.io/icons/</string>
     <string name="settings_dialog_info_ok">확인</string>
     <string name="settings_information_version_title">버전</string>
@@ -112,7 +112,7 @@
     <string name="main_dialog_restart_context_no">권한이 없으면 이용할 수 없습니다.</string>
     <string name="main_dialog_first_title">환영합니다.</string>
     <string name="main_dialog_first_context">처음 이용해주셔서 감사합니다.\n꼭 \"도움말\"을 확인해주세요.\n(설정 - 도움말)</string>
-    <string name="settings_dialog_info_homepage">만약에 이 프로그램이 마음에 든다면 홈페이지에 방문해보세요.\n(http://eskeptor.tistory.com)</string>
+    <string name="settings_dialog_info_homepage">만약에 이 프로그램이 마음에 든다면 홈페이지에 방문해보세요.\n(http://skyvvv624.blog.me)</string>
     <string name="folder_title">폴더 선택</string>
     <string name="filebrowser_dialog_exist_title">파일 감지</string>
     <string name="filebrowser_dialog_exist_context">파일이 이미 존재합니다.\n파일을 덮어쓰시겠습니까?</string>

@@ -1,3 +1,7 @@
+## Update 2017.7.31 - Build 1.3.4
+```
+ 1) Change license(GPL v3 → Apache 2.0)
+```
 ## Update 2017.7.30 - Build 1.3.3
 ```
  1) Change menu (External File Explorer)

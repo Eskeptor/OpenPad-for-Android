@@ -1,6 +1,5 @@
-1.3.3 Update)
-Change menu (External File Explorer)
-Change the warning message (Toast → Snackbar)
+1.3.4 Update)
+Change license(GPL v3 → Apache 2.0)
 
 Warnning)
 There is a bug that can not be modified while "enhanced file open".
