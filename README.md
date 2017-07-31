@@ -38,8 +38,10 @@
  Android SDK(Target and Compiled) : API 25
 ```
 ## License
+Copyright by Jeon Ye-Chan
 ```
- GNU General Public License 3
+ Apache License 2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 ```
 ## Good Bye!!
 Compiled by Android Studio 2.3.2
