@@ -1,3 +1,8 @@
+## Update 2017.9.16
+```
+ 1) Apply coding standard(Android Coding Standard)
+ 2) Optimizing Performance(10% Improvement)
+```
 ## Update 2017.7.31 - Build 1.3.4
 ```
  1) Change license(GPL v3 → Apache 2.0)
