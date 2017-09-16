@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.eskeptor.openTextViewer.Constant;
@@ -19,40 +18,63 @@ import com.eskeptor.openTextViewer.R;
 public class MemoWidgetConfigureActivity extends Activity {
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private SeekBar tab1BackSeekRed;    private int tab1CurBackRed;     private int tab1CurBackRed_backup;
-    private SeekBar tab1BackSeekGreen;  private int tab1CurBackGreen;   private int tab1CurBackGreen_backup;
-    private SeekBar tab1BackSeekBlue;   private int tab1CurBackBlue;    private int tab1CurBackBlue_backup;
-    private SeekBar tab1FontSeekRed;    private int tab1CurFontRed;     private int tab1CurFontRed_backup;
-    private SeekBar tab1FontSeekGreen;  private int tab1CurFontGreen;   private int tab1CurFontGreen_backup;
-    private SeekBar tab1FontSeekBlue;   private int tab1CurFontBlue;    private int tab1CurFontBlue_backup;
-    private SeekBar tab2BackSeekRed;    private int tab2CurBackRed;     private int tab2CurBackRed_backup;
-    private SeekBar tab2BackSeekGreen;  private int tab2CurBackGreen;   private int tab2CurBackGreen_backup;
-    private SeekBar tab2BackSeekBlue;   private int tab2CurBackBlue;    private int tab2CurBackBlue_backup;
-    private SeekBar tab2FontSeekRed;    private int tab2CurFontRed;     private int tab2CurFontRed_backup;
-    private SeekBar tab2FontSeekGreen;  private int tab2CurFontGreen;   private int tab2CurFontGreen_backup;
-    private SeekBar tab2FontSeekBlue;   private int tab2CurFontBlue;    private int tab2CurFontBlue_backup;
-    private TextView tab1BackTxtRed;
-    private TextView tab1BackTxtGreen;
-    private TextView tab1BackTxtBlue;
-    private TextView tab1FontTxtRed;
-    private TextView tab1FontTxtGreen;
-    private TextView tab1FontTxtBlue;
-    private TextView tab2BackTxtRed;
-    private TextView tab2BackTxtGreen;
-    private TextView tab2BackTxtBlue;
-    private TextView tab2FontTxtRed;
-    private TextView tab2FontTxtGreen;
-    private TextView tab2FontTxtBlue;
+    private SharedPreferences mSharedPref;
+    private SeekBar mTab1BackSeekRed;
+    private int mTab1CurBackRed;
+    private int mTab1CurBackRed_backup;
+    private SeekBar mTab1BackSeekGreen;
+    private int mTab1CurBackGreen;
+    private int mTab1CurBackGreen_backup;
+    private SeekBar mTab1BackSeekBlue;
+    private int mTab1CurBackBlue;
+    private int mTab1CurBackBlue_backup;
+    private SeekBar mTab1FontSeekRed;
+    private int mTab1CurFontRed;
+    private int mTab1CurFontRed_backup;
+    private SeekBar mTab1FontSeekGreen;
+    private int mTab1CurFontGreen;
+    private int mTab1CurFontGreen_backup;
+    private SeekBar mTab1FontSeekBlue;
+    private int mTab1CurFontBlue;
+    private int mTab1CurFontBlue_backup;
+    private SeekBar mTab2BackSeekRed;
+    private int mTab2CurBackRed;
+    private int mTab2CurBackRed_backup;
+    private SeekBar mTab2BackSeekGreen;
+    private int mTab2CurBackGreen;
+    private int mTab2CurBackGreen_backup;
+    private SeekBar mTab2BackSeekBlue;
+    private int mTab2CurBackBlue;
+    private int mTab2CurBackBlue_backup;
+    private SeekBar mTab2FontSeekRed;
+    private int mTab2CurFontRed;
+    private int mTab2CurFontRed_backup;
+    private SeekBar mTab2FontSeekGreen;
+    private int mTab2CurFontGreen;
+    private int mTab2CurFontGreen_backup;
+    private SeekBar mTab2FontSeekBlue;
+    private int mTab2CurFontBlue;
+    private int mTab2CurFontBlue_backup;
+    private TextView mTab1BackTxtRed;
+    private TextView mTab1BackTxtGreen;
+    private TextView mTab1BackTxtBlue;
+    private TextView mTab1FontTxtRed;
+    private TextView mTab1FontTxtGreen;
+    private TextView mTab1FontTxtBlue;
+    private TextView mTab2BackTxtRed;
+    private TextView mTab2BackTxtGreen;
+    private TextView mTab2BackTxtBlue;
+    private TextView mTab2FontTxtRed;
+    private TextView mTab2FontTxtGreen;
+    private TextView mTab2FontTxtBlue;
 
-    private TextView previewTxtTitle;
-    private TextView previewTxtContext;
-    private LinearLayout previewMainLayout;
-    private FrameLayout previewTitleLayout;
-    private FrameLayout previewContextLayout;
+    private TextView mPreviewTxtTitle;
+    private TextView mPreviewTxtContext;
+    private LinearLayout mPreviewMainLayout;
+    private FrameLayout mPreviewTitleLayout;
+    private FrameLayout mPreviewContextLayout;
 
-    private SeekBar.OnSeekBarChangeListener seekBarChangeListener;
+    private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener;
 
     public MemoWidgetConfigureActivity() {
         super();
@@ -83,14 +105,10 @@ public class MemoWidgetConfigureActivity extends Activity {
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
-//        Log.e("Debug", "current widget id(setting) : " + mAppWidgetId);
-
-        pref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mAppWidgetId, MODE_PRIVATE);
-        editor = pref.edit();
 
         setContentView(R.layout.memo_widget_configure);
 
-        TabHost tabHost = (TabHost)findViewById(R.id.widget_config_tabhost);
+        TabHost tabHost = (TabHost) findViewById(R.id.widget_config_tabhost);
         tabHost.setup();
 
         TabHost.TabSpec spec1 = tabHost.newTabSpec("Tab1").setContent(R.id.tab1).setIndicator(getString(R.string.widget_config_customize_tap1_title));
@@ -98,121 +116,113 @@ public class MemoWidgetConfigureActivity extends Activity {
         TabHost.TabSpec spec2 = tabHost.newTabSpec("Tab2").setContent(R.id.tab2).setIndicator(getString(R.string.widget_config_customize_tap2_title));
         tabHost.addTab(spec2);
 
-        tab1BackSeekRed = (SeekBar)findViewById(R.id.widget_config_tab1_back_seekRed);
-        tab1BackSeekGreen = (SeekBar)findViewById(R.id.widget_config_tab1_back_seekGreen);
-        tab1BackSeekBlue = (SeekBar)findViewById(R.id.widget_config_tab1_back_seekBlue);
-        tab1BackTxtRed = (TextView)findViewById(R.id.widget_config_tab1_back_txtRed);
-        tab1BackTxtGreen = (TextView)findViewById(R.id.widget_config_tab1_back_txtGreen);
-        tab1BackTxtBlue = (TextView)findViewById(R.id.widget_config_tab1_back_txtBlue);
-        tab1FontSeekRed = (SeekBar)findViewById(R.id.widget_config_tab1_font_seekRed);
-        tab1FontSeekGreen = (SeekBar)findViewById(R.id.widget_config_tab1_font_seekGreen);
-        tab1FontSeekBlue = (SeekBar)findViewById(R.id.widget_config_tab1_font_seekBlue);
-        tab1FontTxtRed = (TextView)findViewById(R.id.widget_config_tab1_font_txtRed);
-        tab1FontTxtGreen = (TextView)findViewById(R.id.widget_config_tab1_font_txtGreen);
-        tab1FontTxtBlue = (TextView)findViewById(R.id.widget_config_tab1_font_txtBlue);
+        mTab1BackSeekRed = (SeekBar) findViewById(R.id.widget_config_tab1_back_seekRed);
+        mTab1BackSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab1_back_seekGreen);
+        mTab1BackSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab1_back_seekBlue);
+        mTab1BackTxtRed = (TextView) findViewById(R.id.widget_config_tab1_back_txtRed);
+        mTab1BackTxtGreen = (TextView) findViewById(R.id.widget_config_tab1_back_txtGreen);
+        mTab1BackTxtBlue = (TextView) findViewById(R.id.widget_config_tab1_back_txtBlue);
+        mTab1FontSeekRed = (SeekBar) findViewById(R.id.widget_config_tab1_font_seekRed);
+        mTab1FontSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab1_font_seekGreen);
+        mTab1FontSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab1_font_seekBlue);
+        mTab1FontTxtRed = (TextView) findViewById(R.id.widget_config_tab1_font_txtRed);
+        mTab1FontTxtGreen = (TextView) findViewById(R.id.widget_config_tab1_font_txtGreen);
+        mTab1FontTxtBlue = (TextView) findViewById(R.id.widget_config_tab1_font_txtBlue);
 
-        tab2BackSeekRed = (SeekBar)findViewById(R.id.widget_config_tab2_back_seekRed);
-        tab2BackSeekGreen = (SeekBar)findViewById(R.id.widget_config_tab2_back_seekGreen);
-        tab2BackSeekBlue = (SeekBar)findViewById(R.id.widget_config_tab2_back_seekBlue);
-        tab2BackTxtRed = (TextView)findViewById(R.id.widget_config_tab2_back_txtRed);
-        tab2BackTxtGreen = (TextView)findViewById(R.id.widget_config_tab2_back_txtGreen);
-        tab2BackTxtBlue = (TextView)findViewById(R.id.widget_config_tab2_back_txtBlue);
-        tab2FontSeekRed = (SeekBar)findViewById(R.id.widget_config_tab2_font_seekRed);
-        tab2FontSeekGreen = (SeekBar)findViewById(R.id.widget_config_tab2_font_seekGreen);
-        tab2FontSeekBlue = (SeekBar)findViewById(R.id.widget_config_tab2_font_seekBlue);
-        tab2FontTxtRed = (TextView)findViewById(R.id.widget_config_tab2_font_txtRed);
-        tab2FontTxtGreen = (TextView)findViewById(R.id.widget_config_tab2_font_txtGreen);
-        tab2FontTxtBlue = (TextView)findViewById(R.id.widget_config_tab2_font_txtBlue);
+        mTab2BackSeekRed = (SeekBar) findViewById(R.id.widget_config_tab2_back_seekRed);
+        mTab2BackSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab2_back_seekGreen);
+        mTab2BackSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab2_back_seekBlue);
+        mTab2BackTxtRed = (TextView) findViewById(R.id.widget_config_tab2_back_txtRed);
+        mTab2BackTxtGreen = (TextView) findViewById(R.id.widget_config_tab2_back_txtGreen);
+        mTab2BackTxtBlue = (TextView) findViewById(R.id.widget_config_tab2_back_txtBlue);
+        mTab2FontSeekRed = (SeekBar) findViewById(R.id.widget_config_tab2_font_seekRed);
+        mTab2FontSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab2_font_seekGreen);
+        mTab2FontSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab2_font_seekBlue);
+        mTab2FontTxtRed = (TextView) findViewById(R.id.widget_config_tab2_font_txtRed);
+        mTab2FontTxtGreen = (TextView) findViewById(R.id.widget_config_tab2_font_txtGreen);
+        mTab2FontTxtBlue = (TextView) findViewById(R.id.widget_config_tab2_font_txtBlue);
 
-        previewMainLayout = (LinearLayout)findViewById(R.id.widget_config_preview_mainlayout);
-        previewTitleLayout = (FrameLayout)findViewById(R.id.widget_config_preview_titlelayout);
-        previewContextLayout = (FrameLayout)findViewById(R.id.widget_config_preview_contextlayout);
+        mPreviewMainLayout = (LinearLayout) findViewById(R.id.widget_config_preview_mainlayout);
+        mPreviewTitleLayout = (FrameLayout) findViewById(R.id.widget_config_preview_titlelayout);
+        mPreviewContextLayout = (FrameLayout) findViewById(R.id.widget_config_preview_contextlayout);
 
-        previewTxtTitle = (TextView)findViewById(R.id.widget_config_preview_memodate);
-        previewTxtContext = (TextView)findViewById(R.id.widget_config_preview_memocontext);
+        mPreviewTxtTitle = (TextView) findViewById(R.id.widget_config_preview_memodate);
+        mPreviewTxtContext = (TextView) findViewById(R.id.widget_config_preview_memocontext);
 
-        tab1CurBackRed = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
-        tab1CurBackGreen = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
-        tab1CurBackBlue = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);
-        tab1CurFontRed = pref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT);
-        tab1CurFontGreen = pref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT);
-        tab1CurFontBlue = pref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT);
-        tab2CurBackRed = pref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT);
-        tab2CurBackGreen = pref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT);
-        tab2CurBackBlue = pref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT);
-        tab2CurFontRed = pref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT);
-        tab2CurFontGreen = pref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT);
-        tab2CurFontBlue = pref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT);
-        tab1CurBackRed_backup = tab1CurBackRed;
-        tab1CurBackGreen_backup = tab1CurBackGreen;
-        tab1CurBackBlue_backup = tab1CurBackBlue;
-        tab1CurFontRed_backup = tab1CurFontRed;
-        tab1CurFontGreen_backup = tab1CurFontGreen;
-        tab1CurFontBlue_backup = tab1CurFontBlue;
-        tab2CurBackRed_backup = tab2CurBackRed;
-        tab2CurBackGreen_backup = tab2CurBackGreen;
-        tab2CurBackBlue_backup = tab2CurBackBlue;
-        tab2CurFontRed_backup = tab2CurFontRed;
-        tab2CurFontGreen_backup = tab2CurFontGreen;
-        tab2CurFontBlue_backup = tab2CurFontBlue;
+        mSharedPref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mAppWidgetId, MODE_PRIVATE);
+        mTab1CurBackRed = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
+        mTab1CurBackGreen = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
+        mTab1CurBackBlue = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);
+        mTab1CurFontRed = mSharedPref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT);
+        mTab1CurFontGreen = mSharedPref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT);
+        mTab1CurFontBlue = mSharedPref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT);
+        mTab2CurBackRed = mSharedPref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT);
+        mTab2CurBackGreen = mSharedPref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT);
+        mTab2CurBackBlue = mSharedPref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT);
+        mTab2CurFontRed = mSharedPref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT);
+        mTab2CurFontGreen = mSharedPref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT);
+        mTab2CurFontBlue = mSharedPref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT);
+        mTab1CurBackRed_backup = mTab1CurBackRed;
+        mTab1CurBackGreen_backup = mTab1CurBackGreen;
+        mTab1CurBackBlue_backup = mTab1CurBackBlue;
+        mTab1CurFontRed_backup = mTab1CurFontRed;
+        mTab1CurFontGreen_backup = mTab1CurFontGreen;
+        mTab1CurFontBlue_backup = mTab1CurFontBlue;
+        mTab2CurBackRed_backup = mTab2CurBackRed;
+        mTab2CurBackGreen_backup = mTab2CurBackGreen;
+        mTab2CurBackBlue_backup = mTab2CurBackBlue;
+        mTab2CurFontRed_backup = mTab2CurFontRed;
+        mTab2CurFontGreen_backup = mTab2CurFontGreen;
+        mTab2CurFontBlue_backup = mTab2CurFontBlue;
 
-        previewMainLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-        previewTitleLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-        previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
-        previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
-        previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
+        mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+        mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+        mPreviewContextLayout.setBackgroundColor(Color.rgb(mTab2CurBackRed, mTab2CurBackGreen, mTab2CurBackBlue));
+        mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
+        mPreviewTxtContext.setTextColor(Color.rgb(mTab2CurFontRed, mTab2CurFontGreen, mTab2CurFontBlue));
 
 
-        seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        mSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(seekBar == tab1BackSeekRed)
-                {
-                    tab1BackTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
-                }
-                if(seekBar == tab1BackSeekGreen)
-                {
-                    tab1BackTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
-                }
-                if(seekBar == tab1BackSeekBlue)
-                {
-                    tab1BackTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
-                }
-                if(seekBar == tab1FontSeekRed)
-                {
-                    tab1FontTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
-                }
-                if(seekBar == tab1FontSeekGreen)
-                {
-                    tab1FontTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
-                }
-                if(seekBar == tab1FontSeekBlue)
-                {
-                    tab1FontTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
-                }
-                if(seekBar == tab2BackSeekRed)
-                {
-                    tab2BackTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
-                }
-                if(seekBar == tab2BackSeekGreen)
-                {
-                    tab2BackTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
-                }
-                if(seekBar == tab2BackSeekBlue)
-                {
-                    tab2BackTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
-                }
-                if(seekBar == tab2FontSeekRed)
-                {
-                    tab2FontTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
-                }
-                if(seekBar == tab2FontSeekGreen)
-                {
-                    tab2FontTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
-                }
-                if(seekBar == tab2FontSeekBlue)
-                {
-                    tab2FontTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
+                int id = seekBar.getId();
+                switch (id) {
+                    case R.id.widget_config_tab1_back_seekRed:
+                        mTab1BackTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
+                        break;
+                    case R.id.widget_config_tab1_back_seekGreen:
+                        mTab1BackTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
+                        break;
+                    case R.id.widget_config_tab1_back_seekBlue:
+                        mTab1BackTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
+                        break;
+                    case R.id.widget_config_tab1_font_seekRed:
+                        mTab1FontTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
+                        break;
+                    case R.id.widget_config_tab1_font_seekGreen:
+                        mTab1FontTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
+                        break;
+                    case R.id.widget_config_tab1_font_seekBlue:
+                        mTab1FontTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
+                        break;
+                    case R.id.widget_config_tab2_back_seekRed:
+                        mTab2BackTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
+                        break;
+                    case R.id.widget_config_tab2_back_seekGreen:
+                        mTab2BackTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
+                        break;
+                    case R.id.widget_config_tab2_back_seekBlue:
+                        mTab2BackTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
+                        break;
+                    case R.id.widget_config_tab2_font_seekRed:
+                        mTab2FontTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
+                        break;
+                    case R.id.widget_config_tab2_font_seekGreen:
+                        mTab2FontTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
+                        break;
+                    case R.id.widget_config_tab2_font_seekBlue:
+                        mTab2FontTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
+                        break;
                 }
             }
 
@@ -223,220 +233,227 @@ public class MemoWidgetConfigureActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(seekBar == tab1BackSeekRed)
-                {
-                    tab1CurBackRed = seekBar.getProgress();
-                    previewMainLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-                    previewTitleLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-                }
-                if(seekBar == tab1BackSeekGreen)
-                {
-                    tab1CurBackGreen = seekBar.getProgress();
-                    previewMainLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-                    previewTitleLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-                }
-                if(seekBar == tab1BackSeekBlue)
-                {
-                    tab1CurBackBlue = seekBar.getProgress();
-                    previewMainLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-                    previewTitleLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-                }
-                if(seekBar == tab1FontSeekRed)
-                {
-                    tab1CurFontRed = seekBar.getProgress();
-                    previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
-                }
-                if(seekBar == tab1FontSeekGreen)
-                {
-                    tab1CurFontGreen = seekBar.getProgress();
-                    previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
-                }
-                if(seekBar == tab1FontSeekBlue)
-                {
-                    tab1CurFontBlue = seekBar.getProgress();
-                    previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
-                }
-                if(seekBar == tab2BackSeekRed)
-                {
-                    tab2CurBackRed = seekBar.getProgress();
-                    previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
-                }
-                if(seekBar == tab2BackSeekGreen)
-                {
-                    tab2CurBackGreen = seekBar.getProgress();
-                    previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
-                }
-                if(seekBar == tab2BackSeekBlue)
-                {
-                    tab2CurBackBlue = seekBar.getProgress();
-                    previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
-                }
-                if(seekBar == tab2FontSeekRed)
-                {
-                    tab2CurFontRed = seekBar.getProgress();
-                    previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
-                }
-                if(seekBar == tab2FontSeekGreen)
-                {
-                    tab2CurFontGreen = seekBar.getProgress();
-                    previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
-                }
-                if(seekBar == tab2FontSeekBlue)
-                {
-                    tab2CurFontBlue = seekBar.getProgress();
-                    previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
+                int id = seekBar.getId();
+                switch (id) {
+                    case R.id.widget_config_tab1_back_seekRed:
+                        mTab1CurBackRed = seekBar.getProgress();
+                        mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                        mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                        break;
+                    case R.id.widget_config_tab1_back_seekGreen:
+                        mTab1CurBackGreen = seekBar.getProgress();
+                        mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                        mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                        break;
+                    case R.id.widget_config_tab1_back_seekBlue:
+                        mTab1CurBackBlue = seekBar.getProgress();
+                        mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                        mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                        break;
+                    case R.id.widget_config_tab1_font_seekRed:
+                        mTab1CurFontRed = seekBar.getProgress();
+                        mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
+                        break;
+                    case R.id.widget_config_tab1_font_seekGreen:
+                        mTab1CurFontGreen = seekBar.getProgress();
+                        mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
+                        break;
+                    case R.id.widget_config_tab1_font_seekBlue:
+                        mTab1CurFontBlue = seekBar.getProgress();
+                        mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
+                        break;
+                    case R.id.widget_config_tab2_back_seekRed:
+                        mTab2CurBackRed = seekBar.getProgress();
+                        mPreviewContextLayout.setBackgroundColor(Color.rgb(mTab2CurBackRed, mTab2CurBackGreen, mTab2CurBackBlue));
+                        break;
+                    case R.id.widget_config_tab2_back_seekGreen:
+                        mTab2CurBackGreen = seekBar.getProgress();
+                        mPreviewContextLayout.setBackgroundColor(Color.rgb(mTab2CurBackRed, mTab2CurBackGreen, mTab2CurBackBlue));
+                        break;
+                    case R.id.widget_config_tab2_back_seekBlue:
+                        mTab2CurBackBlue = seekBar.getProgress();
+                        mPreviewContextLayout.setBackgroundColor(Color.rgb(mTab2CurBackRed, mTab2CurBackGreen, mTab2CurBackBlue));
+                        break;
+                    case R.id.widget_config_tab2_font_seekRed:
+                        mTab2CurFontRed = seekBar.getProgress();
+                        mPreviewTxtContext.setTextColor(Color.rgb(mTab2CurFontRed, mTab2CurFontGreen, mTab2CurFontBlue));
+                        break;
+                    case R.id.widget_config_tab2_font_seekGreen:
+                        mTab2CurFontGreen = seekBar.getProgress();
+                        mPreviewTxtContext.setTextColor(Color.rgb(mTab2CurFontRed, mTab2CurFontGreen, mTab2CurFontBlue));
+                        break;
+                    case R.id.widget_config_tab2_font_seekBlue:
+                        mTab2CurFontBlue = seekBar.getProgress();
+                        mPreviewTxtContext.setTextColor(Color.rgb(mTab2CurFontRed, mTab2CurFontGreen, mTab2CurFontBlue));
+                        break;
                 }
             }
         };
 
-        tab1BackSeekRed.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab1BackSeekGreen.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab1BackSeekBlue.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab1FontSeekRed.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab1FontSeekGreen.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab1FontSeekBlue.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab2BackSeekRed.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab2BackSeekGreen.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab2BackSeekBlue.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab2FontSeekRed.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab2FontSeekGreen.setOnSeekBarChangeListener(seekBarChangeListener);
-        tab2FontSeekBlue.setOnSeekBarChangeListener(seekBarChangeListener);
+        mTab1BackSeekRed.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab1BackSeekGreen.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab1BackSeekBlue.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab1FontSeekRed.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab1FontSeekGreen.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab1FontSeekBlue.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab2BackSeekRed.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab2BackSeekGreen.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab2BackSeekBlue.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab2FontSeekRed.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab2FontSeekGreen.setOnSeekBarChangeListener(mSeekBarChangeListener);
+        mTab2FontSeekBlue.setOnSeekBarChangeListener(mSeekBarChangeListener);
 
-        tab1BackSeekRed.setProgress(tab1CurBackRed);
-        tab1BackSeekGreen.setProgress(tab1CurBackGreen);
-        tab1BackSeekBlue.setProgress(tab1CurBackBlue);
-        tab1FontSeekRed.setProgress(tab1CurFontRed);
-        tab1FontSeekGreen.setProgress(tab1CurFontGreen);
-        tab1FontSeekBlue.setProgress(tab1CurFontBlue);
-        tab2BackSeekRed.setProgress(tab2CurBackRed);
-        tab2BackSeekGreen.setProgress(tab2CurBackGreen);
-        tab2BackSeekBlue.setProgress(tab2CurBackBlue);
-        tab2FontSeekRed.setProgress(tab2CurFontRed);
-        tab2FontSeekGreen.setProgress(tab2CurFontGreen);
-        tab2FontSeekBlue.setProgress(tab2CurFontBlue);
+        mTab1BackSeekRed.setProgress(mTab1CurBackRed);
+        mTab1BackSeekGreen.setProgress(mTab1CurBackGreen);
+        mTab1BackSeekBlue.setProgress(mTab1CurBackBlue);
+        mTab1FontSeekRed.setProgress(mTab1CurFontRed);
+        mTab1FontSeekGreen.setProgress(mTab1CurFontGreen);
+        mTab1FontSeekBlue.setProgress(mTab1CurFontBlue);
+        mTab2BackSeekRed.setProgress(mTab2CurBackRed);
+        mTab2BackSeekGreen.setProgress(mTab2CurBackGreen);
+        mTab2BackSeekBlue.setProgress(mTab2CurBackBlue);
+        mTab2FontSeekRed.setProgress(mTab2CurFontRed);
+        mTab2FontSeekGreen.setProgress(mTab2CurFontGreen);
+        mTab2FontSeekBlue.setProgress(mTab2CurFontBlue);
 
         // Find the widget id from the intent.
 
     }
 
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.widget_config_btnReset)
-        {
-            tab1CurBackRed = Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT;
-            tab1CurBackGreen = Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT;
-            tab1CurBackBlue = Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT;
-            tab1CurFontRed = Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT;
-            tab1CurFontGreen = Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT;
-            tab1CurFontBlue = Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT;
-            tab2CurBackRed = Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT;
-            tab2CurBackGreen = Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT;
-            tab2CurBackBlue = Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT;
-            tab2CurFontRed = Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT;
-            tab2CurFontGreen = Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT;
-            tab2CurFontBlue = Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT;
-            previewMainLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-            previewTitleLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-            previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
-            previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
-            previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
-            tab1BackSeekRed.setProgress(tab1CurBackRed);
-            tab1BackSeekGreen.setProgress(tab1CurBackGreen);
-            tab1BackSeekBlue.setProgress(tab1CurBackBlue);
-            tab1FontSeekRed.setProgress(tab1CurFontRed);
-            tab1FontSeekGreen.setProgress(tab1CurFontGreen);
-            tab1FontSeekBlue.setProgress(tab1CurFontBlue);
-            tab2BackSeekRed.setProgress(tab2CurBackRed);
-            tab2BackSeekGreen.setProgress(tab2CurBackGreen);
-            tab2BackSeekBlue.setProgress(tab2CurBackBlue);
-            tab2FontSeekRed.setProgress(tab2CurFontRed);
-            tab2FontSeekGreen.setProgress(tab2CurFontGreen);
-            tab2FontSeekBlue.setProgress(tab2CurFontBlue);
-        }
-        else if(id == R.id.widget_config_btnAdd)
-        {
-            editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, tab1CurBackRed);
-            editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, tab1CurBackGreen);
-            editor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, tab1CurBackBlue);
-            editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, tab1CurFontRed);
-            editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, tab1CurFontGreen);
-            editor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, tab1CurFontBlue);
-            editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, tab2CurBackRed);
-            editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, tab2CurBackGreen);
-            editor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, tab2CurBackBlue);
-            editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, tab2CurFontRed);
-            editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, tab2CurFontGreen);
-            editor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, tab2CurFontBlue);
-            editor.putInt(Constant.WIDGET_ID, mAppWidgetId);
-            editor.apply();
-            final Context context = MemoWidgetConfigureActivity.this;
 
-            // When the button is clicked, store the string locally
+        switch (id) {
+            case R.id.widget_config_btnReset:
+                mTab1CurBackRed = Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT;
+                mTab1CurBackGreen = Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT;
+                mTab1CurBackBlue = Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT;
+                mTab1CurFontRed = Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT;
+                mTab1CurFontGreen = Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT;
+                mTab1CurFontBlue = Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT;
+                mTab2CurBackRed = Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT;
+                mTab2CurBackGreen = Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT;
+                mTab2CurBackBlue = Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT;
+                mTab2CurFontRed = Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT;
+                mTab2CurFontGreen = Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT;
+                mTab2CurFontBlue = Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT;
+                mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
+                mPreviewContextLayout.setBackgroundColor(Color.rgb(mTab2CurBackRed, mTab2CurBackGreen, mTab2CurBackBlue));
+                mPreviewTxtContext.setTextColor(Color.rgb(mTab2CurFontRed, mTab2CurFontGreen, mTab2CurFontBlue));
+                mTab1BackSeekRed.setProgress(mTab1CurBackRed);
+                mTab1BackSeekGreen.setProgress(mTab1CurBackGreen);
+                mTab1BackSeekBlue.setProgress(mTab1CurBackBlue);
+                mTab1FontSeekRed.setProgress(mTab1CurFontRed);
+                mTab1FontSeekGreen.setProgress(mTab1CurFontGreen);
+                mTab1FontSeekBlue.setProgress(mTab1CurFontBlue);
+                mTab2BackSeekRed.setProgress(mTab2CurBackRed);
+                mTab2BackSeekGreen.setProgress(mTab2CurBackGreen);
+                mTab2BackSeekBlue.setProgress(mTab2CurBackBlue);
+                mTab2FontSeekRed.setProgress(mTab2CurFontRed);
+                mTab2FontSeekGreen.setProgress(mTab2CurFontGreen);
+                mTab2FontSeekBlue.setProgress(mTab2CurFontBlue);
+                break;
+            case R.id.widget_config_btnAdd:
+                SharedPreferences.Editor mSharedPrefEditor = mSharedPref.edit();
+                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, mTab1CurBackRed);
+                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, mTab1CurBackGreen);
+                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, mTab1CurBackBlue);
+                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, mTab1CurFontRed);
+                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, mTab1CurFontGreen);
+                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, mTab1CurFontBlue);
+                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, mTab2CurBackRed);
+                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, mTab2CurBackGreen);
+                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, mTab2CurBackBlue);
+                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, mTab2CurFontRed);
+                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, mTab2CurFontGreen);
+                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, mTab2CurFontBlue);
+                mSharedPrefEditor.putInt(Constant.WIDGET_ID, mAppWidgetId);
+                mSharedPrefEditor.apply();
+                final Context context = MemoWidgetConfigureActivity.this;
 
-            // It is the responsibility of the configuration activity to update the app widget
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            MemoWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+                // When the button is clicked, store the string locally
 
-            // Make sure we pass back the original appWidgetId
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
-        }
-        else if(id == R.id.widget_config_btnLast)
-        {
-            tab1CurBackRed = tab1CurBackRed_backup;
-            tab1CurBackGreen = tab1CurBackGreen_backup;
-            tab1CurBackBlue = tab1CurBackBlue_backup;
-            tab1CurFontRed = tab1CurFontRed_backup;
-            tab1CurFontGreen = tab1CurFontGreen_backup;
-            tab1CurFontBlue = tab1CurFontBlue_backup;
-            tab2CurBackRed = tab2CurBackRed_backup;
-            tab2CurBackGreen = tab2CurBackGreen_backup;
-            tab2CurBackBlue = tab2CurBackBlue_backup;
-            tab2CurFontRed = tab2CurFontRed_backup;
-            tab2CurFontGreen = tab2CurFontGreen_backup;
-            tab2CurFontBlue = tab2CurFontBlue_backup;
-            previewMainLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-            previewTitleLayout.setBackgroundColor(Color.rgb(tab1CurBackRed, tab1CurBackGreen, tab1CurBackBlue));
-            previewTxtTitle.setTextColor(Color.rgb(tab1CurFontRed, tab1CurFontGreen, tab1CurFontBlue));
-            previewContextLayout.setBackgroundColor(Color.rgb(tab2CurBackRed, tab2CurBackGreen, tab2CurBackBlue));
-            previewTxtContext.setTextColor(Color.rgb(tab2CurFontRed, tab2CurFontGreen, tab2CurFontBlue));
-            tab1BackSeekRed.setProgress(tab1CurBackRed);
-            tab1BackSeekGreen.setProgress(tab1CurBackGreen);
-            tab1BackSeekBlue.setProgress(tab1CurBackBlue);
-            tab1FontSeekRed.setProgress(tab1CurFontRed);
-            tab1FontSeekGreen.setProgress(tab1CurFontGreen);
-            tab1FontSeekBlue.setProgress(tab1CurFontBlue);
-            tab2BackSeekRed.setProgress(tab2CurBackRed);
-            tab2BackSeekGreen.setProgress(tab2CurBackGreen);
-            tab2BackSeekBlue.setProgress(tab2CurBackBlue);
-            tab2FontSeekRed.setProgress(tab2CurFontRed);
-            tab2FontSeekGreen.setProgress(tab2CurFontGreen);
-            tab2FontSeekBlue.setProgress(tab2CurFontBlue);
+                // It is the responsibility of the configuration activity to update the app widget
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                MemoWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+
+                // Make sure we pass back the original appWidgetId
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+                setResult(RESULT_OK, resultValue);
+                finish();
+                break;
+            case R.id.widget_config_btnLast:
+                mTab1CurBackRed = mTab1CurBackRed_backup;
+                mTab1CurBackGreen = mTab1CurBackGreen_backup;
+                mTab1CurBackBlue = mTab1CurBackBlue_backup;
+                mTab1CurFontRed = mTab1CurFontRed_backup;
+                mTab1CurFontGreen = mTab1CurFontGreen_backup;
+                mTab1CurFontBlue = mTab1CurFontBlue_backup;
+                mTab2CurBackRed = mTab2CurBackRed_backup;
+                mTab2CurBackGreen = mTab2CurBackGreen_backup;
+                mTab2CurBackBlue = mTab2CurBackBlue_backup;
+                mTab2CurFontRed = mTab2CurFontRed_backup;
+                mTab2CurFontGreen = mTab2CurFontGreen_backup;
+                mTab2CurFontBlue = mTab2CurFontBlue_backup;
+                mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
+                mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
+                mPreviewContextLayout.setBackgroundColor(Color.rgb(mTab2CurBackRed, mTab2CurBackGreen, mTab2CurBackBlue));
+                mPreviewTxtContext.setTextColor(Color.rgb(mTab2CurFontRed, mTab2CurFontGreen, mTab2CurFontBlue));
+                mTab1BackSeekRed.setProgress(mTab1CurBackRed);
+                mTab1BackSeekGreen.setProgress(mTab1CurBackGreen);
+                mTab1BackSeekBlue.setProgress(mTab1CurBackBlue);
+                mTab1FontSeekRed.setProgress(mTab1CurFontRed);
+                mTab1FontSeekGreen.setProgress(mTab1CurFontGreen);
+                mTab1FontSeekBlue.setProgress(mTab1CurFontBlue);
+                mTab2BackSeekRed.setProgress(mTab2CurBackRed);
+                mTab2BackSeekGreen.setProgress(mTab2CurBackGreen);
+                mTab2BackSeekBlue.setProgress(mTab2CurBackBlue);
+                mTab2FontSeekRed.setProgress(mTab2CurFontRed);
+                mTab2FontSeekGreen.setProgress(mTab2CurFontGreen);
+                mTab2FontSeekBlue.setProgress(mTab2CurFontBlue);
+                break;
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        pref = null;
-        editor = null;
-        tab1BackSeekRed = null; tab1BackSeekGreen = null;   tab1BackSeekBlue = null;
-        tab1FontSeekRed = null; tab1FontSeekGreen = null;   tab1FontSeekBlue = null;
-        tab2BackSeekRed = null; tab2BackSeekGreen = null;   tab2BackSeekBlue = null;
-        tab2FontSeekRed = null; tab2FontSeekGreen = null;   tab2FontSeekBlue = null;
-        tab1BackTxtRed = null;  tab1BackTxtGreen = null;    tab1BackTxtBlue = null;
-        tab1FontTxtRed = null;  tab1FontTxtGreen = null;    tab1FontTxtBlue = null;
-        tab2BackTxtRed = null;  tab2BackTxtGreen = null;    tab2BackTxtBlue = null;
-        tab2FontTxtRed = null;  tab2FontTxtGreen = null;    tab2FontTxtBlue = null;
-        previewTxtTitle = null;
-        previewTxtContext = null;
-        previewMainLayout = null;
-        previewTitleLayout = null;
-        previewContextLayout = null;
-        seekBarChangeListener = null;
+        mSharedPref = null;
+        mTab1BackSeekRed = null;
+        mTab1BackSeekGreen = null;
+        mTab1BackSeekBlue = null;
+        mTab1FontSeekRed = null;
+        mTab1FontSeekGreen = null;
+        mTab1FontSeekBlue = null;
+        mTab2BackSeekRed = null;
+        mTab2BackSeekGreen = null;
+        mTab2BackSeekBlue = null;
+        mTab2FontSeekRed = null;
+        mTab2FontSeekGreen = null;
+        mTab2FontSeekBlue = null;
+        mTab1BackTxtRed = null;
+        mTab1BackTxtGreen = null;
+        mTab1BackTxtBlue = null;
+        mTab1FontTxtRed = null;
+        mTab1FontTxtGreen = null;
+        mTab1FontTxtBlue = null;
+        mTab2BackTxtRed = null;
+        mTab2BackTxtGreen = null;
+        mTab2BackTxtBlue = null;
+        mTab2FontTxtRed = null;
+        mTab2FontTxtGreen = null;
+        mTab2FontTxtBlue = null;
+        mPreviewTxtTitle = null;
+        mPreviewTxtContext = null;
+        mPreviewMainLayout = null;
+        mPreviewTitleLayout = null;
+        mPreviewContextLayout = null;
+        mSeekBarChangeListener = null;
     }
+
 }
 

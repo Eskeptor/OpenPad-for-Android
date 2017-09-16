@@ -18,63 +18,58 @@ import java.util.ArrayList;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-interface ClickAction
-{
+interface ClickAction {
     public void onClick(final View _view, final int _position);
     public void onLongClick(final View _view, final int _position);
 }
 
-class MainFileViewHolder extends RecyclerView.ViewHolder
-{
-    public ImageView image;
-    public TextView title;
-    public TextView contents;
+class MainFileViewHolder extends RecyclerView.ViewHolder {
+    public ImageView mImage;
+    public TextView mTitle;
+    public TextView mContents;
     public TextView date;
-    public View view;
-    public MainFileViewHolder(final View _view)
-    {
+    public View mView;
+
+    public MainFileViewHolder(final View _view) {
         super(_view);
-        this.view = _view;
-        image = (ImageView)itemView.findViewById(R.id.item_mainfile_image);
-        title = (TextView)itemView.findViewById(R.id.item_mainfile_title);
-        contents = (TextView)itemView.findViewById(R.id.item_mainfile_context);
-        date = (TextView)itemView.findViewById(R.id.item_mainfile_date);
+        this.mView = _view;
+        mImage = (ImageView) itemView.findViewById(R.id.item_mainfile_image);
+        mTitle = (TextView) itemView.findViewById(R.id.item_mainfile_title);
+        mContents = (TextView) itemView.findViewById(R.id.item_mainfile_context);
+        date = (TextView) itemView.findViewById(R.id.item_mainfile_date);
     }
 }
 
-class RecyclerViewPadding extends RecyclerView.ItemDecoration
-{
-    private int bottom;
-    private int left;
-    private int right;
-    public RecyclerViewPadding(final int _bottom, final int _right, final int _left)
-    {
-        this.bottom = _bottom;
-        this.right = _right;
-        this.left = _left;
+class RecyclerViewPadding extends RecyclerView.ItemDecoration {
+    private int mBottom;
+    private int mLeft;
+    private int mRight;
+
+    public RecyclerViewPadding(final int _bottom, final int _right, final int _left) {
+        this.mBottom = _bottom;
+        this.mRight = _right;
+        this.mLeft = _left;
     }
 
     @Override
     public void getItemOffsets(Rect _outRect, View _view, RecyclerView _parent, RecyclerView.State _state) {
         super.getItemOffsets(_outRect, _view, _parent, _state);
-        _outRect.bottom = bottom;
-        _outRect.right = right;
-        _outRect.left = left;
+        _outRect.bottom = mBottom;
+        _outRect.right = mRight;
+        _outRect.left = mLeft;
     }
 }
 
-public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder>
-{
-    private ArrayList<MainFileObject> mainFiles;
-    private ClickAction action;
+public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
+    private ArrayList<MainFileObject> mMainFiles;
+    private ClickAction mAction;
 
     public MainFileAdaptor(final ArrayList<MainFileObject> _mainFiles) {
-        this.mainFiles = _mainFiles;
+        this.mMainFiles = _mainFiles;
     }
 
-    public void setClickAction(final ClickAction _action)
-    {
-        this.action = _action;
+    public void setClickAction(final ClickAction _action) {
+        this.mAction = _action;
     }
 
     @Override
@@ -85,42 +80,37 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder>
 
     @Override
     public int getItemViewType(final int _position) {
-        return mainFiles.get(_position).type;
+        return mMainFiles.get(_position).mFileType;
     }
 
     @Override
     public void onBindViewHolder(final MainFileViewHolder _holder, final int _position) {
-        if(getItemViewType(_position) == Constant.LISTVIEW_FILE_TYPE_IMAGE)
-        {
-            Bitmap bitmap = decodeBitmapFromResource(mainFiles.get(_position).url, 100, 100);
-            _holder.image.setImageBitmap(bitmap);
-            _holder.title.setText(mainFiles.get(_position).title);
-            _holder.date.setText(mainFiles.get(_position).date);
-            _holder.contents.setVisibility(View.GONE);
-        }
-        else
-        {
-            _holder.title.setText(mainFiles.get(_position).title);
-            _holder.contents.setText(mainFiles.get(_position).context_oneline);
-            _holder.date.setText(mainFiles.get(_position).date);
-            _holder.image.setVisibility(View.GONE);
+        if (getItemViewType(_position) == Constant.LISTVIEW_FILE_TYPE_IMAGE) {
+            Bitmap bitmap = decodeBitmapFromResource(mMainFiles.get(_position).mFilePath, 100, 100);
+            _holder.mImage.setImageBitmap(bitmap);
+            _holder.mTitle.setText(mMainFiles.get(_position).mFileTitle);
+            _holder.date.setText(mMainFiles.get(_position).mModifyDate);
+            _holder.mContents.setVisibility(View.GONE);
+        } else {
+            _holder.mTitle.setText(mMainFiles.get(_position).mFileTitle);
+            _holder.mContents.setText(mMainFiles.get(_position).mOneLinePreview);
+            _holder.date.setText(mMainFiles.get(_position).mModifyDate);
+            _holder.mImage.setVisibility(View.GONE);
         }
 
-        _holder.view.setOnClickListener(new View.OnClickListener() {
+        _holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _v) {
-                if(action != null)
-                {
-                    action.onClick(_v, _holder.getAdapterPosition());
+                if (mAction != null) {
+                    mAction.onClick(_v, _holder.getAdapterPosition());
                 }
             }
         });
-        _holder.view.setOnLongClickListener(new View.OnLongClickListener() {
+        _holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View _v) {
-                if(action != null)
-                {
-                    action.onLongClick(_v, _holder.getAdapterPosition());
+                if (mAction != null) {
+                    mAction.onLongClick(_v, _holder.getAdapterPosition());
                     return true;
                 }
                 return false;
@@ -130,11 +120,11 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder>
 
     @Override
     public int getItemCount() {
-        return mainFiles.size();
+        return mMainFiles.size();
     }
 
     private static int calculateInBitmapSize(BitmapFactory.Options _options, int _reqWidth, int _reqHeight) {
-        // Raw bottom and width of image
+        // Raw mBottom and width of mImage
         final int height = _options.outHeight;
         final int width = _options.outWidth;
         int inSampleSize = 1;
@@ -145,7 +135,7 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder>
             final int halfWidth = width / 2;
 
             // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // bottom and width larger than the requested bottom and width.
+            // mBottom and width larger than the requested mBottom and width.
             while ((halfHeight / inSampleSize) >= _reqHeight
                     && (halfWidth / inSampleSize) >= _reqWidth) {
                 inSampleSize *= 2;

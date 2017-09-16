@@ -10,47 +10,34 @@ import java.io.File;
  */
 
 // 파일 목록을 리스트에 표현하기 위한 클래스
-public class FileObject
-{
+public class FileObject {
     // get, set을 이용하면 좋지만 직접접근이 덜 부하를 준다.
-    public String url;
-    public String name;
-    public int type;   // Constant에서 BROWSER_ 참조
-    public long size;  // KB 단위
+    public String mFilePath;
+    public String mFileName;
+    public Constant.BrowserIconType mIconType;
+    public long mFileSize;  // KB 단위
 
-    public FileObject(final File _file)
-    {
-        url = _file.getPath();
-        name = _file.getName();
+    public FileObject(final File _file) {
+        mFilePath = _file.getPath();
+        mFileName = _file.getName();
 
-        if(_file.isDirectory())
-        {
-            type = Constant.BROWSER_IMAGE_TYPE_FOLDER;
-        }
-        else if(_file.isFile())
-        {
-            if(_file.length() >= Constant.KILOBYTE * Constant.SAFE_LOAD_CAPACITY &&
-                    _file.length() <= Constant.MEGABYTE)
-            {
-                type = Constant.BROWSER_IMAGE_TYPE_OVER1;
-            }
-            else if(_file.length() >= Constant.MEGABYTE)
-            {
-                type = Constant.BROWSER_IMAGE_TYPE_OVER2;
-            }
-            else
-            {
-                type = Constant.BROWSER_IMAGE_TYPE_NORMAL;
+        if (_file.isDirectory()) {
+            mIconType = Constant.BrowserIconType.Folder;
+        } else if (_file.isFile()) {
+            if (_file.length() >= Constant.KILOBYTE * Constant.SAFE_LOAD_CAPACITY &&
+                    _file.length() <= Constant.MEGABYTE) {
+                mIconType = Constant.BrowserIconType.Over1;
+            } else if (_file.length() >= Constant.MEGABYTE) {
+                mIconType = Constant.BrowserIconType.Over2;
+            } else {
+                mIconType = Constant.BrowserIconType.Normal;
             }
         }
 
-        if(_file.length() >= Constant.KILOBYTE)
-        {
-            size = _file.length() / Constant.KILOBYTE;
-        }
-        else
-        {
-            size = 1L;
+        if (_file.length() >= Constant.KILOBYTE) {
+            mFileSize = _file.length() / Constant.KILOBYTE;
+        } else {
+            mFileSize = 1L;
         }
     }
 }

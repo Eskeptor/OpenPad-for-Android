@@ -69,14 +69,6 @@ public class Constant
     public static final int MEMO_BLOCK_NEXT = 1;
     public static final int MEMO_BLOCK_PREV = -1;
 
-    public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
-    public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 3;
-    public static final int BROWSER_MENU_SORT_ASC = 0;
-    public static final int BROWSER_MENU_SORT_DES = 1;
-    public static final int BROWSER_IMAGE_TYPE_FOLDER = 1;
-    public static final int BROWSER_IMAGE_TYPE_NORMAL = 2;
-    public static final int BROWSER_IMAGE_TYPE_OVER1 = 3;
-    public static final int BROWSER_IMAGE_TYPE_OVER2 = 4;
 
     public static final int REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE = 0;
     public static final int REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE = 1;
@@ -96,26 +88,17 @@ public class Constant
 
     public static final char WIDGET_LINKED_TOKEN = 'w';
 
-    public static final int SETTINGS_ACTIVESCREEN_MAIN = 1;
-    public static final int SETTINGS_ACTIVESCREEN_FONT = 2;
-    public static final int SETTINGS_ACTIVESCREEN_HELP = 3;
-    //public static final int SETTINGS_ACTIVESCREEN_HELP_CONTENTS = 4;
-
     public static final float PAINT_MINIMUM_LINE_LENGTH_PIXEL = 0.0f;
     public static final float PAINT_ERASER_WIDTH_PIXEL = 20.0f;
     public static final float PAINT_DEFAULT_WIDTH_PIXEL = 10.0f;
     public static final float PAINT_MAXIMUM_WIDTH = 40.0f;
     public static final int PAINT_COLOR_MAX = 255;
-    public static final int PAINT_TYPE_BRUSH = 1;
-    public static final int PAINT_TYPE_ERASER = 2;
 
     public static final String BASIC_FILE_UNIT = "KB";
     public static final long MEGABYTE = 1048576L;
     public static final long KILOBYTE = 1024L;
     public static final long SAFE_LOAD_CAPACITY = 500L;
 
-    public static final int ENCODE_TYPE_EUCKR = 0;
-    public static final int ENCODE_TYPE_UTF8 = 1;
     public static final String ENCODE_TYPE_EUCKR_STR = "EUC-KR";
     public static final String ENCODE_TYPE_UTF8_STR = "UTF-8";
 
@@ -141,4 +124,37 @@ public class Constant
     public static final String DATE_FORMAT_MAIN_KOREA = "yyyy년 MM월 dd일 hh:mm a";
     public static final String DATE_FORMAT_MAIN_USA = "MM/dd/yyyy hh:mm a";
     public static final String DATE_FORMAT_MAIN_UK = "dd/MM/yyyy hh:mm a";
+
+    public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
+    public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 2;
+
+    public enum BrowserType
+    {
+        OpenExternal, SaveExternalNoneOpenFile
+    }
+
+    public enum BrowserMenuSortType
+    {
+        Asc, Des
+    }
+
+    public enum BrowserIconType
+    {
+        None, Folder, Normal, Over1, Over2
+    }
+
+    public enum EncodeType
+    {
+        EUCKR, UTF8
+    }
+
+    public enum PaintType
+    {
+        Brush, Eraser
+    }
+
+    public enum ActiveScreenType
+    {
+        Main, Font, Help
+    }
 }

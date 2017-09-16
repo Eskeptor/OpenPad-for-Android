@@ -20,105 +20,92 @@ import java.util.ArrayList;
 
 class FileObjectViewHolder
 {
-    public ImageView image;
-    public TextView name;
-    public TextView size;
+    public ImageView mFileImage;
+    public TextView mFileName;
+    public TextView mFileSize;
 }
 
 public class FileObjectAdaptor extends BaseAdapter
 {
-    private Context context;
+    private Context mContext;
 
-    private ArrayList<FileObject> fileObjects;
-    private Drawable drawableFolder;
-    private Drawable drawableNormalFile;
-    private Drawable drawableOver1File;
-    private Drawable drawableOver2File;
+    private ArrayList<FileObject> mFileObjects;
+    private Drawable mDrawableFolder;
+    private Drawable mDrawableNormalFile;
+    private Drawable mDrawableOver1File;
+    private Drawable mDrawableOver2File;
 
-    public FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects)
-    {
-        this.context = _context;
-        this.fileObjects = _fileObjects;
+    public FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects) {
+        this.mContext = _context;
+        this.mFileObjects = _fileObjects;
 
-        if(Build.VERSION.SDK_INT >= 21)
-        {
-            drawableFolder = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp, null);
-            drawableNormalFile = _context.getResources().getDrawable(R.drawable.ic_note_normal, null);
-            drawableOver1File = _context.getResources().getDrawable(R.drawable.ic_note_over1, null);
-            drawableOver2File = _context.getResources().getDrawable(R.drawable.ic_note_over2, null);
-        }
-        else
-        {
-            drawableFolder = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp);
-            drawableNormalFile = _context.getResources().getDrawable(R.drawable.ic_note_normal);
-            drawableOver1File = _context.getResources().getDrawable(R.drawable.ic_note_over1);
-            drawableOver2File = _context.getResources().getDrawable(R.drawable.ic_note_over2);
+        if (Build.VERSION.SDK_INT >= 21) {
+            mDrawableFolder = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp, null);
+            mDrawableNormalFile = _context.getResources().getDrawable(R.drawable.ic_note_normal, null);
+            mDrawableOver1File = _context.getResources().getDrawable(R.drawable.ic_note_over1, null);
+            mDrawableOver2File = _context.getResources().getDrawable(R.drawable.ic_note_over2, null);
+        } else {
+            mDrawableFolder = _context.getResources().getDrawable(R.drawable.ic_folder_black_24dp);
+            mDrawableNormalFile = _context.getResources().getDrawable(R.drawable.ic_note_normal);
+            mDrawableOver1File = _context.getResources().getDrawable(R.drawable.ic_note_over1);
+            mDrawableOver2File = _context.getResources().getDrawable(R.drawable.ic_note_over2);
         }
     }
 
     @Override
-    public int getCount()
-    {
-        return fileObjects.size();
+    public int getCount() {
+        return mFileObjects.size();
     }
 
     @Override
-    public Object getItem(int _position)
-    {
-        return fileObjects.get(_position);
+    public Object getItem(int _position) {
+        return mFileObjects.get(_position);
     }
 
     @Override
-    public long getItemId(int _position)
-    {
+    public long getItemId(int _position) {
         return 0;
     }
 
     @Override
-    public View getView(int _position, View _convertView, ViewGroup _parent)
-    {
+    public View getView(int _position, View _convertView, ViewGroup _parent) {
         FileObjectViewHolder holder;
 
-        if(_convertView == null)
-        {
-            _convertView = LayoutInflater.from(context).inflate(R.layout.item_fileobject_layout, null);
+        if (_convertView == null) {
+            _convertView = LayoutInflater.from(mContext).inflate(R.layout.item_fileobject_layout, null);
             holder = new FileObjectViewHolder();
-            holder.image = (ImageView)_convertView.findViewById(R.id.item_fileobj_image);
-            holder.name = (TextView)_convertView.findViewById(R.id.item_fileobj_name);
-            holder.size = (TextView)_convertView.findViewById(R.id.item_fileobj_size);
+            holder.mFileImage = (ImageView) _convertView.findViewById(R.id.item_fileobj_image);
+            holder.mFileName = (TextView) _convertView.findViewById(R.id.item_fileobj_name);
+            holder.mFileSize = (TextView) _convertView.findViewById(R.id.item_fileobj_size);
 
             _convertView.setTag(holder);
-        }
-        else
-        {
-            holder = (FileObjectViewHolder)_convertView.getTag();
+        } else {
+            holder = (FileObjectViewHolder) _convertView.getTag();
         }
 
-        int type = fileObjects.get(_position).type;
-        String size = Long.toString(fileObjects.get(_position).size) + Constant.BASIC_FILE_UNIT;
+        Constant.BrowserIconType type = mFileObjects.get(_position).mIconType;
+        String size = Long.toString(mFileObjects.get(_position).mFileSize) + Constant.BASIC_FILE_UNIT;
 
-        if(type == Constant.BROWSER_IMAGE_TYPE_FOLDER)
-        {
-            holder.image.setImageDrawable(drawableFolder);
-            holder.size.setText("");
-        }
-        else if(type == Constant.BROWSER_IMAGE_TYPE_OVER1)
-        {
-            holder.image.setImageDrawable(drawableOver1File);
-            holder.size.setText(size);
-        }
-        else if(type == Constant.BROWSER_IMAGE_TYPE_OVER2)
-        {
-            holder.image.setImageDrawable(drawableOver2File);
-            holder.size.setText(size);
-        }
-        else
-        {
-            holder.image.setImageDrawable(drawableNormalFile);
-            holder.size.setText(size);
+        switch (type) {
+            case Folder:
+                holder.mFileImage.setImageDrawable(mDrawableFolder);
+                holder.mFileSize.setText("");
+                break;
+            case Over1:
+                holder.mFileImage.setImageDrawable(mDrawableOver1File);
+                holder.mFileSize.setText(size);
+                break;
+            case Over2:
+                holder.mFileImage.setImageDrawable(mDrawableOver2File);
+                holder.mFileSize.setText(size);
+                break;
+            case Normal:
+                holder.mFileImage.setImageDrawable(mDrawableNormalFile);
+                holder.mFileSize.setText(size);
+                break;
         }
 
-        holder.name.setText(fileObjects.get(_position).name);
+        holder.mFileName.setText(mFileObjects.get(_position).mFileName);
 
         return _convertView;
     }

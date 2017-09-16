@@ -31,14 +31,13 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class MemoWidget extends AppWidgetProvider {
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                       int appWidgetId) {
         SharedPreferences pref = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + appWidgetId, MODE_PRIVATE);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.memo_widget);
 
         File file = new File(Constant.APP_WIDGET_URL);
-        if(!file.exists())
-        {
+        if (!file.exists()) {
             file.mkdir();
         }
         String fileURL = pref.getString(Constant.WIDGET_FILE_URL, null);
@@ -50,13 +49,8 @@ public class MemoWidget extends AppWidgetProvider {
         intent.putExtra(Constant.INTENT_EXTRA_WIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        /*Log.e("Debug", "current widget id(widget) : " + appWidgetId);
-        Log.e("Debug", "current widget file name : " + fileURL);
-        Log.e("Debug", "intent put id : " + intent.getExtras().getInt(Constant.INTENT_EXTRA_WIDGET_ID));*/
-
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_mainLayout, pendingIntent);
-        // Instruct the widget manager to update the widget
 
         int titleBackRed = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
         int titleBackGreen = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
@@ -76,8 +70,7 @@ public class MemoWidget extends AppWidgetProvider {
         views.setTextColor(R.id.widget_context, Color.rgb(contextFontRed, contextFontGreen, contextFontBlue));
         views.setInt(R.id.widget_mainLayout, "setBackgroundColor", Color.rgb(contextBackRed, contextBackGreen, contextBackBlue));
 
-        if(fileURL != null)
-        {
+        if (fileURL != null) {
             FileReader fr = null;
             BufferedReader br = null;
             int currentLine = 0;
@@ -85,41 +78,38 @@ public class MemoWidget extends AppWidgetProvider {
             String line;
             String title = "";
             String contents = "";
-            try{
+            try {
                 fr = new FileReader(fileURL);
                 br = new BufferedReader(fr);
 
-                if(currentCountry.equals(Locale.KOREA.getDisplayCountry()))
+                if (currentCountry.equals(Locale.KOREA.getDisplayCountry()))
                     title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_KOREA, Locale.KOREA).format(new Date(new File(fileURL).lastModified()));
-                else if(currentCountry.equals(Locale.UK.getDisplayCountry()))
+                else if (currentCountry.equals(Locale.UK.getDisplayCountry()))
                     title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_UK, Locale.UK).format(new Date(new File(fileURL).lastModified()));
                 else
                     title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_USA, Locale.US).format(new Date(new File(fileURL).lastModified()));
-                while(currentLine < Constant.WIDGET_MAX_LINE)
-                {
-                    if((line = br.readLine()) != null)
-                    {
+                while (currentLine < Constant.WIDGET_MAX_LINE) {
+                    if ((line = br.readLine()) != null) {
                         contents += line + "\n";
                         currentLine++;
-                    }
-                    else
+                    } else
                         break;
                 }
-            }
-            catch (Exception e){e.printStackTrace();}
-            finally {
-                if(br != null) {
+            } catch (Exception e) {
+                Log.e("MemoWidget(update)", e.getMessage());
+            } finally {
+                if (br != null) {
                     try {
                         br.close();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e("MemoWidget(update)", e.getMessage());
                     }
                 }
-                if(fr != null) {
+                if (fr != null) {
                     try {
                         fr.close();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e("MemoWidget(update)", e.getMessage());
                     }
                 }
             }

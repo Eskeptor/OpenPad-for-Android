@@ -27,18 +27,15 @@ import java.util.ArrayList;
 
 public class FolderActivity extends AppCompatActivity
 {
-    private ArrayList<FolderObject> folders;                        // 폴더를 나열할 ArrayList
-    private FolderAdaptor folderAdaptor;                            // 폴더를 나열할 ArrayList 에 쓰일 어댑터
-    private View contextView;
-    private Context contextThis;                                    // context 용
-    private EditText editText;                                      // 폴더생성시 이름 넣을때 쓰는 edittext
-    private int foldersLength;                                      // 폴더의 개수
-    private String newFolderName;                                   // 새폴더 이름
-    private AlertDialog.Builder dialog;                             // 다이얼로그 재활용
-    private ListView folderList;                                    // 폴더 리스트
-    private Runnable refreshRunnable;                               // 새로고침 할때 쓰일 Runnable
-    private AdapterView.OnItemClickListener clickListener;          // 클릭 리스너(어댑터용)
-    private AdapterView.OnItemLongClickListener longClickListener;  // 롱 클릭 리스너(어댑터용)
+    private ArrayList<FolderObject> mFolders;                        // 폴더를 나열할 ArrayList
+    private FolderAdaptor mFolderAdaptor;                            // 폴더를 나열할 ArrayList 에 쓰일 어댑터
+    private View mContextView;
+    private Context mContextThis;                                    // context 용
+    private EditText mEditText;                                      // 폴더생성시 이름 넣을때 쓰는 edittext
+    private int mFoldersLength;                                      // 폴더의 개수
+    private String mNewFolderName;                                   // 새폴더 이름
+    private ListView mFolderList;                                    // 폴더 리스트
+    private Runnable mRefreshRunnable;                               // 새로고침 할때 쓰일 Runnable
 
     public boolean onCreateOptionsMenu(Menu _menu)
     {
@@ -47,32 +44,25 @@ public class FolderActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem _item)
-    {
-        if(_item.getItemId() == R.id.menu_folderAdd)
-        {
-            dialog = new AlertDialog.Builder(this);
+    public boolean onOptionsItemSelected(MenuItem _item) {
+        if (_item.getItemId() == R.id.menu_folderAdd) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.folder_dialog_title_create);
-            View layout = LayoutInflater.from(contextThis).inflate(R.layout.dialog_folder_create, null);
-            editText = (EditText)layout.findViewById(R.id.dialog_folder_input);
+            View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_folder_create, null);
+            mEditText = (EditText) layout.findViewById(R.id.dialog_folder_input);
             dialog.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface _dialog, int _which)
-                {
-                    if(_which == AlertDialog.BUTTON_POSITIVE)
-                    {
-                        newFolderName = editText.getText().toString();
-                        if(!newFolderName.equals(""))
-                        {
-                            File file = new File(Constant.APP_INTERNAL_URL + File.separator + newFolderName);
-                            if(file.exists())
-                                Snackbar.make(contextView, R.string.folder_dialog_toast_exist, Snackbar.LENGTH_SHORT).show();
-                            else
-                            {
+                public void onClick(DialogInterface _dialog, int _which) {
+                    if (_which == AlertDialog.BUTTON_POSITIVE) {
+                        mNewFolderName = mEditText.getText().toString();
+                        if (!mNewFolderName.equals("")) {
+                            File file = new File(Constant.APP_INTERNAL_URL + File.separator + mNewFolderName);
+                            if (file.exists())
+                                Snackbar.make(mContextView, R.string.folder_dialog_toast_exist, Snackbar.LENGTH_SHORT).show();
+                            else {
                                 file.mkdir();
-                                //refreshList();
-                                runOnUiThread(refreshRunnable);
+                                runOnUiThread(mRefreshRunnable);
                             }
                         }
                     }
@@ -87,64 +77,25 @@ public class FolderActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         setResult(RESULT_OK);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
     }
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState)
-    {
+    protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_folder);
 
-        contextThis = getApplicationContext();
-        contextView = findViewById(R.id.activity_folder);
+        mContextThis = getApplicationContext();
+        mContextView = findViewById(R.id.activity_folder);
 
         setTitle(R.string.folder_title);
-        folderList = (ListView)findViewById(R.id.folder_list) ;
-        folders = new ArrayList<>();
-        clickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
-                if(_position == foldersLength)
-                {
-                    Intent intent = new Intent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.setClass(contextThis, FileBrowserActivity.class);
-                    intent.setType("text/plain");
-                    intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_OPEN_EXTERNAL);
-                    startActivity(intent);
-                }
-                else
-                {
-                    Intent intent = new Intent();
-                    intent.putExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL, folders.get(_position).url);
-                    setResult(RESULT_OK, intent);
-                }
-                finish();
-                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-            }
-        };
-        longClickListener = new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+        mFolderList = (ListView) findViewById(R.id.folder_list);
+        mFolders = new ArrayList<>();
 
-                if(_position == foldersLength)
-                {
-                    return false;
-                }
-                else
-                {
-                    deleteFolder(_position);
-                    return true;
-                }
-            }
-        };
-
-        refreshRunnable = new Runnable() {
+        mRefreshRunnable = new Runnable() {
             @Override
             public void run() {
                 File file = new File(Constant.APP_INTERNAL_URL);
@@ -154,96 +105,107 @@ public class FolderActivity extends AppCompatActivity
                         return _pathname.isDirectory();
                     }
                 });
-                foldersLength = files.length;
+                mFoldersLength = files.length;
 
-                folders.clear();
-                for(int i = 0; i < foldersLength; i++)
-                {
-                    folders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
+                mFolders.clear();
+                for (int i = 0; i < mFoldersLength; i++) {
+                    mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                         @Override
                         public boolean accept(File _pathname) {
                             return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
                                     || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
                         }
-                    }).length, checkFolderType(files[i]), contextThis));
+                    }).length, checkFolderType(files[i]), mContextThis));
                 }
+
                 // 파일 브라우저 연결
-                folders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), Constant.FOLDER_TYPE_EXTERNAL, Constant.FOLDER_TYPE_EXTERNAL, null));
-                if(folderAdaptor == null)
-                {
-                    folderAdaptor = new FolderAdaptor(contextThis, folders);
-                    folderList.setAdapter(folderAdaptor);
-                    folderList.setOnItemClickListener(clickListener);
-                    folderList.setOnItemLongClickListener(longClickListener);
+                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), Constant.FOLDER_TYPE_EXTERNAL, Constant.FOLDER_TYPE_EXTERNAL, null));
+                if (mFolderAdaptor == null) {
+                    mFolderAdaptor = new FolderAdaptor(mContextThis, mFolders);
+                    mFolderList.setAdapter(mFolderAdaptor);
+                    mFolderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+                            if (_position == mFoldersLength) {
+                                Intent intent = new Intent();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.setClass(mContextThis, FileBrowserActivity.class);
+                                intent.setType("text/plain");
+                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_OPEN_EXTERNAL);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent();
+                                intent.putExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL, mFolders.get(_position).mFolderPath);
+                                setResult(RESULT_OK, intent);
+                            }
+                            finish();
+                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        }
+                    });
+                    mFolderList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> _parent, View _view, int _position, long _id) {
+
+                            if (_position == mFoldersLength) {
+                                return false;
+                            } else {
+                                deleteFolder(_position);
+                                return true;
+                            }
+                        }
+                    });
                 }
-                folderAdaptor.notifyDataSetChanged();
+                mFolderAdaptor.notifyDataSetChanged();
             }
         };
 
-        runOnUiThread(refreshRunnable);
+        runOnUiThread(mRefreshRunnable);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(dialog != null)
-        {
-            dialog = null;
+        mFolderList = null;
+        mFolderAdaptor = null;
+        if (!mFolders.isEmpty()) {
+            mFolders.clear();
         }
-        folderList = null;
-        folderAdaptor = null;
-        if(!folders.isEmpty())
-        {
-            folders.clear();
-        }
-        folders = null;
-        contextThis = null;
-        refreshRunnable = null;
-        editText = null;
-        clickListener = null;
-        longClickListener = null;
-        newFolderName = null;
-        contextView = null;
+        mFolders = null;
+        mContextThis = null;
+        mRefreshRunnable = null;
+        mEditText = null;
+        mNewFolderName = null;
+        mContextView = null;
     }
 
     // 폴더의 타입을 체크함(기본폴더, 일반폴더)
-    private int checkFolderType(final File _file)
-    {
-        if(_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME))
-        {
+    private int checkFolderType(final File _file) {
+        if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
             return Constant.FOLDER_TYPE_DEFAULT;
         }
         return Constant.FOLDER_TYPE_CUSTOM;
     }
 
     // 폴더 삭제
-    private void deleteFolder(final int _index)
-    {
-        dialog = new AlertDialog.Builder(this);
+    private void deleteFolder(final int _index) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.folder_dialog_title_delete);
         dialog.setMessage(R.string.folder_dialog_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface _dialog, int _which) {
-                if(_which == AlertDialog.BUTTON_POSITIVE)
-                {
-                    File file = new File(folders.get(_index).url);
-                    if(file.exists())
-                    {
-                        if(!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)
-                                && file.delete())
-                        {
-                            Snackbar.make(contextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
-                            runOnUiThread(refreshRunnable);
+                if (_which == AlertDialog.BUTTON_POSITIVE) {
+                    File file = new File(mFolders.get(_index).mFolderPath);
+                    if (file.exists()) {
+                        if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)
+                                && file.delete()) {
+                            Snackbar.make(mContextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
+                            runOnUiThread(mRefreshRunnable);
+                        } else {
+                            Snackbar.make(mContextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
                         }
-                        else
-                        {
-                            Snackbar.make(contextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
-                        }
-                    }
-                    else
-                    {
-                        Snackbar.make(contextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(mContextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
                     }
                 }
                 _dialog.dismiss();
