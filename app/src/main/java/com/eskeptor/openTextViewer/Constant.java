@@ -24,6 +24,7 @@ public class Constant
     public static final String APP_WIDGET_PREFERENCE = "Widget_Pref";
     public static final String APP_DEV_MAILADDRESS = "skyvvv624@gmail.com";
     public static final String APP_FIRST_SETUP_PREFERENCE = "isFirst_Pref";
+    public static final String APP_TUTORIAL = "tutorial_Pref";
     public static final String APP_ADMOB_VISIBLE = "adMob_Pref";
     public static final String APP_VERSION_CHECK = "version_Pref";
     public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;

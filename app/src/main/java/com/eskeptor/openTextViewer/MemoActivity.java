@@ -108,6 +108,13 @@ public class MemoActivity extends AppCompatActivity {
                     mEditMenu.setIcon(mDrawableModified);
                     mInputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
                 } else {
+                    if (mIsEnhanced) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MemoActivity.this);
+                        alert.setTitle(R.string.settings_dialog_expfunc_title);
+                        alert.setMessage(R.string.menu_memo_warning_modify);
+                        alert.setPositiveButton(R.string.settings_dialog_info_ok, null);
+                        alert.show();
+                    }
                     mEditText.setFocusable(true);
                     mEditText.setFocusableInTouchMode(true);
                     mEditText.requestFocus();

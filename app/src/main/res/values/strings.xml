@@ -183,4 +183,5 @@
     <string name="widget_context_new">Create a memo by tapping it.</string>
     <string name="filebrowser_menu_asc">Ascending</string>
     <string name="filebrowser_menu_des">Descending</string>
+    <string name="menu_memo_warning_modify">There is a bug that can not be modified while \"enhanced file open\".</string>
 </resources>

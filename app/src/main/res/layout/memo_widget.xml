@@ -13,10 +13,10 @@
         android:id="@+id/widget_mainLayout">
 
         <FrameLayout
+            android:id="@+id/widget_title_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/WhiteGray"
-            android:id="@+id/widget_title_layout">
+            android:background="@color/WhiteGray">
 
             <TextView
                 android:id="@+id/widget_title"
@@ -37,6 +37,7 @@
             android:layout_margin="8dp"
             android:text="@string/widget_context_new"
             android:textSize="14sp" />
+
     </LinearLayout>
 
 </RelativeLayout>

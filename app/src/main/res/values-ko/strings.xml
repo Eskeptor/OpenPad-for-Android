@@ -174,4 +174,5 @@
     <string name="widget_context_new">탭하여 메모 생성</string>
     <string name="filebrowser_menu_asc">오름차순</string>
     <string name="filebrowser_menu_des">내림차순</string>
+    <string name="menu_memo_warning_modify">\"향상된 파일 열기\" 에서 수정이 잘 안되는 버그가 있습니다.</string>
 </resources>

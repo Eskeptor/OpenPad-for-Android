@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.LocaleList;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.RemoteViews;
 import com.eskeptor.openTextViewer.Constant;
 import com.eskeptor.openTextViewer.MemoActivity;
@@ -116,6 +114,8 @@ public class MemoWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_title, title);
             views.setTextViewText(R.id.widget_context, contents);
         }
+
+
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

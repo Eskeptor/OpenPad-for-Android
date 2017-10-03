@@ -154,6 +154,11 @@ public class MainActivity extends AppCompatActivity {
         mContextThis = getApplicationContext();
         mContextView = findViewById(R.id.content_main);
 
+        // 튜토리얼 테스트
+        Intent intent = new Intent();
+        intent.setClass(mContextThis, FirstStartActivity.class);
+        startActivity(intent);
+
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         mSharedPrefEditor = mSharedPref.edit();
 
