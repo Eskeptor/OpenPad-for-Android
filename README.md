@@ -7,10 +7,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.9.16) - None Build
+## What's New? (Last updated 2017.10.3) - None Build
 ```
- 1) Apply coding standard(Android Coding Standard)
- 2) Optimizing Performance(10% Improvement)
+ 1) Add Tutorial Page(~ing)
+ 2) Fix "can not be modified while "enhanced file open""(~ing)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

@@ -1,3 +1,8 @@
+## Update 2017.10.3
+```
+ 1) Add Tutorial Page(~ing)
+ 2) Fix "can not be modified while "enhanced file open""(~ing)
+```
 ## Update 2017.9.16
 ```
  1) Apply coding standard(Android Coding Standard)
