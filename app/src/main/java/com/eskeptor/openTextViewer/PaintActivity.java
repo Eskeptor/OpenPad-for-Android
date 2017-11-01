@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -41,6 +42,10 @@ public class PaintActivity extends AppCompatActivity {
     private TextView mBrushTxtBlue;
     private TextView mEraserTxtSize;
     private ImageView mBrushColor;
+    private LinearLayout mShapeLayout;
+    private Button mShapeCircle;
+    private Button mShapeRectangle;
+    private static Constant.ShapeType mShapeType;
 
     private Context mContextThis;
 
@@ -94,6 +99,23 @@ public class PaintActivity extends AppCompatActivity {
         mBrushTxtGreen = (TextView) findViewById(R.id.paint_brush_txtGreen);
         mBrushTxtBlue = (TextView) findViewById(R.id.paint_brush_txtBlue);
         mBrushColor = (ImageView) findViewById(R.id.paint_color);
+        mShapeLayout = (LinearLayout) findViewById(R.id.paint_shapesLayout);
+        mShapeCircle = (Button) findViewById(R.id.paint_shape_circle);
+        mShapeRectangle = (Button) findViewById(R.id.paint_shape_rectangle);
+        mShapeType = Constant.ShapeType.None;
+
+        mShapeCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mShapeType = Constant.ShapeType.Circle;
+            }
+        });
+        mShapeRectangle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mShapeType = Constant.ShapeType.Rectangle;
+            }
+        });
 
         SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -174,6 +196,7 @@ public class PaintActivity extends AppCompatActivity {
 
         mBrushLayout.setVisibility(View.GONE);
         mEraserLayout.setVisibility(View.GONE);
+        mShapeLayout.setVisibility(View.GONE);
 
         mRunnable = new Runnable() {
             @Override
@@ -210,8 +233,12 @@ public class PaintActivity extends AppCompatActivity {
                     if (mEraserLayout.getVisibility() == View.VISIBLE) {
                         mEraserLayout.setVisibility(View.GONE);
                     }
+                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                        mShapeLayout.setVisibility(View.GONE);
+                    }
                     mBrushLayout.setVisibility(View.VISIBLE);
                 }
+                mShapeType = Constant.ShapeType.None;
                 break;
             case R.id.menu_paint_eraser:
                 mPaintFunction.changePaint(Constant.PaintType.Eraser);
@@ -222,15 +249,36 @@ public class PaintActivity extends AppCompatActivity {
                     if (mBrushLayout.getVisibility() == View.VISIBLE) {
                         mBrushLayout.setVisibility(View.GONE);
                     }
+                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                        mShapeLayout.setVisibility(View.GONE);
+                    }
                     mEraserLayout.setVisibility(View.VISIBLE);
                 }
+                mShapeType = Constant.ShapeType.None;
                 break;
             case R.id.menu_paint_reset:
                 mPaintFunction.resetPaint();
+                mShapeType = Constant.ShapeType.None;
                 break;
             case R.id.menu_paint_undo:
                 mPaintFunction.undoCanvas();
                 mPaintFunction.invalidate();
+                break;
+            case R.id.menu_paint_shapes:
+                mPaintFunction.changePaint(Constant.PaintType.Shape);
+                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
+                mPaintFunction.setLineWidth(mCurBrushValue);
+                if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                    mShapeLayout.setVisibility(View.GONE);
+                } else {
+                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                        mEraserLayout.setVisibility(View.GONE);
+                    }
+                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                        mBrushLayout.setVisibility(View.GONE);
+                    }
+                    mShapeLayout.setVisibility(View.VISIBLE);
+                }
                 break;
         }
         return super.onOptionsItemSelected(_item);
@@ -243,6 +291,7 @@ public class PaintActivity extends AppCompatActivity {
         mDrawLayout = null;
         mBrushLayout = null;
         mEraserLayout = null;
+        mShapeLayout = null;
         mBrushSeekSize = null;
         mBrushSeekRed = null;
         mBrushSeekGreen = null;
@@ -262,6 +311,8 @@ public class PaintActivity extends AppCompatActivity {
         mLastLog = null;
         mRunnable = null;
         mBrushColor = null;
+        mShapeCircle = null;
+        mShapeRectangle = null;
         System.gc();
     }
 
@@ -451,6 +502,7 @@ public class PaintActivity extends AppCompatActivity {
                 mCanvasPaint = null;
             }
             mCanvasPaint = new Paint(Paint.DITHER_FLAG);
+            mCanvasPaint.setAntiAlias(true);
 
             if (mBrushPaint != null) {
                 mBrushPaint.reset();
@@ -494,29 +546,40 @@ public class PaintActivity extends AppCompatActivity {
             mCurX = _event.getX();
             mCurY = _event.getY();
 
-            if ((_event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
-                mPath.reset();
-                mPath.moveTo(mCurX, mCurY);
-                mPrevX = mCurX;
-                mPrevY = mCurY;
-                invalidate();
-                return true;
-            } else if ((_event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_MOVE) {
-                if (Math.abs(mCurX - mPrevX) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(mCurY - mPrevY) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL) {
-                    mPath.quadTo(mPrevX, mPrevY, mCurX, mCurY);
-                    mPrevX = mCurX;
-                    mPrevY = mCurY;
+            int action = _event.getAction() & MotionEvent.ACTION_MASK;
+
+            if (mShapeType == Constant.ShapeType.None) {
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN: {
+                        mPath.reset();
+                        mPath.moveTo(mCurX, mCurY);
+                        mPrevX = mCurX;
+                        mPrevY = mCurY;
+                        invalidate();
+                        return true;
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+                        if (Math.abs(mCurX - mPrevX) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(mCurY - mPrevY) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL) {
+                            mPath.quadTo(mPrevX, mPrevY, mCurX, mCurY);
+                            mPrevX = mCurX;
+                            mPrevY = mCurY;
+                        }
+                        mCanvas.drawPath(mPath, mBrushPaint);
+                        invalidate();
+                        return true;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        mBrushObject.mBrushPaths.add(new Path(mPath));
+                        mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
+                        mBrushObject.mBrushColor.add(mCurColor);
+                        mBrushObject.mBrushPathsIdx++;
+                        mMenuItemUndo.setVisible(true);
+                        invalidate();
+                        break;
+                    }
                 }
-                mCanvas.drawPath(mPath, mBrushPaint);
-                invalidate();
-                return true;
-            } else if ((_event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
-                mBrushObject.mBrushPaths.add(new Path(mPath));
-                mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
-                mBrushObject.mBrushColor.add(mCurColor);
-                mBrushObject.mBrushPathsIdx++;
-                mMenuItemUndo.setVisible(true);
-                invalidate();
+            } else {
+                //todo 2017.11.1 원 및 사각형 그리기 만들기
             }
 
             mIsModified = true;
@@ -595,7 +658,7 @@ public class PaintActivity extends AppCompatActivity {
 
         public void changePaint(final Constant.PaintType _type) {
             switch (_type) {
-                case Brush:
+                case Brush: case Shape:
                     mBrushPaint.setColor(mCurColor);
                     break;
                 case Eraser:

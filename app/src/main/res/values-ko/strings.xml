@@ -68,7 +68,7 @@
     <string name="filebrowser_dialog_alert_context">이 파일은 1MB를 넘습니다.\n그래도 여시겠습니까?</string>
     <string name="settings_font_fontsize">글씨 크기</string>
     <string name="settings_dialog_font_context">글씨크기 변경은 메모화면에만 영향을 미칩니다.</string>
-    <string name="settings_font_fonttype">글씨 종류(커스텀 폰트)</string>
+    <string name="settings_font_fonttype">글씨 종류 선택(커스텀 폰트)</string>
     <string name="testing_temporary">추후 업데이트 예정</string>
     <string name="settings_information_bug_title">버그 리포트</string>
     <string name="settings_information_bug_summary">버그를 개발자에게 보고합니다.</string>
@@ -175,4 +175,22 @@
     <string name="filebrowser_menu_asc">오름차순</string>
     <string name="filebrowser_menu_des">내림차순</string>
     <string name="menu_memo_warning_modify">\"향상된 파일 열기\" 에서 수정이 잘 안되는 버그가 있습니다.</string>
+    <string name="settings_font_title1">글씨 세부설정</string>
+    <string name="settings_font_basicfont">기본 폰트</string>
+    <string name="settings_font_baedaljua">배달의 민족 주아체</string>
+    <string name="settings_font_kopubdot">KOPUB 돋움체</string>
+    <string name="settings_information_license_title">라이센스</string>
+    <string name="settings_information_license_summary">프로그램 및 프로그램에 사용한 오픈소스 라이센스</string>
+    <string name="license_kopub">KOPUB 돋움 라이센스</string>
+    <string name="license_openpad" translatable="false">오픈패드 라이센스</string>
+    <string name="license_bmjua">배달의 민족 주아체 라이센스</string>
+    <string name="first_btnStart">시작하기</string>
+    <string name="paint_menu_undo">되돌리기</string>
+    <string name="paint_menu_pen">펜</string>
+    <string name="paint_menu_eraser">지우개</string>
+    <string name="paint_menu_reset">초기화</string>
+    <string name="memo_menu_modify">수정</string>
+    <string name="widget_config_default_title">메모 날짜</string>
+    <string name="widget_config_default_context">메모 내용</string>
+    <string name="paint_menu_shapes">도형</string>
 </resources>

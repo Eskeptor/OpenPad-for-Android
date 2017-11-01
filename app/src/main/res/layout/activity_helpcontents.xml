@@ -9,12 +9,12 @@
     tools:context="com.eskeptor.openTextViewer.HelpContentsActivity">
 
     <TextView
-        android:text="TextView"
         android:id="@+id/help_txtTitle"
-        style="@style/AppTheme.Activity.Help.HelpContents.Title"/>
+        style="@style/AppTheme.Activity.Help.HelpContents.Title"
+        android:text="@string/test" />
 
     <TextView
-        android:text="TextView"
         android:id="@+id/help_contexts"
-        style="@style/AppTheme.Activity.Help.HelpContents.Context"/>
+        style="@style/AppTheme.Activity.Help.HelpContents.Context"
+        android:text="@string/test" />
 </LinearLayout>

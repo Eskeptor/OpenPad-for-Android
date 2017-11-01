@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_paint_undo"
-        android:title="undo"
+        android:title="@string/paint_menu_undo"
         android:icon="@drawable/ic_undo_white_24dp"
         app:showAsAction="always"
-        />
+        tools:ignore="AlwaysShowAction" />
+    <item
+        android:id="@+id/menu_paint_shapes"
+        android:icon="@drawable/ic_streetview_white_24dp"
+        android:title="@string/paint_menu_shapes"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/menu_paint_pen"
-        android:title="pen"
+        android:title="@string/paint_menu_pen"
         android:icon="@drawable/ic_modifiy_white_24dp"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_paint_eraser"
-        android:title="eraser"
+        android:title="@string/paint_menu_eraser"
         android:icon="@drawable/ic_crop_portrait_white_24dp"
         app:showAsAction="always"/>
     <item
         android:id="@+id/menu_paint_reset"
-        android:title="reset"
+        android:title="@string/paint_menu_reset"
         android:icon="@drawable/ic_delete_sweep_white_24dp"
         app:showAsAction="always"/>
 </menu>

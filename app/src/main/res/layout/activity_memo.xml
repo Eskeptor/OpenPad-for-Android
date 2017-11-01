@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        tools:ignore="UselessParent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                     <ProgressBar
                         android:id="@+id/memo_Prog"
                         style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center"
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center"
                         android:padding="5sp"
-                        android:text="TextView"
+                        android:text="@string/test"
                         android:textColor="@color/SemiBlack" />
 
                 </LinearLayout>

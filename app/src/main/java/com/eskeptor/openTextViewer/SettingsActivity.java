@@ -191,32 +191,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class Settings extends PreferenceFragment {
-        private Preference info;
-        private Preference font;
-        private Preference version;
-        private Preference bugReport;
-        private Preference help;
-        private Preference updateList;
-        private CheckBoxPreference adMob;
-        private CheckBoxPreference enhanceIO;
-        private Preference enhanceIOLine;
+        private Preference mInfo;
+        private Preference mFont;
+        private Preference mVersion;
+        private Preference mBugReport;
+        private Preference mHelp;
+        private Preference mUpdateList;
+        private CheckBoxPreference mAdMob;
+        private CheckBoxPreference mEnhanceIO;
+        private Preference mEnhanceIOLine;
+        private Preference mLicense;
 
-        private long pressTime = 0;
+        private long mPressTime = 0;
 
         @Override
         public void onCreate(Bundle _savedInstanceState) {
             super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
 
-            info = findPreference("settings_key_info");
-            version = findPreference("settings_key_version");
-            font = findPreference("settings_key_font");
-            bugReport = findPreference("settings_key_bugreport");
-            help = findPreference("settings_key_help");
-            updateList = findPreference("settings_key_updatelist");
-            adMob = (CheckBoxPreference) findPreference("settings_key_admob");
-            enhanceIO = (CheckBoxPreference) findPreference("settings_key_enhanceIO");
-            enhanceIOLine = findPreference("settings_key_enhanceIO_Line");
+            mInfo = findPreference("settings_key_info");
+            mVersion = findPreference("settings_key_version");
+            mFont = findPreference("settings_key_font");
+            mBugReport = findPreference("settings_key_bugreport");
+            mHelp = findPreference("settings_key_help");
+            mUpdateList = findPreference("settings_key_updatelist");
+            mAdMob = (CheckBoxPreference) findPreference("settings_key_admob");
+            mEnhanceIO = (CheckBoxPreference) findPreference("settings_key_enhanceIO");
+            mEnhanceIOLine = findPreference("settings_key_enhanceIO_Line");
+            mLicense = findPreference("settings_key_license");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -266,11 +268,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             break;
                         }
                         case "settings_key_version": {
-                            if (System.currentTimeMillis() > pressTime + 1000) {
-                                pressTime = System.currentTimeMillis();
+                            if (System.currentTimeMillis() > mPressTime + 1000) {
+                                mPressTime = System.currentTimeMillis();
                                 return false;
                             }
-                            if (System.currentTimeMillis() <= pressTime + 1000) {
+                            if (System.currentTimeMillis() <= mPressTime + 1000) {
                                 Intent intent = new Intent();
                                 intent.setClass(getActivity(), HiddenActivity.class);
                                 startActivity(intent);
@@ -308,6 +310,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             dialog.show();
                             break;
                         }
+                        case "settings_key_license": {
+                            Intent intent = new Intent();
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.setClass(getActivity(), LicenseActivity.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(0, 0);
+                            break;
+                        }
                     }
                     return false;
                 }
@@ -327,10 +337,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             break;
                         }
                         case "settings_key_enhanceIO": {
-                            if (enhanceIO.isChecked()) {
-                                enhanceIOLine.setEnabled(true);
+                            if (mEnhanceIO.isChecked()) {
+                                mEnhanceIOLine.setEnabled(true);
                             } else {
-                                enhanceIOLine.setEnabled(false);
+                                mEnhanceIOLine.setEnabled(false);
                             }
                             break;
                         }
@@ -339,41 +349,44 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             };
 
-            info.setOnPreferenceClickListener(clickListener);
-            font.setOnPreferenceClickListener(clickListener);
-            bugReport.setOnPreferenceClickListener(clickListener);
-            help.setOnPreferenceClickListener(clickListener);
-            updateList.setOnPreferenceClickListener(clickListener);
-            version.setOnPreferenceClickListener(clickListener);
-            version.setSummary(BuildConfig.VERSION_NAME);
-            enhanceIOLine.setOnPreferenceClickListener(clickListener);
+            mInfo.setOnPreferenceClickListener(clickListener);
+            mFont.setOnPreferenceClickListener(clickListener);
+            mBugReport.setOnPreferenceClickListener(clickListener);
+            mHelp.setOnPreferenceClickListener(clickListener);
+            mUpdateList.setOnPreferenceClickListener(clickListener);
+            mVersion.setOnPreferenceClickListener(clickListener);
+            mVersion.setSummary(BuildConfig.VERSION_NAME);
+            mEnhanceIOLine.setOnPreferenceClickListener(clickListener);
+            mLicense.setOnPreferenceClickListener(clickListener);
 
-            adMob.setOnPreferenceClickListener(checkClickListener);
-            adMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
-            enhanceIO.setOnPreferenceClickListener(checkClickListener);
-            enhanceIO.setChecked(mSharedPref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false));
-            enhanceIOLine.setEnabled(enhanceIO.isChecked());
+            mAdMob.setOnPreferenceClickListener(checkClickListener);
+            mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
+            mEnhanceIO.setOnPreferenceClickListener(checkClickListener);
+            mEnhanceIO.setChecked(mSharedPref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false));
+            mEnhanceIOLine.setEnabled(mEnhanceIO.isChecked());
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            mSharedPrefEditor.putBoolean(Constant.APP_ADMOB_VISIBLE, adMob.isChecked());
-            mSharedPrefEditor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, enhanceIO.isChecked());
+            mSharedPrefEditor.putBoolean(Constant.APP_ADMOB_VISIBLE, mAdMob.isChecked());
+            mSharedPrefEditor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, mEnhanceIO.isChecked());
             mSharedPrefEditor.apply();
         }
 
         @Override
         public void onDestroy() {
             super.onDestroy();
-            info = null;
-            font = null;
-            version = null;
-            bugReport = null;
-            help = null;
-            updateList = null;
-            adMob = null;
-            enhanceIO = null;
+            mInfo = null;
+            mFont = null;
+            mVersion = null;
+            mBugReport = null;
+            mHelp = null;
+            mUpdateList = null;
+            mAdMob = null;
+            mEnhanceIO = null;
+            mEnhanceIOLine = null;
+            mLicense = null;
         }
     }
 

@@ -10,8 +10,7 @@ import java.io.File;
 
 
 // 상수만 정의되어 있는 클래스
-public class Constant
-{
+public class Constant {
     public static final String FOLDER_DEFAULT_NAME = "Basic";
     public static final String FOLDER_WIDGET_NAME = "Widget";
     public static final int FOLDER_TYPE_DEFAULT = 1;
@@ -129,33 +128,31 @@ public class Constant
     public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
     public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 2;
 
-    public enum BrowserType
-    {
+    public enum BrowserType {
         OpenExternal, SaveExternalNoneOpenFile
     }
 
-    public enum BrowserMenuSortType
-    {
+    public enum BrowserMenuSortType {
         Asc, Des
     }
 
-    public enum BrowserIconType
-    {
+    public enum BrowserIconType {
         None, Folder, Normal, Over1, Over2
     }
 
-    public enum EncodeType
-    {
+    public enum EncodeType {
         EUCKR, UTF8
     }
 
-    public enum PaintType
-    {
-        Brush, Eraser
+    public enum PaintType {
+        Brush, Eraser, Shape
     }
 
-    public enum ActiveScreenType
-    {
+    public enum ActiveScreenType {
         Main, Font, Help
+    }
+
+    public enum ShapeType {
+        None, Circle, Rectangle
     }
 }

@@ -10,7 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Hidden">
+        android:background="@color/Hidden"
+        tools:ignore="UselessParent">
         <TextView
             android:text=""
             android:layout_width="match_parent"

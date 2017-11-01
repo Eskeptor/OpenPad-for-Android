@@ -9,7 +9,7 @@
     <color name="itemUp">#00000000</color>
     <color name="itemDown">#1f000000</color>
     <color name="White">#ffffff</color>
-    <color name="WhiteGray">#EFEFEF</color>
+    <color name="WhiteGray">#efefef</color>
     <color name="Transparent">#00ff0000</color>
     <color name="Hidden">#fcf400</color>
 </resources>

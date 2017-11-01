@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_memo_modified"
-        android:title="Modified"
+        android:title="@string/memo_menu_modify"
         android:icon="@drawable/ic_modifiy_white_24dp"
         app:showAsAction="always" />
     <item

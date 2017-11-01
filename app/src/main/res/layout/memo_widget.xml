@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8sp"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:text="@string/widget_title_new"
                 android:textSize="18sp"
                 android:textStyle="normal|bold" />

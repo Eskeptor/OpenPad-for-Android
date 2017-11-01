@@ -21,9 +21,9 @@ import java.util.Locale;
 
 class FolderViewHolder
 {
-    public ImageView mFolderIcon;
-    public TextView mFolderName;
-    public TextView mFileCountInFolder;
+    public ImageView folderIcon;
+    public TextView folderName;
+    public TextView fileCountInFolder;
 }
 
 public class FolderAdaptor extends BaseAdapter {
@@ -70,9 +70,9 @@ public class FolderAdaptor extends BaseAdapter {
         if (_convertView == null) {
             _convertView = LayoutInflater.from(mContext).inflate(R.layout.item_folder_layout, null);
             holder = new FolderViewHolder();
-            holder.mFolderIcon = (ImageView) _convertView.findViewById(R.id.item_folder_image);
-            holder.mFolderName = (TextView) _convertView.findViewById(R.id.item_folder_name);
-            holder.mFileCountInFolder = (TextView) _convertView.findViewById(R.id.item_folder_count);
+            holder.folderIcon = (ImageView) _convertView.findViewById(R.id.item_folder_image);
+            holder.folderName = (TextView) _convertView.findViewById(R.id.item_folder_name);
+            holder.fileCountInFolder = (TextView) _convertView.findViewById(R.id.item_folder_count);
 
             _convertView.setTag(holder);
         } else {
@@ -82,22 +82,22 @@ public class FolderAdaptor extends BaseAdapter {
         int type = mFolders.get(_position).mFolderType;
         switch (type) {
             case Constant.FOLDER_TYPE_DEFAULT:
-                holder.mFolderIcon.setImageDrawable(mDrawableFolderRoot);
+                holder.folderIcon.setImageDrawable(mDrawableFolderRoot);
                 break;
             case Constant.FOLDER_TYPE_EXTERNAL:
-                holder.mFolderIcon.setImageDrawable(mDrawableFolderExternal);
+                holder.folderIcon.setImageDrawable(mDrawableFolderExternal);
                 break;
             case Constant.FOLDER_TYPE_CUSTOM:
-                holder.mFolderIcon.setImageDrawable(mDrawableFolderNormal);
+                holder.folderIcon.setImageDrawable(mDrawableFolderNormal);
                 break;
         }
 
-        holder.mFolderName.setText(mFolders.get(_position).mFolderName);
+        holder.folderName.setText(mFolders.get(_position).mFolderName);
 
         if (mFolders.get(_position).mFileCountInFolder == Constant.FOLDER_TYPE_EXTERNAL) {
-            holder.mFileCountInFolder.setText(null);
+            holder.fileCountInFolder.setText(null);
         } else {
-            holder.mFileCountInFolder.setText(String.format(Locale.getDefault(), "%d", mFolders.get(_position).mFileCountInFolder));
+            holder.fileCountInFolder.setText(String.format(Locale.getDefault(), "%d", mFolders.get(_position).mFileCountInFolder));
         }
 
         return _convertView;

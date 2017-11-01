@@ -24,18 +24,18 @@ interface ClickAction {
 }
 
 class MainFileViewHolder extends RecyclerView.ViewHolder {
-    public ImageView mImage;
-    public TextView mTitle;
-    public TextView mContents;
+    public ImageView image;
+    public TextView title;
+    public TextView contents;
     public TextView date;
-    public View mView;
+    public View view;
 
     public MainFileViewHolder(final View _view) {
         super(_view);
-        this.mView = _view;
-        mImage = (ImageView) itemView.findViewById(R.id.item_mainfile_image);
-        mTitle = (TextView) itemView.findViewById(R.id.item_mainfile_title);
-        mContents = (TextView) itemView.findViewById(R.id.item_mainfile_context);
+        view = _view;
+        image = (ImageView) itemView.findViewById(R.id.item_mainfile_image);
+        title = (TextView) itemView.findViewById(R.id.item_mainfile_title);
+        contents = (TextView) itemView.findViewById(R.id.item_mainfile_context);
         date = (TextView) itemView.findViewById(R.id.item_mainfile_date);
     }
 }
@@ -87,18 +87,18 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     public void onBindViewHolder(final MainFileViewHolder _holder, final int _position) {
         if (getItemViewType(_position) == Constant.LISTVIEW_FILE_TYPE_IMAGE) {
             Bitmap bitmap = decodeBitmapFromResource(mMainFiles.get(_position).mFilePath, 100, 100);
-            _holder.mImage.setImageBitmap(bitmap);
-            _holder.mTitle.setText(mMainFiles.get(_position).mFileTitle);
+            _holder.image.setImageBitmap(bitmap);
+            _holder.title.setText(mMainFiles.get(_position).mFileTitle);
             _holder.date.setText(mMainFiles.get(_position).mModifyDate);
-            _holder.mContents.setVisibility(View.GONE);
+            _holder.contents.setVisibility(View.GONE);
         } else {
-            _holder.mTitle.setText(mMainFiles.get(_position).mFileTitle);
-            _holder.mContents.setText(mMainFiles.get(_position).mOneLinePreview);
+            _holder.title.setText(mMainFiles.get(_position).mFileTitle);
+            _holder.contents.setText(mMainFiles.get(_position).mOneLinePreview);
             _holder.date.setText(mMainFiles.get(_position).mModifyDate);
-            _holder.mImage.setVisibility(View.GONE);
+            _holder.image.setVisibility(View.GONE);
         }
 
-        _holder.mView.setOnClickListener(new View.OnClickListener() {
+        _holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _v) {
                 if (mAction != null) {
@@ -106,7 +106,7 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
                 }
             }
         });
-        _holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+        _holder.view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View _v) {
                 if (mAction != null) {
@@ -124,7 +124,7 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     }
 
     private static int calculateInBitmapSize(BitmapFactory.Options _options, int _reqWidth, int _reqHeight) {
-        // Raw mBottom and width of mImage
+        // Raw mBottom and width of image
         final int height = _options.outHeight;
         final int width = _options.outWidth;
         int inSampleSize = 1;

@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 class FileObjectViewHolder
 {
-    public ImageView mFileImage;
-    public TextView mFileName;
-    public TextView mFileSize;
+    public ImageView fileImage;
+    public TextView fileName;
+    public TextView fileSize;
 }
 
 public class FileObjectAdaptor extends BaseAdapter
@@ -74,9 +74,9 @@ public class FileObjectAdaptor extends BaseAdapter
         if (_convertView == null) {
             _convertView = LayoutInflater.from(mContext).inflate(R.layout.item_fileobject_layout, null);
             holder = new FileObjectViewHolder();
-            holder.mFileImage = (ImageView) _convertView.findViewById(R.id.item_fileobj_image);
-            holder.mFileName = (TextView) _convertView.findViewById(R.id.item_fileobj_name);
-            holder.mFileSize = (TextView) _convertView.findViewById(R.id.item_fileobj_size);
+            holder.fileImage = (ImageView) _convertView.findViewById(R.id.item_fileobj_image);
+            holder.fileName = (TextView) _convertView.findViewById(R.id.item_fileobj_name);
+            holder.fileSize = (TextView) _convertView.findViewById(R.id.item_fileobj_size);
 
             _convertView.setTag(holder);
         } else {
@@ -88,24 +88,24 @@ public class FileObjectAdaptor extends BaseAdapter
 
         switch (type) {
             case Folder:
-                holder.mFileImage.setImageDrawable(mDrawableFolder);
-                holder.mFileSize.setText("");
+                holder.fileImage.setImageDrawable(mDrawableFolder);
+                holder.fileSize.setText("");
                 break;
             case Over1:
-                holder.mFileImage.setImageDrawable(mDrawableOver1File);
-                holder.mFileSize.setText(size);
+                holder.fileImage.setImageDrawable(mDrawableOver1File);
+                holder.fileSize.setText(size);
                 break;
             case Over2:
-                holder.mFileImage.setImageDrawable(mDrawableOver2File);
-                holder.mFileSize.setText(size);
+                holder.fileImage.setImageDrawable(mDrawableOver2File);
+                holder.fileSize.setText(size);
                 break;
             case Normal:
-                holder.mFileImage.setImageDrawable(mDrawableNormalFile);
-                holder.mFileSize.setText(size);
+                holder.fileImage.setImageDrawable(mDrawableNormalFile);
+                holder.fileSize.setText(size);
                 break;
         }
 
-        holder.mFileName.setText(mFileObjects.get(_position).mFileName);
+        holder.fileName.setText(mFileObjects.get(_position).mFileName);
 
         return _convertView;
     }

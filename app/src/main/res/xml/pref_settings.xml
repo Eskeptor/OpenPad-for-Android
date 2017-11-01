@@ -36,6 +36,10 @@
             android:title="@string/settings_information_bug_title"
             android:summary="@string/settings_information_bug_summary"
             android:key="settings_key_bugreport" />
+        <Preference
+            android:title="@string/settings_information_license_title"
+            android:summary="@string/settings_information_license_summary"
+            android:key="settings_key_license" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_separator_expfunc">

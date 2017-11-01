@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/item_selector"
@@ -12,17 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        app:srcCompat="@android:color/transparent" />
+        app:srcCompat="@android:color/transparent"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/item_mainfile_title"
         style="@style/AppTheme.Item.TextFile.Title"
-        android:text="TextView" />
+        android:text="" />
 
     <TextView
         android:id="@+id/item_mainfile_context"
         style="@style/AppTheme.Item.TextFile.Context"
-        android:text="TextView" />
+        android:text="" />
 
     <Space
         android:layout_width="match_parent"
@@ -31,6 +33,6 @@
     <TextView
         android:id="@+id/item_mainfile_date"
         style="@style/AppTheme.Item.TextFile.Date"
-        android:text="TextView" />
+        android:text="" />
 
 </LinearLayout>

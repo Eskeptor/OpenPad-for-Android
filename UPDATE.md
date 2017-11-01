@@ -1,3 +1,10 @@
+## Update 2017.11.1
+```
+ 1) Add Tutorial Page
+ 2) Fix "can not be modified while "enhanced file open""(~ing)
+ 3) Optimized codes
+ 4) Bug fix (Abnormal termination - NullPointerError)
+```
 ## Update 2017.10.3
 ```
  1) Add Tutorial Page(~ing)

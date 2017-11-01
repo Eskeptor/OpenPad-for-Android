@@ -18,7 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,7 +31,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5sp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:id="@+id/paint_brush_txtSize"
@@ -47,7 +49,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5sp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:id="@+id/paint_brush_txtGreen"
@@ -63,7 +66,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5sp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:id="@+id/paint_brush_txtRed"
@@ -80,7 +84,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5sp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:id="@+id/paint_brush_txtBlue"
@@ -100,7 +105,8 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="15sp"
                 android:layout_weight="1"
-                app:srcCompat="@color/Black" />
+                app:srcCompat="@color/Black"
+                tools:ignore="ContentDescription,RtlHardcoded" />
 
         </LinearLayout>
 
@@ -122,6 +128,27 @@
         <SeekBar
             android:id="@+id/paint_eraser_seekSize"
             style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/paint_shapesLayout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/paint_shape_circle"
+            android:layout_width="@dimen/shapes_size"
+            android:layout_height="@dimen/shapes_size"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/ic_circle_black_24dp" />
+
+        <Button
+            android:id="@+id/paint_shape_rectangle"
+            android:layout_width="@dimen/shapes_size"
+            android:layout_height="@dimen/shapes_size"
+            android:background="@drawable/ic_rectangle_black_24dp" />
+
     </LinearLayout>
 
 </LinearLayout>

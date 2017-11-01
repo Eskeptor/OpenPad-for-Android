@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import layout.MemoWidget;
+import util.FontChanger;
 
 /**
  * Created by eskeptor on 17. 2. 1.

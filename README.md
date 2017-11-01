@@ -7,10 +7,12 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.10.3) - None Build
+## What's New? (Last updated 2017.11.1) - None Build
 ```
- 1) Add Tutorial Page(~ing)
+ 1) Add Tutorial Page
  2) Fix "can not be modified while "enhanced file open""(~ing)
+ 3) Optimized codes
+ 4) Bug fix (Abnormal termination - NullPointerError)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -21,7 +23,7 @@
 ## Development environment
 #### 1st environment
 ```
- Operating System : Windows 10 Pro 64bit
+ Operating System : Windows 10 Pro RS3 64bit
  CPU : AMD Ryzen R5 1600
  RAM : 12GB
  VGA : Radeon HD 7770

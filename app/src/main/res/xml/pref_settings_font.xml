@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/settings_general_font_title">
-
+    <PreferenceCategory android:title="@string/settings_font_title1">
         <Preference
             android:title="@string/settings_font_fontsize"
             android:summary="hihi"
             android:key="settings_key_font_fontsize" />
-        <Preference
-            android:title="@string/settings_font_fonttype"
-            android:summary="@string/testing_temporary"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_font_fonttype">
+        <CheckBoxPreference
+            android:title="@string/settings_font_basicfont"
+            android:key="settings_key_font_basic" />
+        <CheckBoxPreference
+            android:title="@string/settings_font_baedaljua"
+            android:key="settings_key_font_baedaljua"/>
+        <CheckBoxPreference
+            android:title="@string/settings_font_kopubdot"
+            android:key="settings_key_font_kopubdot" />
     </PreferenceCategory>
 </PreferenceScreen>

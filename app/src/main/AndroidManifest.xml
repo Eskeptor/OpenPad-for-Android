@@ -36,8 +36,8 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".PaintActivity" />
-        <activity android:name=".UpdateListActivity"></activity>
-        <activity android:name=".HiddenActivity"></activity>
+        <activity android:name=".UpdateListActivity" />
+        <activity android:name=".HiddenActivity" />
 
         <receiver android:name="layout.MemoWidget">
             <intent-filter>
@@ -54,8 +54,10 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
-        <activity android:name=".FirstStartActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".FirstStartActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".LicenseActivity"></activity>
     </application>
 
 </manifest>

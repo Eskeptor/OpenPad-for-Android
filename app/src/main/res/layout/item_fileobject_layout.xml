@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="40sp">
 
@@ -8,15 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="40sp"
         app:srcCompat="@drawable/ic_folder_black_24dp"
-        android:id="@+id/item_fileobj_image" />
+        android:id="@+id/item_fileobj_image"
+        tools:ignore="ContentDescription" />
 
     <TextView
-            android:text="TextView"
+            android:text=""
             android:id="@+id/item_fileobj_name"
             style="@style/AppTheme.Item.FileObject.File"/>
 
     <TextView
-            android:text="TextView"
+            android:text=""
             android:id="@+id/item_fileobj_size"
             style="@style/AppTheme.Item.FileObject.Size"/>
 </LinearLayout>

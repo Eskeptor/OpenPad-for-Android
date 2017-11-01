@@ -154,13 +154,15 @@ public class MainActivity extends AppCompatActivity {
         mContextThis = getApplicationContext();
         mContextView = findViewById(R.id.content_main);
 
-        // 튜토리얼 테스트
-        Intent intent = new Intent();
-        intent.setClass(mContextThis, FirstStartActivity.class);
-        startActivity(intent);
-
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         mSharedPrefEditor = mSharedPref.edit();
+
+        // 튜토리얼 테스트
+        if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
+            Intent intent = new Intent();
+            intent.setClass(mContextThis, FirstStartActivity.class);
+            startActivity(intent);
+        }
 
         Drawable folderIcon;
         if (Build.VERSION.SDK_INT >= 21) {

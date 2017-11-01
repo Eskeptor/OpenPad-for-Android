@@ -27,12 +27,12 @@
             android:id="@+id/widget_config_preview_titlelayout">
 
             <TextView
-                android:text="memo date"
+                android:id="@+id/widget_config_preview_memodate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/widget_config_preview_memodate"
                 android:layout_margin="8sp"
-                android:textSize="20sp"/>
+                android:text="@string/widget_config_default_title"
+                android:textSize="20sp" />
         </FrameLayout>
 
         <FrameLayout
@@ -43,19 +43,19 @@
             android:id="@+id/widget_config_preview_contextlayout">
 
             <TextView
-                android:text="memo context"
+                android:id="@+id/widget_config_preview_memocontext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/widget_config_preview_memocontext"
-                android:textSize="18sp"
-                android:layout_margin="6sp"/>
+                android:layout_margin="6sp"
+                android:text="@string/widget_config_default_context"
+                android:textSize="18sp" />
         </FrameLayout>
 
     </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10sp"/>
+        android:layout_height="12sp" />
 
     <TextView
         android:text="@string/widget_config_customize"
@@ -114,7 +114,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab1_back_txtRed"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -135,7 +135,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab1_back_txtGreen"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab1_back_txtBlue"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -187,7 +187,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab1_font_txtRed"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -208,7 +208,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab1_font_txtGreen"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -229,7 +229,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab1_font_txtBlue"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -267,7 +267,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab2_back_txtRed"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -288,7 +288,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab2_back_txtGreen"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -309,7 +309,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab2_back_txtBlue"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -342,7 +342,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab2_font_txtRed"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -363,7 +363,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab2_font_txtGreen"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
@@ -384,7 +384,7 @@
                                 android:layout_height="match_parent"
                                 android:id="@+id/widget_config_tab2_font_txtBlue"
                                 android:layout_weight="0"
-                                android:gravity="left|center_vertical"/>
+                                android:gravity="start|center_vertical"/>
 
                             <SeekBar
                                 android:layout_width="wrap_content"
