@@ -1,3 +1,8 @@
+## Update 2017.12.1 - Build 1.4.0
+```
+ 1) Font added(BaeDal's Minjok JUA, KOPUB Dotum)
+ 2) Memory optimization and Bug Fix
+```
 ## Update 2017.11.1
 ```
  1) Add Tutorial Page

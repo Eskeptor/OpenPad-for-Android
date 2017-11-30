@@ -182,7 +182,6 @@
     <string name="settings_information_license_title">라이센스</string>
     <string name="settings_information_license_summary">프로그램 및 프로그램에 사용한 오픈소스 라이센스</string>
     <string name="license_kopub">KOPUB 돋움 라이센스</string>
-    <string name="license_openpad" translatable="false">오픈패드 라이센스</string>
     <string name="license_bmjua">배달의 민족 주아체 라이센스</string>
     <string name="first_btnStart">시작하기</string>
     <string name="paint_menu_undo">되돌리기</string>

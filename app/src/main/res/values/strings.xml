@@ -190,7 +190,7 @@
     <string name="settings_font_kopubdot">KOPUB Dotum</string>
     <string name="settings_information_license_title">License</string>
     <string name="settings_information_license_summary">Open Source Licenses Used for Programs and This Program</string>
-    <string name="license_openpad">OpenPad License</string>
+    <string name="license_openpad" translatable="false">OpenPad License</string>
     <string name="license_kopub">KOPUB Dotum Font License</string>
     <string name="license_bmjua">BaeDalEu MinJok Font License</string>
     <string name="first_btnStart">Start</string>

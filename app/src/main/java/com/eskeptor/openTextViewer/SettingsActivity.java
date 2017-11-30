@@ -1,8 +1,10 @@
 package com.eskeptor.openTextViewer;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -10,6 +12,9 @@ import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.widget.NumberPicker;
+
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 
 /**
@@ -25,27 +30,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static FontSettings mFontSettingAct;
     private static Settings mSettingsAct;
     private static ActionBar mActionBar;
+    private static int mFontStyle;
+    private static int mPrevFontStyle;
 
     public static class Help extends PreferenceFragment {
-        private Preference mainList;
-        private Preference mainMemoCreate;
-        private Preference mainDelete;
-        private Preference mainOpenFolder;
-        private Preference folderList;
-        private Preference folderDefault;
-        private Preference folderCreate;
-        private Preference folderDelete;
-        private Preference folderExternal;
-        private Preference memoSaveLength;
-        private Preference memoFontColor;
-        private Preference memoEdit;
-        private Preference etcAboutHelp;
-        private Preference etcBackup;
-        private Preference etcFileColor;
-        private Preference etcPermission;
-        private Preference etcAd;
-        private Preference etcFontBroken;
-        private Preference etcWidget;
 
         @Override
         public void onCreate(Bundle _savedInstanceState) {
@@ -54,25 +42,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             mActionBar.setTitle(R.string.settings_information_help_title);
 
-            mainList = findPreference("settings_key_main_list");
-            mainMemoCreate = findPreference("settings_key_main_memocreate");
-            mainDelete = findPreference("settings_key_main_delete");
-            mainOpenFolder = findPreference("settings_key_main_openfolder");
-            folderList = findPreference("settings_key_folder_list");
-            folderDefault = findPreference("settings_key_folder_default");
-            folderCreate = findPreference("settings_key_folder_create");
-            folderDelete = findPreference("settings_key_folder_delete");
-            folderExternal = findPreference("settings_key_foler_external");
-            memoSaveLength = findPreference("settings_key_memo_savelengthlimited");
-            memoFontColor = findPreference("settings_key_memo_fontcolor");
-            memoEdit = findPreference("settings_key_memo_edit");
-            etcAboutHelp = findPreference("settings_key_etc_abouthelp");
-            etcBackup = findPreference("settings_key_etc_backup");
-            etcFileColor = findPreference("settings_key_etc_filecolor");
-            etcPermission = findPreference("settings_key_etc_permission");
-            etcAd = findPreference("settings_key_etc_ad");
-            etcFontBroken = findPreference("settings_key_etc_fontbroken");
-            etcWidget = findPreference("settings_key_etc_widget");
+            Preference mainList = findPreference("settings_key_main_list");
+            Preference mainMemoCreate = findPreference("settings_key_main_memocreate");
+            Preference mainDelete = findPreference("settings_key_main_delete");
+            Preference mainOpenFolder = findPreference("settings_key_main_openfolder");
+            Preference folderList = findPreference("settings_key_folder_list");
+            Preference folderDefault = findPreference("settings_key_folder_default");
+            Preference folderCreate = findPreference("settings_key_folder_create");
+            Preference folderDelete = findPreference("settings_key_folder_delete");
+            Preference folderExternal = findPreference("settings_key_foler_external");
+            Preference memoSaveLength = findPreference("settings_key_memo_savelengthlimited");
+            Preference memoFontColor = findPreference("settings_key_memo_fontcolor");
+            Preference memoEdit = findPreference("settings_key_memo_edit");
+            Preference etcAboutHelp = findPreference("settings_key_etc_abouthelp");
+            Preference etcBackup = findPreference("settings_key_etc_backup");
+            Preference etcFileColor = findPreference("settings_key_etc_filecolor");
+            Preference etcPermission = findPreference("settings_key_etc_permission");
+            Preference etcAd = findPreference("settings_key_etc_ad");
+            Preference etcFontBroken = findPreference("settings_key_etc_fontbroken");
+            Preference etcWidget = findPreference("settings_key_etc_widget");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -111,39 +99,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onDestroy() {
             super.onDestroy();
-            mainList = null;
-            mainMemoCreate = null;
-            mainDelete = null;
-            mainOpenFolder = null;
-            folderList = null;
-            folderDefault = null;
-            folderCreate = null;
-            folderDelete = null;
-            folderExternal = null;
-            memoSaveLength = null;
-            memoFontColor = null;
-            memoEdit = null;
-            etcAboutHelp = null;
-            etcBackup = null;
-            etcFileColor = null;
-            etcPermission = null;
-            etcAd = null;
-            etcFontBroken = null;
             mActionBar.setTitle(R.string.settings_title);
         }
     }
 
     public static class FontSettings extends PreferenceFragment {
-        private Preference textSize;
+        private Preference mTextSize;
+        private CheckBoxPreference mFontBasic;
+        private CheckBoxPreference mFontBDJua;
+        private CheckBoxPreference mFontKPDotum;
+
 
         @Override
         public void onCreate(Bundle _savedInstanceState) {
             super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings_font);
 
-            textSize = findPreference("settings_key_font_fontsize");
-            textSize.setSummary(Float.toString(mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
-            textSize.setDefaultValue(Float.toString(mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
+
+
+            mTextSize = findPreference("settings_key_font_fontsize");
+            mTextSize.setSummary(Float.toString(mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
+            mTextSize.setDefaultValue(Float.toString(mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference _preference) {
@@ -160,7 +136,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
                                 if (_oldVal != _newVal) {
                                     mSharedPrefEditor.putFloat("FontSize", _newVal);
-                                    textSize.setSummary(Integer.toString(_newVal));
+                                    mTextSize.setSummary(Integer.toString(_newVal));
                                 }
                             }
                         });
@@ -180,27 +156,75 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return false;
                 }
             };
-            textSize.setOnPreferenceClickListener(clickListener);
+            mTextSize.setOnPreferenceClickListener(clickListener);
+
+            Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String key = preference.getKey();
+                    switch (key) {
+                        case "settings_key_font_basic":
+                            mFontBasic.setChecked(true);
+                            mFontBDJua.setChecked(false);
+                            mFontKPDotum.setChecked(false);
+                            mFontStyle = Constant.FONT_DEFAULT;
+                            break;
+                        case "settings_key_font_baedaljua":
+                            mFontBasic.setChecked(false);
+                            mFontBDJua.setChecked(true);
+                            mFontKPDotum.setChecked(false);
+                            mFontStyle = Constant.FONT_BAEDAL_JUA;
+                            break;
+                        case "settings_key_font_kopubdot":
+                            mFontBasic.setChecked(false);
+                            mFontBDJua.setChecked(false);
+                            mFontKPDotum.setChecked(true);
+                            mFontStyle = Constant.FONT_KOPUB_DOTUM;
+                            break;
+                    }
+                    return false;
+                }
+            };
+
+            mFontBasic = (CheckBoxPreference)findPreference("settings_key_font_basic");
+            mFontBasic.setOnPreferenceChangeListener(changeListener);
+            mFontBDJua = (CheckBoxPreference)findPreference("settings_key_font_baedaljua");
+            mFontBDJua.setOnPreferenceChangeListener(changeListener);
+            mFontKPDotum = (CheckBoxPreference)findPreference("settings_key_font_kopubdot");
+            mFontKPDotum.setOnPreferenceChangeListener(changeListener);
+
+
+            switch (mFontStyle) {
+                case Constant.FONT_DEFAULT:
+                    mFontBasic.setChecked(true);
+                    mFontBDJua.setChecked(false);
+                    mFontKPDotum.setChecked(false);
+                    break;
+                case Constant.FONT_BAEDAL_JUA:
+                    mFontBasic.setChecked(false);
+                    mFontBDJua.setChecked(true);
+                    mFontKPDotum.setChecked(false);
+                    break;
+                case Constant.FONT_KOPUB_DOTUM:
+                    mFontBasic.setChecked(false);
+                    mFontBDJua.setChecked(false);
+                    mFontKPDotum.setChecked(true);
+                    break;
+            }
         }
 
         @Override
         public void onPause() {
             super.onPause();
+            mSharedPrefEditor.putInt(Constant.APP_FONT, mFontStyle);
             mSharedPrefEditor.apply();
         }
     }
 
     public static class Settings extends PreferenceFragment {
-        private Preference mInfo;
-        private Preference mFont;
-        private Preference mVersion;
-        private Preference mBugReport;
-        private Preference mHelp;
-        private Preference mUpdateList;
         private CheckBoxPreference mAdMob;
         private CheckBoxPreference mEnhanceIO;
         private Preference mEnhanceIOLine;
-        private Preference mLicense;
 
         private long mPressTime = 0;
 
@@ -209,16 +233,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
 
-            mInfo = findPreference("settings_key_info");
-            mVersion = findPreference("settings_key_version");
-            mFont = findPreference("settings_key_font");
-            mBugReport = findPreference("settings_key_bugreport");
-            mHelp = findPreference("settings_key_help");
-            mUpdateList = findPreference("settings_key_updatelist");
+            Preference info = findPreference("settings_key_info");
+            Preference version = findPreference("settings_key_version");
+            Preference font = findPreference("settings_key_font");
+            Preference bugReport = findPreference("settings_key_bugreport");
+            Preference help = findPreference("settings_key_help");
+            Preference updateList = findPreference("settings_key_updatelist");
             mAdMob = (CheckBoxPreference) findPreference("settings_key_admob");
             mEnhanceIO = (CheckBoxPreference) findPreference("settings_key_enhanceIO");
             mEnhanceIOLine = findPreference("settings_key_enhanceIO_Line");
-            mLicense = findPreference("settings_key_license");
+            Preference license = findPreference("settings_key_license");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -349,21 +373,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             };
 
-            mInfo.setOnPreferenceClickListener(clickListener);
-            mFont.setOnPreferenceClickListener(clickListener);
-            mBugReport.setOnPreferenceClickListener(clickListener);
-            mHelp.setOnPreferenceClickListener(clickListener);
-            mUpdateList.setOnPreferenceClickListener(clickListener);
-            mVersion.setOnPreferenceClickListener(clickListener);
-            mVersion.setSummary(BuildConfig.VERSION_NAME);
+            info.setOnPreferenceClickListener(clickListener);
+            font.setOnPreferenceClickListener(clickListener);
+            bugReport.setOnPreferenceClickListener(clickListener);
+            help.setOnPreferenceClickListener(clickListener);
+            updateList.setOnPreferenceClickListener(clickListener);
+            version.setOnPreferenceClickListener(clickListener);
+            version.setSummary(BuildConfig.VERSION_NAME);
             mEnhanceIOLine.setOnPreferenceClickListener(clickListener);
-            mLicense.setOnPreferenceClickListener(clickListener);
+            license.setOnPreferenceClickListener(clickListener);
 
             mAdMob.setOnPreferenceClickListener(checkClickListener);
             mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
             mEnhanceIO.setOnPreferenceClickListener(checkClickListener);
             mEnhanceIO.setChecked(mSharedPref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false));
             mEnhanceIOLine.setEnabled(mEnhanceIO.isChecked());
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+
+            if (mPrevFontStyle != mFontStyle) {
+                mPrevFontStyle = mFontStyle;
+            }
         }
 
         @Override
@@ -377,16 +411,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onDestroy() {
             super.onDestroy();
-            mInfo = null;
-            mFont = null;
-            mVersion = null;
-            mBugReport = null;
-            mHelp = null;
-            mUpdateList = null;
             mAdMob = null;
             mEnhanceIO = null;
             mEnhanceIOLine = null;
-            mLicense = null;
         }
     }
 
@@ -420,6 +447,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         mSharedPrefEditor = mSharedPref.edit();
+
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        mPrevFontStyle = mFontStyle;
+        Context contextThis = getApplicationContext();
+        int font = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        switch (font) {
+            case Constant.FONT_DEFAULT:
+                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+                break;
+            case Constant.FONT_BAEDAL_JUA:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(contextThis, "fonts/bmjua.ttf"))
+                        .addBold(Typekit.createFromAsset(contextThis, "fonts/bmjua.ttf"));
+                break;
+            case Constant.FONT_KOPUB_DOTUM:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(contextThis, "fonts/kopub_dotum_medium.ttf"))
+                        .addBold(Typekit.createFromAsset(contextThis, "fonts/kopub_dotum_medium.ttf"));
+                break;
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
     @Override

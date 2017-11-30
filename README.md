@@ -7,12 +7,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.11.1) - None Build
+## What's New? (Last updated 2017.12.1) - Build 1.4.0
 ```
- 1) Add Tutorial Page
- 2) Fix "can not be modified while "enhanced file open""(~ing)
- 3) Optimized codes
- 4) Bug fix (Abnormal termination - NullPointerError)
+ 1) Font added(BaeDal's Minjok JUA, KOPUB Dotum)
+ 2) Memory optimization and Bug Fix
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -54,4 +52,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ## Good Bye!!
-Compiled by Android Studio 2.3.3
+Compiled by Android Studio 3.0.1

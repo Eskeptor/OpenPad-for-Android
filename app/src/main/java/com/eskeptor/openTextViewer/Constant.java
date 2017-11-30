@@ -28,6 +28,7 @@ public class Constant {
     public static final String APP_VERSION_CHECK = "version_Pref";
     public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;
     public static final String APP_EXPERIMENT_ENHANCEIO = "experiment_enhanceIO_Pref";
+    public static final String APP_FONT = "font_Pref";
 
     public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
     public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
@@ -128,6 +129,10 @@ public class Constant {
     public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
     public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 2;
 
+    public static final int FONT_DEFAULT = 0;
+    public static final int FONT_BAEDAL_JUA = 1;
+    public static final int FONT_KOPUB_DOTUM = 2;
+
     public enum BrowserType {
         OpenExternal, SaveExternalNoneOpenFile
     }
@@ -155,4 +160,5 @@ public class Constant {
     public enum ShapeType {
         None, Circle, Rectangle
     }
+
 }

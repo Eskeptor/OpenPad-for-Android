@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.eskeptor.openTextViewer.textManager.LogManager;
 import com.eskeptor.openTextViewer.textManager.TextManager;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,6 +91,8 @@ public class MemoActivity extends AppCompatActivity {
     // 자동 포커스 끄기를 위한 InputMethodManager
     private InputMethodManager mInputMethodManager;
 
+    // 폰트 스타일
+    private int mFontStyle;
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -202,6 +207,7 @@ public class MemoActivity extends AppCompatActivity {
         mWidgetID = getIntent().getIntExtra(Constant.INTENT_EXTRA_WIDGET_ID, 999);
         mSharedPref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mWidgetID, MODE_PRIVATE);
         mWidgetID = mSharedPref.getInt(Constant.WIDGET_ID, 0);
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
 
         if (mOpenFileURL == null) {
             mLastLog = new File(mOpenFolderURL + File.separator + Constant.FILE_LOG_COUNT);
@@ -385,7 +391,26 @@ public class MemoActivity extends AppCompatActivity {
                 mDrawableModified = getResources().getDrawable(R.drawable.ic_modifiy_white_24dp);
                 mDrawableModifiedComplete = getResources().getDrawable(R.drawable.ic_save_white_24dp);
             }
+
+            switch (mFontStyle) {
+                case Constant.FONT_DEFAULT:
+                    Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+                    break;
+                case Constant.FONT_BAEDAL_JUA:
+                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+                    break;
+                case Constant.FONT_KOPUB_DOTUM:
+                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+                    break;
+            }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
     @Override

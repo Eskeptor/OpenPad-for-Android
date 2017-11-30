@@ -1,5 +1,7 @@
-1.3.4 Update)
-Change license(GPL v3 → Apache 2.0)
+1.4.0 Update)
+1) Add a tutorial page(when first execution)
+2) Font added(BaeDal's Minjok JUA, KOPUB Dotum)
+3) Memory optimization and Bug Fix
 
 Warnning)
 There is a bug that can not be modified while "enhanced file open".

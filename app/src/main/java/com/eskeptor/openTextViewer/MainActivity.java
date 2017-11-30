@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
+import android.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,9 @@ import com.eskeptor.openTextViewer.datatype.MainFileObject;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private static SharedPreferences mSharedPref;
     private static SharedPreferences.Editor mSharedPrefEditor;
 
+    private int mFontStyle;
+    private int mPrevFontStyle;
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -71,20 +77,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem _item) {
         int id = _item.getItemId();
         switch (id) {
-            case android.R.id.home:
-                Intent intent1 = new Intent();
-                intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent1.setClass(mContextThis, FolderActivity.class);
-                startActivityForResult(intent1, Constant.REQUEST_CODE_OPEN_FOLDER);
+            case android.R.id.home: {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setClass(mContextThis, FolderActivity.class);
+                startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_FOLDER);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 break;
-            case R.id.menu_main_settings:
-                Intent intent2 = new Intent();
-                intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent2.setClass(mContextThis, SettingsActivity.class);
-                startActivity(intent2);
+            }
+            case R.id.menu_main_settings: {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setClass(mContextThis, SettingsActivity.class);
+                startActivity(intent);
                 overridePendingTransition(R.anim.anim_slide_in_top, R.anim.anim_slide_out_bottom);
                 break;
+            }
         }
         return super.onOptionsItemSelected(_item);
     }
@@ -156,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         mSharedPrefEditor = mSharedPref.edit();
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        mPrevFontStyle = mFontStyle;
 
         // 튜토리얼 테스트
         if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
@@ -210,22 +220,24 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem _item) {
                         int id = _item.getItemId();
                         switch (id) {
-                            case R.id.menu_main_add_text:
-                                Intent intent1 = new Intent();
-                                intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent1.setClass(mContextThis, MemoActivity.class);
-                                intent1.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
-                                startActivity(intent1);
+                            case R.id.menu_main_add_text: {
+                                Intent intent = new Intent();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.setClass(mContextThis, MemoActivity.class);
+                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
+                                startActivity(intent);
                                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                                 break;
-                            default:
-                                Intent intent2 = new Intent();
-                                intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent2.setClass(mContextThis, PaintActivity.class);
-                                intent2.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
-                                startActivity(intent2);
+                            }
+                            default: {
+                                Intent intent = new Intent();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.setClass(mContextThis, PaintActivity.class);
+                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
+                                startActivity(intent);
                                 overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                                 break;
+                            }
                         }
                         return false;
                     }
@@ -270,6 +282,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         checkPermission();
+
+        switch (mFontStyle) {
+            case Constant.FONT_DEFAULT:
+                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+                break;
+            case Constant.FONT_BAEDAL_JUA:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+                break;
+            case Constant.FONT_KOPUB_DOTUM:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+                break;
+        }
     }
 
     @Override
@@ -292,6 +318,32 @@ public class MainActivity extends AppCompatActivity {
             refreshList();
             mCurFileAdapter.notifyDataSetChanged();
         }
+
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        switch (mFontStyle) {
+            case Constant.FONT_DEFAULT:
+                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+                break;
+            case Constant.FONT_BAEDAL_JUA:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+                break;
+            case Constant.FONT_KOPUB_DOTUM:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+                break;
+        }
+
+        if(mPrevFontStyle != mFontStyle) {
+            mPrevFontStyle = mFontStyle;
+            recreate();
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+        Log.e("FONT", "convert!");
     }
 
     @Override
@@ -316,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                     ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

@@ -3,6 +3,8 @@ package com.eskeptor.openTextViewer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
@@ -17,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.eskeptor.openTextViewer.datatype.FileObject;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -115,6 +119,27 @@ public class FileBrowserActivity extends AppCompatActivity {
                 }
             }
         });
+
+        SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
+        int font = sharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        switch (font) {
+            case Constant.FONT_DEFAULT:
+                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+                break;
+            case Constant.FONT_BAEDAL_JUA:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+                break;
+            case Constant.FONT_KOPUB_DOTUM:
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+                break;
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
     @Override
