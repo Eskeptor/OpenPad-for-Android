@@ -1,3 +1,7 @@
+## Update 2017.12.11 - Build 1.4.1
+```
+ 1) Fix bug fixes that have not been modified
+```
 ## Update 2017.12.1 - Build 1.4.0
 ```
  1) Font added(BaeDal's Minjok JUA, KOPUB Dotum)

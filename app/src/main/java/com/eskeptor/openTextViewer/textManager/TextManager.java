@@ -308,7 +308,7 @@ public class TextManager {
         StringBuilder sbuilder = new StringBuilder();
         CharBuffer charBuffer = null;
         try {
-            messageDigest = MessageDigest.getInstance("mMD5");
+            messageDigest = MessageDigest.getInstance("MD5");
             if (!_enhance) {
                 charBuffer = Charset.forName(mFileFormat).newDecoder().decode(ByteBuffer.wrap(_message));
                 messageDigest.update(charBuffer.toString().getBytes());
@@ -339,7 +339,7 @@ public class TextManager {
         MessageDigest messageDigest;
         StringBuilder sbuilder = new StringBuilder();
         try {
-            messageDigest = MessageDigest.getInstance("mMD5");
+            messageDigest = MessageDigest.getInstance("MD5");
             // 타입에 상관없이 UTF8인 이유는 이미 UTF8로 변환되어있는 것을 체크하기 때문
             messageDigest.update(_message.getBytes(Charset.forName(Constant.ENCODE_TYPE_UTF8_STR)));
             byte[] hash = messageDigest.digest();

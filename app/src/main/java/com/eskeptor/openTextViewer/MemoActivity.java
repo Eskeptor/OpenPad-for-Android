@@ -453,6 +453,7 @@ public class MemoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isModified()) {
+            Log.e("Debug", "isChanged");
             if (mIsWidget) {
                 int origin_id = mWidgetID;
                 if (mOpenFileURL == null) {

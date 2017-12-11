@@ -1,16 +1,16 @@
 # OpenPad for Android
-## Google Play
-[Download OpenPad](https://play.google.com/store/apps/details?id=com.eskeptor.openTextViewer)
+## Download
+[Google Play](https://play.google.com/store/apps/details?id=com.eskeptor.openTextViewer)
+[Github](/Apk)
 ## Features
 ```
  1) Low memory(Very light)
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.12.1) - Build 1.4.0
+## What's New? (Last updated 2017.12.11) - Build 1.4.1
 ```
- 1) Font added(BaeDal's Minjok JUA, KOPUB Dotum)
- 2) Memory optimization and Bug Fix
+ 1) Fix bug fixes that have not been modified
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
