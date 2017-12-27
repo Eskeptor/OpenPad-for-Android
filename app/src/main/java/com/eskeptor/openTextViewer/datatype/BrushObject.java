@@ -2,6 +2,8 @@ package com.eskeptor.openTextViewer.datatype;
 
 import android.graphics.Path;
 
+import com.eskeptor.openTextViewer.Constant;
+
 import java.util.ArrayList;
 
 /**
@@ -13,8 +15,9 @@ import java.util.ArrayList;
 public class BrushObject {
     // get, set을 이용하면 좋지만 직접접근이 덜 부하를 준다.
     public ArrayList<Float> mBrushSizes;
-    public ArrayList<Path> mBrushPaths;
+    public ArrayList<Object> mBrushPaths;
     public ArrayList<Integer> mBrushColor;
+    public ArrayList<Constant.ShapeType> mBrushType;
     public int mBrushPathsIdx;
 
     public BrushObject() {
@@ -38,6 +41,12 @@ public class BrushObject {
             mBrushPaths.clear();
         } else {
             mBrushPaths = new ArrayList<>();
+        }
+
+        if (mBrushType != null) {
+            mBrushType.clear();
+        } else {
+            mBrushType = new ArrayList<>();
         }
 
         mBrushPathsIdx = 0;

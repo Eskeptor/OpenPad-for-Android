@@ -9,9 +9,9 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.12.11) - Build 1.4.1
+## What's New? (Last updated 2017.12.27) - Build 1.4.2
 ```
- 1) Fix bug fixes that have not been modified
+ 1) Add draw diagram(circle, rectangle)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

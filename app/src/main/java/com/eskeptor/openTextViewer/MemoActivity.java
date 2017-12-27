@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import layout.MemoWidget;
-import util.FontChanger;
 
 /**
  * Created by eskeptor on 17. 2. 1.
@@ -304,6 +303,7 @@ public class MemoActivity extends AppCompatActivity {
                     mBtnPrev = (Button) findViewById(R.id.memo_btnPrev);
                     mBtnTop = (Button) findViewById(R.id.memo_btnTop);
                     mBtnNext = (Button) findViewById(R.id.memo_btnNext);
+
                     mScrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {

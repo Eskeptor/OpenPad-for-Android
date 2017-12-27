@@ -10,10 +10,11 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/paint_brush_seekLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/paint_brush_seekLayout">
+        android:background="@color/WhiteGray"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -118,6 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5sp"
         android:layout_marginRight="5sp"
+        android:background="@color/WhiteGray"
         android:orientation="horizontal">
 
         <TextView
@@ -132,8 +134,9 @@
 
     <LinearLayout
         android:id="@+id/paint_shapesLayout"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/WhiteGray"
         android:orientation="horizontal">
 
         <Button
@@ -141,13 +144,13 @@
             android:layout_width="@dimen/shapes_size"
             android:layout_height="@dimen/shapes_size"
             android:layout_marginRight="5dp"
-            android:background="@drawable/ic_circle_black_24dp" />
+            android:background="@drawable/circle_button_selector" />
 
         <Button
             android:id="@+id/paint_shape_rectangle"
             android:layout_width="@dimen/shapes_size"
             android:layout_height="@dimen/shapes_size"
-            android:background="@drawable/ic_rectangle_black_24dp" />
+            android:background="@drawable/rect_button_selector" />
 
     </LinearLayout>
 

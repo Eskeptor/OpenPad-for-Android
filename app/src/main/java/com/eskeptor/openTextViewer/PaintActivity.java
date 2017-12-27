@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.eskeptor.openTextViewer.datatype.BrushObject;
+import com.eskeptor.openTextViewer.datatype.CircleObject;
 import com.eskeptor.openTextViewer.textManager.LogManager;
 
 import java.io.File;
@@ -431,6 +432,7 @@ public class PaintActivity extends AppCompatActivity {
         private float mCurY;
         private float mPrevX;
         private float mPrevY;
+        private float mRadius = 0.0f;
 
         private Paint mCanvasPaint;
         private Paint mBrushPaint;
@@ -517,6 +519,7 @@ public class PaintActivity extends AppCompatActivity {
             mBrushPaint.setStrokeCap(Paint.Cap.ROUND);
             mBrushPaint.setAntiAlias(true);
 
+            mRadius = 0.0f;
             setLineWidth(Constant.PAINT_DEFAULT_WIDTH_PIXEL);
         }
 
@@ -546,44 +549,111 @@ public class PaintActivity extends AppCompatActivity {
             mCurX = _event.getX();
             mCurY = _event.getY();
 
-            int action = _event.getAction() & MotionEvent.ACTION_MASK;
-
-            if (mShapeType == Constant.ShapeType.None) {
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN: {
-                        mPath.reset();
-                        mPath.moveTo(mCurX, mCurY);
-                        mPrevX = mCurX;
-                        mPrevY = mCurY;
-                        invalidate();
-                        return true;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        if (Math.abs(mCurX - mPrevX) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(mCurY - mPrevY) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL) {
-                            mPath.quadTo(mPrevX, mPrevY, mCurX, mCurY);
+//            int action = _event.getAction() & MotionEvent.ACTION_MASK;
+            int action = _event.getAction();
+//            Log.e("Debug", "mShapeType: " + mShapeType);
+            switch (mShapeType) {
+                case None: {
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN: {
+                            mPath.reset();
+                            mPath.moveTo(mCurX, mCurY);
                             mPrevX = mCurX;
                             mPrevY = mCurY;
+                            invalidate();
+                            return true;
                         }
-                        mCanvas.drawPath(mPath, mBrushPaint);
-                        invalidate();
-                        return true;
+                        case MotionEvent.ACTION_MOVE: {
+                            if (Math.abs(mCurX - mPrevX) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(mCurY - mPrevY) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL) {
+                                mPath.quadTo(mPrevX, mPrevY, mCurX, mCurY);
+                                mPrevX = mCurX;
+                                mPrevY = mCurY;
+                            }
+                            mCanvas.drawPath(mPath, mBrushPaint);
+                            invalidate();
+                            return true;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            mBrushObject.mBrushType.add(Constant.ShapeType.None);
+                            mBrushObject.mBrushPaths.add(new Path(mPath));
+                            mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
+                            mBrushObject.mBrushColor.add(mCurColor);
+                            mBrushObject.mBrushPathsIdx++;
+                            mMenuItemUndo.setVisible(true);
+                            drawLine();
+                            invalidate();
+                            performClick();
+                            break;
+                        }
                     }
-                    case MotionEvent.ACTION_UP: {
-                        mBrushObject.mBrushPaths.add(new Path(mPath));
-                        mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
-                        mBrushObject.mBrushColor.add(mCurColor);
-                        mBrushObject.mBrushPathsIdx++;
-                        mMenuItemUndo.setVisible(true);
-                        invalidate();
-                        break;
-                    }
+                    break;
                 }
-            } else {
-                //todo 2017.11.1 원 및 사각형 그리기 만들기
+                case Circle: {
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN: {
+                            mPrevX = mCurX;
+                            mPrevY = mCurY;
+                            mRadius = 1f;
+                            invalidate();
+                            return true;
+                        }
+                        case MotionEvent.ACTION_MOVE: {
+                            mRadius = (float)Math.sqrt(Math.pow(mCurX - mPrevX, 2) + Math.pow(mCurY - mPrevY, 2)) / 2;
+                            mCanvas.drawCircle(mPrevX + (mCurX - mPrevX) / 2, mPrevY + (mCurY - mPrevY) / 2, mRadius, mBrushPaint);
+                            invalidate();
+                            return true;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            mBrushObject.mBrushType.add(Constant.ShapeType.Circle);
+                            mBrushObject.mBrushPaths.add(new CircleObject(mPrevX + (mCurX - mPrevX) / 2, mPrevY + (mCurY - mPrevY) / 2, mRadius));
+                            mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
+                            mBrushObject.mBrushColor.add(mCurColor);
+                            mBrushObject.mBrushPathsIdx++;
+                            mMenuItemUndo.setVisible(true);
+                            drawLine();
+                            invalidate();
+                            performClick();
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case Rectangle: {
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN: {
+                            mPrevX = mCurX;
+                            mPrevY = mCurY;
+                            invalidate();
+                            return true;
+                        }
+                        case MotionEvent.ACTION_MOVE: {
+                            mCanvas.drawRect(new Rect((int)mPrevX, (int)mPrevY, (int)mCurX, (int)mCurY), mBrushPaint);
+                            invalidate();
+                            return true;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            mBrushObject.mBrushType.add(Constant.ShapeType.Rectangle);
+                            mBrushObject.mBrushPaths.add(new Rect((int)mPrevX, (int)mPrevY, (int)mCurX, (int)mCurY));
+                            mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
+                            mBrushObject.mBrushColor.add(mCurColor);
+                            mBrushObject.mBrushPathsIdx++;
+                            mMenuItemUndo.setVisible(true);
+                            drawLine();
+                            invalidate();
+                            performClick();
+                            break;
+                        }
+                    }
+                    break;
+                }
             }
-
             mIsModified = true;
             return false;
+        }
+
+        @Override
+        public boolean performClick() {
+            return super.performClick();
         }
 
         public void setColor(final int _color) {
@@ -643,7 +713,8 @@ public class PaintActivity extends AppCompatActivity {
 
         public void undoCanvas() {
             if (mBrushObject.mBrushPathsIdx != 0) {
-                mBrushObject.mBrushPaths.remove(--mBrushObject.mBrushPathsIdx);
+                mBrushObject.mBrushType.remove(--mBrushObject.mBrushPathsIdx);
+                mBrushObject.mBrushPaths.remove(mBrushObject.mBrushPathsIdx);
                 mBrushObject.mBrushSizes.remove(mBrushObject.mBrushPathsIdx);
                 mBrushObject.mBrushColor.remove(mBrushObject.mBrushPathsIdx);
                 mPath.reset();
@@ -696,7 +767,23 @@ public class PaintActivity extends AppCompatActivity {
             for (int i = 0; i < idx; i++) {
                 mBrushPaint.setStrokeWidth(mBrushObject.mBrushSizes.get(i));
                 mBrushPaint.setColor(mBrushObject.mBrushColor.get(i));
-                mCanvas.drawPath(mBrushObject.mBrushPaths.get(i), mBrushPaint);
+                switch (mBrushObject.mBrushType.get(i)) {
+                    case None: {
+                        mCanvas.drawPath((Path)mBrushObject.mBrushPaths.get(i), mBrushPaint);
+                        break;
+                    }
+                    case Circle: {
+                        CircleObject circleObject = (CircleObject)mBrushObject.mBrushPaths.get(i);
+                        mCanvas.drawCircle(circleObject.mX, circleObject.mY, circleObject.mRadius, mBrushPaint);
+                        break;
+                    }
+                    case Rectangle: {
+                        Rect rect = (Rect)mBrushObject.mBrushPaths.get(i);
+                        mCanvas.drawRect(rect, mBrushPaint);
+                        break;
+                    }
+                }
+
             }
             mBrushPaint.setStrokeWidth(mCurSize);
             mBrushPaint.setColor(mCurColor);

@@ -1,5 +1,5 @@
-1.4.1 Update)
-1) Fix bug fixes that have not been modified
+1.4.2
+1) Add draw diagram(circle, rectangle)
 
 Warnning)
 There is a bug that can not be modified while "enhanced file open".
