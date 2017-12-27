@@ -1,3 +1,7 @@
+## Update 2017.12.27 - Build 1.4.2
+```
+ 1) Add draw diagram(circle, rectangle)
+```
 ## Update 2017.12.11 - Build 1.4.1
 ```
  1) Fix bug fixes that have not been modified
