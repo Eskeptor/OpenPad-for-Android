@@ -1,7 +1,5 @@
 package com.eskeptor.openTextViewer.datatype;
 
-import android.graphics.Path;
-
 import com.eskeptor.openTextViewer.Constant;
 
 import java.util.ArrayList;
