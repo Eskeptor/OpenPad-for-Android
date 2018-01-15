@@ -20,7 +20,7 @@
 [View Lists](./UPDATE.md)
 ## Known Bugs
 ```
- 1) There is a bug that can not be modified while "enhanced file open".
+ Tell me
 ```
 ## Development environment
 #### 1st environment
