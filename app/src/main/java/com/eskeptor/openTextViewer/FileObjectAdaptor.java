@@ -18,6 +18,9 @@ import java.util.ArrayList;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+/**
+ * FileObject용 뷰홀더
+ */
 class FileObjectViewHolder
 {
     public ImageView fileImage;
@@ -27,14 +30,18 @@ class FileObjectViewHolder
 
 public class FileObjectAdaptor extends BaseAdapter
 {
-    private Context mContext;
+    private Context mContext;                       // LayoutInflater에 사용할 컨텍스트
+    private ArrayList<FileObject> mFileObjects;     // FileObject를 담을 ArrayList
+    private Drawable mDrawableFolder;               // Folder 아이콘
+    private Drawable mDrawableNormalFile;           // 일반 파일 아이콘
+    private Drawable mDrawableOver1File;            // 주황 파일 아이콘
+    private Drawable mDrawableOver2File;            // 빨강 파일 아이콘
 
-    private ArrayList<FileObject> mFileObjects;
-    private Drawable mDrawableFolder;
-    private Drawable mDrawableNormalFile;
-    private Drawable mDrawableOver1File;
-    private Drawable mDrawableOver2File;
-
+    /**
+     * FileObject용 어댑터를 생성
+     * @param _context 컨텍스트
+     * @param _fileObjects FileObject용 ArrrayList
+     */
     public FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects) {
         this.mContext = _context;
         this.mFileObjects = _fileObjects;

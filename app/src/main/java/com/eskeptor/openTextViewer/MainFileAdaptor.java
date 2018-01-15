@@ -18,11 +18,17 @@ import java.util.ArrayList;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+/**
+ * 메인 페이지의 클릭액션을 정의한 인터페이스
+ */
 interface ClickAction {
     public void onClick(final View _view, final int _position);
     public void onLongClick(final View _view, final int _position);
 }
 
+/**
+ * 메인페이지 파일용 뷰홀더
+ */
 class MainFileViewHolder extends RecyclerView.ViewHolder {
     public ImageView image;
     public TextView title;
@@ -40,6 +46,9 @@ class MainFileViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
+/**
+ * RecyclerView의 Padding용
+ */
 class RecyclerViewPadding extends RecyclerView.ItemDecoration {
     private int mBottom;
     private int mLeft;
@@ -60,6 +69,9 @@ class RecyclerViewPadding extends RecyclerView.ItemDecoration {
     }
 }
 
+/**
+ * 메인파일용 어댑터
+ */
 public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     private ArrayList<MainFileObject> mMainFiles;
     private ClickAction mAction;
@@ -123,6 +135,13 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
         return mMainFiles.size();
     }
 
+    /**
+     * 비트맵의 크기를 계산하는 메소드
+     * @param _options 옵션
+     * @param _reqWidth 넓이
+     * @param _reqHeight 높이
+     * @return 크기
+     */
     private static int calculateInBitmapSize(BitmapFactory.Options _options, int _reqWidth, int _reqHeight) {
         // Raw mBottom and width of image
         final int height = _options.outHeight;
@@ -145,6 +164,13 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
         return inSampleSize;
     }
 
+    /**
+     * Resource를 비트맵으로 변환해주는 메소드
+     * @param _bitmap 비트맵의 경로
+     * @param _reqWidth 넓이
+     * @param _reqHeight 높이
+     * @return 비트맵
+     */
     private static Bitmap decodeBitmapFromResource(final String _bitmap, int _reqWidth, int _reqHeight) {
 
         // First decode with inJustDecodeBounds=true to check dimensions

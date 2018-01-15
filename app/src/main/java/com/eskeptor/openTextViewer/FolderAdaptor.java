@@ -19,6 +19,9 @@ import java.util.Locale;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+/**
+ * Folder용 뷰홀더
+ */
 class FolderViewHolder
 {
     public ImageView folderIcon;
@@ -27,11 +30,11 @@ class FolderViewHolder
 }
 
 public class FolderAdaptor extends BaseAdapter {
-    private Context mContext;
-    private ArrayList<FolderObject> mFolders;
-    private Drawable mDrawableFolderNormal;
-    private Drawable mDrawableFolderRoot;
-    private Drawable mDrawableFolderExternal;
+    private Context mContext;                       // LayoutInflater에 사용할 컨텍스트
+    private ArrayList<FolderObject> mFolders;       // FolderObject를 담을 ArrayList
+    private Drawable mDrawableFolderNormal;         // 일반 폴더 아이콘
+    private Drawable mDrawableFolderRoot;           // 루트 폴더 아이콘(삭제 안되는)
+    private Drawable mDrawableFolderExternal;       // 외부 파일 열기용 아이콘
 
     public FolderAdaptor(final Context _context, final ArrayList<FolderObject> _folders) {
         this.mContext = _context;

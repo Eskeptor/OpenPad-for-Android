@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+/**
+ * 튜토리얼 페이지
+ */
 public class FirstStartActivity extends AppCompatActivity {
     private ViewPager mPager;
     private SharedPreferences mPref;
@@ -29,17 +32,6 @@ public class FirstStartActivity extends AppCompatActivity {
         mPager.setAdapter(new PagerAdapterClass(getApplicationContext()));
     }
 
-    private View.OnClickListener mClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mPrefEditor = mPref.edit();
-            mPrefEditor.putBoolean(Constant.APP_TUTORIAL, true);
-            mPrefEditor.apply();
-            mPrefEditor.commit();
-            finish();
-        }
-    };
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -51,8 +43,8 @@ public class FirstStartActivity extends AppCompatActivity {
     }
 
     private class PagerAdapterClass extends PagerAdapter {
-        private final int VIEW_SIZE = 6;
-        private final int[] IMAGE_ID = {R.drawable.firstview1, R.drawable.firstview2, R.drawable.firstview3, R.drawable.firstview4,
+        private final int VIEW_SIZE = 5;
+        private final int[] IMAGE_ID = {R.drawable.firstview1, R.drawable.firstview2, R.drawable.firstview3,
                 R.drawable.firstview5, R.drawable.firstview6};
         private LayoutInflater mInflater;
         private Bitmap mBitmap;
@@ -100,15 +92,6 @@ public class FirstStartActivity extends AppCompatActivity {
                     break;
                 }
                 case 3: {
-                    view = mInflater.inflate(R.layout.first_view4, null);
-                    mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
-                    ImageView imageView = (ImageView)view.findViewById(R.id.first_img4);
-                    imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    imageView.setImageBitmap(mBitmap);
-                    container.addView(view);
-                    break;
-                }
-                case 4: {
                     view = mInflater.inflate(R.layout.first_view5, null);
                     mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img5);
@@ -117,13 +100,22 @@ public class FirstStartActivity extends AppCompatActivity {
                     container.addView(view);
                     break;
                 }
-                case 5: {
+                case 4: {
                     view = mInflater.inflate(R.layout.first_view6, null);
                     mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img6);
                     imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                     imageView.setImageBitmap(mBitmap);
-                    view.findViewById(R.id.first_btnStart).setOnClickListener(mClickListener);
+                    view.findViewById(R.id.first_btnStart).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mPrefEditor = mPref.edit();
+                            mPrefEditor.putBoolean(Constant.APP_TUTORIAL, true);
+                            mPrefEditor.apply();
+                            mPrefEditor.commit();
+                            finish();
+                        }
+                    });
                     container.addView(view);
                     break;
                 }

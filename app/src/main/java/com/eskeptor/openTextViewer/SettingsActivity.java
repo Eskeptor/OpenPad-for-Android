@@ -22,6 +22,9 @@ import com.tsengvn.typekit.TypekitContextWrapper;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+/**
+ * 설정 페이지
+ */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static Constant.ActiveScreenType mActiveScene;
     private static SharedPreferences mSharedPref;

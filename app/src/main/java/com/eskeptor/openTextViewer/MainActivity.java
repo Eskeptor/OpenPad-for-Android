@@ -167,13 +167,15 @@ public class MainActivity extends AppCompatActivity {
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
         mPrevFontStyle = mFontStyle;
 
-        // 튜토리얼 테스트
+        // 튜토리얼 페이지
+        /*
         if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
             Intent intent = new Intent();
             intent.setClass(mContextThis, FirstStartActivity.class);
             startActivity(intent);
-        }
+        }*/
 
+        // 폴더 아이콘
         Drawable folderIcon;
         if (Build.VERSION.SDK_INT >= 21) {
             folderIcon = getResources().getDrawable(R.drawable.ic_folder_open_white, null);
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
             folderIcon = getResources().getDrawable(R.drawable.ic_folder_open_white);
         }
 
+        // 툴바의 홈버튼을 폴더보기 아이콘으로 교체
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -246,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 메인 페이지의 메모+그림 리스트용 Runnable
         mRefreshListRunnable = new Runnable() {
             @Override
             public void run() {
@@ -281,8 +285,11 @@ public class MainActivity extends AppCompatActivity {
                 mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(10, 5, 5));
             }
         };
+
+        // 권한 체크
         checkPermission();
 
+        // 설정의 폰트에 맞게 폰트 변환
         switch (mFontStyle) {
             case Constant.FONT_DEFAULT:
                 Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
@@ -343,7 +350,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-        Log.e("FONT", "convert!");
     }
 
     @Override
@@ -367,6 +373,9 @@ public class MainActivity extends AppCompatActivity {
         mContextView = null;
     }
 
+    /**
+     * 권한을 체크하는 메소드
+     */
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
@@ -390,7 +399,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 기본폴더 체크 메소드
+    /**
+     * 기본 폴더 체크 메소드
+     */
     private void defaultFolderCheck() {
         // 어플의 기본 폴더 체크
         File file = new File(Constant.APP_INTERNAL_URL);
@@ -412,7 +423,10 @@ public class MainActivity extends AppCompatActivity {
         mCurFolderURL = file.getPath();
     }
 
-    // 파일 제거 메소드
+    /**
+     * 메인 리스트에서 파일을 제거하는 메소드
+     * @param _index 제거할 파일의 인덱스
+     */
     private void deleteFile(final int _index) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.file_dialog_title_delete);
@@ -443,7 +457,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // 메인 리스트 새로고침 메소드
+    /**
+     * 메인 리스트를 갱신하는 메소드
+     */
     private void refreshList() {
         mCurFolderFileList.clear();
         File file = new File(mCurFolderURL);
@@ -469,7 +485,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 맨 처음 설치시 확인하는 메소드
+    /**
+     * 초기 설치 여부를 판단하는 메소드
+     */
     private void checkFirstExcecute() {
         if (!mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -539,7 +557,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 애드몹 메소드
+    /**
+     * 애드몹
+     */
     private void adMob() {
         if (mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true)) {
             MobileAds.initialize(mContextThis, getResources().getString(R.string.app_id));
@@ -562,12 +582,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // DP 단위를 Pixel 단위로 변경시켜주는 메소드
+    /**
+     * DP 단위를 Pixel 단위로 변경시켜주는 메소드
+     * @param _DP DP
+     * @return Pixel 값
+     */
     private int DPtoPixel(final int _DP) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _DP, mContextThis.getResources().getDisplayMetrics());
     }
 
-    // 파일 정렬 메소드
+    /**
+     * 메인 리스트를 정렬하는 메소드
+     * @param _files 리스트
+     */
     private void sortFileArray(File[] _files) {
         // 최근 날짜순으로 정렬
         Arrays.sort(_files, new Comparator<File>() {

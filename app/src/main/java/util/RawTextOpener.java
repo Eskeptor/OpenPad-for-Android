@@ -10,6 +10,9 @@ import java.io.InputStream;
  * Created by Esk on 2017-10-07.
  */
 
+/**
+ * Raw 텍스트를 여는 클래스
+ */
 public class RawTextOpener {
     public static String getRawText(final Context _context, @RawRes int _res) {
         InputStream inputStream = null;

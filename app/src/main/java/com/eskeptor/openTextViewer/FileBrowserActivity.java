@@ -240,6 +240,10 @@ public class FileBrowserActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 파일 디렉토리를 가져옵니다.
+     * @param _dir 경로
+     */
     public void getDirectory(final String _dir) {
         if (mFileListObjects != null && !mFileListObjects.isEmpty()) {
             mFileListObjects.clear();
@@ -290,6 +294,11 @@ public class FileBrowserActivity extends AppCompatActivity {
         mStrFilename = _dir;
     }
 
+    /**
+     * 파일 디렉토리를 정렬하여 보여줍니다.(오름차, 내림차)
+     * @param _files 파일 디렉토리
+     * @param _sortType 정렬 기준
+     */
     private void sortFileArray(File[] _files, final Constant.BrowserMenuSortType _sortType) {
         Arrays.sort(_files, new Comparator<File>() {
             @Override
@@ -304,6 +313,11 @@ public class FileBrowserActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 해당 경로에 파일이 존재하는 여부를 반환합니다.
+     * @param _filename 파일이름
+     * @return 있다 혹은 없다
+     */
     private boolean isExist(final String _filename) {
         for (int i = 0; i < mFileListObjects.size(); i++) {
             if (_filename.equals(mFileListObjects.get(i).mFileName)) {

@@ -16,6 +16,9 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 
 import util.RawTextOpener;
 
+/**
+ * 라이센스 페이지
+ */
 public class LicenseActivity extends AppCompatActivity {
     private Thread mLicense1;
     private Thread mLicense2;

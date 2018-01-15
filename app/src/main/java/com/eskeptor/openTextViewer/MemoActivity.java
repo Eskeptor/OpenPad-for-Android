@@ -113,13 +113,13 @@ public class MemoActivity extends AppCompatActivity {
                     mEditMenu.setIcon(mDrawableModified);
                     mInputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
                 } else {
-                    if (mIsEnhanced) {
+                    /*if (mIsEnhanced) {
                         AlertDialog.Builder alert = new AlertDialog.Builder(MemoActivity.this);
                         alert.setTitle(R.string.settings_dialog_expfunc_title);
                         alert.setMessage(R.string.menu_memo_warning_modify);
                         alert.setPositiveButton(R.string.settings_dialog_info_ok, null);
                         alert.show();
-                    }
+                    }*/
                     mEditText.setFocusable(true);
                     mEditText.setFocusableInTouchMode(true);
                     mEditText.requestFocus();
@@ -520,7 +520,7 @@ public class MemoActivity extends AppCompatActivity {
                                 });
                                 alert.show();
                             } else {
-                                mTxtManager.saveText(mEditText.getText().toString(), mTxtManager.getFileopen_name(), mIsEnhanced);
+                                mTxtManager.saveText(mEditText.getText().toString(), mTxtManager.getFileopenName(), mIsEnhanced);
                                 finish();
                             }
                         } else if (_which == AlertDialog.BUTTON_NEGATIVE) {
@@ -543,6 +543,10 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 메모 내용이 변경되었는가 여부를 반환
+     * @return 변경 혹은 미변경
+     */
     private boolean isModified() {
         if (mOpenFileURL != null) {
             String md5 = mTxtManager.createMD5(mEditText.getText().toString());
@@ -557,6 +561,9 @@ public class MemoActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * 로그를 쓰는 메소드
+     */
     private void writeLog() {
         try {
             if (!mTxtManager.isFileopen()) {
@@ -586,6 +593,9 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 이전, 이후 버튼 만들기(향상된 파일열기 기능)
+     */
     private void buttonEnabler() {
         if (!mTxtManager.isPrev()) {
             mBtnPrev.setEnabled(false);

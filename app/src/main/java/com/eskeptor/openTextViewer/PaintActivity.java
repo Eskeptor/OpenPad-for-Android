@@ -386,6 +386,9 @@ public class PaintActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 로그를 쓰는 메소드
+     */
     private void writeLog() {
         try {
             if (!mPaintFunction.isFileopen()) {
@@ -396,6 +399,9 @@ public class PaintActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 초기화
+     */
     private void initPaint() {
         if (mOpenFileURL == null) {
             mLastLog = new File(mOpenFolderURL + File.separator + Constant.FILE_LOG_COUNT);
@@ -426,7 +432,9 @@ public class PaintActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * 그림을 그리는 뷰용 Class
+     */
     static class PaintFunction extends View {
         private float mCurX;
         private float mCurY;
@@ -465,7 +473,10 @@ public class PaintActivity extends AppCompatActivity {
             mScreenHeight = displayMetrics.heightPixels;
         }
 
-        private void reset() {
+        /**
+         * 초기화
+         */
+        private void init() {
             if (mFileopen) {
                 if (mBitmap != null) {
                     mBitmap.recycle();
@@ -656,28 +667,48 @@ public class PaintActivity extends AppCompatActivity {
             return super.performClick();
         }
 
+        /**
+         * 페인트 색상 설정
+         * @param _color 색
+         */
         public void setColor(final int _color) {
             mCurColor = _color;
             mBrushPaint.setColor(mCurColor);
             invalidate();
         }
 
+        /**
+         * 페인트 굵기 설정
+         * @param _lineWidth 굵기
+         */
         public void setLineWidth(final float _lineWidth) {
             mCurSize = _lineWidth;
             mBrushPaint.setStrokeWidth(mCurSize);
             invalidate();
         }
 
+        /**
+         * 초기화 수행 명령
+         */
         public void resetPaint() {
-            reset();
+            init();
             setColor(mCurColor);
             invalidate();
         }
 
+        /**
+         * 파일이 열려있는가(이미 생성된 이미지를 열었는가) 여부 반환
+         * @return 이미생성 혹은 아님
+         */
         public boolean isFileopen() {
             return mFileopen;
         }
 
+        /**
+         * 비트맵을 설정한다.
+         * @param _memoType 이미 생성되어진 파일인가
+         * @param _folderUrl 폴더 경로
+         */
         public void setBitmap(final boolean _memoType, final String _folderUrl) {
             if (_memoType) {
                 mFileopen = false;
@@ -685,9 +716,13 @@ public class PaintActivity extends AppCompatActivity {
                 this.mFilename = _folderUrl;
                 mFileopen = true;
             }
-            reset();
+            init();
         }
 
+        /**
+         * 만든 이미지 메모를 저장
+         * @param _dir 저장 경로
+         */
         public void savePaint(final String _dir) {
             FileOutputStream fos = null;
             this.draw(mCanvas);
@@ -707,10 +742,17 @@ public class PaintActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * 메모가 변경되었는가 여부 확인
+         * @return 변경 혹은 미변경
+         */
         public boolean isModified() {
             return mIsModified;
         }
 
+        /**
+         * 되돌리기 기능
+         */
         public void undoCanvas() {
             if (mBrushObject.mBrushPathsIdx != 0) {
                 mBrushObject.mBrushType.remove(--mBrushObject.mBrushPathsIdx);
@@ -727,6 +769,10 @@ public class PaintActivity extends AppCompatActivity {
             invalidate();
         }
 
+        /**
+         * 브러쉬, 지우개 변경
+         * @param _type 지우개, 도형, 브러쉬
+         */
         public void changePaint(final Constant.PaintType _type) {
             switch (_type) {
                 case Brush: case Shape:
@@ -740,6 +786,9 @@ public class PaintActivity extends AppCompatActivity {
             invalidate();
         }
 
+        /**
+         * 선을 그린다.(지우개 포함)
+         */
         private void drawLine() {
             if (mFileopen) {
                 if (mBitmap != null) {

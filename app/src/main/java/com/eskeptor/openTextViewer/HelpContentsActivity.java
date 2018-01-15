@@ -15,6 +15,9 @@ import com.tsengvn.typekit.TypekitContextWrapper;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+/**
+ * 설정 페이지의 도움말 화면
+ */
 public class HelpContentsActivity extends AppCompatActivity {
     private TextView mTxtTitle;
     private TextView mTxtContexts;

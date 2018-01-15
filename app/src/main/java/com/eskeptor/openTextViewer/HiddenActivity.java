@@ -10,6 +10,9 @@ import java.io.InputStream;
 
 import util.RawTextOpener;
 
+/**
+ * H i d d e n
+ */
 public class HiddenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle _savedInstanceState) {

@@ -205,7 +205,11 @@ public class FolderActivity extends AppCompatActivity
         mContextView = null;
     }
 
-    // 폴더의 타입을 체크함(기본폴더, 일반폴더)
+    /**
+     * 폴더의 타입을 확인한다.
+     * @param _file 폴더
+     * @return 타입
+     */
     private int checkFolderType(final File _file) {
         if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
             return Constant.FOLDER_TYPE_DEFAULT;
@@ -213,7 +217,10 @@ public class FolderActivity extends AppCompatActivity
         return Constant.FOLDER_TYPE_CUSTOM;
     }
 
-    // 폴더 삭제
+    /**
+     * 폴더를 삭제하는 메소드
+     * @param _index 삭제할 폴더의 인덱스
+     */
     private void deleteFolder(final int _index) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.folder_dialog_title_delete);

@@ -9,9 +9,12 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2017.12.27) - Build 1.4.2
+## What's New? (Last updated 2018.1.16) - Build 1.4.3
 ```
- 1) Add draw diagram(circle, rectangle)
+ 1) Disable tutorial page (Because of bug)
+ 2) Modification of an enhanced file read save bug
+ 3) Modification of Snackbar animation (shutdown notification)
+ 4) Optimization
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -24,17 +27,17 @@
 ```
  Operating System : Windows 10 Pro RS3 64bit
  CPU : AMD Ryzen R5 1600
- RAM : 12GB
- VGA : Radeon HD 7770
+ RAM : 24GB
+ VGA : Nvidia Geforce GTX 1050 2GB
  Android SDK(Min) : API 15
  Android SDK(Target and Compiled) : API 25
 ```
 #### 2nd environment
 ```
  Operating System : Ubuntu 16.04 LTS 64bit
- CPU : Intel Pentium B980
- RAM : 16GB
- VGA : Intel HD Graphics
+ CPU : Intel Core i5-8250U
+ RAM : 8GB
+ VGA : Intel UHD Graphics 620
  Android SDK(Min) : API 15
  Android SDK(Target and Compiled) : API 25
 ```

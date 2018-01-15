@@ -133,9 +133,6 @@ public class Constant {
     public static final int FONT_BAEDAL_JUA = 1;
     public static final int FONT_KOPUB_DOTUM = 2;
 
-    public enum BrowserType {
-        OpenExternal, SaveExternalNoneOpenFile
-    }
 
     public enum BrowserMenuSortType {
         Asc, Des

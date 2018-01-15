@@ -1,5 +1,5 @@
-1.4.2
-1) Add draw diagram(circle, rectangle)
-
-Warnning)
-There is a bug that can not be modified while "enhanced file open".
+1.4.3
+1) Disable tutorial page (Because of bug)
+2) Modification of an enhanced file read save bug
+3) Modification of Snackbar animation (shutdown notification)
+4) Optimization
