@@ -57,7 +57,7 @@
         <activity
             android:name=".FirstStartActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LicenseActivity"></activity>
+        <activity android:name=".LicenseActivity" />
     </application>
 
 </manifest>

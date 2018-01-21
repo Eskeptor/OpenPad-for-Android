@@ -327,22 +327,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
-        switch (mFontStyle) {
-            case Constant.FONT_DEFAULT:
-                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-                break;
-            case Constant.FONT_BAEDAL_JUA:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
-                break;
-            case Constant.FONT_KOPUB_DOTUM:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
-                break;
-        }
-
         if(mPrevFontStyle != mFontStyle) {
             mPrevFontStyle = mFontStyle;
+            switch (mFontStyle) {
+                case Constant.FONT_DEFAULT:
+                    Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+                    break;
+                case Constant.FONT_BAEDAL_JUA:
+                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+                    break;
+                case Constant.FONT_KOPUB_DOTUM:
+                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+                    break;
+            }
             recreate();
         }
     }

@@ -138,7 +138,7 @@ public class MemoActivity extends AppCompatActivity {
                             mEncodeType = Constant.EncodeType.EUCKR;
                         else
                             mEncodeType = Constant.EncodeType.UTF8;
-                        txtData = mTxtManager.openText(mOpenFileURL, 0, mIsEnhanced, Constant.EncodeType.UTF8);
+                        txtData = mTxtManager.openText(mOpenFileURL, 0, mIsEnhanced, mEncodeType);
                         mEditText.setText(txtData);
                         _dialog.dismiss();
                     }

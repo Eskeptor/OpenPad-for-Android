@@ -17,6 +17,8 @@ import java.util.ArrayList;
 /**
  * Created by eskeptor on 17. 1. 25.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
+ *
+ * Text Manager 1.0Ver
  */
 
 
@@ -241,11 +243,11 @@ public class TextManager {
                     String tmp;
                     mFileSize = openFile.length();
                     if (mFileSize != 0) {
-                        if (mNextPointer == 0) {
+                        if (mNextPointer == 0 || _pointer == Constant.MEMO_BLOCK_ENCODING_RESET) {
                             mPrevPointer = 0;
                             mCurPointer = 0;
                             mPointerList.add(0, 0L);
-                            mNextPointer++;
+                            mNextPointer = 1;
                         } else {
                             if (_pointer == Constant.MEMO_BLOCK_NEXT) {
                                 mPrevPointer = mCurPointer;

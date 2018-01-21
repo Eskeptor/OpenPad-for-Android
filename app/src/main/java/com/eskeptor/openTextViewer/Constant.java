@@ -67,6 +67,7 @@ public class Constant {
 
     public static final int MEMO_SAVE_SELECT_TYPE_EXTERNAL = 0;
     public static final int MEMO_SAVE_SELECT_TYPE_INTERNAL = 1;
+    public static final int MEMO_BLOCK_ENCODING_RESET = 0;
     public static final int MEMO_BLOCK_NEXT = 1;
     public static final int MEMO_BLOCK_PREV = -1;
 

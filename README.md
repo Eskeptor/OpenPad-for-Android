@@ -9,12 +9,9 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.1.16) - Build 1.4.3
+## What's New? (Last updated 2018.1.21) - Build 1.4.4
 ```
- 1) Disable tutorial page (Because of bug)
- 2) Modification of an enhanced file read save bug
- 3) Modification of Snackbar animation (shutdown notification)
- 4) Optimization
+ 1) EUC-KR Encoding bug modification
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

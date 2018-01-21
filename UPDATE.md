@@ -1,9 +1,13 @@
+## Update 2018.1.16 - Build 1.4.4
+```
+ 1) EUC-KR Encoding bug modification
+```
 ## Update 2018.1.16 - Build 1.4.3
 ```
-  1) Disable tutorial page (Because of bug)
-  2) Modification of an enhanced file read save bug
-  3) Modification of Snackbar animation (shutdown notification)
-  4) Optimization
+ 1) Disable tutorial page (Because of bug)
+ 2) Modification of an enhanced file read save bug
+ 3) Modification of Snackbar animation (shutdown notification)
+ 4) Optimization
 ```
 ## Update 2017.12.27 - Build 1.4.2
 ```
