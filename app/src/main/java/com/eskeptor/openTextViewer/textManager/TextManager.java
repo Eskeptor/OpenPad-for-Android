@@ -1,7 +1,5 @@
 package com.eskeptor.openTextViewer.textManager;
 
-import android.util.Log;
-
 import com.eskeptor.openTextViewer.Constant;
 
 import java.io.*;
@@ -13,6 +11,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+
+import util.TestLog;
 
 /**
  * Created by eskeptor on 17. 1. 25.
@@ -145,34 +145,34 @@ public class TextManager {
                     backFileBuffer.clear();
                 }
             } catch (Exception e) {
-                Log.e("TextManager(saveText)", e.getMessage());
+                TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
             } finally {
                 if (fileBuffer != null) {
                     try {
                         fileBuffer.clear();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (saveFileChannel != null) {
                     try {
                         saveFileChannel.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (saveFile != null) {
                     try {
                         saveFile.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (saveFileOutputStream != null) {
                     try {
                         saveFileOutputStream.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
             }
@@ -190,27 +190,27 @@ public class TextManager {
                 fileBuffer.flip();
                 saveFileChannel.write(fileBuffer);
             } catch (Exception e) {
-                Log.e("TextManager(saveText)", e.getMessage());
+                TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
             } finally {
                 if (fileBuffer != null) {
                     try {
                         fileBuffer.clear();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (saveFileChannel != null) {
                     try {
                         saveFileChannel.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (saveFile != null) {
                     try {
                         saveFile.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(saveText)", e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
             }
@@ -291,12 +291,11 @@ public class TextManager {
                         else
                             mProgress = (float) mPointerList.get(mNextPointer) / (float) mFileSize * 100;
 
-                        Log.e("Page Pointer", "prev: " + mPrevPointer);
-                        Log.e("Page Pointer", "cur: " + mCurPointer);
-                        Log.e("Page Pointer", "next: " + mNextPointer);
-                        Log.e("Page Pointer", mCurPointer + " : " + mPointerList.get(mCurPointer));
-                        for(int i = 0; i < mPointerList.size(); i++)
-                            Log.e("Page Pointer", "Page : " + mPointerList.get(i));
+                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, "prev: " + mPrevPointer);
+                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, "cur: " + mCurPointer);
+                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, "next: " + mNextPointer);
+                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, mCurPointer + " : " + mPointerList.get(mCurPointer));
+
                         return new String(fileContents);
                     } else {
                         mIsFileopen = false;
@@ -326,34 +325,34 @@ public class TextManager {
                     }
                 }
             } catch (Exception e) {
-                Log.e("TextManager(openText)", e.getMessage());
+                TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
             } finally {
                 if (fileBuffer != null) {
                     try {
                         fileBuffer.clear();
                     } catch (Exception e) {
-                        Log.e("TextManager(openText)", e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (openFileChannel != null) {
                     try {
                         openFileChannel.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(openText)", e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (openFile != null) {
                     try {
                         openFile.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(openText)", e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (openFileInputStream != null) {
                     try {
                         openFileInputStream.close();
                     } catch (Exception e) {
-                        Log.e("TextManager(openText)", e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
             }
@@ -384,14 +383,14 @@ public class TextManager {
                 MD5String.append(String.format("%02x", h & 0xff));
             }
         } catch (Exception e) {
-            Log.e("TextManager(createMD5)", e.getMessage());
+            TestLog.Tag("TextManager(createMD5)").Logging(TestLog.ERROR, e.getMessage());
         } finally {
             if (!_enhance) {
                 if (charBuffer != null) {
                     try {
                         charBuffer.clear();
                     } catch (Exception e) {
-                        Log.e("TextManager(createMD5)", e.getMessage());
+                        TestLog.Tag("TextManager(createMD5)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
             }
@@ -416,7 +415,7 @@ public class TextManager {
                 MD5String.append(String.format("%02x", h & 0xff));
             }
         } catch (Exception e) {
-            Log.e("TextManager(createMD5)", e.getMessage());
+            TestLog.Tag("TextManager(createMD5)").Logging(TestLog.ERROR, e.getMessage());
         }
         return MD5String.toString();
     }
@@ -432,7 +431,7 @@ public class TextManager {
             CharsetDecoder decoder = Charset.forName(Constant.ENCODE_TYPE_UTF8_STR).newDecoder();
             charBuffer = decoder.decode(_buffer);
         } catch (CharacterCodingException cce) {
-            Log.e("TextManager(format-)", cce.getMessage());
+            TestLog.Tag("TextManager(format-)").Logging(TestLog.ERROR, cce.getMessage());
             return null;
         }
         return charBuffer;

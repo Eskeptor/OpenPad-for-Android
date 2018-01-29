@@ -192,4 +192,6 @@
     <string name="widget_config_default_title">메모 날짜</string>
     <string name="widget_config_default_context">메모 내용</string>
     <string name="paint_menu_shapes">도형</string>
+    <string name="settings_general_viewimage">이미지 미리보기</string>
+    <string name="settings_general_viewimage_summary">"메인화면의 메모 리스트에 그림메모를 미리봅니다. "</string>
 </resources>

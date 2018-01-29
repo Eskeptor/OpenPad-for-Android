@@ -1,17 +1,24 @@
 package com.eskeptor.openTextViewer;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.eskeptor.openTextViewer.datatype.MainFileObject;
 
 import java.util.ArrayList;
+
+import util.TestLog;
 
 /**
  * Created by eskeptor on 17. 2. 4.
@@ -36,14 +43,13 @@ class MainFileViewHolder extends RecyclerView.ViewHolder {
     public TextView date;
     public View view;
 
-    public MainFileViewHolder(final View _view) {
+    public MainFileViewHolder(final View _view, final Context _context) {
         super(_view);
         view = _view;
         image = (ImageView) itemView.findViewById(R.id.item_mainfile_image);
         title = (TextView) itemView.findViewById(R.id.item_mainfile_title);
         contents = (TextView) itemView.findViewById(R.id.item_mainfile_context);
-        date = (TextView) itemView.findViewById(R.id.item_mainfile_date);
-    }
+        date = (TextView) itemView.findViewById(R.id.item_mainfile_date);}
 }
 
 /**
@@ -75,9 +81,11 @@ class RecyclerViewPadding extends RecyclerView.ItemDecoration {
 public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     private ArrayList<MainFileObject> mMainFiles;
     private ClickAction mAction;
+    private SharedPreferences mSharedPref;
 
-    public MainFileAdaptor(final ArrayList<MainFileObject> _mainFiles) {
+    public MainFileAdaptor(final ArrayList<MainFileObject> _mainFiles, SharedPreferences _sharedPref) {
         this.mMainFiles = _mainFiles;
+        mSharedPref = _sharedPref;
     }
 
     public void setClickAction(final ClickAction _action) {
@@ -87,7 +95,7 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     @Override
     public MainFileViewHolder onCreateViewHolder(final ViewGroup _parent, final int _viewType) {
         View view = LayoutInflater.from(_parent.getContext()).inflate(R.layout.item_mainfile_layout, null);
-        return new MainFileViewHolder(view);
+        return new MainFileViewHolder(view, _parent.getContext());
     }
 
     @Override
@@ -97,12 +105,18 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
 
     @Override
     public void onBindViewHolder(final MainFileViewHolder _holder, final int _position) {
+        boolean isViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
         if (getItemViewType(_position) == Constant.LISTVIEW_FILE_TYPE_IMAGE) {
-            Bitmap bitmap = decodeBitmapFromResource(mMainFiles.get(_position).mFilePath, 100, 100);
-            _holder.image.setImageBitmap(bitmap);
+            if(isViewImage) {
+                Bitmap bitmap = decodeBitmapFromResource(mMainFiles.get(_position).mFilePath, 100, 100);
+                _holder.image.setImageBitmap(bitmap);
+                _holder.image.setVisibility(View.VISIBLE);
+            } else {
+                _holder.image.setVisibility(View.GONE);
+            }
             _holder.title.setText(mMainFiles.get(_position).mFileTitle);
             _holder.date.setText(mMainFiles.get(_position).mModifyDate);
-            _holder.contents.setVisibility(View.GONE);
+//            _holder.contents.setVisibility(View.GONE);
         } else {
             _holder.title.setText(mMainFiles.get(_position).mFileTitle);
             _holder.contents.setText(mMainFiles.get(_position).mOneLinePreview);

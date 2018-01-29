@@ -8,10 +8,15 @@
             android:summary="@string/settings_general_font_summary"
             android:key="settings_key_font"/>
         <CheckBoxPreference
-                android:defaultValue="true"
-                android:title="@string/settings_general_admob"
-                android:summary="@string/settings_general_admobsummary"
-                android:key="settings_key_admob"/>
+            android:defaultValue="true"
+            android:title="@string/settings_general_admob"
+            android:summary="@string/settings_general_admobsummary"
+            android:key="settings_key_admob"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:title="@string/settings_general_viewimage"
+            android:summary="@string/settings_general_viewimage_summary"
+            android:key="settings_key_viewimage" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_separator_information">

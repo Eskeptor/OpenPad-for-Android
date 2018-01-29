@@ -14,7 +14,6 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -33,6 +32,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import layout.MemoWidget;
+import util.TestLog;
 
 /**
  * Created by eskeptor on 17. 2. 1.
@@ -217,14 +217,14 @@ public class MemoActivity extends AppCompatActivity {
                         mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath());
                     }
                 } catch (IOException ioe) {
-                    Log.e("MemoActivity", ioe.getMessage());
+                    TestLog.Tag("MemoActivity").Logging(TestLog.ERROR, ioe.getMessage());
                 }
 
             } else {
                 try {
                     mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
-                    Log.e("MemoActivity", e.getMessage());
+                    TestLog.Tag("MemoActivity").Logging(TestLog.ERROR, e.getMessage());
                 }
             }
 
@@ -453,7 +453,6 @@ public class MemoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isModified()) {
-            Log.e("Debug", "isChanged");
             if (mIsWidget) {
                 int origin_id = mWidgetID;
                 if (mOpenFileURL == null) {

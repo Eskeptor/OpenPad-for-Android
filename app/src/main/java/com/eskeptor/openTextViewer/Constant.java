@@ -29,6 +29,7 @@ public class Constant {
     public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;
     public static final String APP_EXPERIMENT_ENHANCEIO = "experiment_enhanceIO_Pref";
     public static final String APP_FONT = "font_Pref";
+    public static final String APP_VIEW_IMAGE = "isViewImage_Pref";
 
     public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
     public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
@@ -87,6 +88,7 @@ public class Constant {
     public static final String FILE_TEXT_EXTENSION = ".txt";
     public static final String FILE_IMAGE_EXTENSION = ".png";
     public static final String FILE_LOG_COUNT = "lastCount.log";
+    public static final String FILE_IMAGE_SUMMARY = ".smy";
 
     public static final char WIDGET_LINKED_TOKEN = 'w';
 
@@ -133,7 +135,6 @@ public class Constant {
     public static final int FONT_DEFAULT = 0;
     public static final int FONT_BAEDAL_JUA = 1;
     public static final int FONT_KOPUB_DOTUM = 2;
-
 
     public enum BrowserMenuSortType {
         Asc, Des

@@ -2,6 +2,7 @@ package util;
 
 /**
  * Created by Esk on 2017-05-21.
+ * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
 // 시간 측정용 클래스

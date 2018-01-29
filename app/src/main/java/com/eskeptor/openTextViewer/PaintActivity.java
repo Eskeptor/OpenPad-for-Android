@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,6 +25,15 @@ import com.eskeptor.openTextViewer.textManager.LogManager;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import util.TestLog;
+
+/**
+ * Created by eskeptor on 17. 4. 2.
+ * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
+ */
+
+// todo 2018.1.27 그림메모의 Desciption 구현
 
 public class PaintActivity extends AppCompatActivity {
     private PaintFunction mPaintFunction;
@@ -395,7 +403,7 @@ public class PaintActivity extends AppCompatActivity {
                 mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath());
             }
         } catch (Exception e) {
-            Log.e("PaintActivity(writeLog)", e.getMessage());
+            TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.ERROR, e.getMessage());
         }
     }
 
@@ -418,7 +426,7 @@ public class PaintActivity extends AppCompatActivity {
                 try {
                     mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
-                    Log.e("PaintActivity(init-)", e.getMessage());
+                    TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.ERROR, e.getMessage());
                 }
             }
             setTitle(R.string.memo_title_newFile);
@@ -730,7 +738,7 @@ public class PaintActivity extends AppCompatActivity {
                 fos = new FileOutputStream(new File(_dir));
                 mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             } catch (Exception e) {
-                Log.e("PaintFunction(save-)", e.getMessage());
+                TestLog.Tag("PaintFunction(save-)").Logging(TestLog.ERROR, e.getMessage());
             } finally {
                 if (fos != null) {
                     try {

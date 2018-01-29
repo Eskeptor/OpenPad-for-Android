@@ -203,4 +203,6 @@
     <string name="widget_config_default_context">Memo Contexts</string>
     <string name="test" translatable="false">NONE</string>
     <string name="paint_menu_shapes">Shapes</string>
+    <string name="settings_general_viewimage">Image Preview</string>
+    <string name="settings_general_viewimage_summary">Preview a drawing on the memo list on the main screen.</string>
 </resources>

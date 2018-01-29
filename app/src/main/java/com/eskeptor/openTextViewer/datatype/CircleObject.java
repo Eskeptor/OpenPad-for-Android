@@ -2,6 +2,7 @@ package com.eskeptor.openTextViewer.datatype;
 
 /**
  * Created by Esk on 2017-12-27.
+ * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
 public class CircleObject {

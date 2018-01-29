@@ -227,6 +227,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static class Settings extends PreferenceFragment {
         private CheckBoxPreference mAdMob;
         private CheckBoxPreference mEnhanceIO;
+        private CheckBoxPreference mViewImage;
         private Preference mEnhanceIOLine;
 
         private long mPressTime = 0;
@@ -245,6 +246,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mAdMob = (CheckBoxPreference) findPreference("settings_key_admob");
             mEnhanceIO = (CheckBoxPreference) findPreference("settings_key_enhanceIO");
             mEnhanceIOLine = findPreference("settings_key_enhanceIO_Line");
+            mViewImage = (CheckBoxPreference) findPreference("settings_key_viewimage");
             Preference license = findPreference("settings_key_license");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
@@ -408,6 +410,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onPause();
             mSharedPrefEditor.putBoolean(Constant.APP_ADMOB_VISIBLE, mAdMob.isChecked());
             mSharedPrefEditor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, mEnhanceIO.isChecked());
+            mSharedPrefEditor.putBoolean(Constant.APP_VIEW_IMAGE, mViewImage.isChecked());
             mSharedPrefEditor.apply();
         }
 

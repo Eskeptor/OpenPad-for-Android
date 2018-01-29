@@ -2,13 +2,9 @@ package com.eskeptor.openTextViewer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import util.RawTextOpener;
+import com.eskeptor.openTextViewer.textManager.RawTextManager;
 
 /**
  * H i d d e n
@@ -22,7 +18,7 @@ public class HiddenActivity extends AppCompatActivity {
         setTitle(R.string.hidden_title);
 
         TextView hidden = (TextView) findViewById(R.id.hidden_txt);
-        hidden.setText(RawTextOpener.getRawText(getApplicationContext(), R.raw.hidden));
+        hidden.setText(RawTextManager.getRawText(getApplicationContext(), R.raw.hidden));
     }
 
     @Override

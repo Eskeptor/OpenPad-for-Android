@@ -5,16 +5,12 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import util.RawTextOpener;
+import com.eskeptor.openTextViewer.textManager.RawTextManager;
 
 public class UpdateListActivity extends AppCompatActivity {
     @Override
@@ -23,7 +19,7 @@ public class UpdateListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_list);
 
         TextView updateList = (TextView) findViewById(R.id.updateList_contents);
-        updateList.setText(RawTextOpener.getRawText(getApplicationContext(), R.raw.updatelist));
+        updateList.setText(RawTextManager.getRawText(getApplicationContext(), R.raw.updatelist));
 
         Context contextThis = getApplicationContext();
         SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);

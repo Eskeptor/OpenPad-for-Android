@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.eskeptor.openTextViewer"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 22
-        versionName "1.4.4"
+        versionName "1.4.4_Dev"
         //versionName "개발자 버전"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //vectorDrawables.useSupportLibrary = true
@@ -25,18 +25,34 @@ android {
     }
 }
 
+repositories {
+    // Typekit
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
-    compile 'com.android.support:support-v4:25.4.0'
-    compile 'com.android.support:support-vector-drawable:25.4.0'
+    implementation ("com.github.bumptech.glide:glide:4.5.0") {
+        exclude group: "com.android.support"
+    }
+    implementation "com.android.support:support-fragment:27.0.2"
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:support-vector-drawable:27.0.2'
     compile 'com.google.android.gms:play-services-ads:11.8.0'
-    compile 'com.android.support:recyclerview-v7:25.4.0'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.tsengvn:typekit:1.0.1'
+    compile 'com.github.katoro:typekit:1.0.1'
+
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
+    compile ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
+        transitive = false
+    }
+
     testCompile 'junit:junit:4.12'
 }

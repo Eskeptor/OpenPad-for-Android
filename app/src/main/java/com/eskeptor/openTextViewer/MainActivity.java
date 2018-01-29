@@ -23,7 +23,6 @@ import android.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
@@ -40,6 +39,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+
+import util.TestLog;
 
 /**
  * Created by eskeptor on 17. 1. 28.
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int mFontStyle;
     private int mPrevFontStyle;
+    private boolean mIsViewImage;
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         mSharedPrefEditor = mSharedPref.edit();
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
         mPrevFontStyle = mFontStyle;
+        mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
 
         // 튜토리얼 페이지
         /*
@@ -254,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 refreshList();
-                mCurFileAdapter = new MainFileAdaptor(mCurFolderFileList);
+                mCurFileAdapter = new MainFileAdaptor(mCurFolderFileList, mSharedPref);
                 mCurFileAdapter.setClickAction(new ClickAction() {
                     @Override
                     public void onClick(View _view, int _position) {
@@ -321,12 +324,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+
         if (mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
             refreshList();
             mCurFileAdapter.notifyDataSetChanged();
         }
 
-        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
         if(mPrevFontStyle != mFontStyle) {
             mPrevFontStyle = mFontStyle;
             switch (mFontStyle) {
@@ -474,12 +479,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (files != null) {
             for (File newFile : files) {
-                if (newFile.getName().charAt(0) == 'w')
-                    mCurFolderFileList.add(new MainFileObject(newFile, getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
-                            Locale.getDefault().getDisplayCountry(), true));
-                else
-                    mCurFolderFileList.add(new MainFileObject(newFile, getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
-                            Locale.getDefault().getDisplayCountry(), false));
+                mCurFolderFileList.add(new MainFileObject(newFile, getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
+                        Locale.getDefault().getDisplayCountry(), mIsViewImage));
             }
         }
     }
@@ -520,20 +521,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 update = byteArrayOutputStream.toString();
             } catch (Exception e) {
-                Log.e("MainActivity(check-)", e.getMessage());
+                TestLog.Tag("MainActivity(check-)").Logging(TestLog.ERROR, e.getMessage());
             } finally {
                 if (byteArrayOutputStream != null) {
                     try {
                         byteArrayOutputStream.close();
                     } catch (Exception e) {
-                        Log.e("MainActivity(check-)", e.getMessage());
+                        TestLog.Tag("MainActivity(check-)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (inputStream != null) {
                     try {
                         inputStream.close();
                     } catch (Exception e) {
-                        Log.e("MainActivity(check-)", e.getMessage());
+                        TestLog.Tag("MainActivity(check-)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
             }

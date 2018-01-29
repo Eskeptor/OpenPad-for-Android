@@ -1,13 +1,14 @@
 package com.eskeptor.openTextViewer.textManager;
 
-import android.util.Log;
-
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import util.TestLog;
+
 /**
  * Created by narut on 2017-02-20.
+ * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
 // 로그파일 생성용 클래스
@@ -29,27 +30,27 @@ public class LogManager {
             buffer.flip();
             channel.write(buffer);
         } catch (Exception e) {
-            Log.e("LogManager(saveLog)", e.getMessage());
+            TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
         } finally {
             if (buffer != null) {
                 try {
                     buffer.clear();
                 } catch (Exception e) {
-                    Log.e("LogManager(saveLog)", e.getMessage());
+                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
                 }
             }
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (Exception e) {
-                    Log.e("LogManager(saveLog)", e.getMessage());
+                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
                 }
             }
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (Exception e) {
-                    Log.e("LogManager(saveLog)", e.getMessage());
+                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
                 }
             }
         }
@@ -72,27 +73,27 @@ public class LogManager {
                     return new String(byteBuffer.array()).trim();
                 }
             } catch (Exception e) {
-                Log.e("LogManager(openLog)", e.getMessage());
+                TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
             } finally {
                 if (byteBuffer != null) {
                     try {
                         byteBuffer.clear();
                     } catch (Exception e) {
-                        Log.e("LogManager(openLog)", e.getMessage());
+                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (channel != null) {
                     try {
                         channel.close();
                     } catch (Exception e) {
-                        Log.e("LogManager(openLog)", e.getMessage());
+                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
                 if (fis != null) {
                     try {
                         fis.close();
                     } catch (Exception e) {
-                        Log.e("LogManager(openLog)", e.getMessage());
+                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
                     }
                 }
             }

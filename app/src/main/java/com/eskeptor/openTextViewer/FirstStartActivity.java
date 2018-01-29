@@ -14,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 /**
+ * Created by eskeptor on 17. 2. 2.
+ * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
+ */
+
+/**
  * 튜토리얼 페이지
  */
 public class FirstStartActivity extends AppCompatActivity {
