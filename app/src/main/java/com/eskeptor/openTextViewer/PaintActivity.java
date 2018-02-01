@@ -4,16 +4,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.*;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -22,8 +26,12 @@ import com.eskeptor.openTextViewer.datatype.BrushObject;
 import com.eskeptor.openTextViewer.datatype.CircleObject;
 import com.eskeptor.openTextViewer.textManager.LogManager;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import util.TestLog;
@@ -33,13 +41,15 @@ import util.TestLog;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-// todo 2018.1.27 그림메모의 Desciption 구현
+// todo 2018.1.30 그림메모의 Desciption 구현하기
 
 public class PaintActivity extends AppCompatActivity {
+    private DrawerLayout mPaintDrawerLayout;
     private PaintFunction mPaintFunction;
     private LinearLayout mDrawLayout;
     private LinearLayout mBrushLayout;
     private LinearLayout mEraserLayout;
+    private LinearLayout mShapeLayout;
     private SeekBar mBrushSeekSize;
     private SeekBar mBrushSeekRed;
     private SeekBar mBrushSeekGreen;
@@ -51,7 +61,6 @@ public class PaintActivity extends AppCompatActivity {
     private TextView mBrushTxtBlue;
     private TextView mEraserTxtSize;
     private ImageView mBrushColor;
-    private LinearLayout mShapeLayout;
     private Button mShapeCircle;
     private Button mShapeRectangle;
     private static Constant.ShapeType mShapeType;
@@ -94,6 +103,7 @@ public class PaintActivity extends AppCompatActivity {
         mCurGreenValue = 0;
         mCurBlueValue = 0;
 
+        mPaintDrawerLayout = (DrawerLayout)findViewById(R.id.activity_paint_drawer);
         mDrawLayout = (LinearLayout) findViewById(R.id.activity_paint);
         mEraserLayout = (LinearLayout) findViewById(R.id.paint_eraser_seekLayout);
         mEraserSeekSize = (SeekBar) findViewById(R.id.paint_eraser_seekSize);
@@ -125,6 +135,12 @@ public class PaintActivity extends AppCompatActivity {
                 mShapeType = Constant.ShapeType.Rectangle;
             }
         });
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mCurBrushValue, mCurBrushValue);
+        params.gravity = Gravity.CENTER;
+        params.topMargin = 5;
+        params.rightMargin = 15;
+        mBrushColor.setLayoutParams(params);
 
         SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -162,6 +178,11 @@ public class PaintActivity extends AppCompatActivity {
                     case R.id.paint_brush_seekSize:
                         mCurBrushValue = _seekBar.getProgress();
                         mPaintFunction.setLineWidth(mCurBrushValue);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mCurBrushValue, mCurBrushValue);
+                        params.gravity = Gravity.CENTER;
+                        params.topMargin = 5;
+                        params.rightMargin = 15;
+                        mBrushColor.setLayoutParams(params);
                         break;
                     case R.id.paint_brush_seekRed:
                         mCurRedValue = _seekBar.getProgress();
@@ -207,6 +228,73 @@ public class PaintActivity extends AppCompatActivity {
         mEraserLayout.setVisibility(View.GONE);
         mShapeLayout.setVisibility(View.GONE);
 
+        Button btnBrush = (Button)findViewById(R.id.paint_brush);
+        btnBrush.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPaintFunction.changePaint(Constant.PaintType.Brush);
+                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
+                mPaintFunction.setLineWidth(mCurBrushValue);
+                if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                    mBrushLayout.setVisibility(View.GONE);
+                } else {
+                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                        mEraserLayout.setVisibility(View.GONE);
+                    }
+                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                        mShapeLayout.setVisibility(View.GONE);
+                    }
+                    mBrushLayout.setVisibility(View.VISIBLE);
+                }
+                mShapeType = Constant.ShapeType.None;
+                mPaintDrawerLayout.closeDrawer(Gravity.END);
+            }
+        });
+
+        Button btnEraser = (Button)findViewById(R.id.paint_eraser);
+        btnEraser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPaintFunction.changePaint(Constant.PaintType.Eraser);
+                mPaintFunction.setLineWidth(mCurEraserSize);
+                if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                    mEraserLayout.setVisibility(View.GONE);
+                } else {
+                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                        mBrushLayout.setVisibility(View.GONE);
+                    }
+                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                        mShapeLayout.setVisibility(View.GONE);
+                    }
+                    mEraserLayout.setVisibility(View.VISIBLE);
+                }
+                mShapeType = Constant.ShapeType.None;
+                mPaintDrawerLayout.closeDrawer(Gravity.END);
+            }
+        });
+
+        Button btnShapes = (Button)findViewById(R.id.paint_shapes);
+        btnShapes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPaintFunction.changePaint(Constant.PaintType.Shape);
+                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
+                mPaintFunction.setLineWidth(mCurBrushValue);
+                if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                    mShapeLayout.setVisibility(View.GONE);
+                } else {
+                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                        mEraserLayout.setVisibility(View.GONE);
+                    }
+                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                        mBrushLayout.setVisibility(View.GONE);
+                    }
+                    mShapeLayout.setVisibility(View.VISIBLE);
+                }
+                mPaintDrawerLayout.closeDrawer(Gravity.END);
+            }
+        });
+
         mRunnable = new Runnable() {
             @Override
             public void run() {
@@ -232,39 +320,6 @@ public class PaintActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem _item) {
         int id = _item.getItemId();
         switch (id) {
-            case R.id.menu_paint_pen:
-                mPaintFunction.changePaint(Constant.PaintType.Brush);
-                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
-                mPaintFunction.setLineWidth(mCurBrushValue);
-                if (mBrushLayout.getVisibility() == View.VISIBLE) {
-                    mBrushLayout.setVisibility(View.GONE);
-                } else {
-                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
-                        mEraserLayout.setVisibility(View.GONE);
-                    }
-                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
-                        mShapeLayout.setVisibility(View.GONE);
-                    }
-                    mBrushLayout.setVisibility(View.VISIBLE);
-                }
-                mShapeType = Constant.ShapeType.None;
-                break;
-            case R.id.menu_paint_eraser:
-                mPaintFunction.changePaint(Constant.PaintType.Eraser);
-                mPaintFunction.setLineWidth(mCurEraserSize);
-                if (mEraserLayout.getVisibility() == View.VISIBLE) {
-                    mEraserLayout.setVisibility(View.GONE);
-                } else {
-                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
-                        mBrushLayout.setVisibility(View.GONE);
-                    }
-                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
-                        mShapeLayout.setVisibility(View.GONE);
-                    }
-                    mEraserLayout.setVisibility(View.VISIBLE);
-                }
-                mShapeType = Constant.ShapeType.None;
-                break;
             case R.id.menu_paint_reset:
                 mPaintFunction.resetPaint();
                 mShapeType = Constant.ShapeType.None;
@@ -273,21 +328,11 @@ public class PaintActivity extends AppCompatActivity {
                 mPaintFunction.undoCanvas();
                 mPaintFunction.invalidate();
                 break;
-            case R.id.menu_paint_shapes:
-                mPaintFunction.changePaint(Constant.PaintType.Shape);
-                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
-                mPaintFunction.setLineWidth(mCurBrushValue);
-                if (mShapeLayout.getVisibility() == View.VISIBLE) {
-                    mShapeLayout.setVisibility(View.GONE);
-                } else {
-                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
-                        mEraserLayout.setVisibility(View.GONE);
-                    }
-                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
-                        mBrushLayout.setVisibility(View.GONE);
-                    }
-                    mShapeLayout.setVisibility(View.VISIBLE);
-                }
+            case R.id.menu_paint_etc:
+                mPaintDrawerLayout.openDrawer(Gravity.END);
+                break;
+            case R.id.menu_paint_info:
+                imageDescription();
                 break;
         }
         return super.onOptionsItemSelected(_item);
@@ -361,6 +406,7 @@ public class PaintActivity extends AppCompatActivity {
                                                     }
                                                     mPaintFunction.savePaint(mOpenFileURL);
                                                     writeLog();
+                                                    imageDescription();
                                                 }
                                                 finish();
                                                 break;
@@ -420,13 +466,13 @@ public class PaintActivity extends AppCompatActivity {
                         mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath());
                     }
                 } catch (IOException ioe) {
-                    ioe.printStackTrace();
+                    TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.ERROR, ioe.getMessage());
                 }
             } else {
                 try {
                     mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
-                    TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.ERROR, e.getMessage());
                 }
             }
             setTitle(R.string.memo_title_newFile);
@@ -438,6 +484,81 @@ public class PaintActivity extends AppCompatActivity {
             setTitle(mOpenFileName);
             mPaintFunction.setBitmap((mOpenFileURL == null), mOpenFileURL);
         }
+    }
+
+    private void imageDescription() {
+        final File imageSummary = mOpenFileURL == null ? new File(mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_IMAGE_EXTENSION)
+                + Constant.FILE_IMAGE_SUMMARY) : new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.paint_dialog_description_title);
+        View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_image_description, null);
+        final EditText description = (EditText)layout.findViewById(R.id.dialog_image_description_input);
+        TestLog.Tag("Description").Logging(TestLog.ERROR, "imageSummary: " + imageSummary);
+        if (mOpenFileURL != null) {
+            if (imageSummary.exists()) {
+                FileReader fr = null;
+                BufferedReader br = null;
+                String line;
+                try {
+                    fr = new FileReader(imageSummary);
+                    br = new BufferedReader(fr);
+                    if ((line = br.readLine()) != null) {
+                        TestLog.Tag("Description").Logging(TestLog.ERROR, "내용: " + line);
+                        description.setText(line);
+                    } else {
+                        description.setText("");
+                    }
+                } catch (Exception e) {
+                    TestLog.Tag("imageDescription").Logging(TestLog.ERROR, e.getMessage());
+                } finally {
+                    if (br != null) {
+                        try {
+                            br.close();
+                        } catch (Exception e) {
+                            TestLog.Tag("imageDescription").Logging(TestLog.ERROR, e.getMessage());
+                        }
+                    }
+                    if (fr != null) {
+                        try {
+                            fr.close();
+                        } catch (Exception e) {
+                            TestLog.Tag("imageDescription").Logging(TestLog.ERROR, e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        dialog.setView(layout);
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface _dialog, int _which) {
+                if (_which == AlertDialog.BUTTON_POSITIVE) {
+                    FileWriter fw = null;
+                    BufferedWriter bw = null;
+                    try {
+                        fw = new FileWriter(imageSummary);
+                        bw = new BufferedWriter(fw);
+                        bw.write(description.getText().toString());
+                        TestLog.Tag("Description").Logging(TestLog.ERROR, "저장내용: " + description.getText().toString());
+                    } catch (Exception e) {
+                        TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.ERROR, e.getMessage());
+                    } finally {
+                        if (bw != null) {
+                            try { bw.close(); }
+                            catch (Exception e) { TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.ERROR, e.getMessage()); }
+                        }
+                        if (fw != null) {
+                            try { fw.close(); }
+                            catch (Exception e) { TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.ERROR, e.getMessage()); }
+                        }
+                    }
+                }
+                _dialog.dismiss();
+            }
+        };
+        dialog.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
+        dialog.setNegativeButton(R.string.memo_alert_modified_btnCancel, clickListener);
+        dialog.show();
     }
 
     /**
@@ -568,9 +689,8 @@ public class PaintActivity extends AppCompatActivity {
             mCurX = _event.getX();
             mCurY = _event.getY();
 
-//            int action = _event.getAction() & MotionEvent.ACTION_MASK;
             int action = _event.getAction();
-//            Log.e("Debug", "mShapeType: " + mShapeType);
+
             switch (mShapeType) {
                 case None: {
                     switch (action) {

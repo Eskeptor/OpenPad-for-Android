@@ -195,14 +195,15 @@
     <string name="license_bmjua">BaeDalEu MinJok Font License</string>
     <string name="first_btnStart">Start</string>
     <string name="paint_menu_undo">Undo</string>
-    <string name="paint_menu_pen">Pen</string>
-    <string name="paint_menu_eraser">Eraser</string>
     <string name="paint_menu_reset">Reset</string>
     <string name="memo_menu_modify">Modify</string>
     <string name="widget_config_default_title">Memo Date</string>
     <string name="widget_config_default_context">Memo Contexts</string>
     <string name="test" translatable="false">NONE</string>
-    <string name="paint_menu_shapes">Shapes</string>
     <string name="settings_general_viewimage">Image Preview</string>
     <string name="settings_general_viewimage_summary">Preview a drawing on the memo list on the main screen.</string>
+    <string name="paint_dialog_description">Input Image Description(One Line)</string>
+    <string name="paint_menu_etc" translatable="false">ETC</string>
+    <string name="paint_menu_info" translatable="false">Info</string>
+    <string name="paint_dialog_description_title">Description</string>
 </resources>

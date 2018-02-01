@@ -8,4 +8,7 @@
     <dimen name="license_height">200dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="shapes_size">34dp</dimen>
+    <dimen name="paint_drawer_width">80dp</dimen>
+    <dimen name="paint_drawer_item_witdh">60dp</dimen>
+    <dimen name="paint_drawer_item_margin">10dp</dimen>
 </resources>

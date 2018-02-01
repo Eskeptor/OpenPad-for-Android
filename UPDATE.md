@@ -1,3 +1,9 @@
+## Update 2018.2.1
+```
+ 1) Rearrange the paint notes (image notes) tool
+ 2) Distinguish activation of image preview function in main file list
+ 3) Add a one-line summary of the paint memo (image memo)
+```
 ## Update 2018.1.16 - Build 1.4.4
 ```
  1) EUC-KR Encoding bug modification

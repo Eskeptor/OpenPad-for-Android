@@ -43,12 +43,12 @@ public class MainFileObject {
             mFileTitle = _imgName;
             mFilePath = _file.getPath();
             File imageSummary = new File(mFilePath + Constant.FILE_IMAGE_SUMMARY);
-            if(imageSummary.exists() && _viewImage) {
+            if(imageSummary.exists() && !_viewImage) {
                 FileReader fr = null;
                 BufferedReader br = null;
                 String line;
                 try {
-                    fr = new FileReader(_file);
+                    fr = new FileReader(imageSummary);
                     br = new BufferedReader(fr);
                     if ((line = br.readLine()) != null) {
                         mOneLinePreview = line;

@@ -9,9 +9,11 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.1.21) - Build 1.4.4
+## What's New? (Last updated 2018.2.1) - None Build
 ```
- 1) EUC-KR Encoding bug modification
+ 1) Rearrange the paint notes (image notes) tool
+ 2) Distinguish activation of image preview function in main file list
+ 3) Add a one-line summary of the paint memo (image memo)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

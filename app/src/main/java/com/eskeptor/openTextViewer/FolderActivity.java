@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 
+import util.TestLog;
+
 /**
  * Created by eskeptor on 17. 2. 2.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
@@ -66,8 +68,8 @@ public class FolderActivity extends AppCompatActivity
                             if (file.exists())
                                 Snackbar.make(mContextView, R.string.folder_dialog_toast_exist, Snackbar.LENGTH_SHORT).show();
                             else {
-                                file.mkdir();
-                                runOnUiThread(mRefreshRunnable);
+                                if (file.mkdir())
+                                    runOnUiThread(mRefreshRunnable);
                             }
                         }
                     }
@@ -231,10 +233,18 @@ public class FolderActivity extends AppCompatActivity
                 if (_which == AlertDialog.BUTTON_POSITIVE) {
                     File file = new File(mFolders.get(_index).mFolderPath);
                     if (file.exists()) {
-                        if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)
-                                && file.delete()) {
-                            Snackbar.make(mContextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
-                            runOnUiThread(mRefreshRunnable);
+                        if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
+                            for (File inFile : file.listFiles()) {
+                               if (inFile.delete()) {
+                                   TestLog.Tag("Folder").Logging(TestLog.ERROR, inFile.getName() + " 제거완료");
+                               } else {
+                                   TestLog.Tag("Folder").Logging(TestLog.ERROR, inFile.getName() + " 제거실패");
+                               }
+                            }
+                            if (file.delete()) {
+                                Snackbar.make(mContextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
+                                runOnUiThread(mRefreshRunnable);
+                            }
                         } else {
                             Snackbar.make(mContextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
                         }

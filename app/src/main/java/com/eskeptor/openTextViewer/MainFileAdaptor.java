@@ -111,12 +111,14 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
                 Bitmap bitmap = decodeBitmapFromResource(mMainFiles.get(_position).mFilePath, 100, 100);
                 _holder.image.setImageBitmap(bitmap);
                 _holder.image.setVisibility(View.VISIBLE);
+                _holder.contents.setVisibility(View.GONE);
             } else {
                 _holder.image.setVisibility(View.GONE);
+                _holder.contents.setVisibility(View.VISIBLE);
+                _holder.contents.setText(mMainFiles.get(_position).mOneLinePreview);
             }
             _holder.title.setText(mMainFiles.get(_position).mFileTitle);
             _holder.date.setText(mMainFiles.get(_position).mModifyDate);
-//            _holder.contents.setVisibility(View.GONE);
         } else {
             _holder.title.setText(mMainFiles.get(_position).mFileTitle);
             _holder.contents.setText(mMainFiles.get(_position).mOneLinePreview);

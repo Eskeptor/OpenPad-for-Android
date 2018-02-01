@@ -15,4 +15,4 @@
     android:maxLines="1"
     android:background="@drawable/edittext"
     />
-    </LinearLayout>
+</LinearLayout>

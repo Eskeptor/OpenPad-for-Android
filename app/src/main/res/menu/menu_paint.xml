@@ -9,24 +9,18 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
     <item
-        android:id="@+id/menu_paint_shapes"
-        android:icon="@drawable/ic_streetview_white_24dp"
-        android:title="@string/paint_menu_shapes"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction"/>
-    <item
-        android:id="@+id/menu_paint_pen"
-        android:title="@string/paint_menu_pen"
-        android:icon="@drawable/ic_modifiy_white_24dp"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/menu_paint_eraser"
-        android:title="@string/paint_menu_eraser"
-        android:icon="@drawable/ic_crop_portrait_white_24dp"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/menu_paint_reset"
         android:title="@string/paint_menu_reset"
         android:icon="@drawable/ic_delete_sweep_white_24dp"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_paint_info"
+        android:title="@string/paint_menu_info"
+        android:icon="@drawable/ic_info_outline_white_24dp"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_paint_etc"
+        android:title="@string/paint_menu_etc"
+        android:icon="@drawable/ic_format_paint_white_24dp"
+        app:showAsAction="always" />
 </menu>
