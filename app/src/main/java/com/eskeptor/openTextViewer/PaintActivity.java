@@ -41,8 +41,6 @@ import util.TestLog;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-// todo 2018.1.30 그림메모의 Desciption 구현하기
-
 public class PaintActivity extends AppCompatActivity {
     private DrawerLayout mPaintDrawerLayout;
     private PaintFunction mPaintFunction;
