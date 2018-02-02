@@ -7,7 +7,7 @@ android {
         applicationId "com.eskeptor.openTextViewer"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 22
+        versionCode 23
         versionName "1.5.0"
         //versionName "개발자 버전"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
