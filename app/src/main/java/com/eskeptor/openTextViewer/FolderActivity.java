@@ -8,11 +8,11 @@ import android.graphics.Typeface;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,11 +27,14 @@ import java.util.ArrayList;
 
 import util.TestLog;
 
-/**
+/*
  * Created by eskeptor on 17. 2. 2.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
+/**
+ * 폴더 액티비티용 클래스
+ */
 public class FolderActivity extends AppCompatActivity
 {
     private ArrayList<FolderObject> mFolders;                        // 폴더를 나열할 ArrayList
@@ -53,11 +56,11 @@ public class FolderActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem _item) {
         if (_item.getItemId() == R.id.menu_folderAdd) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle(R.string.folder_dialog_title_create);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.folder_dialog_title_create);
             View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_folder_create, null);
             mEditText = (EditText) layout.findViewById(R.id.dialog_folder_input);
-            dialog.setView(layout);
+            builder.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface _dialog, int _which) {
@@ -76,8 +79,11 @@ public class FolderActivity extends AppCompatActivity
                     _dialog.dismiss();
                 }
             };
-            dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
-            dialog.setPositiveButton(R.string.folder_dialog_button_create, clickListener);
+            builder.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
+            builder.setPositiveButton(R.string.folder_dialog_button_create, clickListener);
+
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             dialog.show();
         }
         return super.onOptionsItemSelected(_item);
@@ -126,7 +132,7 @@ public class FolderActivity extends AppCompatActivity
                 }
 
                 // 파일 브라우저 연결
-                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), Constant.FOLDER_TYPE_EXTERNAL, Constant.FOLDER_TYPE_EXTERNAL, null));
+                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
                 if (mFolderAdaptor == null) {
                     mFolderAdaptor = new FolderAdaptor(FolderActivity.this, mFolders);
                     mFolderList.setAdapter(mFolderAdaptor);
@@ -138,7 +144,7 @@ public class FolderActivity extends AppCompatActivity
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.setClass(mContextThis, FileBrowserActivity.class);
                                 intent.setType("text/plain");
-                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_OPEN_EXTERNAL);
+                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BrowserType.OpenExternal.getValue());
                                 startActivity(intent);
                             } else {
                                 Intent intent = new Intent();
@@ -212,11 +218,11 @@ public class FolderActivity extends AppCompatActivity
      * @param _file 폴더
      * @return 타입
      */
-    private int checkFolderType(final File _file) {
+    private Constant.FolderType checkFolderType(final File _file) {
         if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
-            return Constant.FOLDER_TYPE_DEFAULT;
+            return Constant.FolderType.Default;
         }
-        return Constant.FOLDER_TYPE_CUSTOM;
+        return Constant.FolderType.Custom;
     }
 
     /**
@@ -236,9 +242,9 @@ public class FolderActivity extends AppCompatActivity
                         if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
                             for (File inFile : file.listFiles()) {
                                if (inFile.delete()) {
-                                   TestLog.Tag("Folder").Logging(TestLog.ERROR, inFile.getName() + " 제거완료");
+                                   TestLog.Tag("Folder").Logging(TestLog.LogType.ERROR, inFile.getName() + " 제거완료");
                                } else {
-                                   TestLog.Tag("Folder").Logging(TestLog.ERROR, inFile.getName() + " 제거실패");
+                                   TestLog.Tag("Folder").Logging(TestLog.LogType.ERROR, inFile.getName() + " 제거실패");
                                }
                             }
                             if (file.delete()) {

@@ -2,8 +2,7 @@ package com.eskeptor.openTextViewer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-/**
+import com.bumptech.glide.Glide;
+
+/*
  * Created by eskeptor on 17. 2. 2.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
@@ -41,18 +42,16 @@ public class FirstStartActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mPager = null;
-        mPrefEditor.commit();
         mPrefEditor = null;
         mPref = null;
         System.gc();
     }
 
     private class PagerAdapterClass extends PagerAdapter {
-        private final int VIEW_SIZE = 5;
-        private final int[] IMAGE_ID = {R.drawable.firstview1, R.drawable.firstview2, R.drawable.firstview3,
+        private final int VIEW_SIZE = 6;
+        private final int[] IMAGE_ID = {R.drawable.firstview1, R.drawable.firstview2, R.drawable.firstview3, R.drawable.firstview4,
                 R.drawable.firstview5, R.drawable.firstview6};
         private LayoutInflater mInflater;
-        private Bitmap mBitmap;
 
         public PagerAdapterClass(Context _context) {
             super();
@@ -71,53 +70,48 @@ public class FirstStartActivity extends AppCompatActivity {
             switch (position) {
                 case 0: {
                     view = mInflater.inflate(R.layout.first_view1, null);
-                    mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img1);
-                    imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    imageView.setImageBitmap(mBitmap);
+                    Glide.with(view).load(IMAGE_ID[position]).into(imageView);
                     container.addView(view);
                     break;
                 }
                 case 1: {
                     view = mInflater.inflate(R.layout.first_view2, null);
-                    mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img2);
-                    imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    imageView.setImageBitmap(mBitmap);
+                    Glide.with(view).load(IMAGE_ID[position]).into(imageView);
                     container.addView(view);
                     break;
                 }
                 case 2: {
                     view = mInflater.inflate(R.layout.first_view3, null);
-                    mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img3);
-                    imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    imageView.setImageBitmap(mBitmap);
+                    Glide.with(view).load(IMAGE_ID[position]).into(imageView);
                     container.addView(view);
                     break;
                 }
                 case 3: {
+                    view = mInflater.inflate(R.layout.first_view4, null);
+                    ImageView imageView = (ImageView)view.findViewById(R.id.first_img4);
+                    Glide.with(view).load(IMAGE_ID[position]).into(imageView);
+                    container.addView(view);
+                }
+                case 4: {
                     view = mInflater.inflate(R.layout.first_view5, null);
-                    mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img5);
-                    imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    imageView.setImageBitmap(mBitmap);
+                    Glide.with(view).load(IMAGE_ID[position]).into(imageView);
                     container.addView(view);
                     break;
                 }
-                case 4: {
+                case 5: {
                     view = mInflater.inflate(R.layout.first_view6, null);
-                    mBitmap = BitmapFactory.decodeResource(view.getResources(), IMAGE_ID[position], null);
                     ImageView imageView = (ImageView)view.findViewById(R.id.first_img6);
-                    imageView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                    imageView.setImageBitmap(mBitmap);
+                    Glide.with(view).load(IMAGE_ID[position]).into(imageView);
                     view.findViewById(R.id.first_btnStart).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mPrefEditor = mPref.edit();
                             mPrefEditor.putBoolean(Constant.APP_TUTORIAL, true);
                             mPrefEditor.apply();
-                            mPrefEditor.commit();
                             finish();
                         }
                     });
@@ -129,10 +123,7 @@ public class FirstStartActivity extends AppCompatActivity {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            if (mBitmap != null) {
-                mBitmap.recycle();
-            }
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View)object);
         }
 

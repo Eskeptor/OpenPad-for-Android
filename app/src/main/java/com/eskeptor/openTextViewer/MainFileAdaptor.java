@@ -6,14 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.eskeptor.openTextViewer.datatype.MainFileObject;
 
 import java.util.ArrayList;
@@ -100,13 +98,13 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
 
     @Override
     public int getItemViewType(final int _position) {
-        return mMainFiles.get(_position).mFileType;
+        return mMainFiles.get(_position).mFileType.getValue();
     }
 
     @Override
     public void onBindViewHolder(final MainFileViewHolder _holder, final int _position) {
         boolean isViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
-        if (getItemViewType(_position) == Constant.LISTVIEW_FILE_TYPE_IMAGE) {
+        if (getItemViewType(_position) == Constant.FileType.Image.getValue()) {
             if(isViewImage) {
                 Bitmap bitmap = decodeBitmapFromResource(mMainFiles.get(_position).mFilePath, 100, 100);
                 _holder.image.setImageBitmap(bitmap);

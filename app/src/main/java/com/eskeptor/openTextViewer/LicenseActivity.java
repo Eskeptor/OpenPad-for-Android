@@ -23,6 +23,7 @@ public class LicenseActivity extends AppCompatActivity {
     private Thread mLicense1;
     private Thread mLicense2;
     private Thread mLicense3;
+    private Thread mLicense4;
     private Context mContextThis;
     private ScrollView mScrollViewLayout;
 
@@ -79,9 +80,25 @@ public class LicenseActivity extends AppCompatActivity {
                 });
             }
         });
+        mLicense4 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TextView tv = (TextView)findViewById(R.id.license_glide);
+                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.glide_license));
+                tv.setMovementMethod(new ScrollingMovementMethod());
+                tv.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        mScrollViewLayout.requestDisallowInterceptTouchEvent(true);
+                        return false;
+                    }
+                });
+            }
+        });
         mLicense1.start();
         mLicense2.start();
         mLicense3.start();
+        mLicense4.start();
 
         SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         int font = sharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
@@ -110,10 +127,16 @@ public class LicenseActivity extends AppCompatActivity {
         super.onDestroy();
         if (mLicense1 != null)
             mLicense1.interrupt();
+        mLicense1 = null;
         if (mLicense2 != null)
             mLicense2.interrupt();
+        mLicense2 = null;
         if (mLicense3 != null)
             mLicense3.interrupt();
+        mLicense3 = null;
+        if (mLicense4 != null)
+            mLicense4.interrupt();
+        mLicense4 = null;
         mContextThis = null;
         mScrollViewLayout = null;
     }

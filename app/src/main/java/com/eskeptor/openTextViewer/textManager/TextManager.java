@@ -14,14 +14,16 @@ import java.util.ArrayList;
 
 import util.TestLog;
 
-/**
+/*
  * Created by eskeptor on 17. 1. 25.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  *
  * Text Manager 1.0Ver
  */
 
-
+/**
+ * 텍스트를 불러오는 클래스
+ */
 public class TextManager {
     private boolean mIsFileopen;               // 파일이 열렸는지 체크
     private boolean mIsSaved;                  // 파일이 저장되었는지 체크
@@ -145,34 +147,34 @@ public class TextManager {
                     backFileBuffer.clear();
                 }
             } catch (Exception e) {
-                TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
             } finally {
                 if (fileBuffer != null) {
                     try {
                         fileBuffer.clear();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (saveFileChannel != null) {
                     try {
                         saveFileChannel.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (saveFile != null) {
                     try {
                         saveFile.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (saveFileOutputStream != null) {
                     try {
                         saveFileOutputStream.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
             }
@@ -190,27 +192,27 @@ public class TextManager {
                 fileBuffer.flip();
                 saveFileChannel.write(fileBuffer);
             } catch (Exception e) {
-                TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
             } finally {
                 if (fileBuffer != null) {
                     try {
                         fileBuffer.clear();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (saveFileChannel != null) {
                     try {
                         saveFileChannel.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (saveFile != null) {
                     try {
                         saveFile.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
             }
@@ -291,10 +293,10 @@ public class TextManager {
                         else
                             mProgress = (float) mPointerList.get(mNextPointer) / (float) mFileSize * 100;
 
-                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, "prev: " + mPrevPointer);
-                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, "cur: " + mCurPointer);
-                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, "next: " + mNextPointer);
-                        TestLog.Tag("Page Pointer").Logging(TestLog.VERBOSE, mCurPointer + " : " + mPointerList.get(mCurPointer));
+                        TestLog.Tag("Page Pointer").Logging(TestLog.LogType.VERBOSE, "prev: " + mPrevPointer);
+                        TestLog.Tag("Page Pointer").Logging(TestLog.LogType.VERBOSE, "cur: " + mCurPointer);
+                        TestLog.Tag("Page Pointer").Logging(TestLog.LogType.VERBOSE, "next: " + mNextPointer);
+                        TestLog.Tag("Page Pointer").Logging(TestLog.LogType.VERBOSE, mCurPointer + " : " + mPointerList.get(mCurPointer));
 
                         return new String(fileContents);
                     } else {
@@ -313,7 +315,6 @@ public class TextManager {
                         } else {
                             mFileFormat = Constant.ENCODE_TYPE_EUCKR_STR;
                         }
-//                        Log.e("Debug", "mFileFormat:" + mFileFormat);
                         mIsFileopen = true;
                         mFileopenName = _filename;
                         mProgress = 100.0F;
@@ -325,34 +326,34 @@ public class TextManager {
                     }
                 }
             } catch (Exception e) {
-                TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
+                TestLog.Tag("TextManager(openText)").Logging(TestLog.LogType.ERROR, e.getMessage());
             } finally {
                 if (fileBuffer != null) {
                     try {
                         fileBuffer.clear();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (openFileChannel != null) {
                     try {
                         openFileChannel.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (openFile != null) {
                     try {
                         openFile.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (openFileInputStream != null) {
                     try {
                         openFileInputStream.close();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(openText)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(openText)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
             }
@@ -383,14 +384,14 @@ public class TextManager {
                 MD5String.append(String.format("%02x", h & 0xff));
             }
         } catch (Exception e) {
-            TestLog.Tag("TextManager(createMD5)").Logging(TestLog.ERROR, e.getMessage());
+            TestLog.Tag("TextManager(createMD5)").Logging(TestLog.LogType.ERROR, e.getMessage());
         } finally {
             if (!_enhance) {
                 if (charBuffer != null) {
                     try {
                         charBuffer.clear();
                     } catch (Exception e) {
-                        TestLog.Tag("TextManager(createMD5)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("TextManager(createMD5)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
             }
@@ -415,7 +416,7 @@ public class TextManager {
                 MD5String.append(String.format("%02x", h & 0xff));
             }
         } catch (Exception e) {
-            TestLog.Tag("TextManager(createMD5)").Logging(TestLog.ERROR, e.getMessage());
+            TestLog.Tag("TextManager(createMD5)").Logging(TestLog.LogType.ERROR, e.getMessage());
         }
         return MD5String.toString();
     }
@@ -431,7 +432,7 @@ public class TextManager {
             CharsetDecoder decoder = Charset.forName(Constant.ENCODE_TYPE_UTF8_STR).newDecoder();
             charBuffer = decoder.decode(_buffer);
         } catch (CharacterCodingException cce) {
-            TestLog.Tag("TextManager(format-)").Logging(TestLog.ERROR, cce.getMessage());
+            TestLog.Tag("TextManager(format-)").Logging(TestLog.LogType.ERROR, cce.getMessage());
             return null;
         }
         return charBuffer;

@@ -10,11 +10,14 @@ import com.eskeptor.openTextViewer.BuildConfig;
  */
 
 public class TestLog {
-    public static final int DEBUG = 0;
+    /*public static final int DEBUG = 0;
     public static final int ERROR = 1;
     public static final int INFO = 2;
     public static final int VERBOSE = 3;
-    public static final int WARN = 4;
+    public static final int WARN = 4;*/
+    public enum LogType {
+        DEBUG, ERROR, INFO, VERBOSE, WARN
+    }
 
     private String mTagName;
     public TestLog(final String _tagName) {
@@ -24,7 +27,7 @@ public class TestLog {
     public static TestLog Tag(final String _tagName) {
         return new TestLog(_tagName);
     }
-    public void Logging(final int _mode, final String _text) {
+    public void Logging(final LogType _mode, final String _text) {
         if(BuildConfig.DEBUG) {
             switch (_mode) {
                 case DEBUG:

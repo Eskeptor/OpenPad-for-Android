@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.RemoteViews;
 import com.eskeptor.openTextViewer.Constant;
 import com.eskeptor.openTextViewer.MemoActivity;
@@ -20,6 +19,8 @@ import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import util.TestLog;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -36,7 +37,9 @@ public class MemoWidget extends AppWidgetProvider {
 
         File file = new File(Constant.APP_WIDGET_URL);
         if (!file.exists()) {
-            file.mkdir();
+            if (file.mkdir()) {
+                TestLog.Tag("MemoWidget(update)").Logging(TestLog.LogType.DEBUG, "Make directory - Widget Folder");
+            }
         }
         String fileURL = pref.getString(Constant.WIDGET_FILE_URL, null);
 
@@ -94,20 +97,20 @@ public class MemoWidget extends AppWidgetProvider {
                         break;
                 }
             } catch (Exception e) {
-                Log.e("MemoWidget(update)", e.getMessage());
+                TestLog.Tag("MemoWidget(update)").Logging(TestLog.LogType.ERROR, e.getMessage());
             } finally {
                 if (br != null) {
                     try {
                         br.close();
                     } catch (Exception e) {
-                        Log.e("MemoWidget(update)", e.getMessage());
+                        TestLog.Tag("MemoWidget(update)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (fr != null) {
                     try {
                         fr.close();
                     } catch (Exception e) {
-                        Log.e("MemoWidget(update)", e.getMessage());
+                        TestLog.Tag("MemoWidget(update)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
             }

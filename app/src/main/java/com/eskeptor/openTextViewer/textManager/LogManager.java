@@ -6,14 +6,22 @@ import java.nio.channels.FileChannel;
 
 import util.TestLog;
 
-/**
+/*
  * Created by narut on 2017-02-20.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-// 로그파일 생성용 클래스
+/**
+ * 로그파일 생성용 클래스
+ */
 public class LogManager {
 
+    /**
+     * 로그를 저장하는 메소드
+     * @param _strData 저장할 메시지
+     * @param _filename 저장되어질 로그의 이름
+     * @return 성공 혹은 실패
+     */
     public boolean saveLog(final String _strData, final String _filename) {
         if (_strData == null || _strData.isEmpty()) {
             return false;
@@ -25,38 +33,43 @@ public class LogManager {
         try {
             fos = new FileOutputStream(new File(_filename));
             channel = fos.getChannel();
-            buffer = ByteBuffer.allocateDirect(_strData.getBytes().length);
+            buffer = ByteBuffer.allocate(_strData.getBytes().length);
             buffer.put(_strData.getBytes());
             buffer.flip();
             channel.write(buffer);
         } catch (Exception e) {
-            TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
+            TestLog.Tag("LogManager(saveLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
         } finally {
             if (buffer != null) {
                 try {
                     buffer.clear();
                 } catch (Exception e) {
-                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
             }
             if (channel != null) {
                 try {
                     channel.close();
                 } catch (Exception e) {
-                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
             }
             if (fos != null) {
                 try {
                     fos.close();
                 } catch (Exception e) {
-                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("LogManager(saveLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
             }
         }
         return true;
     }
 
+    /**
+     * 로그를 불러오는 메소드
+     * @param _filename 불러올 로그의 이름
+     * @return 불러온 로그의 내용
+     */
     public String openLog(final String _filename) {
         if (_filename != null) {
             FileInputStream fis = null;
@@ -66,34 +79,34 @@ public class LogManager {
                 fis = new FileInputStream(new File(_filename));
 
                 channel = fis.getChannel();
-                byteBuffer = ByteBuffer.allocateDirect((int) channel.size());
+                byteBuffer = ByteBuffer.allocate((int) channel.size());
                 if (fis.available() != 0) {
                     channel.read(byteBuffer);
                     byteBuffer.flip();
                     return new String(byteBuffer.array()).trim();
                 }
             } catch (Exception e) {
-                TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
+                TestLog.Tag("LogManager(openLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
             } finally {
                 if (byteBuffer != null) {
                     try {
                         byteBuffer.clear();
                     } catch (Exception e) {
-                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (channel != null) {
                     try {
                         channel.close();
                     } catch (Exception e) {
-                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
                 if (fis != null) {
                     try {
                         fis.close();
                     } catch (Exception e) {
-                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("LogManager(openLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     }
                 }
             }

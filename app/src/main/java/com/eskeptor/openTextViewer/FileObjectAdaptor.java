@@ -13,7 +13,7 @@ import com.eskeptor.openTextViewer.datatype.FileObject;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Created by eskeptor on 17. 2. 14.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */

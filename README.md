@@ -9,11 +9,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.2.1) - None Build
+## What's New? (Last updated 2018.2.2) - Build 1.5.0
 ```
- 1) Rearrange the paint notes (image notes) tool
- 2) Distinguish activation of image preview function in main file list
- 3) Add a one-line summary of the paint memo (image memo)
+ 1) Activate the tutorial page
+ 2) Modification of minor bug and optimization of codes
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

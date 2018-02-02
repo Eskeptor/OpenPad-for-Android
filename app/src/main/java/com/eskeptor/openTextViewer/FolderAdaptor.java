@@ -14,7 +14,7 @@ import com.eskeptor.openTextViewer.datatype.FolderObject;
 import java.util.ArrayList;
 import java.util.Locale;
 
-/**
+/*
  * Created by eskeptor on 17. 2. 2.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
@@ -82,22 +82,22 @@ public class FolderAdaptor extends BaseAdapter {
             holder = (FolderViewHolder) _convertView.getTag();
         }
 
-        int type = mFolders.get(_position).mFolderType;
+        Constant.FolderType type = mFolders.get(_position).mFolderType;
         switch (type) {
-            case Constant.FOLDER_TYPE_DEFAULT:
+            case Default:
                 holder.folderIcon.setImageDrawable(mDrawableFolderRoot);
                 break;
-            case Constant.FOLDER_TYPE_EXTERNAL:
-                holder.folderIcon.setImageDrawable(mDrawableFolderExternal);
-                break;
-            case Constant.FOLDER_TYPE_CUSTOM:
+            case Custom:
                 holder.folderIcon.setImageDrawable(mDrawableFolderNormal);
+                break;
+            case External:
+                holder.folderIcon.setImageDrawable(mDrawableFolderExternal);
                 break;
         }
 
         holder.folderName.setText(mFolders.get(_position).mFolderName);
 
-        if (mFolders.get(_position).mFileCountInFolder == Constant.FOLDER_TYPE_EXTERNAL) {
+        if (mFolders.get(_position).mFileCountInFolder == -1) {
             holder.fileCountInFolder.setText(null);
         } else {
             holder.fileCountInFolder.setText(String.format(Locale.getDefault(), "%d", mFolders.get(_position).mFileCountInFolder));

@@ -116,6 +116,15 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/paint_brush_btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:onClick="onClick"
+                android:text="@string/paint_btnClose"
+                android:textAllCaps="false"
+                android:textSize="8sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -123,41 +132,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/WhiteGray"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/paint_eraser_txtSize"
-                style="@style/AppTheme.Activity.Paint.Brush.Text"
-                android:layout_marginLeft="5sp"
-                android:text="@string/paint_txtBrushSize" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <SeekBar
-                android:id="@+id/paint_eraser_seekSize"
-                android:layout_marginRight="5sp"
-                style="@style/AppTheme.Activity.Paint.Brush.SeekBar" />
+                <TextView
+                    android:id="@+id/paint_eraser_txtSize"
+                    style="@style/AppTheme.Activity.Paint.Brush.Text"
+                    android:layout_marginLeft="5sp"
+                    android:text="@string/paint_txtBrushSize" />
+
+                <SeekBar
+                    android:id="@+id/paint_eraser_seekSize"
+                    style="@style/AppTheme.Activity.Paint.Brush.SeekBar"
+                    android:layout_marginRight="5sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/paint_eraser_btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:onClick="onClick"
+                android:text="@string/paint_btnClose"
+                android:textAllCaps="false"
+                android:textSize="8sp" />
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/paint_shapesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/WhiteGray"
-            android:orientation="horizontal">
+            android:background="@color/WhiteGray" android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/paint_shape_circle"
+                    android:layout_width="@dimen/shapes_size"
+                    android:layout_height="@dimen/shapes_size"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/circle_button_selector" />
+
+                <Button
+                    android:id="@+id/paint_shape_rectangle"
+                    android:layout_width="@dimen/shapes_size"
+                    android:layout_height="@dimen/shapes_size"
+                    android:background="@drawable/rect_button_selector" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/paint_shape_circle"
-                android:layout_width="@dimen/shapes_size"
-                android:layout_height="@dimen/shapes_size"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/circle_button_selector" />
-
-            <Button
-                android:id="@+id/paint_shape_rectangle"
-                android:layout_width="@dimen/shapes_size"
-                android:layout_height="@dimen/shapes_size"
-                android:background="@drawable/rect_button_selector" />
+                android:id="@+id/paint_shapes_btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:onClick="onClick"
+                android:text="@string/paint_btnClose"
+                android:textAllCaps="false"
+                android:textSize="8sp" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 
@@ -174,7 +215,7 @@
             android:layout_height="@dimen/paint_drawer_item_witdh"
             android:layout_gravity="center"
             android:background="@drawable/ic_modifiy_white_24dp"
-            />
+            android:onClick="onClick"/>
         <Button
             android:id="@+id/paint_eraser"
             android:layout_margin="@dimen/paint_drawer_item_margin"
@@ -182,7 +223,7 @@
             android:layout_height="@dimen/paint_drawer_item_witdh"
             android:layout_gravity="center"
             android:background="@drawable/ic_crop_portrait_white_24dp"
-            />
+            android:onClick="onClick"/>
         <Button
             android:id="@+id/paint_shapes"
             android:layout_margin="@dimen/paint_drawer_item_margin"
@@ -190,6 +231,6 @@
             android:layout_height="@dimen/paint_drawer_item_witdh"
             android:layout_gravity="center"
             android:background="@drawable/ic_streetview_white_24dp"
-            />
+            android:onClick="onClick"/>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

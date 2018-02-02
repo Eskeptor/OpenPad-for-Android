@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +28,7 @@ import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 import com.eskeptor.openTextViewer.datatype.MainFileObject;
+import com.eskeptor.openTextViewer.textManager.RawTextManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -59,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
     private Context mContextThis;
     private View mContextView;
     private FloatingActionButton mFloatingActionButton;
-
-    private AdView mAdView;
 
     private static SharedPreferences mSharedPref;
     private static SharedPreferences.Editor mSharedPrefEditor;
@@ -165,18 +165,16 @@ public class MainActivity extends AppCompatActivity {
         mContextView = findViewById(R.id.content_main);
 
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
-        mSharedPrefEditor = mSharedPref.edit();
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
         mPrevFontStyle = mFontStyle;
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
 
         // 튜토리얼 페이지
-        /*
         if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
             Intent intent = new Intent();
             intent.setClass(mContextThis, FirstStartActivity.class);
             startActivity(intent);
-        }*/
+        }
 
         // 폴더 아이콘
         Drawable folderIcon;
@@ -200,8 +198,13 @@ public class MainActivity extends AppCompatActivity {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mCurFileAdapter.notifyDataSetChanged();
-                mRefreshLayout.setRefreshing(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCurFileAdapter.notifyDataSetChanged();
+                        mRefreshLayout.setRefreshing(false);
+                    }
+                }, 500);
             }
         });
         mLayoutManager = new StaggeredGridLayoutManager(2, 1);
@@ -263,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View _view, int _position) {
                         Intent intent = new Intent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        if (mCurFolderFileList.get(_position).mFileType == Constant.LISTVIEW_FILE_TYPE_IMAGE) {
+                        if (mCurFolderFileList.get(_position).mFileType == Constant.FileType.Image) {
                             intent.setClass(mContextThis, PaintActivity.class);
                         } else {
                             intent.setClass(mContextThis, MemoActivity.class);
@@ -328,6 +331,10 @@ public class MainActivity extends AppCompatActivity {
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
 
         if (mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
+            File folderCheck = new File(mCurFolderURL);
+            if (!folderCheck.exists()) {
+                mCurFolderURL = Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME;
+            }
             refreshList();
             mCurFileAdapter.notifyDataSetChanged();
         }
@@ -368,8 +375,6 @@ public class MainActivity extends AppCompatActivity {
         mCurFolderFileList = null;
         mRefreshListRunnable = null;
         mContextThis = null;
-        if (mAdView != null)
-            mAdView = null;
         mSharedPref = null;
         mSharedPrefEditor = null;
         mCurFolderURL = null;
@@ -410,19 +415,31 @@ public class MainActivity extends AppCompatActivity {
         // 어플의 기본 폴더 체크
         File file = new File(Constant.APP_INTERNAL_URL);
         if (!file.exists()) {
-            file.mkdir();
+            if (file.mkdir()) {
+                TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "기본폴더 생성");
+            } else {
+                TestLog.Tag("MainActivity").Logging(TestLog.LogType.ERROR, "기본폴더 생성불가");
+            }
         }
 
         // 어플의 위젯용 폴더 체크
         file = new File(Constant.APP_WIDGET_URL);
         if (!file.exists()) {
-            file.mkdir();
+            if (file.mkdir()) {
+                TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "위젯폴더 생성");
+            } else {
+                TestLog.Tag("MainActivity").Logging(TestLog.LogType.ERROR, "위젯폴더 생성불가");
+            }
         }
 
         // 어플의 기본 메모 폴더 체크
         file = new File(Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME);
         if (!file.exists()) {
-            file.mkdir();
+            if (file.mkdir()) {
+                TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "기본메모폴더 생성");
+            } else {
+                TestLog.Tag("MainActivity").Logging(TestLog.LogType.ERROR, "기본메모폴더 생성불가");
+            }
         }
         mCurFolderURL = file.getPath();
     }
@@ -442,12 +459,20 @@ public class MainActivity extends AppCompatActivity {
                     File file = new File(mCurFolderFileList.get(_index).mFilePath);
                     if (file.exists()) {
                         if (file.delete()) {
-                            Snackbar.make(mContextView, R.string.file_dialog_toast_delete, Snackbar.LENGTH_SHORT).show();
+                            if (mCurFolderFileList.get(_index).mFileType == Constant.FileType.Image) {
+                                File imageSummary = new File(file.getPath() + Constant.FILE_IMAGE_SUMMARY);
+                                if (imageSummary.delete()) {
+                                    TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "이미지 요약 제거");
+                                } else {
+                                    TestLog.Tag("MainActivity").Logging(TestLog.LogType.ERROR, "이미지 요약 제거불가");
+                                }
+                            }
                             mCurFolderFileList.remove(_index);
                             mCurFolderGridView.removeViewAt(_index);
                             mCurFileAdapter.notifyItemRemoved(_index);
                             mCurFileAdapter.notifyItemRangeChanged(_index, mCurFolderFileList.size());
                             mCurFileAdapter.notifyDataSetChanged();
+                            Snackbar.make(mContextView, R.string.file_dialog_toast_delete, Snackbar.LENGTH_SHORT).show();
                         } else {
                             Snackbar.make(mContextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
                         }
@@ -497,8 +522,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface _dialog, int _which) {
                     if (_which == AlertDialog.BUTTON_POSITIVE) {
+                        if (mSharedPrefEditor == null)
+                            mSharedPrefEditor = mSharedPref.edit();
                         mSharedPrefEditor.putBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_TWICE_EXECUTE);
-                        mSharedPrefEditor.commit();
+                        mSharedPrefEditor.apply();
                     }
                     _dialog.dismiss();
                 }
@@ -508,36 +535,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!mSharedPref.getString(Constant.APP_VERSION_CHECK, "1.0.0").equals(Constant.APP_LASTED_VERSION)) {
-            InputStream inputStream = null;
-            ByteArrayOutputStream byteArrayOutputStream = null;
-            String update = "";
-
-            try {
-                inputStream = getResources().openRawResource(R.raw.update);
-                byteArrayOutputStream = new ByteArrayOutputStream();
-                int i;
-                while ((i = inputStream.read()) != -1) {
-                    byteArrayOutputStream.write(i);
-                }
-                update = byteArrayOutputStream.toString();
-            } catch (Exception e) {
-                TestLog.Tag("MainActivity(check-)").Logging(TestLog.ERROR, e.getMessage());
-            } finally {
-                if (byteArrayOutputStream != null) {
-                    try {
-                        byteArrayOutputStream.close();
-                    } catch (Exception e) {
-                        TestLog.Tag("MainActivity(check-)").Logging(TestLog.ERROR, e.getMessage());
-                    }
-                }
-                if (inputStream != null) {
-                    try {
-                        inputStream.close();
-                    } catch (Exception e) {
-                        TestLog.Tag("MainActivity(check-)").Logging(TestLog.ERROR, e.getMessage());
-                    }
-                }
-            }
+            String update = RawTextManager.getRawText(mContextThis, R.raw.update);
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.main_dialog_update_title);
@@ -546,8 +544,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface _dialog, int _which) {
                     if (_which == AlertDialog.BUTTON_POSITIVE) {
+                        if (mSharedPrefEditor == null)
+                            mSharedPrefEditor = mSharedPref.edit();
                         mSharedPrefEditor.putString(Constant.APP_VERSION_CHECK, Constant.APP_LASTED_VERSION);
-                        mSharedPrefEditor.commit();
+                        mSharedPrefEditor.apply();
                     }
                     _dialog.dismiss();
                 }
@@ -565,11 +565,11 @@ public class MainActivity extends AppCompatActivity {
             MobileAds.initialize(mContextThis, getResources().getString(R.string.app_id));
             //adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
             AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView = (AdView) findViewById(R.id.adView);
+            AdView adView = (AdView) findViewById(R.id.adView);
 
-            mAdView.setEnabled(true);
-            mAdView.setVisibility(View.VISIBLE);
-            mAdView.loadAd(adRequest);
+            adView.setEnabled(true);
+            adView.setVisibility(View.VISIBLE);
+            adView.loadAd(adRequest);
             CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, 0, DPtoPixel(16), DPtoPixel(70));
             layoutParams.gravity = Gravity.END | Gravity.BOTTOM;

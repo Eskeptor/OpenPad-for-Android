@@ -1,3 +1,8 @@
+## Update 2018.2.2 - Build 1.5.0
+```
+ 1) Activate the tutorial page
+ 2) Modification of minor bug and optimization of codes
+```
 ## Update 2018.2.1
 ```
  1) Rearrange the paint notes (image notes) tool

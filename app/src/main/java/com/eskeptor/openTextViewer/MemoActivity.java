@@ -1,5 +1,6 @@
 package com.eskeptor.openTextViewer;
 
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -178,6 +179,7 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -214,17 +216,21 @@ public class MemoActivity extends AppCompatActivity {
                 try {
                     if(mLastLog.createNewFile()) {
                         mMemoIndex = 1;
-                        mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath());
+                        if (mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
+                            TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
+                        } else {
+                            TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "로그 저장불가 완료");
+                        }
                     }
                 } catch (IOException ioe) {
-                    TestLog.Tag("MemoActivity").Logging(TestLog.ERROR, ioe.getMessage());
+                    TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, ioe.getMessage());
                 }
 
             } else {
                 try {
                     mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
-                    TestLog.Tag("MemoActivity").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
             }
 
@@ -310,6 +316,7 @@ public class MemoActivity extends AppCompatActivity {
                             int action = MotionEventCompat.getActionMasked(event);
 
                             if (event.getPointerCount() > 1) {
+
                                 return mGestureDetectorCompat.onTouchEvent(event);
                             }
 
@@ -324,16 +331,37 @@ public class MemoActivity extends AppCompatActivity {
                         }
                     });
 
+                    mBtnPrev.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            runOnUiThread(mPrevRunnable);
+                            mScrollView.scrollTo(0, 0);
+                            buttonEnabler();
+                        }
+                    });
+                    mBtnTop.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mScrollView.smoothScrollTo(0, 0);
+                        }
+                    });
+                    mBtnNext.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            runOnUiThread(mNextRunnable);
+                            mScrollView.scrollTo(0, 0);
+                            buttonEnabler();
+                        }
+                    });
+
                     mGestureDetectorCompat = new GestureDetectorCompat(mContextThis, new GestureDetector.OnGestureListener() {
                         @Override
                         public boolean onDown(MotionEvent e) {
-
                             return true;
                         }
 
                         @Override
                         public void onShowPress(MotionEvent e) {
-
                         }
 
                         @Override
@@ -465,7 +493,11 @@ public class MemoActivity extends AppCompatActivity {
                     }
                 }
                 mOpenFileURL = mOpenFolderURL + File.separator + (mWidgetID + Constant.FILE_TEXT_EXTENSION);
-                mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, false);
+                if (mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, false)) {
+                    TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "위젯내용 저장");
+                } else {
+                    TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "위젯내용 저장불가");
+                }
                 writeLog();
 
                 mSharedPrefEditor = mContextThis.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + origin_id, MODE_PRIVATE).edit();
@@ -494,12 +526,16 @@ public class MemoActivity extends AppCompatActivity {
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                                 intent.setClass(mContextThis, FileBrowserActivity.class);
                                                 intent.setType("text/plain");
-                                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
+                                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BrowserType.SaveExternalOpenedFile.getValue());
                                                 startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
                                                 break;
                                             case Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL:
                                                 if (mTxtManager.isFileopen()) {
-                                                    mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, mIsEnhanced);
+                                                    if (mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, mIsEnhanced)) {
+                                                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "내용 저장 완료(Internal)");
+                                                    } else {
+                                                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "내용 저장 불가(Internal)");
+                                                    }
                                                 } else {
                                                     mOpenFileURL = mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_TEXT_EXTENSION);
                                                     File tmpFile = new File(mOpenFileURL);
@@ -508,7 +544,11 @@ public class MemoActivity extends AppCompatActivity {
                                                         mOpenFileURL = mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_TEXT_EXTENSION);
                                                         tmpFile = new File(mOpenFileURL);
                                                     }
-                                                    mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, mIsEnhanced);
+                                                    if (mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, mIsEnhanced)) {
+                                                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "내용 저장 완료(Internal)");
+                                                    } else {
+                                                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "내용 저장 불가(Internal)");
+                                                    }
                                                     writeLog();
                                                 }
                                                 finish();
@@ -519,7 +559,11 @@ public class MemoActivity extends AppCompatActivity {
                                 });
                                 alert.show();
                             } else {
-                                mTxtManager.saveText(mEditText.getText().toString(), mTxtManager.getFileopenName(), mIsEnhanced);
+                                if (mTxtManager.saveText(mEditText.getText().toString(), mTxtManager.getFileopenName(), mIsEnhanced)) {
+                                    TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "내용 저장 완료(Internal)");
+                                } else {
+                                    TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "내용 저장 불가(Internal)");
+                                }
                                 finish();
                             }
                         } else if (_which == AlertDialog.BUTTON_NEGATIVE) {
@@ -566,29 +610,14 @@ public class MemoActivity extends AppCompatActivity {
     private void writeLog() {
         try {
             if (!mTxtManager.isFileopen()) {
-                mLogManager.saveLog(Integer.toString(mIsWidget ? mWidgetID : mMemoIndex), mLastLog.getPath());
+                if (mLogManager.saveLog(Integer.toString(mIsWidget ? mWidgetID : mMemoIndex), mLastLog.getPath())) {
+                    TestLog.Tag("MemoActivity(writeLog)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
+                } else {
+                    TestLog.Tag("MemoActivity(writeLog)").Logging(TestLog.LogType.ERROR, "로그 저장 불가");
+                }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void onClick(final View _v) {
-        int id = _v.getId();
-        switch (id) {
-            case R.id.memo_btnPrev:
-                runOnUiThread(mPrevRunnable);
-                mScrollView.scrollTo(0, 0);
-                buttonEnabler();
-                break;
-            case R.id.memo_btnTop:
-                mScrollView.smoothScrollTo(0, 0);
-                break;
-            case R.id.memo_btnNext:
-                runOnUiThread(mNextRunnable);
-                mScrollView.scrollTo(0, 0);
-                buttonEnabler();
-                break;
+            TestLog.Tag("MemoActivity(writeLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
         }
     }
 

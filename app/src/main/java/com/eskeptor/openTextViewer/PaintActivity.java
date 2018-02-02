@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -226,73 +227,6 @@ public class PaintActivity extends AppCompatActivity {
         mEraserLayout.setVisibility(View.GONE);
         mShapeLayout.setVisibility(View.GONE);
 
-        Button btnBrush = (Button)findViewById(R.id.paint_brush);
-        btnBrush.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPaintFunction.changePaint(Constant.PaintType.Brush);
-                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
-                mPaintFunction.setLineWidth(mCurBrushValue);
-                if (mBrushLayout.getVisibility() == View.VISIBLE) {
-                    mBrushLayout.setVisibility(View.GONE);
-                } else {
-                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
-                        mEraserLayout.setVisibility(View.GONE);
-                    }
-                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
-                        mShapeLayout.setVisibility(View.GONE);
-                    }
-                    mBrushLayout.setVisibility(View.VISIBLE);
-                }
-                mShapeType = Constant.ShapeType.None;
-                mPaintDrawerLayout.closeDrawer(Gravity.END);
-            }
-        });
-
-        Button btnEraser = (Button)findViewById(R.id.paint_eraser);
-        btnEraser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPaintFunction.changePaint(Constant.PaintType.Eraser);
-                mPaintFunction.setLineWidth(mCurEraserSize);
-                if (mEraserLayout.getVisibility() == View.VISIBLE) {
-                    mEraserLayout.setVisibility(View.GONE);
-                } else {
-                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
-                        mBrushLayout.setVisibility(View.GONE);
-                    }
-                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
-                        mShapeLayout.setVisibility(View.GONE);
-                    }
-                    mEraserLayout.setVisibility(View.VISIBLE);
-                }
-                mShapeType = Constant.ShapeType.None;
-                mPaintDrawerLayout.closeDrawer(Gravity.END);
-            }
-        });
-
-        Button btnShapes = (Button)findViewById(R.id.paint_shapes);
-        btnShapes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPaintFunction.changePaint(Constant.PaintType.Shape);
-                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
-                mPaintFunction.setLineWidth(mCurBrushValue);
-                if (mShapeLayout.getVisibility() == View.VISIBLE) {
-                    mShapeLayout.setVisibility(View.GONE);
-                } else {
-                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
-                        mEraserLayout.setVisibility(View.GONE);
-                    }
-                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
-                        mBrushLayout.setVisibility(View.GONE);
-                    }
-                    mShapeLayout.setVisibility(View.VISIBLE);
-                }
-                mPaintDrawerLayout.closeDrawer(Gravity.END);
-            }
-        });
-
         mRunnable = new Runnable() {
             @Override
             public void run() {
@@ -304,6 +238,27 @@ public class PaintActivity extends AppCompatActivity {
         };
 
         runOnUiThread(mRunnable);
+
+        if (mOpenFileURL != null) {
+            File imageSummary = new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
+            if (!imageSummary.exists()) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle(R.string.paint_dialog_alert);
+                dialog.setMessage(R.string.paint_dialog_isDescription);
+                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface _dialog, int _which) {
+                        if (_which == AlertDialog.BUTTON_POSITIVE) {
+                            imageDescription();
+                        }
+                        _dialog.dismiss();
+                    }
+                };
+                dialog.setPositiveButton(R.string.paint_dialog_yes, clickListener);
+                dialog.setNegativeButton(R.string.paint_dialog_no, clickListener);
+                dialog.show();
+            }
+        }
     }
 
     @Override
@@ -388,7 +343,7 @@ public class PaintActivity extends AppCompatActivity {
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                                 intent.setClass(mContextThis, FileBrowserActivity.class);
                                                 intent.setType("text/plain");
-                                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE);
+                                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BrowserType.SaveExternalOpenedFile.getValue());
                                                 startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
                                                 break;
                                             case Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL:
@@ -404,7 +359,6 @@ public class PaintActivity extends AppCompatActivity {
                                                     }
                                                     mPaintFunction.savePaint(mOpenFileURL);
                                                     writeLog();
-                                                    imageDescription();
                                                 }
                                                 finish();
                                                 break;
@@ -444,10 +398,14 @@ public class PaintActivity extends AppCompatActivity {
     private void writeLog() {
         try {
             if (!mPaintFunction.isFileopen()) {
-                mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath());
+                if (mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
+                    TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
+                } else {
+                    TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.LogType.ERROR, "로그 저장 불가");
+                }
             }
         } catch (Exception e) {
-            TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.ERROR, e.getMessage());
+            TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.LogType.ERROR, e.getMessage());
         }
     }
 
@@ -461,16 +419,20 @@ public class PaintActivity extends AppCompatActivity {
                 try {
                     if (mLastLog.createNewFile()) {
                         mMemoIndex = 1;
-                        mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath());
+                        if (mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
+                            TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
+                        } else {
+                            TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.DEBUG, "로그 저장 불가");
+                        }
                     }
                 } catch (IOException ioe) {
-                    TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.ERROR, ioe.getMessage());
+                    TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.ERROR, ioe.getMessage());
                 }
             } else {
                 try {
                     mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
-                    TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
             }
             setTitle(R.string.memo_title_newFile);
@@ -487,11 +449,11 @@ public class PaintActivity extends AppCompatActivity {
     private void imageDescription() {
         final File imageSummary = mOpenFileURL == null ? new File(mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_IMAGE_EXTENSION)
                 + Constant.FILE_IMAGE_SUMMARY) : new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.paint_dialog_description_title);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.paint_dialog_description_title);
         View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_image_description, null);
         final EditText description = (EditText)layout.findViewById(R.id.dialog_image_description_input);
-        TestLog.Tag("Description").Logging(TestLog.ERROR, "imageSummary: " + imageSummary);
+        TestLog.Tag("Description").Logging(TestLog.LogType.DEBUG, "imageSummary: " + imageSummary);
         if (mOpenFileURL != null) {
             if (imageSummary.exists()) {
                 FileReader fr = null;
@@ -501,32 +463,32 @@ public class PaintActivity extends AppCompatActivity {
                     fr = new FileReader(imageSummary);
                     br = new BufferedReader(fr);
                     if ((line = br.readLine()) != null) {
-                        TestLog.Tag("Description").Logging(TestLog.ERROR, "내용: " + line);
+                        TestLog.Tag("Description").Logging(TestLog.LogType.DEBUG, "내용: " + line);
                         description.setText(line);
                     } else {
                         description.setText("");
                     }
                 } catch (Exception e) {
-                    TestLog.Tag("imageDescription").Logging(TestLog.ERROR, e.getMessage());
+                    TestLog.Tag("imageDescription").Logging(TestLog.LogType.ERROR, e.getMessage());
                 } finally {
                     if (br != null) {
                         try {
                             br.close();
                         } catch (Exception e) {
-                            TestLog.Tag("imageDescription").Logging(TestLog.ERROR, e.getMessage());
+                            TestLog.Tag("imageDescription").Logging(TestLog.LogType.ERROR, e.getMessage());
                         }
                     }
                     if (fr != null) {
                         try {
                             fr.close();
                         } catch (Exception e) {
-                            TestLog.Tag("imageDescription").Logging(TestLog.ERROR, e.getMessage());
+                            TestLog.Tag("imageDescription").Logging(TestLog.LogType.ERROR, e.getMessage());
                         }
                     }
                 }
             }
         }
-        dialog.setView(layout);
+        builder.setView(layout);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface _dialog, int _which) {
@@ -537,26 +499,95 @@ public class PaintActivity extends AppCompatActivity {
                         fw = new FileWriter(imageSummary);
                         bw = new BufferedWriter(fw);
                         bw.write(description.getText().toString());
-                        TestLog.Tag("Description").Logging(TestLog.ERROR, "저장내용: " + description.getText().toString());
                     } catch (Exception e) {
-                        TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.ERROR, e.getMessage());
+                        TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.LogType.ERROR, e.getMessage());
                     } finally {
                         if (bw != null) {
                             try { bw.close(); }
-                            catch (Exception e) { TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.ERROR, e.getMessage()); }
+                            catch (Exception e) { TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.LogType.ERROR, e.getMessage()); }
                         }
                         if (fw != null) {
                             try { fw.close(); }
-                            catch (Exception e) { TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.ERROR, e.getMessage()); }
+                            catch (Exception e) { TestLog.Tag("PaintActivity(imageDescription)").Logging(TestLog.LogType.ERROR, e.getMessage()); }
                         }
                     }
                 }
                 _dialog.dismiss();
             }
         };
-        dialog.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
-        dialog.setNegativeButton(R.string.memo_alert_modified_btnCancel, clickListener);
+        builder.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
+        builder.setNegativeButton(R.string.memo_alert_modified_btnCancel, clickListener);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
+    }
+
+    public void onClick(View _v) {
+        int idx = _v.getId();
+        switch (idx) {
+            case R.id.paint_brush_btnClose:
+                mBrushLayout.setVisibility(View.GONE);
+                break;
+            case R.id.paint_eraser_btnClose:
+                mEraserLayout.setVisibility(View.GONE);
+                break;
+            case R.id.paint_shapes_btnClose:
+                mShapeLayout.setVisibility(View.GONE);
+                break;
+            case R.id.paint_brush:
+                mPaintFunction.changePaint(Constant.PaintType.Brush);
+                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
+                mPaintFunction.setLineWidth(mCurBrushValue);
+                if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                    mBrushLayout.setVisibility(View.GONE);
+                } else {
+                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                        mEraserLayout.setVisibility(View.GONE);
+                    }
+                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                        mShapeLayout.setVisibility(View.GONE);
+                    }
+                    mBrushLayout.setVisibility(View.VISIBLE);
+                }
+                mShapeType = Constant.ShapeType.None;
+                mPaintDrawerLayout.closeDrawer(Gravity.END);
+                break;
+            case R.id.paint_eraser:
+                mPaintFunction.changePaint(Constant.PaintType.Eraser);
+                mPaintFunction.setLineWidth(mCurEraserSize);
+                if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                    mEraserLayout.setVisibility(View.GONE);
+                } else {
+                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                        mBrushLayout.setVisibility(View.GONE);
+                    }
+                    if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                        mShapeLayout.setVisibility(View.GONE);
+                    }
+                    mEraserLayout.setVisibility(View.VISIBLE);
+                }
+                mShapeType = Constant.ShapeType.None;
+                mPaintDrawerLayout.closeDrawer(Gravity.END);
+                break;
+            case R.id.paint_shapes:
+                mPaintFunction.changePaint(Constant.PaintType.Shape);
+                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
+                mPaintFunction.setLineWidth(mCurBrushValue);
+                if (mShapeLayout.getVisibility() == View.VISIBLE) {
+                    mShapeLayout.setVisibility(View.GONE);
+                } else {
+                    if (mEraserLayout.getVisibility() == View.VISIBLE) {
+                        mEraserLayout.setVisibility(View.GONE);
+                    }
+                    if (mBrushLayout.getVisibility() == View.VISIBLE) {
+                        mBrushLayout.setVisibility(View.GONE);
+                    }
+                    mShapeLayout.setVisibility(View.VISIBLE);
+                }
+                mPaintDrawerLayout.closeDrawer(Gravity.END);
+                break;
+        }
     }
 
     /**
@@ -856,7 +887,7 @@ public class PaintActivity extends AppCompatActivity {
                 fos = new FileOutputStream(new File(_dir));
                 mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             } catch (Exception e) {
-                TestLog.Tag("PaintFunction(save-)").Logging(TestLog.ERROR, e.getMessage());
+                TestLog.Tag("PaintFunction(save-)").Logging(TestLog.LogType.ERROR, e.getMessage());
             } finally {
                 if (fos != null) {
                     try {

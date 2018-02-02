@@ -193,4 +193,11 @@
     <string name="settings_general_viewimage_summary">"메인화면의 메모 리스트에 그림메모를 미리봅니다. "</string>
     <string name="paint_dialog_description">이미지 설명을 입력하세요(한 줄)</string>
     <string name="paint_dialog_description_title">요약</string>
+    <string name="paint_dialog_isDescription">이미지 요약이 없습니다.\n이미지 요약을 작성하시겠습니까?</string>
+    <string name="paint_dialog_alert">알림</string>
+    <string name="paint_dialog_yes">예</string>
+    <string name="paint_dialog_no">아니오</string>
+    <string name="paint_btnClose">닫기</string>
+    <string name="license_openpad">OpenPad 라이센스</string>
+    <string name="license_glide4">Glide 4 라이센스</string>
 </resources>

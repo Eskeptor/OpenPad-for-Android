@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-/**
+/*
  * Created by eskeptor on 17. 2. 15.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */

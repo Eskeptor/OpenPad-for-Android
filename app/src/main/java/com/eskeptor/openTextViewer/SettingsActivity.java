@@ -17,7 +17,7 @@ import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 
-/**
+/*
  * Created by eskeptor on 17. 2. 8.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
@@ -138,7 +138,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             @Override
                             public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
                                 if (_oldVal != _newVal) {
+                                    if (mSharedPrefEditor == null)
+                                        mSharedPrefEditor = mSharedPref.edit();
                                     mSharedPrefEditor.putFloat("FontSize", _newVal);
+                                    mSharedPrefEditor.apply();
                                     mTextSize.setSummary(Integer.toString(_newVal));
                                 }
                             }
@@ -219,6 +222,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onPause() {
             super.onPause();
+            if (mSharedPrefEditor == null)
+                mSharedPrefEditor = mSharedPref.edit();
             mSharedPrefEditor.putInt(Constant.APP_FONT, mFontStyle);
             mSharedPrefEditor.apply();
         }
@@ -321,7 +326,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                 @Override
                                 public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
                                     if (_oldVal != _newVal) {
+                                        if (mSharedPrefEditor == null)
+                                            mSharedPrefEditor = mSharedPref.edit();
                                         mSharedPrefEditor.putInt("Lines", _newVal);
+                                        mSharedPrefEditor.apply();
                                     }
                                 }
                             });
@@ -408,6 +416,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onPause() {
             super.onPause();
+            if (mSharedPrefEditor == null)
+                mSharedPrefEditor = mSharedPref.edit();
             mSharedPrefEditor.putBoolean(Constant.APP_ADMOB_VISIBLE, mAdMob.isChecked());
             mSharedPrefEditor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, mEnhanceIO.isChecked());
             mSharedPrefEditor.putBoolean(Constant.APP_VIEW_IMAGE, mViewImage.isChecked());
@@ -452,7 +462,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         mActiveScene = Constant.ActiveScreenType.Main;
 
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
-        mSharedPrefEditor = mSharedPref.edit();
 
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
         mPrevFontStyle = mFontStyle;

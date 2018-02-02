@@ -36,20 +36,20 @@ import java.util.regex.Pattern;
 
 // 내장된 파일 브라우저 클래스
 public class FileBrowserActivity extends AppCompatActivity {
-    private TextView mTxtPath;                       // 현재 파일 경로
-    private ListView mFileList;                      // 파일 리스트
-    private String mStrFilename;                    // 파일 이름
-    private String mStrRoot;                        // 파일의 절대경로
-    private ArrayList<FileObject> mFileListObjects;      // 파일의 목록을 저장할 배열리스트
-    private FileObjectAdaptor mFileListObjectAdaptor;    // 파일용 커스텀 어댑터
-    private Context mContextThis;                   // context
+    private TextView mTxtPath;                              // 현재 파일 경로
+    private ListView mFileList;                             // 파일 리스트
+    private String mStrFilename;                            // 파일 이름
+    private String mStrRoot;                                // 파일의 절대경로
+    private ArrayList<FileObject> mFileListObjects;         // 파일의 목록을 저장할 배열리스트
+    private FileObjectAdaptor mFileListObjectAdaptor;       // 파일용 커스텀 어댑터
+    private Context mContextThis;                           // context
     private View mContextView;
-    private int mBrowserType;                        // 외부파일 불러오기, 파일 저장하기
-    private Constant.BrowserMenuSortType mSortType;                           // 정렬 기준
+    private Constant.BrowserType mBrowserType;                               // 외부파일 불러오기, 파일 저장하기
+    private Constant.BrowserMenuSortType mSortType;         // 정렬 기준
 
     // 메뉴 아이템
-    private MenuItem mMenuItemDES;
-    private MenuItem mMenuItemASC;
+    private MenuItem mMenuItemDES;                          // 내림차순
+    private MenuItem mMenuItemASC;                          // 오름차순
 
     // 파일을 다른이름으로 다른폴더에 저장할 때 쓰이는 것
     private LinearLayout mSaveLayout;
@@ -63,7 +63,7 @@ public class FileBrowserActivity extends AppCompatActivity {
         mContextThis = getApplicationContext();
         mContextView = findViewById(R.id.activity_filebrowser);
 
-        mBrowserType = getIntent().getIntExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, 0);
+        int browserType = getIntent().getIntExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, 0);
         mStrRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
         mSortType = Constant.BrowserMenuSortType.Asc;
 
@@ -72,12 +72,14 @@ public class FileBrowserActivity extends AppCompatActivity {
         mSaveLayout = (LinearLayout) findViewById(R.id.browser_saveLayout);
         mEditTxtSave = (EditText) findViewById(R.id.browser_etxtSave);
 
-        if (mBrowserType == Constant.BROWSER_TYPE_OPEN_EXTERNAL) {
+        if (browserType == Constant.BrowserType.OpenExternal.getValue()) {
             setTitle(R.string.filebrowser_name_open);
             mSaveLayout.setVisibility(View.GONE);
-        } else if (mBrowserType == Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE) {
+            mBrowserType = Constant.BrowserType.OpenExternal;
+        } else if (browserType == Constant.BrowserType.SaveExternalOpenedFile.getValue()) {
             setTitle(R.string.filebrowser_name_save);
             mSaveLayout.setVisibility(View.VISIBLE);
+            mBrowserType = Constant.BrowserType.SaveExternalOpenedFile;
         }
 
         getDirectory(mStrRoot);
@@ -254,7 +256,7 @@ public class FileBrowserActivity extends AppCompatActivity {
         File files[];
 
         switch (mBrowserType) {
-            case Constant.BROWSER_TYPE_OPEN_EXTERNAL:
+            case OpenExternal:
                 files = file.listFiles(new FileFilter() {
                     @Override
                     public boolean accept(File _pathname) {
@@ -263,7 +265,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                     }
                 });
                 break;
-            case Constant.BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE:
+            case SaveExternalOpenedFile:
                 files = file.listFiles(new FileFilter() {
                     @Override
                     public boolean accept(File _pathname) {
@@ -284,7 +286,8 @@ public class FileBrowserActivity extends AppCompatActivity {
             }
         }
 
-        mTxtPath.setText(getResources().getString(R.string.filebrowser_Location) + " " + _dir);
+        String path = getResources().getString(R.string.filebrowser_Location) + " " + _dir;
+        mTxtPath.setText(path);
 
         if (mFileListObjectAdaptor != null)
             mFileListObjectAdaptor = null;
