@@ -330,7 +330,7 @@ public class PaintActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface _dialog, int _which) {
                     switch (_which) {
-                        case AlertDialog.BUTTON_POSITIVE:
+                        case AlertDialog.BUTTON_POSITIVE: {
                             if (mOpenFileURL == null) {
                                 AlertDialog.Builder alert = new AlertDialog.Builder(PaintActivity.this);
                                 alert.setTitle(R.string.memo_alert_save_context);
@@ -372,9 +372,21 @@ public class PaintActivity extends AppCompatActivity {
                                 finish();
                             }
                             break;
-                        case AlertDialog.BUTTON_NEGATIVE:
+                        }
+                        case AlertDialog.BUTTON_NEGATIVE: {
+                            File imageSummary = new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
+                            if (imageSummary.exists()) {
+                                if (imageSummary.delete()) {
+                                    TestLog.Tag("PaintActivity").Logging(TestLog.LogType.DEBUG, "이미지 저장안함으로 요약제거");
+                                } else {
+                                    TestLog.Tag("PaintActivity").Logging(TestLog.LogType.ERROR, "요약제거 실패");
+                                }
+                            } else {
+                                TestLog.Tag("PaintActivity").Logging(TestLog.LogType.DEBUG, "이미지 요약 존재 안함");
+                            }
                             finish();
                             break;
+                        }
                     }
                     _dialog.dismiss();
                 }
@@ -447,8 +459,16 @@ public class PaintActivity extends AppCompatActivity {
     }
 
     private void imageDescription() {
-        final File imageSummary = mOpenFileURL == null ? new File(mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_IMAGE_EXTENSION)
-                + Constant.FILE_IMAGE_SUMMARY) : new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
+        if (mOpenFileURL == null) {
+            mOpenFileURL = mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_IMAGE_EXTENSION);
+            File tmpFile = new File(mOpenFileURL);
+            while (tmpFile.exists()) {
+                mMemoIndex++;
+                mOpenFileURL = mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_IMAGE_EXTENSION);
+                tmpFile = new File(mOpenFileURL);
+            }
+        }
+        final File imageSummary = new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.paint_dialog_description_title);
         View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_image_description, null);

@@ -1,6 +1,2 @@
-1.5.0
-1) Rearrange the paint notes (image notes) tool
-2) Distinguish activation of image preview function in main file list
-3) Add a one-line summary of the paint memo (image memo)
-4) Activate the tutorial page
-5) Modification of minor bug and optimization of codes
+1.5.1
+1) Single line summary fixes bugs that can not be saved when paint notes are generated
