@@ -55,7 +55,6 @@ public class MemoActivity extends AppCompatActivity {
 
     private EditText mEditText;          // 텍스트 주체
     private TextManager mTxtManager;     // 텍스트 저장 및 불러오기 담당
-    private LogManager mLogManager;      // 로그를 기록하는 것
     private File mLastLog;               // 로그 파일(새로메모를 만들시 붙여줄 번호)
     private ScrollView mScrollView;      // 텍스트 스크롤
     private Context mContextThis;       // context용
@@ -193,7 +192,6 @@ public class MemoActivity extends AppCompatActivity {
         mEditText = (EditText) findViewById(R.id.memo_etxtMain);
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE));
         mTxtManager = new TextManager();
-        mLogManager = new LogManager();
         mScrollView = (ScrollView) findViewById(R.id.memo_scroll);
         mBtnLayout = (ScrollView) findViewById(R.id.memo_layoutButton);
         mEncodeType = Constant.EncodeType.UTF8;
@@ -216,7 +214,7 @@ public class MemoActivity extends AppCompatActivity {
                 try {
                     if(mLastLog.createNewFile()) {
                         mMemoIndex = 1;
-                        if (mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
+                        if (LogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
                             TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
                         } else {
                             TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "로그 저장불가 완료");
@@ -228,7 +226,7 @@ public class MemoActivity extends AppCompatActivity {
 
             } else {
                 try {
-                    mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
+                    mMemoIndex = Integer.parseInt(LogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
                     TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
@@ -453,7 +451,6 @@ public class MemoActivity extends AppCompatActivity {
         mEditText = null;
         mTxtManager.initManager();
         mTxtManager = null;
-        mLogManager = null;
         mNextRunnable = null;
         mPrevRunnable = null;
         mBtnLayout = null;
@@ -610,7 +607,7 @@ public class MemoActivity extends AppCompatActivity {
     private void writeLog() {
         try {
             if (!mTxtManager.isFileopen()) {
-                if (mLogManager.saveLog(Integer.toString(mIsWidget ? mWidgetID : mMemoIndex), mLastLog.getPath())) {
+                if (LogManager.saveLog(Integer.toString(mIsWidget ? mWidgetID : mMemoIndex), mLastLog.getPath())) {
                     TestLog.Tag("MemoActivity(writeLog)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
                 } else {
                     TestLog.Tag("MemoActivity(writeLog)").Logging(TestLog.LogType.ERROR, "로그 저장 불가");

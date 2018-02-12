@@ -69,6 +69,7 @@ public class FileBrowserActivity extends AppCompatActivity {
 
         mTxtPath = (TextView) findViewById(R.id.browser_txtPath);
         mFileList = (ListView) findViewById(R.id.browser_lvFilecontrol);
+        mFileListObjects = new ArrayList<>();
         mSaveLayout = (LinearLayout) findViewById(R.id.browser_saveLayout);
         mEditTxtSave = (EditText) findViewById(R.id.browser_etxtSave);
 
@@ -247,10 +248,9 @@ public class FileBrowserActivity extends AppCompatActivity {
      * @param _dir 경로
      */
     public void getDirectory(final String _dir) {
-        if (mFileListObjects != null && !mFileListObjects.isEmpty()) {
+        if (!mFileListObjects.isEmpty()) {
             mFileListObjects.clear();
         }
-        mFileListObjects = new ArrayList<>();
 
         File file = new File(_dir);
         File files[];
@@ -289,11 +289,24 @@ public class FileBrowserActivity extends AppCompatActivity {
         String path = getResources().getString(R.string.filebrowser_Location) + " " + _dir;
         mTxtPath.setText(path);
 
-        if (mFileListObjectAdaptor != null)
+        if (mFileListObjectAdaptor == null) {
+            mFileListObjectAdaptor = new FileObjectAdaptor(mContextThis, mFileListObjects);
+            mFileList.setAdapter(mFileListObjectAdaptor);
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mFileListObjectAdaptor.notifyDataSetChanged();
+            }
+        });
+
+        /*if (mFileListObjectAdaptor != null)
             mFileListObjectAdaptor = null;
 
         mFileListObjectAdaptor = new FileObjectAdaptor(this, mFileListObjects);
-        mFileList.setAdapter(mFileListObjectAdaptor);
+        mFileList.setAdapter(mFileListObjectAdaptor);*/
+
         mStrFilename = _dir;
     }
 

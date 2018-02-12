@@ -193,7 +193,7 @@
     <string name="license_openpad">OpenPad License</string>
     <string name="license_kopub">KOPUB Dotum Font License</string>
     <string name="license_bmjua">BaeDalEu MinJok Font License</string>
-    <string name="first_btnStart">Start</string>
+    <string name="first_btnStart">Permission Grant &amp; Start</string>
     <string name="paint_menu_undo">Undo</string>
     <string name="paint_menu_reset">Reset</string>
     <string name="memo_menu_modify">Modify</string>

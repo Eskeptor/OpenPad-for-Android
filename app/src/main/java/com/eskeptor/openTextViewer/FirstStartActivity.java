@@ -1,10 +1,15 @@
 package com.eskeptor.openTextViewer;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +33,29 @@ public class FirstStartActivity extends AppCompatActivity {
     private SharedPreferences.Editor mPrefEditor;
 
     @Override
+    public void onRequestPermissionsResult(int _requestCode, @NonNull String[] _permissions, @NonNull int[] _grantResults) {
+        super.onRequestPermissionsResult(_requestCode, _permissions, _grantResults);
+        if (_requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE) {
+            if (_grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    _grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                mPrefEditor = mPref.edit();
+                mPrefEditor.putBoolean(Constant.APP_TUTORIAL, true);
+                mPrefEditor.apply();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+
+            } else {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle(R.string.main_dialog_restart_title_no);
+                dialog.setMessage(R.string.main_dialog_restart_context_no);
+                dialog.setPositiveButton(R.string.settings_dialog_info_ok, null);
+                dialog.show();
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_start);
@@ -45,6 +73,24 @@ public class FirstStartActivity extends AppCompatActivity {
         mPrefEditor = null;
         mPref = null;
         System.gc();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_STORAGE);
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_STORAGE);
+                }
+            }
+        }
     }
 
     private class PagerAdapterClass extends PagerAdapter {
@@ -109,10 +155,7 @@ public class FirstStartActivity extends AppCompatActivity {
                     view.findViewById(R.id.first_btnStart).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mPrefEditor = mPref.edit();
-                            mPrefEditor.putBoolean(Constant.APP_TUTORIAL, true);
-                            mPrefEditor.apply();
-                            finish();
+                            checkPermission();
                         }
                     });
                     container.addView(view);

@@ -1,22 +1,17 @@
 package com.eskeptor.openTextViewer;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -102,56 +97,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
         if (_resultCode == RESULT_OK) {
-            if (_requestCode == Constant.REQUEST_CODE_OPEN_FOLDER) {
-                mCurFolderURL = _data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
-                if (mCurFolderURL != null) {
-                    refreshList();
-                    mCurFileAdapter.notifyDataSetChanged();
+            switch (_requestCode) {
+                case Constant.REQUEST_CODE_OPEN_FOLDER: {
+                    mCurFolderURL = _data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
+                    if (mCurFolderURL != null) {
+                        refreshList();
+                        mCurFileAdapter.notifyDataSetChanged();
+                    }
+                    break;
                 }
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int _requestCode, @NonNull String[] _permissions, @NonNull int[] _grantResults) {
-        super.onRequestPermissionsResult(_requestCode, _permissions, _grantResults);
-        if (_requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE) {
-            if (_grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    _grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle(R.string.main_dialog_restart_title);
-                dialog.setMessage(R.string.main_dialog_restart_context);
-                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface _dialog, int _which) {
-                        switch (_which) {
-                            case AlertDialog.BUTTON_POSITIVE: {
-                                ActivityCompat.finishAffinity(MainActivity.this);
-                                System.exit(0);
-                                break;
-                            }
-                        }
-                        _dialog.dismiss();
-                    }
-                };
-                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
-                dialog.show();
-            } else {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle(R.string.main_dialog_restart_title_no);
-                dialog.setMessage(R.string.main_dialog_restart_context_no);
-                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface _dialog, int _which) {
-                        if (_which == AlertDialog.BUTTON_POSITIVE) {
-                            ActivityCompat.finishAffinity(MainActivity.this);
-                            System.exit(0);
-                        }
-                        _dialog.dismiss();
-                    }
-                };
-                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
-                dialog.show();
+                case Constant.REQUEST_CODE_PERMISSION_GRANT: {
+                    runOnUiThread(mRefreshListRunnable);
+                    checkFirstExcecute();
+                    adMob();
+                    break;
+                }
             }
         }
     }
@@ -168,13 +128,6 @@ public class MainActivity extends AppCompatActivity {
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
         mPrevFontStyle = mFontStyle;
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
-
-        // 튜토리얼 페이지
-        if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
-            Intent intent = new Intent();
-            intent.setClass(mContextThis, FirstStartActivity.class);
-            startActivity(intent);
-        }
 
         // 폴더 아이콘
         Drawable folderIcon;
@@ -259,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
         mRefreshListRunnable = new Runnable() {
             @Override
             public void run() {
+                defaultFolderCheck();
                 refreshList();
                 mCurFileAdapter = new MainFileAdaptor(mCurFolderFileList, mSharedPref);
                 mCurFileAdapter.setClickAction(new ClickAction() {
@@ -292,8 +246,19 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        // 튜토리얼 페이지
+        if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
+            Intent intent = new Intent();
+            intent.setClass(mContextThis, FirstStartActivity.class);
+            startActivityForResult(intent, Constant.REQUEST_CODE_PERMISSION_GRANT);
+        } else {
+            runOnUiThread(mRefreshListRunnable);
+            checkFirstExcecute();
+            adMob();
+        }
+
         // 권한 체크
-        checkPermission();
+//        checkPermission();
 
         // 설정의 폰트에 맞게 폰트 변환
         switch (mFontStyle) {
@@ -383,32 +348,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 권한을 체크하는 메소드
-     */
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_STORAGE);
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, Constant.REQUEST_CODE_APP_PERMISSION_STORAGE);
-                }
-            } else {
-                defaultFolderCheck();
-                runOnUiThread(mRefreshListRunnable);
-                checkFirstExcecute();
-                adMob();
-            }
-        } else {
-            defaultFolderCheck();
-            runOnUiThread(mRefreshListRunnable);
-            checkFirstExcecute();
-            adMob();
-        }
-    }
-
-    /**
      * 기본 폴더 체크 메소드
      */
     private void defaultFolderCheck() {
@@ -442,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         mCurFolderURL = file.getPath();
+        TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "mCurFolderURL: " + mCurFolderURL);
     }
 
     /**
@@ -499,6 +439,11 @@ public class MainActivity extends AppCompatActivity {
                         _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION);
             }
         });
+
+        if(file.exists())
+            TestLog.Tag("Main").Logging(TestLog.LogType.ERROR, file.getName() + " is exist");
+        if(files == null)
+            TestLog.Tag("Main").Logging(TestLog.LogType.ERROR, "null");
 
         sortFileArray(files);
 

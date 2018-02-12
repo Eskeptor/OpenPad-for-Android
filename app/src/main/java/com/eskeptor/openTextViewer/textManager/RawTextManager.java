@@ -2,7 +2,6 @@ package com.eskeptor.openTextViewer.textManager;
 
 import android.content.Context;
 import android.support.annotation.RawRes;
-import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 

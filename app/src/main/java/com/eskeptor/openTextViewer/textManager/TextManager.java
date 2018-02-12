@@ -26,7 +26,6 @@ import util.TestLog;
  */
 public class TextManager {
     private boolean mIsFileopen;               // 파일이 열렸는지 체크
-    private boolean mIsSaved;                  // 파일이 저장되었는지 체크
     private String mFileopenName;           // 현재 열린 파일의 이름
     private String mMD5;                     // 파일의 MD5값
     private String mFileFormat;                  // 파일의 포멧
@@ -53,7 +52,6 @@ public class TextManager {
     public void initManager() {
         mIsFileopen = false;
         mFileopenName = "";
-        mIsSaved = false;
         mMD5 = "";
         mFileFormat = "";
         mProgress = 0;
@@ -107,7 +105,7 @@ public class TextManager {
         FileOutputStream saveFileOutputStream = null;
         FileChannel saveFileChannel = null;
         ByteBuffer fileBuffer = null;
-        long backupSize = 0L;
+        long backupSize;
 
         if (isFileopen()) {
             try {
@@ -144,7 +142,9 @@ public class TextManager {
                 if(_enhance && isNext()) {
                     saveFile.seek(mPointerList.get(mCurPointer) + _strData.getBytes().length);
                     saveFileChannel.write(backFileBuffer);
-                    backFileBuffer.clear();
+                    if (backFileBuffer != null) {
+                        backFileBuffer.clear();
+                    }
                 }
             } catch (Exception e) {
                 TestLog.Tag("TextManager(saveText)").Logging(TestLog.LogType.ERROR, e.getMessage());
@@ -217,7 +217,6 @@ public class TextManager {
                 }
             }
         }
-        mIsSaved = true;
         return true;
     }
 
@@ -427,7 +426,7 @@ public class TextManager {
      * @return char형 Buffer를 반환합니다.
      */
     private CharBuffer formatDetector(final ByteBuffer _buffer) {
-        CharBuffer charBuffer = null;
+        CharBuffer charBuffer;
         try {
             CharsetDecoder decoder = Charset.forName(Constant.ENCODE_TYPE_UTF8_STR).newDecoder();
             charBuffer = decoder.decode(_buffer);

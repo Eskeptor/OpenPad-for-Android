@@ -84,7 +84,6 @@ public class FileObjectAdaptor extends BaseAdapter
             holder.fileImage = (ImageView) _convertView.findViewById(R.id.item_fileobj_image);
             holder.fileName = (TextView) _convertView.findViewById(R.id.item_fileobj_name);
             holder.fileSize = (TextView) _convertView.findViewById(R.id.item_fileobj_size);
-
             _convertView.setTag(holder);
         } else {
             holder = (FileObjectViewHolder) _convertView.getTag();

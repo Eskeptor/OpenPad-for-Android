@@ -118,8 +118,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings_font);
 
-
-
             mTextSize = findPreference("settings_key_font_fontsize");
             mTextSize.setSummary(Float.toString(mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
             mTextSize.setDefaultValue(Float.toString(mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE)));
@@ -226,6 +224,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 mSharedPrefEditor = mSharedPref.edit();
             mSharedPrefEditor.putInt(Constant.APP_FONT, mFontStyle);
             mSharedPrefEditor.apply();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            mTextSize = null;
+            mFontBasic = null;
+            mFontBDJua = null;
+            mFontKPDotum = null;
         }
     }
 
@@ -430,6 +437,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mAdMob = null;
             mEnhanceIO = null;
             mEnhanceIOLine = null;
+            mViewImage = null;
         }
     }
 

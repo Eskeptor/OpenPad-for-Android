@@ -74,6 +74,7 @@ public class Constant {
     public static final int REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE = 1;
     public static final int REQUEST_CODE_OPEN_FOLDER = 3;
     public static final int REQUEST_CODE_APP_PERMISSION_STORAGE = 4;
+    public static final int REQUEST_CODE_PERMISSION_GRANT = 5;
 
     public static final String REGEX = "^[_a-zA-Z0-9.ㄱ-ㅎㅏ-ㅣ가-힣]*$";
 

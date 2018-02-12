@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 import util.TestLog;
 
@@ -76,7 +77,6 @@ public class PaintActivity extends AppCompatActivity {
     private String mOpenFileName;
     private String mOpenFileURL;
     private int mMemoIndex;
-    private LogManager mLogManager;
     private File mLastLog;
 
     private Runnable mRunnable;
@@ -93,8 +93,6 @@ public class PaintActivity extends AppCompatActivity {
         mOpenFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         mOpenFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
         mOpenFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
-
-        mLogManager = new LogManager();
 
         mCurBrushValue = (int) Constant.PAINT_DEFAULT_WIDTH_PIXEL;
         mCurEraserSize = (int) Constant.PAINT_ERASER_WIDTH_PIXEL;
@@ -294,6 +292,7 @@ public class PaintActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mPaintFunction.destroyPaint();
         mPaintFunction = null;
         mDrawLayout = null;
         mBrushLayout = null;
@@ -310,7 +309,6 @@ public class PaintActivity extends AppCompatActivity {
         mBrushTxtGreen = null;
         mBrushTxtBlue = null;
         mContextThis = null;
-        mLogManager = null;
         mMenuItemUndo = null;
         mOpenFolderURL = null;
         mOpenFileName = null;
@@ -410,7 +408,7 @@ public class PaintActivity extends AppCompatActivity {
     private void writeLog() {
         try {
             if (!mPaintFunction.isFileopen()) {
-                if (mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
+                if (LogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
                     TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
                 } else {
                     TestLog.Tag("PaintActivity(writeLog)").Logging(TestLog.LogType.ERROR, "로그 저장 불가");
@@ -431,7 +429,7 @@ public class PaintActivity extends AppCompatActivity {
                 try {
                     if (mLastLog.createNewFile()) {
                         mMemoIndex = 1;
-                        if (mLogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
+                        if (LogManager.saveLog(Integer.toString(mMemoIndex), mLastLog.getPath())) {
                             TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
                         } else {
                             TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.DEBUG, "로그 저장 불가");
@@ -442,7 +440,7 @@ public class PaintActivity extends AppCompatActivity {
                 }
             } else {
                 try {
-                    mMemoIndex = Integer.parseInt(mLogManager.openLog(mLastLog.getPath()));
+                    mMemoIndex = Integer.parseInt(LogManager.openLog(mLastLog.getPath()));
                 } catch (Exception e) {
                     TestLog.Tag("PaintActivity(initPaint)").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
@@ -651,6 +649,17 @@ public class PaintActivity extends AppCompatActivity {
             mScreenHeight = displayMetrics.heightPixels;
         }
 
+        public void destroyPaint() {
+            mCanvasPaint = null;
+            mBrushPaint = null;
+            mCanvas = null;
+            mPath = null;
+            if (mBitmap != null)
+                mBitmap.recycle();
+            mBitmap = null;
+            mBrushObject = null;
+        }
+
         /**
          * 초기화
          */
@@ -766,7 +775,6 @@ public class PaintActivity extends AppCompatActivity {
                             mBrushObject.mBrushPaths.add(new Path(mPath));
                             mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
                             mBrushObject.mBrushColor.add(mCurColor);
-                            mBrushObject.mBrushPathsIdx++;
                             mMenuItemUndo.setVisible(true);
                             drawLine();
                             invalidate();
@@ -796,7 +804,6 @@ public class PaintActivity extends AppCompatActivity {
                             mBrushObject.mBrushPaths.add(new CircleObject(mPrevX + (mCurX - mPrevX) / 2, mPrevY + (mCurY - mPrevY) / 2, mRadius));
                             mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
                             mBrushObject.mBrushColor.add(mCurColor);
-                            mBrushObject.mBrushPathsIdx++;
                             mMenuItemUndo.setVisible(true);
                             drawLine();
                             invalidate();
@@ -824,7 +831,6 @@ public class PaintActivity extends AppCompatActivity {
                             mBrushObject.mBrushPaths.add(new Rect((int)mPrevX, (int)mPrevY, (int)mCurX, (int)mCurY));
                             mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
                             mBrushObject.mBrushColor.add(mCurColor);
-                            mBrushObject.mBrushPathsIdx++;
                             mMenuItemUndo.setVisible(true);
                             drawLine();
                             invalidate();
@@ -931,7 +937,7 @@ public class PaintActivity extends AppCompatActivity {
          * 되돌리기 기능
          */
         public void undoCanvas() {
-            if (mBrushObject.mBrushPathsIdx != 0) {
+            /*if (mBrushObject.mBrushPathsIdx != 0) {
                 mBrushObject.mBrushType.remove(--mBrushObject.mBrushPathsIdx);
                 mBrushObject.mBrushPaths.remove(mBrushObject.mBrushPathsIdx);
                 mBrushObject.mBrushSizes.remove(mBrushObject.mBrushPathsIdx);
@@ -941,6 +947,18 @@ public class PaintActivity extends AppCompatActivity {
             }
 
             if (mBrushObject.mBrushPathsIdx == 0) {
+                mMenuItemUndo.setVisible(false);
+            }*/
+            if (!mBrushObject.mBrushPaths.isEmpty()) {
+                mBrushObject.mBrushType.removeLast();
+                mBrushObject.mBrushPaths.removeLast();
+                mBrushObject.mBrushSizes.removeLast();
+                mBrushObject.mBrushColor.removeLast();
+                mPath.reset();
+                drawLine();
+            }
+
+            if (mBrushObject.mBrushPaths.isEmpty()) {
                 mMenuItemUndo.setVisible(false);
             }
             invalidate();
@@ -989,27 +1007,29 @@ public class PaintActivity extends AppCompatActivity {
                 mCanvas.drawARGB(Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX);
             }
 
-            int idx = mBrushObject.mBrushPathsIdx;
-            for (int i = 0; i < idx; i++) {
-                mBrushPaint.setStrokeWidth(mBrushObject.mBrushSizes.get(i));
-                mBrushPaint.setColor(mBrushObject.mBrushColor.get(i));
-                switch (mBrushObject.mBrushType.get(i)) {
+            Iterator<Float> iterBrushSize = mBrushObject.mBrushSizes.iterator();
+            Iterator<Object> iterBrushPath = mBrushObject.mBrushPaths.iterator();
+            Iterator<Integer> iterBrushColor = mBrushObject.mBrushColor.iterator();
+            Iterator<Constant.ShapeType> iterBrushType = mBrushObject.mBrushType.iterator();
+            while (iterBrushSize.hasNext()) {
+                mBrushPaint.setStrokeWidth(iterBrushSize.next());
+                mBrushPaint.setColor(iterBrushColor.next());
+                switch (iterBrushType.next()) {
                     case None: {
-                        mCanvas.drawPath((Path)mBrushObject.mBrushPaths.get(i), mBrushPaint);
+                        mCanvas.drawPath((Path)iterBrushPath.next(), mBrushPaint);
                         break;
                     }
                     case Circle: {
-                        CircleObject circleObject = (CircleObject)mBrushObject.mBrushPaths.get(i);
+                        CircleObject circleObject = (CircleObject)iterBrushPath.next();
                         mCanvas.drawCircle(circleObject.mX, circleObject.mY, circleObject.mRadius, mBrushPaint);
                         break;
                     }
                     case Rectangle: {
-                        Rect rect = (Rect)mBrushObject.mBrushPaths.get(i);
+                        Rect rect = (Rect)iterBrushPath.next();
                         mCanvas.drawRect(rect, mBrushPaint);
                         break;
                     }
                 }
-
             }
             mBrushPaint.setStrokeWidth(mCurSize);
             mBrushPaint.setColor(mCurColor);

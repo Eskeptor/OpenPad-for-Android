@@ -22,7 +22,7 @@ public class LogManager {
      * @param _filename 저장되어질 로그의 이름
      * @return 성공 혹은 실패
      */
-    public boolean saveLog(final String _strData, final String _filename) {
+    public static boolean saveLog(final String _strData, final String _filename) {
         if (_strData == null || _strData.isEmpty()) {
             return false;
         }
@@ -70,7 +70,7 @@ public class LogManager {
      * @param _filename 불러올 로그의 이름
      * @return 불러온 로그의 내용
      */
-    public String openLog(final String _filename) {
+    public static String openLog(final String _filename) {
         if (_filename != null) {
             FileInputStream fis = null;
             FileChannel channel = null;
