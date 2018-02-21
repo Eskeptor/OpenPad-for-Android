@@ -9,9 +9,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.2.6) - Build 1.5.1
+## What's New? (Last updated 2018.2.21) - None Build
 ```
- 1) Single line summary fixes bugs that can not be saved when paint notes are generated
+ 1) TextManager version up (1.0 → 2.0)
+ 2) Speed improvement of reaction
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

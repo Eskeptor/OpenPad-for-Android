@@ -171,19 +171,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             mFontBasic.setChecked(true);
                             mFontBDJua.setChecked(false);
                             mFontKPDotum.setChecked(false);
-                            mFontStyle = Constant.FONT_DEFAULT;
+                            mFontStyle = Constant.FontType.Default.getValue();
                             break;
                         case "settings_key_font_baedaljua":
                             mFontBasic.setChecked(false);
                             mFontBDJua.setChecked(true);
                             mFontKPDotum.setChecked(false);
-                            mFontStyle = Constant.FONT_BAEDAL_JUA;
+                            mFontStyle = Constant.FontType.BaeDal_JUA.getValue();
                             break;
                         case "settings_key_font_kopubdot":
                             mFontBasic.setChecked(false);
                             mFontBDJua.setChecked(false);
                             mFontKPDotum.setChecked(true);
-                            mFontStyle = Constant.FONT_KOPUB_DOTUM;
+                            mFontStyle = Constant.FontType.KOPUB_Dotum.getValue();
                             break;
                     }
                     return false;
@@ -197,23 +197,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mFontKPDotum = (CheckBoxPreference)findPreference("settings_key_font_kopubdot");
             mFontKPDotum.setOnPreferenceChangeListener(changeListener);
 
-
-            switch (mFontStyle) {
-                case Constant.FONT_DEFAULT:
-                    mFontBasic.setChecked(true);
-                    mFontBDJua.setChecked(false);
-                    mFontKPDotum.setChecked(false);
-                    break;
-                case Constant.FONT_BAEDAL_JUA:
-                    mFontBasic.setChecked(false);
-                    mFontBDJua.setChecked(true);
-                    mFontKPDotum.setChecked(false);
-                    break;
-                case Constant.FONT_KOPUB_DOTUM:
-                    mFontBasic.setChecked(false);
-                    mFontBDJua.setChecked(false);
-                    mFontKPDotum.setChecked(true);
-                    break;
+            if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
+                mFontBasic.setChecked(false);
+                mFontBDJua.setChecked(true);
+                mFontKPDotum.setChecked(false);
+            } else if (mFontStyle == Constant.FontType.KOPUB_Dotum.getValue()) {
+                mFontBasic.setChecked(false);
+                mFontBDJua.setChecked(false);
+                mFontKPDotum.setChecked(true);
+            } else {
+                mFontBasic.setChecked(true);
+                mFontBDJua.setChecked(false);
+                mFontKPDotum.setChecked(false);
             }
         }
 
@@ -238,7 +233,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static class Settings extends PreferenceFragment {
         private CheckBoxPreference mAdMob;
-        private CheckBoxPreference mEnhanceIO;
         private CheckBoxPreference mViewImage;
         private Preference mEnhanceIOLine;
 
@@ -256,7 +250,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preference help = findPreference("settings_key_help");
             Preference updateList = findPreference("settings_key_updatelist");
             mAdMob = (CheckBoxPreference) findPreference("settings_key_admob");
-            mEnhanceIO = (CheckBoxPreference) findPreference("settings_key_enhanceIO");
             mEnhanceIOLine = findPreference("settings_key_enhanceIO_Line");
             mViewImage = (CheckBoxPreference) findPreference("settings_key_viewimage");
             Preference license = findPreference("settings_key_license");
@@ -328,14 +321,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             NumberPicker picker = new NumberPicker(getActivity());
                             picker.setMaxValue(500);
                             picker.setMinValue(10);
-                            picker.setValue(mSharedPref.getInt("Lines", Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
+                            picker.setValue(mSharedPref.getInt(Constant.APP_TEXT_LINES, Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
                             picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                                 @Override
                                 public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
                                     if (_oldVal != _newVal) {
                                         if (mSharedPrefEditor == null)
                                             mSharedPrefEditor = mSharedPref.edit();
-                                        mSharedPrefEditor.putInt("Lines", _newVal);
+                                        mSharedPrefEditor.putInt(Constant.APP_TEXT_LINES, _newVal);
                                         mSharedPrefEditor.apply();
                                     }
                                 }
@@ -380,14 +373,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             dialog.show();
                             break;
                         }
-                        case "settings_key_enhanceIO": {
-                            if (mEnhanceIO.isChecked()) {
-                                mEnhanceIOLine.setEnabled(true);
-                            } else {
-                                mEnhanceIOLine.setEnabled(false);
-                            }
-                            break;
-                        }
                     }
                     return false;
                 }
@@ -405,15 +390,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             mAdMob.setOnPreferenceClickListener(checkClickListener);
             mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
-            mEnhanceIO.setOnPreferenceClickListener(checkClickListener);
-            mEnhanceIO.setChecked(mSharedPref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false));
-            mEnhanceIOLine.setEnabled(mEnhanceIO.isChecked());
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+            mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
 
             if (mPrevFontStyle != mFontStyle) {
                 mPrevFontStyle = mFontStyle;
@@ -426,7 +408,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (mSharedPrefEditor == null)
                 mSharedPrefEditor = mSharedPref.edit();
             mSharedPrefEditor.putBoolean(Constant.APP_ADMOB_VISIBLE, mAdMob.isChecked());
-            mSharedPrefEditor.putBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, mEnhanceIO.isChecked());
             mSharedPrefEditor.putBoolean(Constant.APP_VIEW_IMAGE, mViewImage.isChecked());
             mSharedPrefEditor.apply();
         }
@@ -435,7 +416,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onDestroy() {
             super.onDestroy();
             mAdMob = null;
-            mEnhanceIO = null;
             mEnhanceIOLine = null;
             mViewImage = null;
         }
@@ -471,22 +451,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
 
-        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
         mPrevFontStyle = mFontStyle;
         Context contextThis = getApplicationContext();
-        int font = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
-        switch (font) {
-            case Constant.FONT_DEFAULT:
-                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-                break;
-            case Constant.FONT_BAEDAL_JUA:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(contextThis, "fonts/bmjua.ttf"))
-                        .addBold(Typekit.createFromAsset(contextThis, "fonts/bmjua.ttf"));
-                break;
-            case Constant.FONT_KOPUB_DOTUM:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(contextThis, "fonts/kopub_dotum_medium.ttf"))
-                        .addBold(Typekit.createFromAsset(contextThis, "fonts/kopub_dotum_medium.ttf"));
-                break;
+        int font = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
+        if (font == Constant.FontType.BaeDal_JUA.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(contextThis, "fonts/bmjua.ttf"))
+                    .addBold(Typekit.createFromAsset(contextThis, "fonts/bmjua.ttf"));
+        } else if (font == Constant.FontType.KOPUB_Dotum.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(contextThis, "fonts/kopub_dotum_medium.ttf"))
+                    .addBold(Typekit.createFromAsset(contextThis, "fonts/kopub_dotum_medium.ttf"));
+        } else {
+            Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
         }
     }
 

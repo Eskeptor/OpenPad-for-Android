@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import util.TestLog;
@@ -45,7 +48,8 @@ public class FolderActivity extends AppCompatActivity
     private int mFoldersLength;                                      // 폴더의 개수
     private String mNewFolderName;                                   // 새폴더 이름
     private ListView mFolderList;                                    // 폴더 리스트
-    private Runnable mRefreshRunnable;                               // 새로고침 할때 쓰일 Runnable
+
+    private RefreshList mHandler;
 
     public boolean onCreateOptionsMenu(Menu _menu)
     {
@@ -68,11 +72,13 @@ public class FolderActivity extends AppCompatActivity
                         mNewFolderName = mEditText.getText().toString();
                         if (!mNewFolderName.equals("")) {
                             File file = new File(Constant.APP_INTERNAL_URL + File.separator + mNewFolderName);
-                            if (file.exists())
+                            if (file.exists()) {
                                 Snackbar.make(mContextView, R.string.folder_dialog_toast_exist, Snackbar.LENGTH_SHORT).show();
+                            }
                             else {
-                                if (file.mkdir())
-                                    runOnUiThread(mRefreshRunnable);
+                                if (file.mkdir()) {
+                                    mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                                }
                             }
                         }
                     }
@@ -108,9 +114,101 @@ public class FolderActivity extends AppCompatActivity
         mFolderList = (ListView) findViewById(R.id.folder_list);
         mFolders = new ArrayList<>();
 
-        mRefreshRunnable = new Runnable() {
+        mHandler = new RefreshList(this);
+        mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+
+        SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
+        int font = sharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
+        if (font == Constant.FontType.BaeDal_JUA.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                    .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+        } else if (font == Constant.FontType.KOPUB_Dotum.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                    .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+        } else {
+            Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFolderList = null;
+        mFolderAdaptor = null;
+        if (!mFolders.isEmpty()) {
+            mFolders.clear();
+        }
+        mFolders = null;
+        mContextThis = null;
+        mEditText = null;
+        mNewFolderName = null;
+        mContextView = null;
+        mHandler = null;
+    }
+
+    /**
+     * 폴더의 타입을 확인한다.
+     * @param _file 폴더
+     * @return 타입
+     */
+    private Constant.FolderType checkFolderType(final File _file) {
+        if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
+            return Constant.FolderType.Default;
+        }
+        return Constant.FolderType.Custom;
+    }
+
+    /**
+     * 폴더를 삭제하는 메소드
+     * @param _index 삭제할 폴더의 인덱스
+     */
+    private void deleteFolder(final int _index) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.folder_dialog_title_delete);
+        dialog.setMessage(R.string.folder_dialog_message_question_delete);
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(DialogInterface _dialog, int _which) {
+                if (_which == AlertDialog.BUTTON_POSITIVE) {
+                    File file = new File(mFolders.get(_index).mFolderPath);
+                    if (file.exists()) {
+                        if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
+                            for (File inFile : file.listFiles()) {
+                               if (inFile.delete()) {
+                                   TestLog.Tag("Folder").Logging(TestLog.LogType.ERROR, inFile.getName() + " 제거완료");
+                               } else {
+                                   TestLog.Tag("Folder").Logging(TestLog.LogType.ERROR, inFile.getName() + " 제거실패");
+                               }
+                            }
+                            if (file.delete()) {
+                                Snackbar.make(mContextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
+                                mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                            }
+                        } else {
+                            Snackbar.make(mContextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Snackbar.make(mContextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+                _dialog.dismiss();
+            }
+        };
+        dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
+        dialog.setPositiveButton(R.string.folder_dialog_button_delete, clickListener);
+        dialog.show();
+    }
+
+    private void handleMessage(Message _message) {
+        int what = _message.what;
+        switch (what) {
+            case Constant.HANDLER_REFRESH_LIST: {
                 File file = new File(Constant.APP_INTERNAL_URL);
                 File files[] = file.listFiles(new FileFilter() {
                     @Override
@@ -169,100 +267,23 @@ public class FolderActivity extends AppCompatActivity
                     });
                 }
                 mFolderAdaptor.notifyDataSetChanged();
+                break;
             }
-        };
-
-        runOnUiThread(mRefreshRunnable);
-
-        SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
-        int font = sharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
-        switch (font) {
-            case Constant.FONT_DEFAULT:
-                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-                break;
-            case Constant.FONT_BAEDAL_JUA:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
-                break;
-            case Constant.FONT_KOPUB_DOTUM:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
-                break;
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFolderList = null;
-        mFolderAdaptor = null;
-        if (!mFolders.isEmpty()) {
-            mFolders.clear();
+    static class RefreshList extends Handler {
+        private final WeakReference<FolderActivity> mActivity;
+        RefreshList(FolderActivity _activity) {
+            mActivity = new WeakReference<>(_activity);
         }
-        mFolders = null;
-        mContextThis = null;
-        mRefreshRunnable = null;
-        mEditText = null;
-        mNewFolderName = null;
-        mContextView = null;
-    }
 
-    /**
-     * 폴더의 타입을 확인한다.
-     * @param _file 폴더
-     * @return 타입
-     */
-    private Constant.FolderType checkFolderType(final File _file) {
-        if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
-            return Constant.FolderType.Default;
-        }
-        return Constant.FolderType.Custom;
-    }
-
-    /**
-     * 폴더를 삭제하는 메소드
-     * @param _index 삭제할 폴더의 인덱스
-     */
-    private void deleteFolder(final int _index) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(R.string.folder_dialog_title_delete);
-        dialog.setMessage(R.string.folder_dialog_message_question_delete);
-        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface _dialog, int _which) {
-                if (_which == AlertDialog.BUTTON_POSITIVE) {
-                    File file = new File(mFolders.get(_index).mFolderPath);
-                    if (file.exists()) {
-                        if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
-                            for (File inFile : file.listFiles()) {
-                               if (inFile.delete()) {
-                                   TestLog.Tag("Folder").Logging(TestLog.LogType.ERROR, inFile.getName() + " 제거완료");
-                               } else {
-                                   TestLog.Tag("Folder").Logging(TestLog.LogType.ERROR, inFile.getName() + " 제거실패");
-                               }
-                            }
-                            if (file.delete()) {
-                                Snackbar.make(mContextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
-                                runOnUiThread(mRefreshRunnable);
-                            }
-                        } else {
-                            Snackbar.make(mContextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Snackbar.make(mContextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
-                    }
-                }
-                _dialog.dismiss();
+        @Override
+        public void handleMessage(Message msg) {
+            FolderActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
             }
-        };
-        dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
-        dialog.setPositiveButton(R.string.folder_dialog_button_delete, clickListener);
-        dialog.show();
+        }
     }
 }

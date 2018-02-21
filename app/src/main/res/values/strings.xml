@@ -66,7 +66,6 @@
     <string name="settings_information_version_title">Version</string>
     <string name="settings_information_version_summary">Program Version</string>
     <string name="filebrowser_dialog_alert_title">Warning</string>
-    <string name="filebrowser_dialog_alert_context">This file goes over 1 MB.\nWould you like to open it?</string>
     <string name="settings_font_fontsize">Font Size</string>
     <string name="settings_dialog_font_context">Changing Font size affects only the note screen.</string>
     <string name="settings_font_fonttype">Font type(Custom Font)</string>
@@ -101,7 +100,7 @@
     <string name="settings_help_memo_savelength_context">The maximum length of the letter is unspecified.\n\" Up to 500,000 characters in English, \" and \" 250,000 characters in Korean letters, \" will be saved.\nHowever, if you pass beyond this, you will not be able to guarantee stability.</string>
     <string name="settings_help_memo_fontcolor_context">Color color is not supported for \"after update list\".\nInstead, the theme updates are scheduled to be included with the theme.</string>
     <string name="settings_help_memo_edit">Edit Memo</string>
-    <string name="settings_help_memo_edit_context">Press the \" Edit button \" on the top right to enter the correction mode.\nOnce you have modified it, press and hold the \" Save button \" button on the top right.\nThe file will then be stored in the \" UTF-8 \" format.\n(However, if the open file is over 500 KB, it can not be edited.)</string>
+    <string name="settings_help_memo_edit_context">Press the \" Edit button \" on the top right to enter the correction mode.\nOnce you have modified it, press and hold the \" Save button \" button on the top right.\nThe file will then be stored in the \" UTF-8 \" format.\n</string>
     <string name="settings_help_main_openfolder">Open Folder</string>
     <string name="settings_help_main_openfolder_context">Press the \" Open Folder \" button on the top left corner to view the notes contained in that folder.</string>
     <string name="settings_help_title_ect">ETC.</string>
@@ -174,7 +173,7 @@
     <string name="settings_expfunc_enhanceIO_Line_summary">Sets the number of sentences that are loaded at a time.</string>
     <string name="settings_dialog_expfunc_enhanceIO_Line">Recommended : 100 ~ 300</string>
     <string name="settings_help_etc_fontbroken">Font Garbled</string>
-    <string name="settings_help_etc_fontbroken_context">Depending on the encoding method, the file may appear to be garbled.\nOpen the garbled file by opening the " Change Print Format " by pressing the menu button (...) in the upper right corner of the right.</string>
+    <string name="settings_help_etc_fontbroken_context">Depending on the encoding method, the file may appear to be garbled.\nOpen the garbled file by opening the " Change Print Format " by pressing the menu button (&#8230;) in the upper right corner of the right.</string>
     <string name="memo_txtProg_title">Search Rate</string>
     <string name="memo_title_newWidgetMemo">For Widget</string>
     <string name="memo_title_widget">Widget Memo</string>

@@ -1,3 +1,8 @@
+## Update 2018.2.21
+```
+ 1) TextManager version up (1.0 → 2.0)
+ 2) Speed improvement of reaction
+```
 ## Update 2018.2.2 - Build 1.5.0
 ```
  1) Activate the tutorial page

@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 24
-        versionName "1.5.1"
-        //versionName "개발자 버전"
+//        versionName "1.5.1"
+        versionName "1.5.2.Dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //vectorDrawables.useSupportLibrary = true
     }

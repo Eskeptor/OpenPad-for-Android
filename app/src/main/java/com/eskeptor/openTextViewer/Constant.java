@@ -27,6 +27,7 @@ public class Constant {
     public static final String APP_EXPERIMENT_ENHANCEIO = "experiment_enhanceIO_Pref";
     public static final String APP_FONT = "font_Pref";
     public static final String APP_VIEW_IMAGE = "isViewImage_Pref";
+    public static final String APP_TEXT_LINES = "textLines_Pref";
 
     public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
     public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
@@ -123,12 +124,19 @@ public class Constant {
     public static final String DATE_FORMAT_MAIN_USA = "MM/dd/yyyy hh:mm a";
     public static final String DATE_FORMAT_MAIN_UK = "dd/MM/yyyy hh:mm a";
 
-    /*public static final int BROWSER_TYPE_OPEN_EXTERNAL = 1;
-    public static final int BROWSER_TYPE_SAVE_EXTERNAL_NONE_OPENEDFILE = 2;*/
+    public enum FontType {
+        Default(0), BaeDal_JUA(1), KOPUB_Dotum(2);
 
-    public static final int FONT_DEFAULT = 0;
-    public static final int FONT_BAEDAL_JUA = 1;
-    public static final int FONT_KOPUB_DOTUM = 2;
+        private final int value;
+        FontType(final int _value) {
+            value = _value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public static final int HANDLER_REFRESH_LIST = 1;
 
     public enum BrowserType {
         OpenExternal(1), SaveExternalOpenedFile(2);

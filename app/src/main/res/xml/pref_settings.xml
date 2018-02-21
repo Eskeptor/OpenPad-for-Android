@@ -48,12 +48,6 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_separator_expfunc">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:title="@string/settings_expfunc_enhanceIO_title"
-            android:summary="@string/settings_expfunc_enhanceIO_summary"
-            android:key="settings_key_enhanceIO"/>
         <Preference
             android:enabled="false"
             android:key="settings_key_enhanceIO_Line"

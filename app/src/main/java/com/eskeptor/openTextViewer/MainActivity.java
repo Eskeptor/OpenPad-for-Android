@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,6 +32,7 @@ import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.*;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -52,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mCurFolderGridView;
     private MainFileAdaptor mCurFileAdapter;
     private ArrayList<MainFileObject> mCurFolderFileList;
-    private Runnable mRefreshListRunnable;
     private Context mContextThis;
     private View mContextView;
     private FloatingActionButton mFloatingActionButton;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private int mFontStyle;
     private int mPrevFontStyle;
     private boolean mIsViewImage;
+
+    private RefreshList mHandler;
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case Constant.REQUEST_CODE_PERMISSION_GRANT: {
-                    runOnUiThread(mRefreshListRunnable);
+                    mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
                     checkFirstExcecute();
                     adMob();
                     break;
@@ -125,9 +128,11 @@ public class MainActivity extends AppCompatActivity {
         mContextView = findViewById(R.id.content_main);
 
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
-        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
         mPrevFontStyle = mFontStyle;
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
+
+        mHandler = new RefreshList(this);
 
         // 폴더 아이콘
         Drawable folderIcon;
@@ -208,51 +213,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 메인 페이지의 메모+그림 리스트용 Runnable
-        mRefreshListRunnable = new Runnable() {
-            @Override
-            public void run() {
-                defaultFolderCheck();
-                refreshList();
-                mCurFileAdapter = new MainFileAdaptor(mCurFolderFileList, mSharedPref);
-                mCurFileAdapter.setClickAction(new ClickAction() {
-                    @Override
-                    public void onClick(View _view, int _position) {
-                        Intent intent = new Intent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        if (mCurFolderFileList.get(_position).mFileType == Constant.FileType.Image) {
-                            intent.setClass(mContextThis, PaintActivity.class);
-                        } else {
-                            intent.setClass(mContextThis, MemoActivity.class);
-                        }
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mCurFolderFileList.get(_position).mFilePath);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, mCurFolderFileList.get(_position).mFileTitle);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                    }
-
-                    @Override
-                    public void onLongClick(View _view, int _position) {
-                        deleteFile(_position);
-                    }
-                });
-                mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-                mLayoutManager.invalidateSpanAssignments();
-                mCurFolderGridView.setHasFixedSize(true);
-                mCurFolderGridView.setLayoutManager(mLayoutManager);
-                mCurFolderGridView.setAdapter(mCurFileAdapter);
-                mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(10, 5, 5));
-            }
-        };
-
         // 튜토리얼 페이지
         if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
             Intent intent = new Intent();
             intent.setClass(mContextThis, FirstStartActivity.class);
             startActivityForResult(intent, Constant.REQUEST_CODE_PERMISSION_GRANT);
         } else {
-            runOnUiThread(mRefreshListRunnable);
+            mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
             checkFirstExcecute();
             adMob();
         }
@@ -261,18 +228,14 @@ public class MainActivity extends AppCompatActivity {
 //        checkPermission();
 
         // 설정의 폰트에 맞게 폰트 변환
-        switch (mFontStyle) {
-            case Constant.FONT_DEFAULT:
-                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-                break;
-            case Constant.FONT_BAEDAL_JUA:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
-                break;
-            case Constant.FONT_KOPUB_DOTUM:
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
-                break;
+        if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                    .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+        } else if (mFontStyle == Constant.FontType.KOPUB_Dotum.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                    .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+        } else {
+            Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
         }
     }
 
@@ -293,31 +256,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
-        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
 
         if (mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
-            File folderCheck = new File(mCurFolderURL);
-            if (!folderCheck.exists()) {
-                mCurFolderURL = Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME;
+            if (mCurFolderURL != null) {
+                File folderCheck = new File(mCurFolderURL);
+                if (!folderCheck.exists()) {
+                    mCurFolderURL = Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME;
+                }
+                refreshList();
+                mCurFileAdapter.notifyDataSetChanged();
             }
-            refreshList();
-            mCurFileAdapter.notifyDataSetChanged();
         }
 
         if(mPrevFontStyle != mFontStyle) {
             mPrevFontStyle = mFontStyle;
-            switch (mFontStyle) {
-                case Constant.FONT_DEFAULT:
-                    Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-                    break;
-                case Constant.FONT_BAEDAL_JUA:
-                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
-                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
-                    break;
-                case Constant.FONT_KOPUB_DOTUM:
-                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
-                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
-                    break;
+            if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+            } else if (mFontStyle == Constant.FontType.KOPUB_Dotum.getValue()) {
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+            } else {
+                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
             }
             recreate();
         }
@@ -338,7 +299,6 @@ public class MainActivity extends AppCompatActivity {
         if (!mCurFolderFileList.isEmpty())
             mCurFolderFileList.clear();
         mCurFolderFileList = null;
-        mRefreshListRunnable = null;
         mContextThis = null;
         mSharedPref = null;
         mSharedPrefEditor = null;
@@ -550,5 +510,60 @@ public class MainActivity extends AppCompatActivity {
                 return d2.compareTo(d1);
             }
         });
+    }
+
+    private void handleMessage(Message _message) {
+        int what = _message.what;
+        switch (what) {
+            case Constant.HANDLER_REFRESH_LIST: {
+                defaultFolderCheck();
+                refreshList();
+                mCurFileAdapter = new MainFileAdaptor(mCurFolderFileList, mSharedPref);
+                mCurFileAdapter.setClickAction(new ClickAction() {
+                    @Override
+                    public void onClick(View _view, int _position) {
+                        Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        if (mCurFolderFileList.get(_position).mFileType == Constant.FileType.Image) {
+                            intent.setClass(mContextThis, PaintActivity.class);
+                        } else {
+                            intent.setClass(mContextThis, MemoActivity.class);
+                        }
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mCurFolderFileList.get(_position).mFilePath);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, mCurFolderFileList.get(_position).mFileTitle);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                    }
+
+                    @Override
+                    public void onLongClick(View _view, int _position) {
+                        deleteFile(_position);
+                    }
+                });
+                mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+                mLayoutManager.invalidateSpanAssignments();
+                mCurFolderGridView.setHasFixedSize(true);
+                mCurFolderGridView.setLayoutManager(mLayoutManager);
+                mCurFolderGridView.setAdapter(mCurFileAdapter);
+                mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(10, 5, 5));
+                break;
+            }
+        }
+    }
+
+    static class RefreshList extends Handler {
+        private final WeakReference<MainActivity> mActivity;
+        RefreshList(MainActivity _activity) {
+            mActivity = new WeakReference<>(_activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
+        }
     }
 }

@@ -738,7 +738,8 @@ public class PaintActivity extends AppCompatActivity {
             mCanvas = null;
             mCanvasPaint = null;
             mBrushPaint = null;
-            mBrushObject.init();
+            if (mBrushObject != null)
+                mBrushObject.init();
             mFilename = null;
         }
 

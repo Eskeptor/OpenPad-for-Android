@@ -9,7 +9,8 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 import layout.MemoWidget;
@@ -46,8 +48,8 @@ public class MemoActivity extends AppCompatActivity {
     private String mOpenFileName;
     private String mOpenFolderURL;
     private int mMemoIndex;      // 새로만든 메모에게 붙여줄 번호
-    private boolean mIsEnhanced;    // 향상된 기능 사용할것인지
     private Constant.EncodeType mEncodeType;
+    private boolean mIsDivided;
 
     // 위젯관련
     private boolean mIsWidget;
@@ -58,15 +60,12 @@ public class MemoActivity extends AppCompatActivity {
     private File mLastLog;               // 로그 파일(새로메모를 만들시 붙여줄 번호)
     private ScrollView mScrollView;      // 텍스트 스크롤
     private Context mContextThis;       // context용
-    private View mContextView;
 
     // 향상된 불러오기의 하단 버튼
     private ScrollView mBtnLayout;
     private Button mBtnPrev;
     private Button mBtnNext;
     private Button mBtnTop;
-    private Runnable mNextRunnable;
-    private Runnable mPrevRunnable;
 
     // 향상된 불러오기의 하단 버튼2
     private ProgressBar mProgCurrent;
@@ -90,8 +89,11 @@ public class MemoActivity extends AppCompatActivity {
     // 자동 포커스 끄기를 위한 InputMethodManager
     private InputMethodManager mInputMethodManager;
 
-    // 폰트 스타일
-    private int mFontStyle;
+    // 파일 핸들러(for TextManager)
+    private FileIOHandler mHandler;
+    private static final int HANDLER_FILE_OPENED = 1;
+    private static final int HANDLER_PREV_PAGE = 2;
+    private static final int HANDLER_NEXT_PAGE = 3;
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -113,13 +115,6 @@ public class MemoActivity extends AppCompatActivity {
                     mEditMenu.setIcon(mDrawableModified);
                     mInputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
                 } else {
-                    /*if (mIsEnhanced) {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(MemoActivity.this);
-                        alert.setTitle(R.string.settings_dialog_expfunc_title);
-                        alert.setMessage(R.string.menu_memo_warning_modify);
-                        alert.setPositiveButton(R.string.settings_dialog_info_ok, null);
-                        alert.show();
-                    }*/
                     mEditText.setFocusable(true);
                     mEditText.setFocusableInTouchMode(true);
                     mEditText.requestFocus();
@@ -133,12 +128,14 @@ public class MemoActivity extends AppCompatActivity {
                 alert.setItems(R.array.menu_memo_charset, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface _dialog, int _which) {
-                        String txtData;
+                        String txtData = "오류";
                         if (_which == 0)
                             mEncodeType = Constant.EncodeType.EUCKR;
                         else
                             mEncodeType = Constant.EncodeType.UTF8;
-                        txtData = mTxtManager.openText(mOpenFileURL, 0, mIsEnhanced, mEncodeType);
+                        if (mTxtManager.openText(mOpenFileURL)) {
+                            txtData = mTxtManager.getText(TextManager.PAGE_NONE, mEncodeType);
+                        }
                         mEditText.setText(txtData);
                         _dialog.dismiss();
                     }
@@ -156,20 +153,20 @@ public class MemoActivity extends AppCompatActivity {
                 case Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE: {
                     String folderURL = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
                     String fileName = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
-                    if (mTxtManager.saveText(mEditText.getText().toString(), folderURL + fileName, mIsEnhanced)) {
-                        Snackbar.make(mContextView, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName), Snackbar.LENGTH_SHORT).show();
+                    if (mTxtManager.saveText(folderURL + fileName, mEditText.getText().toString())) {
+                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName));
                     } else {
-                        Snackbar.make(mContextView, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName), Snackbar.LENGTH_SHORT).show();
+                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName));
                     }
                     break;
                 }
                 case Constant.REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE: {
                     String folderURL = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FOLDERURL);
                     String fileName = _data.getStringExtra(Constant.INTENT_EXTRA_MEMO_SAVE_FILEURL) + Constant.FILE_TEXT_EXTENSION;
-                    if (mTxtManager.saveText(mEditText.getText().toString(), folderURL + fileName, mIsEnhanced)) {
-                        Snackbar.make(mContextView, R.string.memo_toast_saveSuccess_internal, Snackbar.LENGTH_SHORT).show();
+                    if (mTxtManager.saveText(folderURL + fileName, mEditText.getText().toString())) {
+                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, String.format(getResources().getString(R.string.memo_toast_saveSuccess_external), fileName));
                     } else {
-                        Snackbar.make(mContextView, R.string.memo_toast_saveFail_internal, Snackbar.LENGTH_SHORT).show();
+                        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, String.format(getResources().getString(R.string.memo_toast_saveFail_external), fileName));
                     }
                     break;
                 }
@@ -185,13 +182,13 @@ public class MemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_memo);
 
         mContextThis = getApplicationContext();
-        mContextView = findViewById(R.id.activity_memo);
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mEditText = (EditText) findViewById(R.id.memo_etxtMain);
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE));
         mTxtManager = new TextManager();
+        mTxtManager.setLines(mSharedPref.getInt(Constant.APP_TEXT_LINES, Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
         mScrollView = (ScrollView) findViewById(R.id.memo_scroll);
         mBtnLayout = (ScrollView) findViewById(R.id.memo_layoutButton);
         mEncodeType = Constant.EncodeType.UTF8;
@@ -201,12 +198,11 @@ public class MemoActivity extends AppCompatActivity {
         mOpenFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         mOpenFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
         mOpenFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
-        mIsEnhanced = mSharedPref.getBoolean(Constant.APP_EXPERIMENT_ENHANCEIO, false);
         mIsWidget = getIntent().getBooleanExtra(Constant.INTENT_EXTRA_MEMO_ISWIDGET, false);
         mWidgetID = getIntent().getIntExtra(Constant.INTENT_EXTRA_WIDGET_ID, 999);
         mSharedPref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mWidgetID, MODE_PRIVATE);
         mWidgetID = mSharedPref.getInt(Constant.WIDGET_ID, 0);
-        mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FONT_DEFAULT);
+        int fontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
 
         if (mOpenFileURL == null) {
             mLastLog = new File(mOpenFolderURL + File.separator + Constant.FILE_LOG_COUNT);
@@ -239,15 +235,11 @@ public class MemoActivity extends AppCompatActivity {
                 if (tmpFile.exists()) {
                     setTitle(R.string.memo_title_widget);
                     mOpenFileURL = tmpFile.getPath();
-                    mNextRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            String txtData = mTxtManager.openText(mOpenFileURL, 0, mIsEnhanced, mEncodeType);
-                            mEditText.setText(txtData);
-                            mEditText.setFocusable(false);
-                        }
-                    };
-                    runOnUiThread(mNextRunnable);
+                    if (mTxtManager.openText(mOpenFileURL)) {
+                        String txtData = mTxtManager.getText(TextManager.PAGE_NONE, mEncodeType);
+                        mEditText.setText(txtData);
+                        mEditText.setFocusable(false);
+                    }
                     mBtnLayout.setVisibility(View.GONE);
                 } else {
                     setTitle(getString(R.string.memo_title_newFile) + "(" + getString(R.string.memo_title_newWidgetMemo) + ")");
@@ -269,144 +261,109 @@ public class MemoActivity extends AppCompatActivity {
             }
         } else {
             setTitle(mOpenFileName);
+            mProgCurrent = (ProgressBar) findViewById(R.id.memo_Prog);
+            mTxtProgCur = (TextView) findViewById(R.id.memo_txtProg_cur);
 
-            if (mIsEnhanced) {
-                mProgCurrent = (ProgressBar) findViewById(R.id.memo_Prog);
-                mTxtProgCur = (TextView) findViewById(R.id.memo_txtProg_cur);
-                mNextRunnable = new Runnable() {
+            mHandler = new FileIOHandler(this);
+
+            if (mTxtManager.openText(mOpenFileURL)) {
+                TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "파일 열림");
+                mHandler.sendEmptyMessage(HANDLER_FILE_OPENED);
+            }
+
+            mIsDivided = getIntent().getBooleanExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, false);
+
+            if (mIsDivided) {
+                mBtnLayout.setVisibility(View.VISIBLE);
+                mBtnPrev = (Button) findViewById(R.id.memo_btnPrev);
+                mBtnTop = (Button) findViewById(R.id.memo_btnTop);
+                mBtnNext = (Button) findViewById(R.id.memo_btnNext);
+
+                mScrollView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void run() {
-                        mTxtManager.setLines(mSharedPref.getInt("Lines", Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
-                        String txtData = mTxtManager.openText(mOpenFileURL, Constant.MEMO_BLOCK_NEXT, mIsEnhanced, mEncodeType);
-                        mEditText.setText(txtData);
-                        mEditText.setFocusable(false);
-                        mProgCurrent.setProgress((int) mTxtManager.getProgress());
-                        String cur = String.format(Locale.getDefault(), "%.2f", mTxtManager.getProgress()) + "%";
-                        mTxtProgCur.setText(cur);
+                    public boolean onTouch(View v, MotionEvent event) {
+                        int action = MotionEventCompat.getActionMasked(event);
+
+                        if (event.getPointerCount() > 1) {
+
+                            return mGestureDetectorCompat.onTouchEvent(event);
+                        }
+
+                        if (action == 1) {
+                            mIsFirstSwipe = true;
+                            if (mTouchYposStart - mTouchYposEnd > 0)
+                                mBtnLayout.scrollTo((int) mBtnLayout.getX(), mBtnLayout.getBottom());
+                            else
+                                mBtnLayout.scrollTo((int) mBtnLayout.getX(), 0);
+                        }
+                        return false;
                     }
-                };
-                mPrevRunnable = new Runnable() {
+                });
+
+                mBtnPrev.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        mTxtManager.setLines(mSharedPref.getInt("Lines", Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
-                        String txtData = mTxtManager.openText(mOpenFileURL, Constant.MEMO_BLOCK_PREV, mIsEnhanced, mEncodeType);
-                        mEditText.setText(txtData);
-                        mEditText.setFocusable(false);
-                        mProgCurrent.setProgress((int) mTxtManager.getProgress());
-                        String cur = String.format(Locale.getDefault(), "%.2f", mTxtManager.getProgress()) + "%";
-                        mTxtProgCur.setText(cur);
+                    public void onClick(View v) {
+                        mHandler.sendEmptyMessage(HANDLER_PREV_PAGE);
+                        mScrollView.scrollTo(0, 0);
                     }
-                };
-
-                runOnUiThread(mNextRunnable);
-
-                boolean divide = getIntent().getBooleanExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, false);
-
-                if (divide) {
-                    mBtnLayout.setVisibility(View.VISIBLE);
-                    mBtnPrev = (Button) findViewById(R.id.memo_btnPrev);
-                    mBtnTop = (Button) findViewById(R.id.memo_btnTop);
-                    mBtnNext = (Button) findViewById(R.id.memo_btnNext);
-
-                    mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            int action = MotionEventCompat.getActionMasked(event);
-
-                            if (event.getPointerCount() > 1) {
-
-                                return mGestureDetectorCompat.onTouchEvent(event);
-                            }
-
-                            if (action == 1) {
-                                mIsFirstSwipe = true;
-                                if (mTouchYposStart - mTouchYposEnd > 0)
-                                    mBtnLayout.scrollTo((int) mBtnLayout.getX(), mBtnLayout.getBottom());
-                                else
-                                    mBtnLayout.scrollTo((int) mBtnLayout.getX(), 0);
-                            }
-                            return false;
-                        }
-                    });
-
-                    mBtnPrev.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            runOnUiThread(mPrevRunnable);
-                            mScrollView.scrollTo(0, 0);
-                            buttonEnabler();
-                        }
-                    });
-                    mBtnTop.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mScrollView.smoothScrollTo(0, 0);
-                        }
-                    });
-                    mBtnNext.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            runOnUiThread(mNextRunnable);
-                            mScrollView.scrollTo(0, 0);
-                            buttonEnabler();
-                        }
-                    });
-
-                    mGestureDetectorCompat = new GestureDetectorCompat(mContextThis, new GestureDetector.OnGestureListener() {
-                        @Override
-                        public boolean onDown(MotionEvent e) {
-                            return true;
-                        }
-
-                        @Override
-                        public void onShowPress(MotionEvent e) {
-                        }
-
-                        @Override
-                        public boolean onSingleTapUp(MotionEvent e) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                            mTouchYposEnd = e2.getY();
-
-                            if (mIsFirstSwipe) {
-                                mTouchYposStart = e2.getY();
-                                mIsFirstSwipe = false;
-                            }
-                            return true;
-                        }
-
-                        @Override
-                        public void onLongPress(MotionEvent e) {
-
-                        }
-
-                        @Override
-                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                            return true;
-                        }
-
-                    });
-
-                    mBtnPrev.setEnabled(false);
-                    if (!mTxtManager.isNext()) {
-                        mBtnNext.setEnabled(false);
+                });
+                mBtnTop.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mScrollView.smoothScrollTo(0, 0);
                     }
-                } else {
-                    mBtnLayout.setVisibility(View.GONE);
+                });
+                mBtnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mHandler.sendEmptyMessage(HANDLER_NEXT_PAGE);
+                        mScrollView.scrollTo(0, 0);
+                    }
+                });
+
+                mGestureDetectorCompat = new GestureDetectorCompat(mContextThis, new GestureDetector.OnGestureListener() {
+                    @Override
+                    public boolean onDown(MotionEvent e) {
+                        return true;
+                    }
+
+                    @Override
+                    public void onShowPress(MotionEvent e) {
+                    }
+
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                        mTouchYposEnd = e2.getY();
+
+                        if (mIsFirstSwipe) {
+                            mTouchYposStart = e2.getY();
+                            mIsFirstSwipe = false;
+                        }
+                        return true;
+                    }
+
+                    @Override
+                    public void onLongPress(MotionEvent e) {
+
+                    }
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        return true;
+                    }
+
+                });
+
+                mBtnPrev.setEnabled(false);
+                if (mTxtManager.getCurPage() == mTxtManager.getMaxPage() - 1) {
+                    mBtnNext.setEnabled(false);
                 }
             } else {
-                mNextRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        String txtData = mTxtManager.openText(mOpenFileURL, 0, mIsEnhanced, mEncodeType);
-                        mEditText.setText(txtData);
-                        mEditText.setFocusable(false);
-                    }
-                };
-                runOnUiThread(mNextRunnable);
                 mBtnLayout.setVisibility(View.GONE);
             }
 
@@ -418,19 +375,16 @@ public class MemoActivity extends AppCompatActivity {
                 mDrawableModifiedComplete = getResources().getDrawable(R.drawable.ic_save_white_24dp);
             }
 
-            switch (mFontStyle) {
-                case Constant.FONT_DEFAULT:
-                    Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-                    break;
-                case Constant.FONT_BAEDAL_JUA:
-                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
-                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
-                    break;
-                case Constant.FONT_KOPUB_DOTUM:
-                    Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
-                            .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
-                    break;
+            if (fontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+            } else if (fontStyle == Constant.FontType.KOPUB_Dotum.getValue()) {
+                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+            } else {
+                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
             }
+
         }
     }
 
@@ -451,8 +405,6 @@ public class MemoActivity extends AppCompatActivity {
         mEditText = null;
         mTxtManager.initManager();
         mTxtManager = null;
-        mNextRunnable = null;
-        mPrevRunnable = null;
         mBtnLayout = null;
         mBtnPrev = null;
         mBtnNext = null;
@@ -472,7 +424,7 @@ public class MemoActivity extends AppCompatActivity {
         mOpenFileURL = null;
         mOpenFileName = null;
         mOpenFolderURL = null;
-        mContextView = null;
+        mHandler = null;
     }
 
     @Override
@@ -490,7 +442,7 @@ public class MemoActivity extends AppCompatActivity {
                     }
                 }
                 mOpenFileURL = mOpenFolderURL + File.separator + (mWidgetID + Constant.FILE_TEXT_EXTENSION);
-                if (mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, false)) {
+                if (mTxtManager.saveText(mOpenFileURL, mEditText.getText().toString())) {
                     TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "위젯내용 저장");
                 } else {
                     TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "위젯내용 저장불가");
@@ -527,8 +479,8 @@ public class MemoActivity extends AppCompatActivity {
                                                 startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
                                                 break;
                                             case Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL:
-                                                if (mTxtManager.isFileopen()) {
-                                                    if (mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, mIsEnhanced)) {
+                                                if (mTxtManager.isFileOpened()) {
+                                                    if (mTxtManager.saveText(mOpenFileURL, mEditText.getText().toString())) {
                                                         TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "내용 저장 완료(Internal)");
                                                     } else {
                                                         TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "내용 저장 불가(Internal)");
@@ -541,7 +493,7 @@ public class MemoActivity extends AppCompatActivity {
                                                         mOpenFileURL = mOpenFolderURL + File.separator + (mMemoIndex + Constant.FILE_TEXT_EXTENSION);
                                                         tmpFile = new File(mOpenFileURL);
                                                     }
-                                                    if (mTxtManager.saveText(mEditText.getText().toString(), mOpenFileURL, mIsEnhanced)) {
+                                                    if (mTxtManager.saveText(mOpenFileURL, mEditText.getText().toString())) {
                                                         TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "내용 저장 완료(Internal)");
                                                     } else {
                                                         TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "내용 저장 불가(Internal)");
@@ -556,7 +508,7 @@ public class MemoActivity extends AppCompatActivity {
                                 });
                                 alert.show();
                             } else {
-                                if (mTxtManager.saveText(mEditText.getText().toString(), mTxtManager.getFileopenName(), mIsEnhanced)) {
+                                if (mTxtManager.saveText(mOpenFileURL, mEditText.getText().toString())) {
                                     TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "내용 저장 완료(Internal)");
                                 } else {
                                     TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "내용 저장 불가(Internal)");
@@ -606,7 +558,7 @@ public class MemoActivity extends AppCompatActivity {
      */
     private void writeLog() {
         try {
-            if (!mTxtManager.isFileopen()) {
+            if (!mTxtManager.isFileOpened()) {
                 if (LogManager.saveLog(Integer.toString(mIsWidget ? mWidgetID : mMemoIndex), mLastLog.getPath())) {
                     TestLog.Tag("MemoActivity(writeLog)").Logging(TestLog.LogType.DEBUG, "로그 저장 완료");
                 } else {
@@ -622,16 +574,65 @@ public class MemoActivity extends AppCompatActivity {
      * 이전, 이후 버튼 만들기(향상된 파일열기 기능)
      */
     private void buttonEnabler() {
-        if (!mTxtManager.isPrev()) {
+        if (mTxtManager.getCurPage() <= 0) {
             mBtnPrev.setEnabled(false);
         } else {
             mBtnPrev.setEnabled(true);
         }
 
-        if (!mTxtManager.isNext()) {
+        if (mTxtManager.getCurPage() >= mTxtManager.getMaxPage() - 1) {
             mBtnNext.setEnabled(false);
         } else {
             mBtnNext.setEnabled(true);
+        }
+    }
+
+    private void handleMessage(Message _msg) {
+        switch (_msg.what) {
+            case HANDLER_FILE_OPENED: {
+                String txtData = mTxtManager.getText(TextManager.PAGE_NONE, mEncodeType);
+                mEditText.setText(txtData);
+                mEditText.setFocusable(false);
+                if (mIsDivided) {
+                    buttonEnabler();
+                    mProgCurrent.setProgress((int)mTxtManager.getProgress());
+                    mTxtProgCur.setText(String.format(Locale.getDefault() ,"%.2f", mTxtManager.getProgress()));
+                }
+                break;
+            }
+            case HANDLER_PREV_PAGE: {
+                String txtData = mTxtManager.getText(TextManager.PAGE_PREV, mEncodeType);
+                mEditText.setText(txtData);
+                mEditText.setFocusable(false);
+                buttonEnabler();
+                mProgCurrent.setProgress((int)mTxtManager.getProgress());
+                mTxtProgCur.setText(String.format(Locale.getDefault() ,"%.2f", mTxtManager.getProgress()));
+                break;
+            }
+            case HANDLER_NEXT_PAGE: {
+                String txtData = mTxtManager.getText(TextManager.PAGE_NEXT, mEncodeType);
+                mEditText.setText(txtData);
+                mEditText.setFocusable(false);
+                buttonEnabler();
+                mProgCurrent.setProgress((int)mTxtManager.getProgress());
+                mTxtProgCur.setText(String.format(Locale.getDefault() ,"%.2f", mTxtManager.getProgress()));
+                break;
+            }
+        }
+    }
+
+    static class FileIOHandler extends Handler {
+        private final WeakReference<MemoActivity> mActivity;
+        FileIOHandler(MemoActivity _activity) {
+            mActivity = new WeakReference<>(_activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MemoActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
         }
     }
 }

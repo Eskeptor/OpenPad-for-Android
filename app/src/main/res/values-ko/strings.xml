@@ -65,7 +65,6 @@
     <string name="settings_information_version_title">버전</string>
     <string name="settings_information_version_summary">프로그램 버전</string>
     <string name="filebrowser_dialog_alert_title">경고</string>
-    <string name="filebrowser_dialog_alert_context">이 파일은 1MB를 넘습니다.\n그래도 여시겠습니까?</string>
     <string name="settings_font_fontsize">글씨 크기</string>
     <string name="settings_dialog_font_context">글씨크기 변경은 메모화면에만 영향을 미칩니다.</string>
     <string name="settings_font_fonttype">글씨 종류 선택(커스텀 폰트)</string>
@@ -100,7 +99,7 @@
     <string name="settings_help_memo_savelength_context">최대 글자 길이는 정해져있지 않습니다.\n\"영어로 500,000자\", \"한글로 250,000자\" 까지는 안정적이게 저장이 됩니다.\n하지만 이 이상 글자수가 넘어가게 되면 안정성을 보장할 수 없습니다.</string>
     <string name="settings_help_memo_fontcolor_context">"글자 색상은 지원 예정사항에 없습니다.\n그 대신 테마 업데이트가 예정되어있기 때문에 테마와 함께 제공될 예정입니다.  "</string>
     <string name="settings_help_memo_edit">메모 수정</string>
-    <string name="settings_help_memo_edit_context">우측 상단의 \"수정버튼\"을 누르면 수정모드로 들어가게 됩니다.\n원하는 만큼 수정하고나서 우측 상단의 \"저장버튼\"을 누르면 저장합니다.\n이때 파일은 \"UTF-8\"형식으로 저장됩니다.\n(하지만 연파일이 500KB를 넘은 경우에는 수정할 수 없습니다.)</string>
+    <string name="settings_help_memo_edit_context">우측 상단의 \"수정버튼\"을 누르면 수정모드로 들어가게 됩니다.\n원하는 만큼 수정하고나서 우측 상단의 \"저장버튼\"을 누르면 저장합니다.\n이때 파일은 \"UTF-8\"형식으로 저장됩니다.\n</string>
     <string name="settings_help_main_openfolder">폴더 열기</string>
     <string name="settings_help_main_openfolder_context">좌측 상단의 \"폴더 열기\"버튼을 누르면 해당 폴더에 들어있는 메모를 볼 수 있습니다.</string>
     <string name="settings_help_title_ect">기타 사항</string>
@@ -165,7 +164,7 @@
     <string name="settings_expfunc_enhanceIO_Line_summary">한 번에 불러 오는 문장의 수를 설정합니다.</string>
     <string name="settings_dialog_expfunc_enhanceIO_Line">권장 : 100 ~ 200</string>
     <string name="settings_help_etc_fontbroken">글씨 깨짐</string>
-    <string name="settings_help_etc_fontbroken_context">인코딩 방식에 따라서 파일이 깨져보일수 있습니다.\n깨진 파일을 열어서 오른쪽 상단의 메뉴버튼(...)을 눌러서 \"출력 포멧 변경\"을 선택하여 인코딩을 변경해보세요.</string>
+    <string name="settings_help_etc_fontbroken_context">인코딩 방식에 따라서 파일이 깨져보일수 있습니다.\n깨진 파일을 열어서 오른쪽 상단의 메뉴버튼(&#8230;)을 눌러서 \"출력 포멧 변경\"을 선택하여 인코딩을 변경해보세요.</string>
     <string name="memo_txtProg_title">탐색률</string>
     <string name="memo_title_newWidgetMemo">위젯용</string>
     <string name="memo_title_widget">위젯 메모</string>
