@@ -50,6 +50,7 @@ public class FolderActivity extends AppCompatActivity
     private ListView mFolderList;                                    // 폴더 리스트
 
     private RefreshList mHandler;
+    private Thread mListThread;
 
     public boolean onCreateOptionsMenu(Menu _menu)
     {
@@ -77,7 +78,38 @@ public class FolderActivity extends AppCompatActivity
                             }
                             else {
                                 if (file.mkdir()) {
-                                    mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                                    if (mListThread != null) {
+                                        mListThread.interrupt();
+                                    }
+                                    mListThread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            File file = new File(Constant.APP_INTERNAL_URL);
+                                            File files[] = file.listFiles(new FileFilter() {
+                                                @Override
+                                                public boolean accept(File _pathname) {
+                                                    return _pathname.isDirectory();
+                                                }
+                                            });
+                                            mFoldersLength = files.length;
+
+                                            mFolders.clear();
+                                            for (int i = 0; i < mFoldersLength; i++) {
+                                                mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
+                                                    @Override
+                                                    public boolean accept(File _pathname) {
+                                                        return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                                                || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
+                                                    }
+                                                }).length, checkFolderType(files[i]), mContextThis));
+                                            }
+
+                                            // 파일 브라우저 연결
+                                            mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
+                                            mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                                        }
+                                    });
+                                    mListThread.start();
                                 }
                             }
                         }
@@ -115,7 +147,35 @@ public class FolderActivity extends AppCompatActivity
         mFolders = new ArrayList<>();
 
         mHandler = new RefreshList(this);
-        mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+        mListThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                File file = new File(Constant.APP_INTERNAL_URL);
+                File files[] = file.listFiles(new FileFilter() {
+                    @Override
+                    public boolean accept(File _pathname) {
+                        return _pathname.isDirectory();
+                    }
+                });
+                mFoldersLength = files.length;
+
+                mFolders.clear();
+                for (int i = 0; i < mFoldersLength; i++) {
+                    mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
+                        @Override
+                        public boolean accept(File _pathname) {
+                            return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                    || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
+                        }
+                    }).length, checkFolderType(files[i]), mContextThis));
+                }
+
+                // 파일 브라우저 연결
+                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
+                mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+            }
+        });
+        mListThread.start();
 
         SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
         int font = sharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
@@ -150,6 +210,10 @@ public class FolderActivity extends AppCompatActivity
         mNewFolderName = null;
         mContextView = null;
         mHandler = null;
+        if (mListThread != null) {
+            mListThread.interrupt();
+        }
+        mListThread = null;
     }
 
     /**
@@ -188,7 +252,38 @@ public class FolderActivity extends AppCompatActivity
                             }
                             if (file.delete()) {
                                 Snackbar.make(mContextView, R.string.folder_dialog_toast_delete, Snackbar.LENGTH_LONG).show();
-                                mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                                if (mListThread != null) {
+                                    mListThread.interrupt();
+                                }
+                                mListThread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        File file = new File(Constant.APP_INTERNAL_URL);
+                                        File files[] = file.listFiles(new FileFilter() {
+                                            @Override
+                                            public boolean accept(File _pathname) {
+                                                return _pathname.isDirectory();
+                                            }
+                                        });
+                                        mFoldersLength = files.length;
+
+                                        mFolders.clear();
+                                        for (int i = 0; i < mFoldersLength; i++) {
+                                            mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
+                                                @Override
+                                                public boolean accept(File _pathname) {
+                                                    return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                                            || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
+                                                }
+                                            }).length, checkFolderType(files[i]), mContextThis));
+                                        }
+
+                                        // 파일 브라우저 연결
+                                        mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
+                                        mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                                    }
+                                });
+                                mListThread.start();
                             }
                         } else {
                             Snackbar.make(mContextView, R.string.folder_toast_remove_defaultfolder, Snackbar.LENGTH_SHORT).show();
@@ -209,28 +304,6 @@ public class FolderActivity extends AppCompatActivity
         int what = _message.what;
         switch (what) {
             case Constant.HANDLER_REFRESH_LIST: {
-                File file = new File(Constant.APP_INTERNAL_URL);
-                File files[] = file.listFiles(new FileFilter() {
-                    @Override
-                    public boolean accept(File _pathname) {
-                        return _pathname.isDirectory();
-                    }
-                });
-                mFoldersLength = files.length;
-
-                mFolders.clear();
-                for (int i = 0; i < mFoldersLength; i++) {
-                    mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
-                        @Override
-                        public boolean accept(File _pathname) {
-                            return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
-                                    || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
-                        }
-                    }).length, checkFolderType(files[i]), mContextThis));
-                }
-
-                // 파일 브라우저 연결
-                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
                 if (mFolderAdaptor == null) {
                     mFolderAdaptor = new FolderAdaptor(FolderActivity.this, mFolders);
                     mFolderList.setAdapter(mFolderAdaptor);

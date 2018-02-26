@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mIsViewImage;
 
     private RefreshList mHandler;
+    private Thread mListThread;
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -110,7 +111,18 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case Constant.REQUEST_CODE_PERMISSION_GRANT: {
-                    mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                    if (mListThread != null) {
+                        mListThread.interrupt();
+                    }
+                    mListThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            defaultFolderCheck();
+                            refreshList();
+                            mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                        }
+                    });
+                    mListThread.start();
                     checkFirstExcecute();
                     adMob();
                     break;
@@ -159,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mCurFileAdapter.notifyDataSetChanged();
+                        if (mCurFileAdapter != null) {
+                            mCurFileAdapter.notifyDataSetChanged();
+                        }
                         mRefreshLayout.setRefreshing(false);
                     }
                 }, 500);
@@ -197,12 +211,23 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             }
                             default: {
-                                Intent intent = new Intent();
-                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent.setClass(mContextThis, PaintActivity.class);
-                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                                dialog.setTitle(R.string.main_dialog_restart_title_no);
+                                dialog.setMessage(R.string.main_dialog_image_alert);
+                                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent();
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                        intent.setClass(mContextThis, PaintActivity.class);
+                                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
+                                        startActivity(intent);
+                                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                                        dialog.dismiss();
+                                    }
+                                };
+                                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
+                                dialog.show();
                                 break;
                             }
                         }
@@ -219,13 +244,21 @@ public class MainActivity extends AppCompatActivity {
             intent.setClass(mContextThis, FirstStartActivity.class);
             startActivityForResult(intent, Constant.REQUEST_CODE_PERMISSION_GRANT);
         } else {
-            mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+            if (mListThread != null) {
+                mListThread.interrupt();
+            }
+            mListThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    defaultFolderCheck();
+                    refreshList();
+                    mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
+                }
+            });
+            mListThread.start();
             checkFirstExcecute();
             adMob();
         }
-
-        // 권한 체크
-//        checkPermission();
 
         // 설정의 폰트에 맞게 폰트 변환
         if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
@@ -264,8 +297,10 @@ public class MainActivity extends AppCompatActivity {
                 if (!folderCheck.exists()) {
                     mCurFolderURL = Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME;
                 }
-                refreshList();
-                mCurFileAdapter.notifyDataSetChanged();
+                if (mCurFileAdapter != null) {
+                    refreshList();
+                    mCurFileAdapter.notifyDataSetChanged();
+                }
             }
         }
 
@@ -296,8 +331,9 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = null;
         mCurFolderGridView = null;
         mCurFileAdapter = null;
-        if (!mCurFolderFileList.isEmpty())
+        if (!mCurFolderFileList.isEmpty()) {
             mCurFolderFileList.clear();
+        }
         mCurFolderFileList = null;
         mContextThis = null;
         mSharedPref = null;
@@ -305,6 +341,11 @@ public class MainActivity extends AppCompatActivity {
         mCurFolderURL = null;
         mFloatingActionButton = null;
         mContextView = null;
+        mHandler = null;
+        if (mListThread != null) {
+            mListThread.interrupt();
+        }
+        mListThread = null;
     }
 
     /**
@@ -516,8 +557,6 @@ public class MainActivity extends AppCompatActivity {
         int what = _message.what;
         switch (what) {
             case Constant.HANDLER_REFRESH_LIST: {
-                defaultFolderCheck();
-                refreshList();
                 mCurFileAdapter = new MainFileAdaptor(mCurFolderFileList, mSharedPref);
                 mCurFileAdapter.setClickAction(new ClickAction() {
                     @Override

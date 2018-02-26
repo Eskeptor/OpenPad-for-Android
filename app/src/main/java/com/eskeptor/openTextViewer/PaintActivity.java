@@ -79,8 +79,6 @@ public class PaintActivity extends AppCompatActivity {
     private int mMemoIndex;
     private File mLastLog;
 
-    private Runnable mRunnable;
-
     private static MenuItem mMenuItemUndo;
 
     @Override
@@ -225,17 +223,10 @@ public class PaintActivity extends AppCompatActivity {
         mEraserLayout.setVisibility(View.GONE);
         mShapeLayout.setVisibility(View.GONE);
 
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                mPaintFunction = new PaintFunction(mContextThis);
-                initPaint();
-                mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
-                mDrawLayout.addView(mPaintFunction);
-            }
-        };
-
-        runOnUiThread(mRunnable);
+        mPaintFunction = new PaintFunction(mContextThis);
+        initPaint();
+        mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
+        mDrawLayout.addView(mPaintFunction);
 
         if (mOpenFileURL != null) {
             File imageSummary = new File(mOpenFileURL + Constant.FILE_IMAGE_SUMMARY);
@@ -257,6 +248,7 @@ public class PaintActivity extends AppCompatActivity {
                 dialog.show();
             }
         }
+
     }
 
     @Override
@@ -273,7 +265,12 @@ public class PaintActivity extends AppCompatActivity {
         switch (id) {
             case R.id.menu_paint_reset:
                 mPaintFunction.resetPaint();
-                mShapeType = Constant.ShapeType.None;
+                mBrushSeekSize.setProgress(mCurBrushValue);
+                mBrushSeekRed.setProgress(mCurRedValue);
+                mBrushSeekGreen.setProgress(mCurGreenValue);
+                mBrushSeekBlue.setProgress(mCurBlueValue);
+                mEraserSeekSize.setProgress(mCurEraserSize);
+                mPaintFunction.setLineWidth(mCurBrushValue);
                 break;
             case R.id.menu_paint_undo:
                 mPaintFunction.undoCanvas();
@@ -314,7 +311,6 @@ public class PaintActivity extends AppCompatActivity {
         mOpenFileName = null;
         mOpenFileURL = null;
         mLastLog = null;
-        mRunnable = null;
         mBrushColor = null;
         mShapeCircle = null;
         mShapeRectangle = null;

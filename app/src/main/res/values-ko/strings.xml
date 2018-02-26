@@ -199,4 +199,6 @@
     <string name="paint_btnClose">닫기</string>
     <string name="license_openpad">OpenPad 라이센스</string>
     <string name="license_glide4">Glide 4 라이센스</string>
+    <string name="memo_btnFirst">첫 페이지</string>
+    <string name="main_dialog_image_alert">화면이 세로로 고정됩니다.</string>
 </resources>

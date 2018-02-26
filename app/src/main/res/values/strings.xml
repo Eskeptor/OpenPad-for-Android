@@ -211,4 +211,6 @@
     <string name="paint_dialog_no">No</string>
     <string name="paint_btnClose">Close</string>
     <string name="license_glide4">Glide 4 License</string>
+    <string name="memo_btnFirst">First Page</string>
+    <string name="main_dialog_image_alert">The screen is held in the portrait position.</string>
 </resources>

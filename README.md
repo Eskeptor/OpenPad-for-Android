@@ -9,10 +9,14 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.2.21) - None Build
+## What's New? (Last updated 2018.2.26) - Build 1.5.2
 ```
- 1) TextManager version up (1.0 → 2.0)
- 2) Speed improvement of reaction
+ 1) Modification of bugs that are forced to shut down in several situations when the screen rotates.
+ 2) Correct text and save button bug.
+ 3) Often correction of bugs that could not be modified with large files.
+ 4) Correct the bug that the brush size was initialized when initializing the image.
+ 5) Improved text load.
+ 6) Remove unnecessary sources and speed response.
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

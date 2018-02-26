@@ -72,7 +72,6 @@ public class FirstStartActivity extends AppCompatActivity {
         mPager = null;
         mPrefEditor = null;
         mPref = null;
-        System.gc();
     }
 
     @Override

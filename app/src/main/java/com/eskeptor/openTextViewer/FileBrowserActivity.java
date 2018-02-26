@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -39,7 +42,6 @@ public class FileBrowserActivity extends AppCompatActivity {
     private TextView mTxtPath;                              // 현재 파일 경로
     private ListView mFileList;                             // 파일 리스트
     private String mStrFilename;                            // 파일 이름
-    private String mStrRoot;                                // 파일의 절대경로
     private ArrayList<FileObject> mFileListObjects;         // 파일의 목록을 저장할 배열리스트
     private FileObjectAdaptor mFileListObjectAdaptor;       // 파일용 커스텀 어댑터
     private Context mContextThis;                           // context
@@ -55,6 +57,11 @@ public class FileBrowserActivity extends AppCompatActivity {
     private LinearLayout mSaveLayout;
     private EditText mEditTxtSave;
 
+    private RefreshList mHandler;
+    private Thread mDirectoryThread;
+    private static final int HANDLER_REFRESH = 1;
+    private static final String DEVICE_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -62,9 +69,9 @@ public class FileBrowserActivity extends AppCompatActivity {
 
         mContextThis = getApplicationContext();
         mContextView = findViewById(R.id.activity_filebrowser);
+        mHandler = new RefreshList(this);
 
         int browserType = getIntent().getIntExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, 0);
-        mStrRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
         mSortType = Constant.BrowserMenuSortType.Asc;
 
         mTxtPath = (TextView) findViewById(R.id.browser_txtPath);
@@ -83,7 +90,14 @@ public class FileBrowserActivity extends AppCompatActivity {
             mBrowserType = Constant.BrowserType.SaveExternalOpenedFile;
         }
 
-        getDirectory(mStrRoot);
+        mDirectoryThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getDirectory(DEVICE_ROOT);
+                mHandler.sendEmptyMessage(HANDLER_REFRESH);
+            }
+        });
+        mDirectoryThread.start();
 
         mFileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,33 +106,29 @@ public class FileBrowserActivity extends AppCompatActivity {
 
                 if (file.isDirectory()) {
                     if (file.canRead()) {
-                        getDirectory(mFileListObjects.get(_position).mFilePath);
+                        if (mDirectoryThread != null) {
+                            mDirectoryThread.interrupt();
+                        }
+                        mDirectoryThread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getDirectory(mFileListObjects.get(_position).mFilePath);
+                                mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                            }
+                        });
+                        mDirectoryThread.start();
                     }
                 } else if (file.isFile()) {
-                    if (file.length() >= Constant.TEXTMANAGER_BUFFER) {
-                        Intent intent = new Intent();
+                    Intent intent = new Intent();
 
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.setClass(mContextThis, MemoActivity.class);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mFileListObjects.get(_position).mFilePath);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
-                        //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, true);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                        finish();
-                    } else {
-                        Intent intent = new Intent();
-
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.setClass(mContextThis, MemoActivity.class);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mFileListObjects.get(_position).mFilePath);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
-                        //intent.putExtra(Constant.INTENT_EXTRA_MEMO_TYPE, Constant.MEMO_TYPE_OPEN_EXTERNAL);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                        finish();
-                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.setClass(mContextThis, MemoActivity.class);
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mFileListObjects.get(_position).mFilePath);
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, true);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                    finish();
                 }
             }
         });
@@ -158,13 +168,33 @@ public class FileBrowserActivity extends AppCompatActivity {
         switch (id) {
             case R.id.menu_asc:
                 mSortType = Constant.BrowserMenuSortType.Asc;
-                getDirectory(mStrFilename);
+                if (mDirectoryThread != null) {
+                    mDirectoryThread.interrupt();
+                }
+                mDirectoryThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getDirectory(mStrFilename);
+                        mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                    }
+                });
+                mDirectoryThread.start();
                 mMenuItemASC.setChecked(true);
                 mMenuItemDES.setChecked(false);
                 break;
             case R.id.menu_des:
                 mSortType = Constant.BrowserMenuSortType.Des;
-                getDirectory(mStrFilename);
+                if (mDirectoryThread != null) {
+                    mDirectoryThread.interrupt();
+                }
+                mDirectoryThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getDirectory(mStrFilename);
+                        mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                    }
+                });
+                mDirectoryThread.start();
                 mMenuItemASC.setChecked(false);
                 mMenuItemDES.setChecked(true);
                 break;
@@ -174,11 +204,21 @@ public class FileBrowserActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mStrFilename.equals(mStrRoot)) {
+        if (mStrFilename.equals(DEVICE_ROOT)) {
             super.onBackPressed();
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
         } else {
-            getDirectory(new File(mStrFilename).getParent());
+            if (mDirectoryThread != null) {
+                mDirectoryThread.interrupt();
+            }
+            mDirectoryThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getDirectory(new File(mStrFilename).getParent());
+                    mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                }
+            });
+            mDirectoryThread.start();
         }
     }
 
@@ -189,14 +229,19 @@ public class FileBrowserActivity extends AppCompatActivity {
         mFileList = null;
         mSaveLayout = null;
         mEditTxtSave = null;
-        if (!mFileListObjects.isEmpty())
+        if (!mFileListObjects.isEmpty()) {
             mFileListObjects.clear();
+        }
         mFileListObjects = null;
         mFileListObjectAdaptor = null;
         mContextThis = null;
         mStrFilename = null;
-        mStrRoot = null;
         mContextView = null;
+        mHandler = null;
+        if (mDirectoryThread != null) {
+            mDirectoryThread.interrupt();
+        }
+        mDirectoryThread = null;
     }
 
     public void onClick(View _v) {
@@ -290,19 +335,6 @@ public class FileBrowserActivity extends AppCompatActivity {
             mFileList.setAdapter(mFileListObjectAdaptor);
         }
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mFileListObjectAdaptor.notifyDataSetChanged();
-            }
-        });
-
-        /*if (mFileListObjectAdaptor != null)
-            mFileListObjectAdaptor = null;
-
-        mFileListObjectAdaptor = new FileObjectAdaptor(this, mFileListObjects);
-        mFileList.setAdapter(mFileListObjectAdaptor);*/
-
         mStrFilename = _dir;
     }
 
@@ -337,5 +369,30 @@ public class FileBrowserActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void handleMessage(Message _msg) {
+        int what = _msg.what;
+        switch (what) {
+            case HANDLER_REFRESH: {
+                mFileListObjectAdaptor.notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
+    static class RefreshList extends Handler {
+        private final WeakReference<FileBrowserActivity> mActivity;
+        RefreshList(FileBrowserActivity _activity) {
+            mActivity = new WeakReference<>(_activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            FileBrowserActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
+        }
     }
 }

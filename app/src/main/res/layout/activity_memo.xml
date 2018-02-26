@@ -53,7 +53,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/memo_btnPrev" />
+                        android:text="@string/memo_btnPrev"
+                        android:onClick="onClick"/>
+
+                    <Button
+                        android:id="@+id/memo_btnFirst"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/memo_btnFirst"
+                        android:textAllCaps="false"
+                        android:onClick="onClick"/>
 
                     <Button
                         android:id="@+id/memo_btnTop"
@@ -61,7 +72,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/memo_btnTop" />
+                        android:textAllCaps="false"
+                        android:text="@string/memo_btnTop"
+                        android:onClick="onClick"/>
 
                     <Button
                         android:id="@+id/memo_btnNext"
@@ -69,7 +82,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/memo_btnNext" />
+                        android:text="@string/memo_btnNext"
+                        android:onClick="onClick"/>
 
                 </LinearLayout>
 

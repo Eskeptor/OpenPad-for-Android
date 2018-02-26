@@ -1,7 +1,20 @@
+## Update 2018.2.26 - Build 1.5.2
+```
+  1) Modification of bugs that are forced to shut down in several situations when the screen rotates.
+  2) Correct text and save button bug.
+  3) Often correction of bugs that could not be modified with large files.
+  4) Correct the bug that the brush size was initialized when initializing the image.
+  5) Improved text load.
+  6) Remove unnecessary sources and speed response.
+```
 ## Update 2018.2.21
 ```
  1) TextManager version up (1.0 → 2.0)
  2) Speed improvement of reaction
+```
+## Update 2018.2.6 - Build 1.5.1
+```
+ 1) Single line summary fixes bugs that can not be saved when paint notes are generated
 ```
 ## Update 2018.2.2 - Build 1.5.0
 ```

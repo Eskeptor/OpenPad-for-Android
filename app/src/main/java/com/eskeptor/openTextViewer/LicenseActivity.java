@@ -1,5 +1,6 @@
 package com.eskeptor.openTextViewer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -36,6 +37,7 @@ public class LicenseActivity extends AppCompatActivity {
         mScrollViewLayout = (ScrollView)findViewById(R.id.license_layout);
 
         mLicense1 = new Thread(new Runnable() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void run() {
                 TextView tv = (TextView)findViewById(R.id.license_openpad);

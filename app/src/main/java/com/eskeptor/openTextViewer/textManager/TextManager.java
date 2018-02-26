@@ -29,6 +29,7 @@ public class TextManager {
     public static final int PAGE_PREV = -1;
     public static final int PAGE_NONE = 0;
     public static final int PAGE_NEXT = 1;
+    public static final int PAGE_FIRST = 2;
 
     private String mOpenedFileName;           // 현재 열린 파일의 이름
     private String mMD5;                     // 파일의 MD5값
@@ -132,6 +133,10 @@ public class TextManager {
         ByteBuffer fileBuffer = null;
         StringTokenizer tokenizer = null;
 
+        if (!mContentsList.isEmpty()) {
+            mContentsList.clear();
+        }
+
         try {
             openFileInputStream = new FileInputStream(new File(_filename));
             openFileChannel = openFileInputStream.getChannel();
@@ -198,7 +203,12 @@ public class TextManager {
      * @return 해당 페이지의 내용
      */
     public String getText(final int _page, final Constant.EncodeType _format) {
-        int page = mCurPage + _page;
+        int page;
+        if (_page == PAGE_FIRST) {
+            page = 0;
+        } else {
+            page = mCurPage + _page;
+        }
         if (page <= mMaxPage - 1 && page >= 0) {
             mCurPage = page;
             if (_format == Constant.EncodeType.EUCKR) {
@@ -217,6 +227,20 @@ public class TextManager {
         }
         else {
             return "";
+        }
+    }
+
+    public void setMD5(final String _str, final Constant.EncodeType _format) {
+        if (_format == Constant.EncodeType.EUCKR) {
+            String str = "";
+            try {
+                str = new String(mContentsList.get(mCurPage).getBytes(), Constant.ENCODE_TYPE_EUCKR_STR);
+            } catch (Exception e) {
+                TestLog.Tag("TextManager").Logging(TestLog.LogType.ERROR, e.getMessage());
+            }
+            mMD5 = createMD5(str);
+        } else {
+            mMD5 = createMD5(mContentsList.get(mCurPage));
         }
     }
 
@@ -315,10 +339,10 @@ public class TextManager {
      * @return 퍼센트
      */
     public float getProgress() {
-        if (mCurPage == mMaxPage - 1) {
+        if (mCurPage + 1 == mMaxPage) {
             return 100.0f;
         } else {
-            return mCurPage / (mMaxPage - 1);
+            return (float)(mCurPage + 1) / (float)mMaxPage * 100f;
         }
     }
 

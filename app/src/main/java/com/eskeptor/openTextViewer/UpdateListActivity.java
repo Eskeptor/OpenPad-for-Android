@@ -13,13 +13,22 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import com.eskeptor.openTextViewer.textManager.RawTextManager;
 
 public class UpdateListActivity extends AppCompatActivity {
+    private TextView mUpdateList;
+    private Thread mTextThread;
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_update_list);
 
-        TextView updateList = (TextView) findViewById(R.id.updateList_contents);
-        updateList.setText(RawTextManager.getRawText(getApplicationContext(), R.raw.updatelist));
+        mUpdateList = (TextView) findViewById(R.id.updateList_contents);
+        mTextThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mUpdateList.setText(RawTextManager.getRawText(getApplicationContext(), R.raw.updatelist));
+            }
+        });
+        mTextThread.start();
 
         Context contextThis = getApplicationContext();
         SharedPreferences sharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
@@ -33,6 +42,16 @@ public class UpdateListActivity extends AppCompatActivity {
         } else {
             Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mTextThread != null) {
+            mTextThread.interrupt();
+        }
+        mTextThread = null;
+        mUpdateList = null;
     }
 
     @Override

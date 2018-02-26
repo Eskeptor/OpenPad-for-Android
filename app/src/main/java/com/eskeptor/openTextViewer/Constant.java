@@ -62,14 +62,10 @@ public class Constant {
     public static final boolean APP_TWICE_EXECUTE = true;
 
     public static final float SETTINGS_DEFAULT_VALUE_TEXT_SIZE = 18F;
-    public static final int SETTINGS_DEFAULT_VALUE_TEXT_LINES = 200;
+    public static final int SETTINGS_DEFAULT_VALUE_TEXT_LINES = 150;
 
     public static final int MEMO_SAVE_SELECT_TYPE_EXTERNAL = 0;
     public static final int MEMO_SAVE_SELECT_TYPE_INTERNAL = 1;
-    public static final int MEMO_BLOCK_ENCODING_RESET = 0;
-    public static final int MEMO_BLOCK_NEXT = 1;
-    public static final int MEMO_BLOCK_PREV = -1;
-
 
     public static final int REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE = 0;
     public static final int REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE = 1;
@@ -137,6 +133,18 @@ public class Constant {
     }
 
     public static final int HANDLER_REFRESH_LIST = 1;
+
+    public enum MemoSaveType {
+        BackKeySave(0), ButtonSave(1);
+
+        private final int value;
+        MemoSaveType(final int _value) {
+            value = _value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
 
     public enum BrowserType {
         OpenExternal(1), SaveExternalOpenedFile(2);

@@ -210,6 +210,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 mFontBDJua.setChecked(false);
                 mFontKPDotum.setChecked(false);
             }
+            setRetainInstance(true);
         }
 
         @Override
@@ -390,6 +391,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             mAdMob.setOnPreferenceClickListener(checkClickListener);
             mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
+            setRetainInstance(true);
         }
 
         @Override
