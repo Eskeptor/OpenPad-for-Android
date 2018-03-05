@@ -1,3 +1,9 @@
+## Update 2018.3.5  - Build 1.5.3
+```
+ 1) Change the Add Note button
+ 2) Change the Licenses Dialog
+ 3) Fix the Off at First Installation on Android 6.0
+```
 ## Update 2018.2.26 - Build 1.5.2
 ```
   1) Modification of bugs that are forced to shut down in several situations when the screen rotates.

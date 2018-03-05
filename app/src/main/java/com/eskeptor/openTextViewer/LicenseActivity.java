@@ -41,7 +41,7 @@ public class LicenseActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TextView tv = (TextView)findViewById(R.id.license_openpad);
-                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.openpad_license));
+                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.openpad_license_summary));
                 tv.setMovementMethod(new ScrollingMovementMethod());
                 tv.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -56,7 +56,7 @@ public class LicenseActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TextView tv = (TextView)findViewById(R.id.license_kopub);
-                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.kopub_dotum_license));
+                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.kopub_dotum_license_full));
                 tv.setMovementMethod(new ScrollingMovementMethod());
                 tv.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -71,7 +71,7 @@ public class LicenseActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TextView tv = (TextView)findViewById(R.id.license_jua);
-                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.bmjua_license));
+                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.bmjua_license_full));
                 tv.setMovementMethod(new ScrollingMovementMethod());
                 tv.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -86,7 +86,7 @@ public class LicenseActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TextView tv = (TextView)findViewById(R.id.license_glide);
-                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.glide_license));
+                tv.setText(RawTextManager.getRawText(mContextThis, R.raw.glide_license_full));
                 tv.setMovementMethod(new ScrollingMovementMethod());
                 tv.setOnTouchListener(new View.OnTouchListener() {
                     @Override

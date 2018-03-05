@@ -9,20 +9,17 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.2.26) - Build 1.5.2
+## What's New? (Last updated 2018.3.5) - Build 1.5.3
 ```
- 1) Modification of bugs that are forced to shut down in several situations when the screen rotates.
- 2) Correct text and save button bug.
- 3) Often correction of bugs that could not be modified with large files.
- 4) Correct the bug that the brush size was initialized when initializing the image.
- 5) Improved text load.
- 6) Remove unnecessary sources and speed response.
+ 1) Change the Add Note button
+ 2) Change the Licenses Dialog
+ 3) Fix the Off at First Installation on Android 6.0
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
 ## Known Bugs
 ```
- Tell me
+ 1) Shape Tools in Paint Mode has Trailing Effect When Resizing
 ```
 ## Development environment
 #### 1st environment
@@ -32,7 +29,7 @@
  RAM : 24GB
  VGA : Nvidia Geforce GTX 1050 2GB
  Android SDK(Min) : API 15
- Android SDK(Target and Compiled) : API 25
+ Android SDK(Target and Compiled) : API 27
 ```
 #### 2nd environment
 ```
@@ -41,7 +38,7 @@
  RAM : 8GB
  VGA : Intel UHD Graphics 620
  Android SDK(Min) : API 15
- Android SDK(Target and Compiled) : API 25
+ Android SDK(Target and Compiled) : API 27
 ```
 ## License
 Copyright 2017 Jeon Ye-Chan

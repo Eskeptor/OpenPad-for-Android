@@ -6,10 +6,11 @@ android {
     defaultConfig {
         applicationId "com.eskeptor.openTextViewer"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 25
-//        versionName "1.5.1"
-        versionName "1.5.2"
+        targetSdkVersion 27
+        versionCode 26
+        // 이전 버전
+        versionName "1.5.3"
+        // versionName "1.5.3.Dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //vectorDrawables.useSupportLibrary = true
     }
@@ -38,21 +39,30 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.5.0") {
         exclude group: "com.android.support"
     }
-    implementation "com.android.support:support-fragment:27.0.2"
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:support-vector-drawable:27.0.2'
+    implementation "com.android.support:support-fragment:27.1.0"
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:design:27.1.0'
+    compile 'com.android.support:support-v4:27.1.0'
+    compile 'com.android.support:support-vector-drawable:27.1.0'
     compile 'com.google.android.gms:play-services-ads:11.8.0'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    // Typekit
     compile 'com.github.katoro:typekit:1.0.1'
 
+    // Glide4
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
     compile ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
         transitive = false
     }
+
+    // Floating action button
+    compile 'com.getbase:floatingactionbutton:1.10.1'
+
+    // LicensesDialog
+    compile('de.psdev.licensesdialog:licensesdialog:1.8.3')
 
     testCompile 'junit:junit:4.12'
 }

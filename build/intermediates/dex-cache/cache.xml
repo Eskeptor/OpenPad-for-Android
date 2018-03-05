@@ -13,43 +13,33 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.0.2.aar\81ac5d3b3a1afce1cf1a4e90673174a7\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\1be5328e62009e795850f5638b8ffef1\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="9296d6f092fcdba4fafb6ac26546a39babdab46a">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\35.jar" />
+        sha1="e2bbe48deed35056023eed2cdc0cc92e5c7d3617">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\72.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.0.2.aar\c6a443746e9548634758a96b05c979d4\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.1\f7be08ec23c21485b9b5a1cf1654c2ec8c58168d\jsr305-3.0.1.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="ed6560f31a6a40b5965f5879d8f2eab1f68def05">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\41.jar" />
+        sha1="f7be08ec23c21485b9b5a1cf1654c2ec8c58168d">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\71.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.0.2.aar\88586bbdbe3eb17dff732ccfbe4cf875\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.0.aar\7125144dd960246e8c9d5c52f3f4dbe2\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="caa03787689212c10939f308a55a8dc8a3333ed2">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\34.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\recyclerview-integration-4.5.0.aar\988278910b843ce91255846788d094a0\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="a600c4b1fecc9b4c622f4a4855ac276905cbbd77">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\36.jar" />
+        sha1="668473027f40fa0cdd5b2db78ba02d676ffd3a2b">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\67.jar" />
     </item>
     <item
         is-multidex="false"
@@ -73,83 +63,13 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.0.2.aar\eb0057a62d0e6f97e8f9833c1b089458\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.0.aar\32a41e4758545d75081ca72bcf130fc5\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="fe3916317a699975bcce0cba2d13fd2d8cf88922">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\33.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.8.0.aar\0884bfe2d57d932191f374113f2b27ee\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="5ad3911825107d8dd4b017fdecebfd23c08048dd">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-compat-27.0.2.aar\44ad836bd7282b85805d927219b03f39\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="b432e82447a3af781e927b9ba0bbb9fe2a496d4a">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\43.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\runtime-1.0.3.aar\3b284d5151fa3bb1a1fe956a6c2fdaf6\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="d7cc5473b9cf4ea159a263cd477fb3ecb2987b96">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\49.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\typekit-1.0.1.aar\067a679e91d6d64da14b27ae6ed11f8a\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="9408a959e65e1740548fb112a5145413c0f2daef">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\30.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.0.2.aar\e17d937b32895348ca40ce5bc749ec34\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="04cd0cacbedcb338f64665b88bad64d145325fbd">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\31.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.0.3\7d7f60c4783872861222166f6164215f8951c7b1\common-1.0.3.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="7d7f60c4783872861222166f6164215f8951c7b1">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\53.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.0.2.aar\cd257b8ef0f97d1b32de49de821a3187\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="25c8cb628374f9a2d59ff9e1172753751e9a9f84">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\42.jar" />
+        sha1="9a2ea9818b2f556b6663c0e7376bd664ee6c7550">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\66.jar" />
     </item>
     <item
         is-multidex="false"
@@ -163,36 +83,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\play-services-gass-11.8.0.aar\8a3bb4b68b76e075872fc4b9c286fe8c\jars\classes.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="a7760a45a6c9f425aaa43ef391a8cf28a8bcb4a1">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\7.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\27.0.2\b9ef4342c934a1a8b107506273dc8061662a322\support-annotations-27.0.2.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="0b9ef4342c934a1a8b107506273dc8061662a322">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\45.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.0.0\a2d487452376193fc8c103dd2b9bd5f2b1b44563\common-1.0.0.jar"
-        jumboMode="false"
-        min-sdk-version="15"
-        optimize="true"
-        revision="27.0.3"
-        sha1="a2d487452376193fc8c103dd2b9bd5f2b1b44563">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\54.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\disklrucache\4.5.0\86950b32ea96cceece316b829cbe47b735892551\disklrucache-4.5.0.jar"
         jumboMode="false"
         min-sdk-version="15"
@@ -203,33 +93,33 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-v4-27.0.2.aar\af18f8a836d889b98e16f1313e976e74\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\android.arch.lifecycle\common\1.1.0\edf3f7bfb84a7521d0599efa3b0113a0ee90f85\common-1.1.0.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="bcd0bcdef85b31a656af76e39c0c95ce70800772">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\32.jar" />
+        sha1="0edf3f7bfb84a7521d0599efa3b0113a0ee90f85">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\77.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="E:\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\transition-27.1.0.aar\8bd9a47e038ad915f327a676a17bb04f\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\21.jar" />
+        sha1="a4f81a342ac6bace97ad1420eb47fc11ab749a03">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\64.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-fragment-27.0.2.aar\cbd4537ed275b8c1ca0609cca89383e7\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.0.aar\1625f465e027c0a88eeb1e8fb1989a9d\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="618f75fe11febf263e3234c7da7dc892232a5608">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\38.jar" />
+        sha1="858c1e21a2570a2416153aecab70d27a11965e79">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\61.jar" />
     </item>
     <item
         is-multidex="false"
@@ -243,23 +133,183 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\transition-27.0.2.aar\223c217b99edebbd6f92c7b09faf7143\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\f280cd1cb0c5df7da8a18e3111b13eff\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="a5fa2e3704f51b30b7b47e12a3a2909728799583">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\40.jar" />
+        sha1="8a9fd7c97f1d13f97f3b52f9d2e54cd857d5acf9">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\76.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.0.2.aar\b00a434cebc423119d5ff377094746df\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\floatingactionbutton-1.10.1.aar\28d43e93d6d829a00adf5343097136b0\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="ac2ce6027755bcf49442e70597bec0feb9064f68">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\39.jar" />
+        sha1="f40cf334cdc8b098b74312e21c7741c6eefbeb0e">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\62.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\recyclerview-integration-4.5.0.aar\988278910b843ce91255846788d094a0\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="a600c4b1fecc9b4c622f4a4855ac276905cbbd77">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\36.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\27.1.0\39ded76b5e1ce1c5b2688e1d25cdc20ecee32007\support-annotations-27.1.0.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="39ded76b5e1ce1c5b2688e1d25cdc20ecee32007">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\69.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.0.aar\112ce7ea3b1cfc1998ea93e5c5483c60\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="3d46095629eedbd5b79b4d129428fc499473a73b">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\68.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.0.aar\751b9f1a1429c96c85032a53fa0fa28f\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="5c66801c7ac6def4ffef7859925b12ce7940438e">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\57.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.0.aar\090d57f50ba8ef4ed513b4afc1d56b78\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="6f209b73a488f358673f39317df394bd7a99c05e">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\65.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.8.0.aar\0884bfe2d57d932191f374113f2b27ee\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="5ad3911825107d8dd4b017fdecebfd23c08048dd">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\modules-2\files-2.1\android.arch.core\common\1.1.0\8007981f7d7540d89cd18471b8e5dcd2b4f99167\common-1.1.0.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="8007981f7d7540d89cd18471b8e5dcd2b4f99167">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\79.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\typekit-1.0.1.aar\067a679e91d6d64da14b27ae6ed11f8a\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="9408a959e65e1740548fb112a5145413c0f2daef">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\30.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\licensesdialog-1.8.3.aar\f9afcaf7212b422a7a6442c270c25d1b\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="6b71e2d1f359d57c8c36c27058180f7a04ab8da0">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\56.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\c39f3525be2c27582c73cedbcaf57410\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="71d380aeac037e63bab7bda2ba211777e16a2f42">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\78.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\play-services-gass-11.8.0.aar\8a3bb4b68b76e075872fc4b9c286fe8c\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="a7760a45a6c9f425aaa43ef391a8cf28a8bcb4a1">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.0.aar\031b5b7b49d641c4dd06c9cbb3c9f766\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="fe6c8fbfeeb1454c3eb605c9b66662991681fd55">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\63.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\1b79de0adc5966ed1e7492ce7249dbbf\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="1fd3ceac7f415975323d52c6c6057db409a907f6">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\80.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\design-27.1.0.aar\62f79a529a5f835c7e2b552a245ccab8\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="f7e3ff2cb093a99c8dc1ff3d50c176019fa5d7c1">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\55.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\21.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.0.aar\8851cf132af9a89066d33c747e7fe1f4\jars\classes.jar"
+        jumboMode="false"
+        min-sdk-version="15"
+        optimize="true"
+        revision="27.0.3"
+        sha1="705378853cb9f264315d7a0a8edb6743d72efe9b">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\59.jar" />
     </item>
     <item
         is-multidex="false"
@@ -273,13 +323,13 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\design-27.0.2.aar\713061282d8f097f477573fa513f01a6\jars\classes.jar"
+        jar="C:\Users\Esk\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.0.aar\7ac5fbf62985b5af3e7fdfea34a2cdf8\jars\classes.jar"
         jumboMode="false"
         min-sdk-version="15"
         optimize="true"
         revision="27.0.3"
-        sha1="031cc16b7b6e77b3c050134ecab9fa5c2640a069">
-        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\29.jar" />
+        sha1="755c70a5a4e439030f67311dbafaa67b111377a6">
+        <dex dex="E:\Study\AndroidProject\OpenPad\app\build\intermediates\transforms\preDex\release\60.jar" />
     </item>
 
 </items>

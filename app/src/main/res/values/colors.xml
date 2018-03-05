@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#ff4081</color>
     <color name="Black">#000000</color>
+    <color name="SemiBlackTransparent">#B2000000</color>
     <color name="SemiBlack">#333333</color>
     <color name="SemiSemiBlack">#666666</color>
     <color name="itemUp">#00000000</color>
@@ -12,4 +13,5 @@
     <color name="WhiteGray">#efefef</color>
     <color name="Transparent">#00ff0000</color>
     <color name="Hidden">#fcf400</color>
+    <color name="colorAccentPressed">#cc3370</color>
 </resources>

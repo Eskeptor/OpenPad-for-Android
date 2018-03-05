@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,13 +23,72 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <RelativeLayout
+        android:id="@+id/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.design.widget.FloatingActionButton
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/main_swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/main_curFolderFileList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contextClickable="true"
+                app:spanCount="2" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/main_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            app:srcCompat="@drawable/button_add" android:layout_marginRight="16dp" android:layout_marginBottom="16dp"/>
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/adView"
+
+            fab:fab_addButtonColorNormal="@color/colorAccent"
+            fab:fab_addButtonColorPressed="@color/colorAccentPressed"
+            fab:fab_addButtonSize="mini"
+            fab:fab_labelStyle="@style/AppTheme.MenuLabel"
+            fab:fab_labelsPosition="left">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/main_memo_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorAccent"
+                fab:fab_colorPressed="@color/colorAccentPressed"
+                fab:fab_title="@string/menu_main_add_text_title"
+                fab:fab_icon="@drawable/ic_text_memo_white_24dp"/>
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/main_memo_paint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/colorAccent"
+                fab:fab_colorPressed="@color/colorAccentPressed"
+                fab:fab_title="@string/menu_main_add_paint_title"
+                fab:fab_icon="@drawable/ic_brush_white_24dp"/>
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/admob_id" />
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,5 +1,8 @@
 package com.eskeptor.openTextViewer;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,19 +13,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ContextThemeWrapper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.*;
-import android.widget.*;
+import android.widget.RelativeLayout;
+
 import com.eskeptor.openTextViewer.datatype.MainFileObject;
 import com.eskeptor.openTextViewer.textManager.RawTextManager;
 import com.google.android.gms.ads.AdRequest;
@@ -30,6 +30,9 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 
 import java.io.*;
 import java.lang.ref.WeakReference;
@@ -47,26 +50,26 @@ import util.TestLog;
  */
 
 public class MainActivity extends AppCompatActivity {
-    private long mBackPressedTime;
-    private String mCurFolderURL;
-    private SwipeRefreshLayout mRefreshLayout;
-    private StaggeredGridLayoutManager mLayoutManager;
-    private RecyclerView mCurFolderGridView;
-    private MainFileAdaptor mCurFileAdapter;
-    private ArrayList<MainFileObject> mCurFolderFileList;
-    private Context mContextThis;
-    private View mContextView;
-    private FloatingActionButton mFloatingActionButton;
+    private long mBackPressedTime;                              // Back Button Press Time
+    private String mCurFolderPath;                              // Current folder path
+    private SwipeRefreshLayout mRefreshLayout;                  // RefreshLayout
+    private StaggeredGridLayoutManager mLayoutManager;          // StaggeredGridLayoutManager
+    private RecyclerView mCurFolderGridView;                    // RecyclerView
+    private MainFileAdaptor mCurFileAdapter;                    // Main List FileAdapter
+    private ArrayList<MainFileObject> mCurFolderFileList;       // Main List's arrayList
+    private Context mContextThis;                               // This view's context(getApplicationContext())
+    private View mContextView;                                  // This view
+    private AlertDialog mDialog;
 
-    private static SharedPreferences mSharedPref;
-    private static SharedPreferences.Editor mSharedPrefEditor;
+    private static SharedPreferences mSharedPref;               // SharedPreferences
+    private static SharedPreferences.Editor mSharedPrefEditor;  // SharedPreferences Editor
 
-    private int mFontStyle;
-    private int mPrevFontStyle;
-    private boolean mIsViewImage;
+    private int mFontStyle;                                     // Current Font Style
+    private int mPrevFontStyle;                                 // Previous Font Style
+    private boolean mIsViewImage;                               // Whether to enable image preview
 
-    private RefreshList mHandler;
-    private Thread mListThread;
+    private RefreshListHandler mHandler;                        // Main List refresh handler
+    private Thread mListThread;                                 // Main List's thread
 
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
@@ -103,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
         if (_resultCode == RESULT_OK) {
             switch (_requestCode) {
                 case Constant.REQUEST_CODE_OPEN_FOLDER: {
-                    mCurFolderURL = _data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
-                    if (mCurFolderURL != null) {
+                    mCurFolderPath = _data.getStringExtra(Constant.INTENT_EXTRA_CURRENT_FOLDERURL);
+                    if (mCurFolderPath != null) {
                         refreshList();
                         mCurFileAdapter.notifyDataSetChanged();
                     }
@@ -144,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         mPrevFontStyle = mFontStyle;
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
 
-        mHandler = new RefreshList(this);
+        mHandler = new RefreshListHandler(this);
 
         // 폴더 아이콘
         Drawable folderIcon;
@@ -161,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(folderIcon);
         }
+        // StatusBar의 색을 투명화함
+        setTranslucentStatusBar(getWindow());
 
         mCurFolderGridView = (RecyclerView) findViewById(R.id.main_curFolderFileList);
         mCurFolderFileList = new ArrayList<>();
@@ -181,60 +186,42 @@ public class MainActivity extends AppCompatActivity {
         });
         mLayoutManager = new StaggeredGridLayoutManager(2, 1);
 
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.main_add);
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            Context wrapper = new ContextThemeWrapper(mContextThis, R.style.AppTheme);
-            PopupMenu addFabMenu;
-            MenuInflater menuInflater;
-            Menu menu;
-
+        // 텍스트 메모 추가 버튼
+        final FloatingActionButton btnAddText = (FloatingActionButton)findViewById(R.id.main_memo_text);
+        btnAddText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (addFabMenu == null && menuInflater == null && menu == null) {
-                    addFabMenu = new PopupMenu(wrapper, view);
-                    menuInflater = addFabMenu.getMenuInflater();
-                    menu = addFabMenu.getMenu();
-                    menuInflater.inflate(R.menu.menu_main_add, menu);
-                }
-                addFabMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setClass(mContextThis, MemoActivity.class);
+                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderPath);
+                startActivity(intent);
+                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+            }
+        });
+
+        // 이미지 메모 추가 버튼
+        final FloatingActionButton btnAddPaint = (FloatingActionButton)findViewById(R.id.main_memo_paint);
+        btnAddPaint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle(R.string.main_dialog_restart_title_no);
+                dialog.setMessage(R.string.main_dialog_image_alert);
+                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem _item) {
-                        int id = _item.getItemId();
-                        switch (id) {
-                            case R.id.menu_main_add_text: {
-                                Intent intent = new Intent();
-                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent.setClass(mContextThis, MemoActivity.class);
-                                intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                                break;
-                            }
-                            default: {
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                                dialog.setTitle(R.string.main_dialog_restart_title_no);
-                                dialog.setMessage(R.string.main_dialog_image_alert);
-                                DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent();
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                        intent.setClass(mContextThis, PaintActivity.class);
-                                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
-                                        startActivity(intent);
-                                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                                        dialog.dismiss();
-                                    }
-                                };
-                                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
-                                dialog.show();
-                                break;
-                            }
-                        }
-                        return false;
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.setClass(mContextThis, PaintActivity.class);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderPath);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        dialog.dismiss();
                     }
-                });
-                addFabMenu.show();
+                };
+                dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
+                dialog.show();
             }
         });
 
@@ -242,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
         if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
             Intent intent = new Intent();
             intent.setClass(mContextThis, FirstStartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivityForResult(intent, Constant.REQUEST_CODE_PERMISSION_GRANT);
         } else {
             if (mListThread != null) {
@@ -292,10 +280,10 @@ public class MainActivity extends AppCompatActivity {
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
 
         if (mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
-            if (mCurFolderURL != null) {
-                File folderCheck = new File(mCurFolderURL);
+            if (mCurFolderPath != null) {
+                File folderCheck = new File(mCurFolderPath);
                 if (!folderCheck.exists()) {
-                    mCurFolderURL = Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME;
+                    mCurFolderPath = Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME;
                 }
                 if (mCurFileAdapter != null) {
                     refreshList();
@@ -304,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // 만약에 이전의 폰트와 현재 폰트가 다르다면 폰트가 변경된 것이다.
         if(mPrevFontStyle != mFontStyle) {
             mPrevFontStyle = mFontStyle;
             if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
@@ -338,14 +327,16 @@ public class MainActivity extends AppCompatActivity {
         mContextThis = null;
         mSharedPref = null;
         mSharedPrefEditor = null;
-        mCurFolderURL = null;
-        mFloatingActionButton = null;
+        mCurFolderPath = null;
         mContextView = null;
         mHandler = null;
         if (mListThread != null) {
             mListThread.interrupt();
         }
         mListThread = null;
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
     }
 
     /**
@@ -381,8 +372,8 @@ public class MainActivity extends AppCompatActivity {
                 TestLog.Tag("MainActivity").Logging(TestLog.LogType.ERROR, "기본메모폴더 생성불가");
             }
         }
-        mCurFolderURL = file.getPath();
-        TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "mCurFolderURL: " + mCurFolderURL);
+        mCurFolderPath = file.getPath();
+        TestLog.Tag("MainActivity").Logging(TestLog.LogType.DEBUG, "mCurFolderPath: " + mCurFolderPath);
     }
 
     /**
@@ -432,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void refreshList() {
         mCurFolderFileList.clear();
-        File file = new File(mCurFolderURL);
+        File file = new File(mCurFolderPath);
         File files[] = file.listFiles(new FileFilter() {
             @Override
             public boolean accept(File _pathname) {
@@ -443,12 +434,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(file.exists())
             TestLog.Tag("Main").Logging(TestLog.LogType.ERROR, file.getName() + " is exist");
-        if(files == null)
+        if(files == null) {
             TestLog.Tag("Main").Logging(TestLog.LogType.ERROR, "null");
-
-        sortFileArray(files);
-
-        if (files != null) {
+        }
+        else {
+            sortFileArray(files);
             for (File newFile : files) {
                 mCurFolderFileList.add(new MainFileObject(newFile, getResources().getString(R.string.file_noname), getResources().getString(R.string.file_imagememo),
                         Locale.getDefault().getDisplayCountry(), mIsViewImage));
@@ -461,17 +451,34 @@ public class MainActivity extends AppCompatActivity {
      */
     private void checkFirstExcecute() {
         if (!mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.main_dialog_first_title);
             dialog.setMessage(R.string.main_dialog_first_context);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface _dialog, int _which) {
+                public void onClick(final DialogInterface _dialog, int _which) {
                     if (_which == AlertDialog.BUTTON_POSITIVE) {
                         if (mSharedPrefEditor == null)
                             mSharedPrefEditor = mSharedPref.edit();
                         mSharedPrefEditor.putBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_TWICE_EXECUTE);
                         mSharedPrefEditor.apply();
+
+                        AlertDialog.Builder restart = new AlertDialog.Builder(MainActivity.this);
+                        restart.setTitle(R.string.main_dialog_restart_title);
+                        restart.setMessage(R.string.main_dialog_restart_context);
+                        restart.setPositiveButton(R.string.settings_dialog_info_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent mStartActivity = new Intent(getBaseContext(), MainActivity.class);
+                                int mPendingIntentId = 123456;
+                                PendingIntent mPendingIntent = PendingIntent.getActivity(getBaseContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                                AlarmManager mgr = (AlarmManager)getBaseContext().getSystemService(Context.ALARM_SERVICE);
+                                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                                System.exit(0);
+                                dialog.dismiss();
+                            }
+                        });
+                        restart.show();
                     }
                     _dialog.dismiss();
                 }
@@ -512,29 +519,32 @@ public class MainActivity extends AppCompatActivity {
             //adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
             AdRequest adRequest = new AdRequest.Builder().build();
             AdView adView = (AdView) findViewById(R.id.adView);
-
             adView.setEnabled(true);
             adView.setVisibility(View.VISIBLE);
             adView.loadAd(adRequest);
-            CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 0, DPtoPixel(16), DPtoPixel(70));
-            layoutParams.gravity = Gravity.END | Gravity.BOTTOM;
-            mFloatingActionButton.setLayoutParams(layoutParams);
+            final FloatingActionsMenu floatingMenu = (FloatingActionsMenu)findViewById(R.id.main_add);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ABOVE, R.id.adView);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, 1);
+            } else {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+            }
+            floatingMenu.setLayoutParams(layoutParams);
         } else {
-            CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(CoordinatorLayout.LayoutParams.WRAP_CONTENT, CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 0, DPtoPixel(16), DPtoPixel(16));
-            layoutParams.gravity = Gravity.END | Gravity.BOTTOM;
-            mFloatingActionButton.setLayoutParams(layoutParams);
+            AdView adView = (AdView) findViewById(R.id.adView);
+            adView.setEnabled(false);
+            adView.setVisibility(View.GONE);
+            final FloatingActionsMenu floatingMenu = (FloatingActionsMenu)findViewById(R.id.main_add);
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END, 1);
+            } else {
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+            }
+            floatingMenu.setLayoutParams(layoutParams);
         }
-    }
-
-    /**
-     * DP 단위를 Pixel 단위로 변경시켜주는 메소드
-     * @param _DP DP
-     * @return Pixel 값
-     */
-    private int DPtoPixel(final int _DP) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _DP, mContextThis.getResources().getDisplayMetrics());
     }
 
     /**
@@ -570,7 +580,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mCurFolderFileList.get(_position).mFilePath);
                         intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, mCurFolderFileList.get(_position).mFileTitle);
-                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderURL);
+                        intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL, mCurFolderPath);
                         startActivity(intent);
                         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                     }
@@ -591,18 +601,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    static class RefreshList extends Handler {
+    static class RefreshListHandler extends Handler {
         private final WeakReference<MainActivity> mActivity;
-        RefreshList(MainActivity _activity) {
+        RefreshListHandler(MainActivity _activity) {
             mActivity = new WeakReference<>(_activity);
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message _msg) {
             MainActivity activity = mActivity.get();
             if (activity != null) {
-                activity.handleMessage(msg);
+                activity.handleMessage(_msg);
             }
         }
+    }
+
+
+    /**
+     * Coordinatorlayout 에서 StatusBar 투명화 또는 컬러화
+     * 출처: https://stackoverflow.com/questions/33668668/coordinatorlayout-not-drawing-behind-status-bar-even-with-windowtranslucentstatu
+     * @param _window 윈도우
+     */
+    private static void setTranslucentStatusBar(Window _window) {
+        if (_window == null) {
+            return;
+        }
+        int sdkInt = Build.VERSION.SDK_INT;
+        if (sdkInt >= Build.VERSION_CODES.LOLLIPOP) {
+            setTranslucentStatusBarLollipop(_window);
+        } else if (sdkInt >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatusBarKiKat(_window);
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static void setTranslucentStatusBarLollipop(Window _window) {
+        _window.setStatusBarColor(
+                _window.getContext()
+                        .getResources()
+                        .getColor(R.color.colorPrimaryDark));
+    }
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private static void setTranslucentStatusBarKiKat(Window _window) {
+        _window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 }

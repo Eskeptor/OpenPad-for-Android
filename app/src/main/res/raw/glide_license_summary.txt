@@ -1,0 +1,1 @@
+BSD, part MIT and Apache 2.0.

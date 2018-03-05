@@ -13,8 +13,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.widget.NumberPicker;
 
+import com.eskeptor.openTextViewer.license.BmJUALicense;
+import com.eskeptor.openTextViewer.license.FloatingActionButtonLicense;
+import com.eskeptor.openTextViewer.license.GlideLicense;
+import com.eskeptor.openTextViewer.license.KOPUBLicense;
+import com.eskeptor.openTextViewer.license.OpenpadLicense;
 import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
+
+import de.psdev.licensesdialog.LicensesDialog;
+import de.psdev.licensesdialog.model.Notice;
+import de.psdev.licensesdialog.model.Notices;
 
 
 /*
@@ -349,11 +358,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             break;
                         }
                         case "settings_key_license": {
-                            Intent intent = new Intent();
+                            final Notices notices = new Notices();
+                            notices.addNotice(new Notice("OpenPad", "http://skyvvv624.blog.me", "OpenPad License", new OpenpadLicense()));
+                            notices.addNotice(new Notice("Glide 4", "https://github.com/bumptech/glide", "Glide 4 License", new GlideLicense()));
+                            notices.addNotice(new Notice("BM-JUA", "http://www.woowahan.com", "BM-JUA License", new BmJUALicense()));
+                            notices.addNotice(new Notice("KOPUB Dotum", "http://www.kopus.org", "KOPUB Dotum License", new KOPUBLicense()));
+                            notices.addNotice(new Notice("FloatingActionButton", "https://github.com/PSDev/LicensesDialog", "FloatingActionButton License", new FloatingActionButtonLicense()));
+                            new LicensesDialog.Builder(getActivity())
+                                    .setNotices(notices)
+                                    .setShowFullLicenseText(false)
+                                    .setIncludeOwnLicense(false)
+                                    .build()
+                                    .show();
+                            /*Intent intent = new Intent();
                             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             intent.setClass(getActivity(), LicenseActivity.class);
                             startActivity(intent);
-                            getActivity().overridePendingTransition(0, 0);
+                            getActivity().overridePendingTransition(0, 0);*/
                             break;
                         }
                     }
