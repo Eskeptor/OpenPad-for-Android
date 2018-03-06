@@ -144,8 +144,6 @@
     <string name="memo_btnNext" translatable="false">&gt;</string>
     <string name="memo_btnTop">Top</string>
     <string name="settings_separator_expfunc">Enhanced Feature</string>
-    <string name="settings_expfunc_enhanceIO_title">Enhanced File Open</string>
-    <string name="settings_expfunc_enhanceIO_summary">Securely open files over 500 KB</string>
     <string name="settings_dialog_expfunc_title">Warning</string>
     <string name="settings_dialog_expfunc_context">This function is a test version and can be unstable.</string>
     <string name="widget_config_btnAdd">Add widget</string>
@@ -213,4 +211,6 @@
     <string name="license_glide4">Glide 4 License</string>
     <string name="memo_btnFirst">First Page</string>
     <string name="main_dialog_image_alert">The screen is held in the portrait position.</string>
+    <string name="settings_expfunc_password_title">File encryption</string>
+    <string name="settings_expfunc_password_summary">Encrypt files using AES 256 (Text memos only)</string>
 </resources>

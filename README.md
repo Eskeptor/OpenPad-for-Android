@@ -9,11 +9,11 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.3.5) - Build 1.5.3
+## What's New? (Last updated 2018.3.6)
 ```
- 1) Change the Add Note button
- 2) Change the Licenses Dialog
- 3) Fix the Off at First Installation on Android 6.0
+ 1) Optimized codes
+
+ ing~) Password Function
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

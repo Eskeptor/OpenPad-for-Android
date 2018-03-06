@@ -9,8 +9,8 @@ android {
         targetSdkVersion 27
         versionCode 26
         // 이전 버전
-        versionName "1.5.3"
-        // versionName "1.5.3.Dev"
+//        versionName "1.5.3"
+        versionName "1.5.4.Dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //vectorDrawables.useSupportLibrary = true
     }
@@ -36,7 +36,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation ("com.github.bumptech.glide:glide:4.5.0") {
+    implementation("com.github.bumptech.glide:glide:4.5.0") {
         exclude group: "com.android.support"
     }
     implementation "com.android.support:support-fragment:27.1.0"
@@ -54,7 +54,7 @@ dependencies {
     // Glide4
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
-    compile ("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
+    compile("com.github.bumptech.glide:recyclerview-integration:4.5.0") {
         transitive = false
     }
 
@@ -63,6 +63,12 @@ dependencies {
 
     // LicensesDialog
     compile('de.psdev.licensesdialog:licensesdialog:1.8.3')
+
+    // Apache Commons Codec
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
+
+    // Android Passcodeview
+    compile 'in.arjsna:passcodeview:1.2.1'
 
     testCompile 'junit:junit:4.12'
 }

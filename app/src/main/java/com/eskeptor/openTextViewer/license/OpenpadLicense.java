@@ -9,6 +9,7 @@ import de.psdev.licensesdialog.licenses.License;
 
 /**
  * Created by Esk on 2018-03-05.
+ *
  */
 
 public class OpenpadLicense extends License {

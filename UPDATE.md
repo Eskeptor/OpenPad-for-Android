@@ -1,3 +1,7 @@
+## Update 2018.3.6
+```
+ 1) Optimized codes
+```
 ## Update 2018.3.5  - Build 1.5.3
 ```
  1) Change the Add Note button

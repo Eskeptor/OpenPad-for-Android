@@ -24,10 +24,11 @@ public class Constant {
     public static final String APP_ADMOB_VISIBLE = "adMob_Pref";
     public static final String APP_VERSION_CHECK = "version_Pref";
     public static final String APP_LASTED_VERSION = BuildConfig.VERSION_NAME;
-    public static final String APP_EXPERIMENT_ENHANCEIO = "experiment_enhanceIO_Pref";
     public static final String APP_FONT = "font_Pref";
     public static final String APP_VIEW_IMAGE = "isViewImage_Pref";
     public static final String APP_TEXT_LINES = "textLines_Pref";
+    public static final String APP_PASSWORD_SET = "isSetPassword_Pref";
+    public static final String APP_PASSWORD_KEY = "passwordKey_Pref";
 
     public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
     public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
@@ -112,6 +113,7 @@ public class Constant {
     public static final String INTENT_EXTRA_MEMO_DIVIDE = "MEMO_OPEN_DIVIDE";
     public static final String INTENT_EXTRA_MEMO_ISWIDGET = "MEMO_ISWIDGET";
     public static final String INTENT_EXTRA_WIDGET_ID = "WIDGET_ID";
+    public static final String INTENT_EXTRA_PASSWORD = "PASSWORD";
 
     public static final String DATE_FORMAT_WIDGET_KOREA = "yyyy년 MM월 dd일";
     public static final String DATE_FORMAT_WIDGET_USA = "MM/dd/yyyy";

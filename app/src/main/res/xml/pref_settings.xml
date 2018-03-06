@@ -52,5 +52,10 @@
             android:key="settings_key_enhanceIO_Line"
             android:summary="@string/settings_expfunc_enhanceIO_Line_summary"
             android:title="@string/settings_expfunc_enhanceIO_Line_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="settings_key_password"
+            android:summary="@string/settings_expfunc_password_summary"
+            android:title="@string/settings_expfunc_password_title" />
     </PreferenceCategory>
 </PreferenceScreen>

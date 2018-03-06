@@ -92,8 +92,9 @@ public class FolderActivity extends AppCompatActivity
                                                 }
                                             });
                                             mFoldersLength = files.length;
-
                                             mFolders.clear();
+
+                                            // 일반 폴더 연결
                                             for (int i = 0; i < mFoldersLength; i++) {
                                                 mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                                                     @Override

@@ -8,13 +8,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/notepad_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MemoActivity"
-            android:configChanges="orientation"/>
+        <activity
+            android:name=".MemoActivity"
+            android:configChanges="orientation" />
         <activity android:name=".FileBrowserActivity" />
         <activity
             android:name=".MainActivity"
@@ -36,8 +37,9 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".PaintActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PaintActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".UpdateListActivity" />
         <activity android:name=".HiddenActivity" />
 
@@ -60,6 +62,7 @@
             android:name=".FirstStartActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LicenseActivity" />
+        <activity android:name=".PasswordActivity"></activity>
     </application>
 
 </manifest>

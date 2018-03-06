@@ -13,11 +13,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.widget.NumberPicker;
 
+import com.eskeptor.openTextViewer.license.ACCLicense;
 import com.eskeptor.openTextViewer.license.BmJUALicense;
 import com.eskeptor.openTextViewer.license.FloatingActionButtonLicense;
 import com.eskeptor.openTextViewer.license.GlideLicense;
 import com.eskeptor.openTextViewer.license.KOPUBLicense;
+import com.eskeptor.openTextViewer.license.LicensesDialogLicense;
 import com.eskeptor.openTextViewer.license.OpenpadLicense;
+import com.eskeptor.openTextViewer.license.PassCodeViewLicense;
 import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -242,6 +245,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class Settings extends PreferenceFragment {
+        // todo 파일암호화 체크버튼 수정(체크 안눌리게)
+
         private CheckBoxPreference mAdMob;
         private CheckBoxPreference mViewImage;
         private Preference mEnhanceIOLine;
@@ -263,6 +268,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mEnhanceIOLine = findPreference("settings_key_enhanceIO_Line");
             mViewImage = (CheckBoxPreference) findPreference("settings_key_viewimage");
             Preference license = findPreference("settings_key_license");
+            CheckBoxPreference isSetPassword = (CheckBoxPreference)findPreference("settings_key_password");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -364,17 +370,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             notices.addNotice(new Notice("BM-JUA", "http://www.woowahan.com", "BM-JUA License", new BmJUALicense()));
                             notices.addNotice(new Notice("KOPUB Dotum", "http://www.kopus.org", "KOPUB Dotum License", new KOPUBLicense()));
                             notices.addNotice(new Notice("FloatingActionButton", "https://github.com/PSDev/LicensesDialog", "FloatingActionButton License", new FloatingActionButtonLicense()));
+                            notices.addNotice(new Notice("Licenses Dialog", "https://github.com/PSDev/LicensesDialog", "Licenses Dialog License", new LicensesDialogLicense()));
+                            notices.addNotice(new Notice("Apache Commons Codec", "http://commons.apache.org/", "Apache Commons Codec License", new ACCLicense()));
+                            notices.addNotice(new Notice("PassCodeView", "https://github.com/Arjun-sna/android-passcodeview", "PassCodeView License", new PassCodeViewLicense()));
                             new LicensesDialog.Builder(getActivity())
                                     .setNotices(notices)
                                     .setShowFullLicenseText(false)
                                     .setIncludeOwnLicense(false)
                                     .build()
                                     .show();
-                            /*Intent intent = new Intent();
-                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            intent.setClass(getActivity(), LicenseActivity.class);
+                            break;
+                        }
+                        case "settings_key_password": {
+                            Intent intent = new Intent();
+                            intent.setClass(getActivity(), PasswordActivity.class);
                             startActivity(intent);
-                            getActivity().overridePendingTransition(0, 0);*/
+                            getActivity().overridePendingTransition(0, 0);
                             break;
                         }
                     }
@@ -409,9 +420,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             version.setSummary(BuildConfig.VERSION_NAME);
             mEnhanceIOLine.setOnPreferenceClickListener(clickListener);
             license.setOnPreferenceClickListener(clickListener);
-
+            isSetPassword.setOnPreferenceClickListener(clickListener);
+            isSetPassword.setChecked(mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false));
             mAdMob.setOnPreferenceClickListener(checkClickListener);
-            mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
+//            mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
             setRetainInstance(true);
         }
 
@@ -423,6 +435,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (mPrevFontStyle != mFontStyle) {
                 mPrevFontStyle = mFontStyle;
             }
+            mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
         }
 
         @Override

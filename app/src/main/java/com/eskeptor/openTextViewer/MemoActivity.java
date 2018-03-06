@@ -624,12 +624,13 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
-    private void handleMessage(Message _msg) {
-        switch (_msg.what) {
-            case HANDLER_FILE_OPENED: {
-                String txtData = mTxtManager.getText(TextManager.PAGE_NONE, mEncodeType);
-                mEditText.setText(txtData);
-                mEditText.setFocusable(false);
+    private void getTextFromTextManager(final int _page) {
+        String txtData = mTxtManager.getText(_page, mEncodeType);
+        mEditText.setText(txtData);
+        mEditText.setFocusable(false);
+        mInputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+        switch (_page) {
+            case TextManager.PAGE_NONE: {
                 if (mIsDivided) {
                     buttonEnabler();
                     mProgCurrent.setProgress((int)mTxtManager.getProgress());
@@ -637,31 +638,30 @@ public class MemoActivity extends AppCompatActivity {
                 }
                 break;
             }
-            case HANDLER_PREV_PAGE: {
-                String txtData = mTxtManager.getText(TextManager.PAGE_PREV, mEncodeType);
-                mEditText.setText(txtData);
-                mEditText.setFocusable(false);
+            default: {
                 buttonEnabler();
                 mProgCurrent.setProgress((int)mTxtManager.getProgress());
                 mTxtProgCur.setText(String.format(Locale.getDefault() ,"%.2f", mTxtManager.getProgress()));
+            }
+        }
+    }
+
+    private void handleMessage(Message _msg) {
+        switch (_msg.what) {
+            case HANDLER_FILE_OPENED: {
+                getTextFromTextManager(TextManager.PAGE_NONE);
+                break;
+            }
+            case HANDLER_PREV_PAGE: {
+                getTextFromTextManager(TextManager.PAGE_PREV);
                 break;
             }
             case HANDLER_NEXT_PAGE: {
-                String txtData = mTxtManager.getText(TextManager.PAGE_NEXT, mEncodeType);
-                mEditText.setText(txtData);
-                mEditText.setFocusable(false);
-                buttonEnabler();
-                mProgCurrent.setProgress((int)mTxtManager.getProgress());
-                mTxtProgCur.setText(String.format(Locale.getDefault() ,"%.2f", mTxtManager.getProgress()));
+                getTextFromTextManager(TextManager.PAGE_NEXT);
                 break;
             }
             case HANDLER_FIRST_PAGE: {
-                String txtData = mTxtManager.getText(TextManager.PAGE_FIRST, mEncodeType);
-                mEditText.setText(txtData);
-                mEditText.setFocusable(false);
-                buttonEnabler();
-                mProgCurrent.setProgress((int)mTxtManager.getProgress());
-                mTxtProgCur.setText(String.format(Locale.getDefault() ,"%.2f", mTxtManager.getProgress()));
+                getTextFromTextManager(TextManager.PAGE_FIRST);
                 break;
             }
         }
