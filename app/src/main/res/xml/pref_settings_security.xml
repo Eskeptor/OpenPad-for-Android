@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/settings_expfunc_security_password_title" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:title="@string/settings_expfunc_security_password_title"
+            android:summary="@string/settings_expfunc_security_password_summary"
+            android:key="settings_key_password_enabled" />
+        <Preference
+            android:title="@string/settings_expfunc_security_password_reset"
+            android:key="settings_key_password_reset"
+            android:enabled="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,3 +1,7 @@
+## Update 2018.3.15
+```
+ 1) Password Function (~ing) (using AES256)
+```
 ## Update 2018.3.6
 ```
  1) Optimized codes

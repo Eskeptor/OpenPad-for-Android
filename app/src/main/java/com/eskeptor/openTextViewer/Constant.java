@@ -73,6 +73,7 @@ public class Constant {
     public static final int REQUEST_CODE_OPEN_FOLDER = 3;
     public static final int REQUEST_CODE_APP_PERMISSION_STORAGE = 4;
     public static final int REQUEST_CODE_PERMISSION_GRANT = 5;
+    public static final int REQUEST_CODE_PASSWORD = 6;
 
     public static final String REGEX = "^[_a-zA-Z0-9.ㄱ-ㅎㅏ-ㅣ가-힣]*$";
 
@@ -113,7 +114,9 @@ public class Constant {
     public static final String INTENT_EXTRA_MEMO_DIVIDE = "MEMO_OPEN_DIVIDE";
     public static final String INTENT_EXTRA_MEMO_ISWIDGET = "MEMO_ISWIDGET";
     public static final String INTENT_EXTRA_WIDGET_ID = "WIDGET_ID";
-    public static final String INTENT_EXTRA_PASSWORD = "PASSWORD";
+    public static final String INTENT_EXTRA_PASSWORD = "PASSWORD_INTENT_TYPE";
+    public static final String INTENT_EXTRA_PASSWORD_MATCH = "PASSWORD_MATCH";
+    public static final String INTENT_EXTRA_PASSWORD_SET = "PASSWORD_SET";
 
     public static final String DATE_FORMAT_WIDGET_KOREA = "yyyy년 MM월 dd일";
     public static final String DATE_FORMAT_WIDGET_USA = "MM/dd/yyyy";
@@ -121,6 +124,18 @@ public class Constant {
     public static final String DATE_FORMAT_MAIN_KOREA = "yyyy년 MM월 dd일 hh:mm a";
     public static final String DATE_FORMAT_MAIN_USA = "MM/dd/yyyy hh:mm a";
     public static final String DATE_FORMAT_MAIN_UK = "dd/MM/yyyy hh:mm a";
+
+    public enum PasswordIntentType {
+        Set(0), Reset(1), Execute(2);
+
+        private final int value;
+        PasswordIntentType(final int _value) {
+            value = _value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
 
     public enum FontType {
         Default(0), BaeDal_JUA(1), KOPUB_Dotum(2);
@@ -193,7 +208,7 @@ public class Constant {
     }
 
     public enum ActiveScreenType {
-        Main, Font, Help
+        Main, Font, Help, Security
     }
 
     public enum ShapeType {

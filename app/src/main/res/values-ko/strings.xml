@@ -199,6 +199,9 @@
     <string name="license_glide4">Glide 4 라이센스</string>
     <string name="memo_btnFirst">첫 페이지</string>
     <string name="main_dialog_image_alert">화면이 세로로 고정됩니다.</string>
-    <string name="settings_expfunc_password_title">파일 암호화</string>
-    <string name="settings_expfunc_password_summary">AES 256을 이용하여 파일을 암호화합니다.(텍스트메모)</string>
+    <string name="settings_expfunc_security_password_title">파일 암호화</string>
+    <string name="settings_expfunc_security_password_summary">AES 256을 이용하여 파일을 암호화합니다.(텍스트메모)</string>
+    <string name="settings_expfunc_security">보안</string>
+    <string name="settings_expfunc_security_password">파일 암호화</string>
+    <string name="settings_expfunc_security_password_reset">비밀번호 재설정</string>
 </resources>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.widget.NumberPicker;
@@ -44,6 +45,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static Help mHelpAct;
     private static FontSettings mFontSettingAct;
     private static Settings mSettingsAct;
+    private static Security mSecurityAct;
     private static ActionBar mActionBar;
     private static int mFontStyle;
     private static int mPrevFontStyle;
@@ -244,9 +246,80 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    public static class Settings extends PreferenceFragment {
-        // todo 파일암호화 체크버튼 수정(체크 안눌리게)
+    public static class Security extends PreferenceFragment {
+        // todo 비밀번호 암호화하여 처리하기 구현
 
+        private CheckBoxPreference mIsSetPassword;
+        private Preference mResetPassword;
+
+        @Override
+        public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+            if (_resultCode == RESULT_OK) {
+                switch (_requestCode) {
+                    case Constant.REQUEST_CODE_PASSWORD: {
+                        mResetPassword.setEnabled(true);
+                        mIsSetPassword.setChecked(true);
+                        break;
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_settings_security);
+
+            mIsSetPassword = (CheckBoxPreference)findPreference("settings_key_password_enabled");
+            mResetPassword = (Preference)findPreference("settings_key_password_reset");
+
+            if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
+                mResetPassword.setEnabled(true);
+                mIsSetPassword.setChecked(true);
+            } else {
+                mResetPassword.setEnabled(false);
+                mIsSetPassword.setChecked(false);
+            }
+
+            Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference _preference) {
+                    String key = _preference.getKey();
+                    switch (key)
+                    {
+                        case "settings_key_password_enabled": {
+                            if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
+                                mResetPassword.setEnabled(false);
+                                mIsSetPassword.setChecked(false);
+                                mSharedPrefEditor.putBoolean(Constant.APP_PASSWORD_SET, false);
+                                mSharedPrefEditor.apply();
+                            } else {
+                                Intent intent = new Intent();
+                                intent.setClass(getActivity(), PasswordActivity.class);
+                                intent.putExtra(Constant.INTENT_EXTRA_PASSWORD, Constant.PasswordIntentType.Set.getValue());
+                                startActivityForResult(intent, Constant.REQUEST_CODE_PASSWORD);
+                                getActivity().overridePendingTransition(0, 0);
+                            }
+                            break;
+                        }
+                        case "settings_key_password_reset": {
+                            Intent intent = new Intent();
+                            intent.setClass(getActivity(), PasswordActivity.class);
+                            intent.putExtra(Constant.INTENT_EXTRA_PASSWORD, Constant.PasswordIntentType.Reset.getValue());
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(0, 0);
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            };
+            mIsSetPassword.setOnPreferenceClickListener(clickListener);
+            mResetPassword.setOnPreferenceClickListener(clickListener);
+        }
+    }
+
+    public static class Settings extends PreferenceFragment {
         private CheckBoxPreference mAdMob;
         private CheckBoxPreference mViewImage;
         private Preference mEnhanceIOLine;
@@ -254,11 +327,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private long mPressTime = 0;
 
         @Override
+        public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+            if (_resultCode == RESULT_OK) {
+                switch (_requestCode) {
+                    case Constant.REQUEST_CODE_PASSWORD: {
+                        getFragmentManager().beginTransaction().replace(android.R.id.content, mSecurityAct).commit();
+                        mActiveScene = Constant.ActiveScreenType.Security;
+                        break;
+                    }
+                }
+            }
+        }
+
+        @Override
         public void onCreate(Bundle _savedInstanceState) {
             super.onCreate(_savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings);
 
-            Preference info = findPreference("settings_key_info");
+            final Preference info = findPreference("settings_key_info");
             Preference version = findPreference("settings_key_version");
             Preference font = findPreference("settings_key_font");
             Preference bugReport = findPreference("settings_key_bugreport");
@@ -268,7 +354,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mEnhanceIOLine = findPreference("settings_key_enhanceIO_Line");
             mViewImage = (CheckBoxPreference) findPreference("settings_key_viewimage");
             Preference license = findPreference("settings_key_license");
-            CheckBoxPreference isSetPassword = (CheckBoxPreference)findPreference("settings_key_password");
+            Preference security = findPreference("settings_key_security");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -381,11 +467,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                     .show();
                             break;
                         }
-                        case "settings_key_password": {
-                            Intent intent = new Intent();
-                            intent.setClass(getActivity(), PasswordActivity.class);
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(0, 0);
+                        case "settings_key_security": {
+                            if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
+                                Intent intent = new Intent();
+                                intent.setClass(getActivity(), PasswordActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.putExtra(Constant.INTENT_EXTRA_PASSWORD, Constant.PasswordIntentType.Execute.getValue());
+                                startActivityForResult(intent, Constant.REQUEST_CODE_PASSWORD);
+                            }
+                            getFragmentManager().beginTransaction().replace(android.R.id.content, mSecurityAct).commit();
+                            mActiveScene = Constant.ActiveScreenType.Security;
                             break;
                         }
                     }
@@ -420,10 +511,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             version.setSummary(BuildConfig.VERSION_NAME);
             mEnhanceIOLine.setOnPreferenceClickListener(clickListener);
             license.setOnPreferenceClickListener(clickListener);
-            isSetPassword.setOnPreferenceClickListener(clickListener);
-            isSetPassword.setChecked(mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false));
             mAdMob.setOnPreferenceClickListener(checkClickListener);
-//            mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
+            security.setOnPreferenceClickListener(clickListener);
             setRetainInstance(true);
         }
 
@@ -470,7 +559,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return PreferenceFragment.class.getName().equals(_fragmentName)
                 || FontSettings.class.getName().equals(_fragmentName)
                 || Settings.class.getName().equals(_fragmentName)
-                || Help.class.getName().equals(_fragmentName);
+                || Help.class.getName().equals(_fragmentName)
+                || Security.class.getName().equals(_fragmentName);
     }
 
     @Override
@@ -481,6 +571,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         mHelpAct = new Help();
         mFontSettingAct = new FontSettings();
         mSettingsAct = new Settings();
+        mSecurityAct = new Security();
 
         getFragmentManager().beginTransaction().replace(android.R.id.content, mSettingsAct).commit();
         mActiveScene = Constant.ActiveScreenType.Main;

@@ -211,6 +211,9 @@
     <string name="license_glide4">Glide 4 License</string>
     <string name="memo_btnFirst">First Page</string>
     <string name="main_dialog_image_alert">The screen is held in the portrait position.</string>
-    <string name="settings_expfunc_password_title">File encryption</string>
-    <string name="settings_expfunc_password_summary">Encrypt files using AES 256 (Text memos only)</string>
+    <string name="settings_expfunc_security_password_title">File Encryption</string>
+    <string name="settings_expfunc_security_password_summary">Encrypt files using AES 256 (Text memos only)</string>
+    <string name="settings_expfunc_security">Security</string>
+    <string name="settings_expfunc_security_password">File encryption</string>
+    <string name="settings_expfunc_security_password_reset">Reset Password</string>
 </resources>

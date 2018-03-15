@@ -9,10 +9,8 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.3.6)
+## What's New? (Last updated 2018.3.15)
 ```
- 1) Optimized codes
-
  ing~) Password Function
 ```
 ## Lasted Update List
