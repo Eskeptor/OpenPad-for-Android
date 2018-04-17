@@ -29,8 +29,8 @@ public class HelpContentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_helpcontents);
 
         setTitle(R.string.settings_information_help_title);
-        mTxtTitle = (TextView) findViewById(R.id.help_txtTitle);
-        mTxtContexts = (TextView) findViewById(R.id.help_contexts);
+        mTxtTitle = findViewById(R.id.help_txtTitle);
+        mTxtContexts = findViewById(R.id.help_contexts);
 
         mHelpIndex = getIntent().getStringExtra(Constant.INTENT_EXTRA_HELP_INDEX);
         helpDetector();

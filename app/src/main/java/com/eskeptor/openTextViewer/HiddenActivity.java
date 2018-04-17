@@ -17,7 +17,7 @@ public class HiddenActivity extends AppCompatActivity {
 
         setTitle(R.string.hidden_title);
 
-        TextView hidden = (TextView) findViewById(R.id.hidden_txt);
+        TextView hidden = findViewById(R.id.hidden_txt);
         hidden.setText(RawTextManager.getRawText(getApplicationContext(), R.raw.hidden));
     }
 

@@ -108,7 +108,7 @@ public class MemoWidgetConfigureActivity extends Activity {
 
         setContentView(R.layout.memo_widget_configure);
 
-        TabHost tabHost = (TabHost) findViewById(R.id.widget_config_tabhost);
+        TabHost tabHost = findViewById(R.id.widget_config_tabhost);
         tabHost.setup();
 
         TabHost.TabSpec spec1 = tabHost.newTabSpec("Tab1").setContent(R.id.tab1).setIndicator(getString(R.string.widget_config_customize_tap1_title));
@@ -116,38 +116,38 @@ public class MemoWidgetConfigureActivity extends Activity {
         TabHost.TabSpec spec2 = tabHost.newTabSpec("Tab2").setContent(R.id.tab2).setIndicator(getString(R.string.widget_config_customize_tap2_title));
         tabHost.addTab(spec2);
 
-        mTab1BackSeekRed = (SeekBar) findViewById(R.id.widget_config_tab1_back_seekRed);
-        mTab1BackSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab1_back_seekGreen);
-        mTab1BackSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab1_back_seekBlue);
-        mTab1BackTxtRed = (TextView) findViewById(R.id.widget_config_tab1_back_txtRed);
-        mTab1BackTxtGreen = (TextView) findViewById(R.id.widget_config_tab1_back_txtGreen);
-        mTab1BackTxtBlue = (TextView) findViewById(R.id.widget_config_tab1_back_txtBlue);
-        mTab1FontSeekRed = (SeekBar) findViewById(R.id.widget_config_tab1_font_seekRed);
-        mTab1FontSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab1_font_seekGreen);
-        mTab1FontSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab1_font_seekBlue);
-        mTab1FontTxtRed = (TextView) findViewById(R.id.widget_config_tab1_font_txtRed);
-        mTab1FontTxtGreen = (TextView) findViewById(R.id.widget_config_tab1_font_txtGreen);
-        mTab1FontTxtBlue = (TextView) findViewById(R.id.widget_config_tab1_font_txtBlue);
+        mTab1BackSeekRed = findViewById(R.id.widget_config_tab1_back_seekRed);
+        mTab1BackSeekGreen = findViewById(R.id.widget_config_tab1_back_seekGreen);
+        mTab1BackSeekBlue = findViewById(R.id.widget_config_tab1_back_seekBlue);
+        mTab1BackTxtRed = findViewById(R.id.widget_config_tab1_back_txtRed);
+        mTab1BackTxtGreen = findViewById(R.id.widget_config_tab1_back_txtGreen);
+        mTab1BackTxtBlue = findViewById(R.id.widget_config_tab1_back_txtBlue);
+        mTab1FontSeekRed = findViewById(R.id.widget_config_tab1_font_seekRed);
+        mTab1FontSeekGreen = findViewById(R.id.widget_config_tab1_font_seekGreen);
+        mTab1FontSeekBlue = findViewById(R.id.widget_config_tab1_font_seekBlue);
+        mTab1FontTxtRed = findViewById(R.id.widget_config_tab1_font_txtRed);
+        mTab1FontTxtGreen = findViewById(R.id.widget_config_tab1_font_txtGreen);
+        mTab1FontTxtBlue = findViewById(R.id.widget_config_tab1_font_txtBlue);
 
-        mTab2BackSeekRed = (SeekBar) findViewById(R.id.widget_config_tab2_back_seekRed);
-        mTab2BackSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab2_back_seekGreen);
-        mTab2BackSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab2_back_seekBlue);
-        mTab2BackTxtRed = (TextView) findViewById(R.id.widget_config_tab2_back_txtRed);
-        mTab2BackTxtGreen = (TextView) findViewById(R.id.widget_config_tab2_back_txtGreen);
-        mTab2BackTxtBlue = (TextView) findViewById(R.id.widget_config_tab2_back_txtBlue);
-        mTab2FontSeekRed = (SeekBar) findViewById(R.id.widget_config_tab2_font_seekRed);
-        mTab2FontSeekGreen = (SeekBar) findViewById(R.id.widget_config_tab2_font_seekGreen);
-        mTab2FontSeekBlue = (SeekBar) findViewById(R.id.widget_config_tab2_font_seekBlue);
-        mTab2FontTxtRed = (TextView) findViewById(R.id.widget_config_tab2_font_txtRed);
-        mTab2FontTxtGreen = (TextView) findViewById(R.id.widget_config_tab2_font_txtGreen);
-        mTab2FontTxtBlue = (TextView) findViewById(R.id.widget_config_tab2_font_txtBlue);
+        mTab2BackSeekRed = findViewById(R.id.widget_config_tab2_back_seekRed);
+        mTab2BackSeekGreen = findViewById(R.id.widget_config_tab2_back_seekGreen);
+        mTab2BackSeekBlue = findViewById(R.id.widget_config_tab2_back_seekBlue);
+        mTab2BackTxtRed = findViewById(R.id.widget_config_tab2_back_txtRed);
+        mTab2BackTxtGreen = findViewById(R.id.widget_config_tab2_back_txtGreen);
+        mTab2BackTxtBlue = findViewById(R.id.widget_config_tab2_back_txtBlue);
+        mTab2FontSeekRed = findViewById(R.id.widget_config_tab2_font_seekRed);
+        mTab2FontSeekGreen = findViewById(R.id.widget_config_tab2_font_seekGreen);
+        mTab2FontSeekBlue = findViewById(R.id.widget_config_tab2_font_seekBlue);
+        mTab2FontTxtRed = findViewById(R.id.widget_config_tab2_font_txtRed);
+        mTab2FontTxtGreen = findViewById(R.id.widget_config_tab2_font_txtGreen);
+        mTab2FontTxtBlue = findViewById(R.id.widget_config_tab2_font_txtBlue);
 
-        mPreviewMainLayout = (LinearLayout) findViewById(R.id.widget_config_preview_mainlayout);
-        mPreviewTitleLayout = (FrameLayout) findViewById(R.id.widget_config_preview_titlelayout);
-        mPreviewContextLayout = (FrameLayout) findViewById(R.id.widget_config_preview_contextlayout);
+        mPreviewMainLayout = findViewById(R.id.widget_config_preview_mainlayout);
+        mPreviewTitleLayout = findViewById(R.id.widget_config_preview_titlelayout);
+        mPreviewContextLayout = findViewById(R.id.widget_config_preview_contextlayout);
 
-        mPreviewTxtTitle = (TextView) findViewById(R.id.widget_config_preview_memodate);
-        mPreviewTxtContext = (TextView) findViewById(R.id.widget_config_preview_memocontext);
+        mPreviewTxtTitle = findViewById(R.id.widget_config_preview_memodate);
+        mPreviewTxtContext = findViewById(R.id.widget_config_preview_memocontext);
 
         mSharedPref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mAppWidgetId, MODE_PRIVATE);
         mTab1CurBackRed = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);

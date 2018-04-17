@@ -23,7 +23,6 @@ public class TestLog {
     public TestLog(final String _tagName) {
         mTagName = _tagName;
     }
-    public TestLog() {}
     public static TestLog Tag(final String _tagName) {
         return new TestLog(_tagName);
     }

@@ -18,8 +18,8 @@ public class PasswordActivity extends AppCompatActivity {
 
         final SharedPreferences sharedPreferences = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
 
-        final PassCodeView passCodeView = (PassCodeView)findViewById(R.id.pass_code);
-        final TextView txtComment = (TextView)findViewById(R.id.pass_txtComment);
+        final PassCodeView passCodeView = findViewById(R.id.pass_code);
+        final TextView txtComment = findViewById(R.id.pass_txtComment);
 
         final int passwordType = getIntent().getIntExtra(Constant.INTENT_EXTRA_PASSWORD, Constant.PasswordIntentType.Set.getValue());
 

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,7 @@ import com.eskeptor.openTextViewer.datatype.MainFileObject;
 
 import java.util.ArrayList;
 
-import util.TestLog;
-
-/**
+/*
  * Created by eskeptor on 17. 2. 4.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
@@ -27,8 +26,8 @@ import util.TestLog;
  * 메인 페이지의 클릭액션을 정의한 인터페이스
  */
 interface ClickAction {
-    public void onClick(final View _view, final int _position);
-    public void onLongClick(final View _view, final int _position);
+    void onClick(final View _view, final int _position);
+    void onLongClick(final View _view, final int _position);
 }
 
 /**
@@ -41,13 +40,14 @@ class MainFileViewHolder extends RecyclerView.ViewHolder {
     public TextView date;
     public View view;
 
-    public MainFileViewHolder(final View _view, final Context _context) {
+    MainFileViewHolder(final View _view) {
         super(_view);
         view = _view;
-        image = (ImageView) itemView.findViewById(R.id.item_mainfile_image);
-        title = (TextView) itemView.findViewById(R.id.item_mainfile_title);
-        contents = (TextView) itemView.findViewById(R.id.item_mainfile_context);
-        date = (TextView) itemView.findViewById(R.id.item_mainfile_date);}
+        image = itemView.findViewById(R.id.item_mainfile_image);
+        title = itemView.findViewById(R.id.item_mainfile_title);
+        contents = itemView.findViewById(R.id.item_mainfile_context);
+        date = itemView.findViewById(R.id.item_mainfile_date);
+    }
 }
 
 /**
@@ -58,7 +58,7 @@ class RecyclerViewPadding extends RecyclerView.ItemDecoration {
     private int mLeft;
     private int mRight;
 
-    public RecyclerViewPadding(final int _bottom, final int _right, final int _left) {
+    RecyclerViewPadding(final int _bottom, final int _right, final int _left) {
         this.mBottom = _bottom;
         this.mRight = _right;
         this.mLeft = _left;
@@ -81,7 +81,7 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     private ClickAction mAction;
     private SharedPreferences mSharedPref;
 
-    public MainFileAdaptor(final ArrayList<MainFileObject> _mainFiles, SharedPreferences _sharedPref) {
+    MainFileAdaptor(final ArrayList<MainFileObject> _mainFiles, SharedPreferences _sharedPref) {
         this.mMainFiles = _mainFiles;
         mSharedPref = _sharedPref;
     }
@@ -90,10 +90,11 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
         this.mAction = _action;
     }
 
+    @NonNull
     @Override
-    public MainFileViewHolder onCreateViewHolder(final ViewGroup _parent, final int _viewType) {
+    public MainFileViewHolder onCreateViewHolder(@NonNull final ViewGroup _parent, final int _viewType) {
         View view = LayoutInflater.from(_parent.getContext()).inflate(R.layout.item_mainfile_layout, null);
-        return new MainFileViewHolder(view, _parent.getContext());
+        return new MainFileViewHolder(view);
     }
 
     @Override
@@ -102,7 +103,7 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final MainFileViewHolder _holder, final int _position) {
+    public void onBindViewHolder(@NonNull final MainFileViewHolder _holder, final int _position) {
         boolean isViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
         if (getItemViewType(_position) == Constant.FileType.Image.getValue()) {
             if(isViewImage) {

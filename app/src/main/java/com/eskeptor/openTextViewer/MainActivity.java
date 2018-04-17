@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<MainFileObject> mCurFolderFileList;       // Main List's arrayList
     private Context mContextThis;                               // This view's context(getApplicationContext())
     private View mContextView;                                  // This view
-    private AlertDialog mDialog;
 
     private static SharedPreferences mSharedPref;               // SharedPreferences
     private static SharedPreferences.Editor mSharedPrefEditor;  // SharedPreferences Editor
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 툴바의 홈버튼을 폴더보기 아이콘으로 교체
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -167,9 +166,9 @@ public class MainActivity extends AppCompatActivity {
         // StatusBar의 색을 투명화함
         setTranslucentStatusBar(getWindow());
 
-        mCurFolderGridView = (RecyclerView) findViewById(R.id.main_curFolderFileList);
+        mCurFolderGridView = findViewById(R.id.main_curFolderFileList);
         mCurFolderFileList = new ArrayList<>();
-        mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_swipeRefresh);
+        mRefreshLayout = findViewById(R.id.main_swipeRefresh);
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -187,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new StaggeredGridLayoutManager(2, 1);
 
         // 텍스트 메모 추가 버튼
-        final FloatingActionButton btnAddText = (FloatingActionButton)findViewById(R.id.main_memo_text);
+        final FloatingActionButton btnAddText =findViewById(R.id.main_memo_text);
         btnAddText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 이미지 메모 추가 버튼
-        final FloatingActionButton btnAddPaint = (FloatingActionButton)findViewById(R.id.main_memo_paint);
+        final FloatingActionButton btnAddPaint =findViewById(R.id.main_memo_paint);
         btnAddPaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,9 +333,6 @@ public class MainActivity extends AppCompatActivity {
             mListThread.interrupt();
         }
         mListThread = null;
-        if (mDialog != null) {
-            mDialog.dismiss();
-        }
     }
 
     /**
@@ -473,7 +469,9 @@ public class MainActivity extends AppCompatActivity {
                                 int mPendingIntentId = 123456;
                                 PendingIntent mPendingIntent = PendingIntent.getActivity(getBaseContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
                                 AlarmManager mgr = (AlarmManager)getBaseContext().getSystemService(Context.ALARM_SERVICE);
-                                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                                if (mgr != null) {
+                                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                                }
                                 System.exit(0);
                                 dialog.dismiss();
                             }
@@ -518,11 +516,11 @@ public class MainActivity extends AppCompatActivity {
             MobileAds.initialize(mContextThis, getResources().getString(R.string.app_id));
             //adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
             AdRequest adRequest = new AdRequest.Builder().build();
-            AdView adView = (AdView) findViewById(R.id.adView);
+            AdView adView = findViewById(R.id.adView);
             adView.setEnabled(true);
             adView.setVisibility(View.VISIBLE);
             adView.loadAd(adRequest);
-            final FloatingActionsMenu floatingMenu = (FloatingActionsMenu)findViewById(R.id.main_add);
+            final FloatingActionsMenu floatingMenu = findViewById(R.id.main_add);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.adView);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -535,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
             AdView adView = (AdView) findViewById(R.id.adView);
             adView.setEnabled(false);
             adView.setVisibility(View.GONE);
-            final FloatingActionsMenu floatingMenu = (FloatingActionsMenu)findViewById(R.id.main_add);
+            final FloatingActionsMenu floatingMenu = findViewById(R.id.main_add);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

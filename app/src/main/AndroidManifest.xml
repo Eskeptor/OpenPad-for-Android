@@ -61,8 +61,7 @@
         <activity
             android:name=".FirstStartActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LicenseActivity" />
-        <activity android:name=".PasswordActivity"></activity>
+        <activity android:name=".PasswordActivity" />
     </application>
 
 </manifest>

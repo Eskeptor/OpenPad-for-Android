@@ -98,24 +98,24 @@ public class PaintActivity extends AppCompatActivity {
         mCurGreenValue = 0;
         mCurBlueValue = 0;
 
-        mPaintDrawerLayout = (DrawerLayout)findViewById(R.id.activity_paint_drawer);
-        mDrawLayout = (LinearLayout) findViewById(R.id.activity_paint);
-        mEraserLayout = (LinearLayout) findViewById(R.id.paint_eraser_seekLayout);
-        mEraserSeekSize = (SeekBar) findViewById(R.id.paint_eraser_seekSize);
-        mEraserTxtSize = (TextView) findViewById(R.id.paint_eraser_txtSize);
-        mBrushLayout = (LinearLayout) findViewById(R.id.paint_brush_seekLayout);
-        mBrushSeekSize = (SeekBar) findViewById(R.id.paint_brush_seekSize);
-        mBrushSeekRed = (SeekBar) findViewById(R.id.paint_brush_seekRed);
-        mBrushSeekGreen = (SeekBar) findViewById(R.id.paint_brush_seekGreen);
-        mBrushSeekBlue = (SeekBar) findViewById(R.id.paint_brush_seekBlue);
-        mBrushTxtSize = (TextView) findViewById(R.id.paint_brush_txtSize);
-        mBrushTxtRed = (TextView) findViewById(R.id.paint_brush_txtRed);
-        mBrushTxtGreen = (TextView) findViewById(R.id.paint_brush_txtGreen);
-        mBrushTxtBlue = (TextView) findViewById(R.id.paint_brush_txtBlue);
-        mBrushColor = (ImageView) findViewById(R.id.paint_color);
-        mShapeLayout = (LinearLayout) findViewById(R.id.paint_shapesLayout);
-        mShapeCircle = (Button) findViewById(R.id.paint_shape_circle);
-        mShapeRectangle = (Button) findViewById(R.id.paint_shape_rectangle);
+        mPaintDrawerLayout = findViewById(R.id.activity_paint_drawer);
+        mDrawLayout = findViewById(R.id.activity_paint);
+        mEraserLayout = findViewById(R.id.paint_eraser_seekLayout);
+        mEraserSeekSize = findViewById(R.id.paint_eraser_seekSize);
+        mEraserTxtSize = findViewById(R.id.paint_eraser_txtSize);
+        mBrushLayout = findViewById(R.id.paint_brush_seekLayout);
+        mBrushSeekSize = findViewById(R.id.paint_brush_seekSize);
+        mBrushSeekRed = findViewById(R.id.paint_brush_seekRed);
+        mBrushSeekGreen = findViewById(R.id.paint_brush_seekGreen);
+        mBrushSeekBlue = findViewById(R.id.paint_brush_seekBlue);
+        mBrushTxtSize = findViewById(R.id.paint_brush_txtSize);
+        mBrushTxtRed = findViewById(R.id.paint_brush_txtRed);
+        mBrushTxtGreen = findViewById(R.id.paint_brush_txtGreen);
+        mBrushTxtBlue = findViewById(R.id.paint_brush_txtBlue);
+        mBrushColor = findViewById(R.id.paint_color);
+        mShapeLayout = findViewById(R.id.paint_shapesLayout);
+        mShapeCircle = findViewById(R.id.paint_shape_circle);
+        mShapeRectangle = findViewById(R.id.paint_shape_rectangle);
         mShapeType = Constant.ShapeType.None;
 
         mShapeCircle.setOnClickListener(new View.OnClickListener() {
@@ -466,7 +466,7 @@ public class PaintActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.paint_dialog_description_title);
         View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_image_description, null);
-        final EditText description = (EditText)layout.findViewById(R.id.dialog_image_description_input);
+        final EditText description = layout.findViewById(R.id.dialog_image_description_input);
         TestLog.Tag("Description").Logging(TestLog.LogType.DEBUG, "imageSummary: " + imageSummary);
         if (mOpenFileURL != null) {
             if (imageSummary.exists()) {
@@ -533,7 +533,9 @@ public class PaintActivity extends AppCompatActivity {
         builder.setNegativeButton(R.string.memo_alert_modified_btnCancel, clickListener);
 
         AlertDialog dialog = builder.create();
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
         dialog.show();
     }
 

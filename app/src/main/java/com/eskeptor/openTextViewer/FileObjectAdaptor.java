@@ -42,7 +42,7 @@ public class FileObjectAdaptor extends BaseAdapter
      * @param _context 컨텍스트
      * @param _fileObjects FileObject용 ArrrayList
      */
-    public FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects) {
+    FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects) {
         this.mContext = _context;
         this.mFileObjects = _fileObjects;
 
@@ -81,9 +81,9 @@ public class FileObjectAdaptor extends BaseAdapter
         if (_convertView == null) {
             _convertView = LayoutInflater.from(mContext).inflate(R.layout.item_fileobject_layout, null);
             holder = new FileObjectViewHolder();
-            holder.fileImage = (ImageView) _convertView.findViewById(R.id.item_fileobj_image);
-            holder.fileName = (TextView) _convertView.findViewById(R.id.item_fileobj_name);
-            holder.fileSize = (TextView) _convertView.findViewById(R.id.item_fileobj_size);
+            holder.fileImage = _convertView.findViewById(R.id.item_fileobj_image);
+            holder.fileName = _convertView.findViewById(R.id.item_fileobj_name);
+            holder.fileSize = _convertView.findViewById(R.id.item_fileobj_size);
             _convertView.setTag(holder);
         } else {
             holder = (FileObjectViewHolder) _convertView.getTag();

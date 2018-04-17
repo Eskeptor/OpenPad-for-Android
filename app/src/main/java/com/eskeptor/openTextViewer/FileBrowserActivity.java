@@ -74,11 +74,11 @@ public class FileBrowserActivity extends AppCompatActivity {
         int browserType = getIntent().getIntExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, 0);
         mSortType = Constant.BrowserMenuSortType.Asc;
 
-        mTxtPath = (TextView) findViewById(R.id.browser_txtPath);
-        mFileList = (ListView) findViewById(R.id.browser_lvFilecontrol);
+        mTxtPath = findViewById(R.id.browser_txtPath);
+        mFileList = findViewById(R.id.browser_lvFilecontrol);
         mFileListObjects = new ArrayList<>();
-        mSaveLayout = (LinearLayout) findViewById(R.id.browser_saveLayout);
-        mEditTxtSave = (EditText) findViewById(R.id.browser_etxtSave);
+        mSaveLayout = findViewById(R.id.browser_saveLayout);
+        mEditTxtSave = findViewById(R.id.browser_etxtSave);
 
         if (browserType == Constant.BrowserType.OpenExternal.getValue()) {
             setTitle(R.string.filebrowser_name_open);

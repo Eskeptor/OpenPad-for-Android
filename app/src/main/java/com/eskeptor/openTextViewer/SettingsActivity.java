@@ -271,7 +271,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_settings_security);
 
             mIsSetPassword = (CheckBoxPreference)findPreference("settings_key_password_enabled");
-            mResetPassword = (Preference)findPreference("settings_key_password_reset");
+            mResetPassword = findPreference("settings_key_password_reset");
 
             if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
                 mResetPassword.setEnabled(true);

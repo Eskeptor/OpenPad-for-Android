@@ -66,7 +66,6 @@ public class MemoActivity extends AppCompatActivity {
     private ScrollView mBtnLayout;
     private Button mBtnPrev;
     private Button mBtnNext;
-    private Button mBtnTop;
 
     // 향상된 불러오기의 하단 버튼2
     private ProgressBar mProgCurrent;
@@ -194,12 +193,12 @@ public class MemoActivity extends AppCompatActivity {
         mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         mIsModifiying = false;
-        mEditText = (EditText) findViewById(R.id.memo_etxtMain);
+        mEditText = findViewById(R.id.memo_etxtMain);
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE));
         mTxtManager = new TextManager();
         mTxtManager.setLines(mSharedPref.getInt(Constant.APP_TEXT_LINES, Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES));
-        mScrollView = (ScrollView) findViewById(R.id.memo_scroll);
-        mBtnLayout = (ScrollView) findViewById(R.id.memo_layoutButton);
+        mScrollView = findViewById(R.id.memo_scroll);
+        mBtnLayout = findViewById(R.id.memo_layoutButton);
         mEncodeType = Constant.EncodeType.UTF8;
 
         // 새 파일 생성 : mOpenFileURL 이 null 인 경우
@@ -270,8 +269,8 @@ public class MemoActivity extends AppCompatActivity {
             }
         } else {
             setTitle(mOpenFileName);
-            mProgCurrent = (ProgressBar) findViewById(R.id.memo_Prog);
-            mTxtProgCur = (TextView) findViewById(R.id.memo_txtProg_cur);
+            mProgCurrent = findViewById(R.id.memo_Prog);
+            mTxtProgCur = findViewById(R.id.memo_txtProg_cur);
 
             mHandler = new FileIOHandler(this);
 
@@ -290,14 +289,13 @@ public class MemoActivity extends AppCompatActivity {
 
             if (mIsDivided) {
                 mBtnLayout.setVisibility(View.VISIBLE);
-                mBtnPrev = (Button) findViewById(R.id.memo_btnPrev);
-                mBtnTop = (Button) findViewById(R.id.memo_btnTop);
-                mBtnNext = (Button) findViewById(R.id.memo_btnNext);
+                mBtnPrev = findViewById(R.id.memo_btnPrev);
+                mBtnNext = findViewById(R.id.memo_btnNext);
 
                 mScrollView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        int action = MotionEventCompat.getActionMasked(event);
+                        int action = event.getActionMasked();
 
                         if (event.getPointerCount() > 1) {
 
@@ -402,7 +400,6 @@ public class MemoActivity extends AppCompatActivity {
         mBtnLayout = null;
         mBtnPrev = null;
         mBtnNext = null;
-        mBtnTop = null;
         mScrollView = null;
         mContextThis = null;
         mSharedPref = null;
@@ -579,15 +576,10 @@ public class MemoActivity extends AppCompatActivity {
     private boolean isModified() {
         if (mOpenFileURL != null) {
             String md5 = mTxtManager.createMD5(mEditText.getText().toString());
-            if (!mTxtManager.getMD5().equals(md5)) {
-                return true;
-            }
+            return !mTxtManager.getMD5().equals(md5);
         } else {
-            if (!mEditText.getText().toString().equals("")) {
-                return true;
-            }
+            return !mEditText.getText().toString().equals("");
         }
-        return false;
     }
 
     /**

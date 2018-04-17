@@ -64,7 +64,7 @@ public class FolderActivity extends AppCompatActivity
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.folder_dialog_title_create);
             View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_folder_create, null);
-            mEditText = (EditText) layout.findViewById(R.id.dialog_folder_input);
+            mEditText = layout.findViewById(R.id.dialog_folder_input);
             builder.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
@@ -122,7 +122,9 @@ public class FolderActivity extends AppCompatActivity
             builder.setPositiveButton(R.string.folder_dialog_button_create, clickListener);
 
             AlertDialog dialog = builder.create();
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            }
             dialog.show();
         }
         return super.onOptionsItemSelected(_item);
@@ -144,7 +146,7 @@ public class FolderActivity extends AppCompatActivity
         mContextView = findViewById(R.id.activity_folder);
 
         setTitle(R.string.folder_title);
-        mFolderList = (ListView) findViewById(R.id.folder_list);
+        mFolderList = findViewById(R.id.folder_list);
         mFolders = new ArrayList<>();
 
         mHandler = new RefreshList(this);

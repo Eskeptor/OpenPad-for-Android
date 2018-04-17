@@ -36,7 +36,7 @@ public class FolderAdaptor extends BaseAdapter {
     private Drawable mDrawableFolderRoot;           // 루트 폴더 아이콘(삭제 안되는)
     private Drawable mDrawableFolderExternal;       // 외부 파일 열기용 아이콘
 
-    public FolderAdaptor(final Context _context, final ArrayList<FolderObject> _folders) {
+    FolderAdaptor(final Context _context, final ArrayList<FolderObject> _folders) {
         this.mContext = _context;
         this.mFolders = _folders;
 
@@ -73,9 +73,9 @@ public class FolderAdaptor extends BaseAdapter {
         if (_convertView == null) {
             _convertView = LayoutInflater.from(mContext).inflate(R.layout.item_folder_layout, null);
             holder = new FolderViewHolder();
-            holder.folderIcon = (ImageView) _convertView.findViewById(R.id.item_folder_image);
-            holder.folderName = (TextView) _convertView.findViewById(R.id.item_folder_name);
-            holder.fileCountInFolder = (TextView) _convertView.findViewById(R.id.item_folder_count);
+            holder.folderIcon = _convertView.findViewById(R.id.item_folder_image);
+            holder.folderName = _convertView.findViewById(R.id.item_folder_name);
+            holder.fileCountInFolder = _convertView.findViewById(R.id.item_folder_count);
 
             _convertView.setTag(holder);
         } else {

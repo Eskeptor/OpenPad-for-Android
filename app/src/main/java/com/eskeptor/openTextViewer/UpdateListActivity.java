@@ -21,7 +21,7 @@ public class UpdateListActivity extends AppCompatActivity {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_update_list);
 
-        mUpdateList = (TextView) findViewById(R.id.updateList_contents);
+        mUpdateList = findViewById(R.id.updateList_contents);
         mTextThread = new Thread(new Runnable() {
             @Override
             public void run() {
