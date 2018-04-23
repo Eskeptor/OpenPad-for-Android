@@ -32,34 +32,39 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
-/**
+/*
  * Created by eskeptor on 17. 1. 26.
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-// 내장된 파일 브라우저 클래스
+/**
+ * Embedded File Browser Class
+ */
 public class FileBrowserActivity extends AppCompatActivity {
-    private TextView mTxtPath;                              // 현재 파일 경로
-    private ListView mFileList;                             // 파일 리스트
-    private String mStrFilename;                            // 파일 이름
-    private ArrayList<FileObject> mFileListObjects;         // 파일의 목록을 저장할 배열리스트
-    private FileObjectAdaptor mFileListObjectAdaptor;       // 파일용 커스텀 어댑터
-    private Context mContextThis;                           // context
+    private TextView mTxtPath;                              // Current File Paths
+    private ListView mFileList;                             // File List
+    private String mStrFilename;                            // File Name
+    private ArrayList<FileObject> mFileListObjects;         // List of arrays to save the list of files
+    private FileObjectAdaptor mFileListObjectAdaptor;       // Custom Adapter for File
+    private Context mContextThis;                           // Context
     private View mContextView;
-    private Constant.BrowserType mBrowserType;                               // 외부파일 불러오기, 파일 저장하기
-    private Constant.BrowserMenuSortType mSortType;         // 정렬 기준
+    private Constant.BrowserType mBrowserType;              // Browser Type
+    private Constant.BrowserMenuSortType mSortType;         // Sort by
 
-    // 메뉴 아이템
-    private MenuItem mMenuItemDES;                          // 내림차순
-    private MenuItem mMenuItemASC;                          // 오름차순
+    // Menu Items
+    private MenuItem mMenuItemDES;                          // Descending order
+    private MenuItem mMenuItemASC;                          // Ascending order
 
-    // 파일을 다른이름으로 다른폴더에 저장할 때 쓰이는 것
+    // Used to save files under a different name in a different folder
     private LinearLayout mSaveLayout;
     private EditText mEditTxtSave;
 
     private RefreshList mHandler;
     private Thread mDirectoryThread;
-    private static final int HANDLER_REFRESH = 1;
+    private static final int HANDLER_REFRESH_DIR = 1;
+    private static final int HANDLER_PREV_DIR = 2;
+    private static final int HANDLER_NEXT_DIR = 3;
+    private static final int HANDLER_CHANGE_SORT = 4;
     private static final String DEVICE_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     @Override
@@ -93,8 +98,7 @@ public class FileBrowserActivity extends AppCompatActivity {
         mDirectoryThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                getDirectory(DEVICE_ROOT);
-                mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                mHandler.sendEmptyMessage(HANDLER_REFRESH_DIR);
             }
         });
         mDirectoryThread.start();
@@ -112,8 +116,10 @@ public class FileBrowserActivity extends AppCompatActivity {
                         mDirectoryThread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                getDirectory(mFileListObjects.get(_position).mFilePath);
-                                mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                                Message message = new Message();
+                                message.what = HANDLER_NEXT_DIR;
+                                message.arg1 = _position;
+                                mHandler.sendMessage(message);
                             }
                         });
                         mDirectoryThread.start();
@@ -174,8 +180,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                 mDirectoryThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        getDirectory(mStrFilename);
-                        mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                        mHandler.sendEmptyMessage(HANDLER_CHANGE_SORT);
                     }
                 });
                 mDirectoryThread.start();
@@ -190,8 +195,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                 mDirectoryThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        getDirectory(mStrFilename);
-                        mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                        mHandler.sendEmptyMessage(HANDLER_CHANGE_SORT);
                     }
                 });
                 mDirectoryThread.start();
@@ -214,8 +218,7 @@ public class FileBrowserActivity extends AppCompatActivity {
             mDirectoryThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    getDirectory(new File(mStrFilename).getParent());
-                    mHandler.sendEmptyMessage(HANDLER_REFRESH);
+                    mHandler.sendEmptyMessage(HANDLER_PREV_DIR);
                 }
             });
             mDirectoryThread.start();
@@ -285,8 +288,8 @@ public class FileBrowserActivity extends AppCompatActivity {
     }
 
     /**
-     * 파일 디렉토리를 가져옵니다.
-     * @param _dir 경로
+     * Import a file directory
+     * @param _dir Directory
      */
     public void getDirectory(final String _dir) {
         if (!mFileListObjects.isEmpty()) {
@@ -339,9 +342,9 @@ public class FileBrowserActivity extends AppCompatActivity {
     }
 
     /**
-     * 파일 디렉토리를 정렬하여 보여줍니다.(오름차, 내림차)
-     * @param _files 파일 디렉토리
-     * @param _sortType 정렬 기준
+     * Sort and show the file directory
+     * @param _files File Directory
+     * @param _sortType Sort by
      */
     private void sortFileArray(File[] _files, final Constant.BrowserMenuSortType _sortType) {
         Arrays.sort(_files, new Comparator<File>() {
@@ -358,9 +361,9 @@ public class FileBrowserActivity extends AppCompatActivity {
     }
 
     /**
-     * 해당 경로에 파일이 존재하는 여부를 반환합니다.
-     * @param _filename 파일이름
-     * @return 있다 혹은 없다
+     * Returns whether a file exists on that path
+     * @param _filename File name
+     * @return Exist or nothing
      */
     private boolean isExist(final String _filename) {
         for (int i = 0; i < mFileListObjects.size(); i++) {
@@ -371,16 +374,36 @@ public class FileBrowserActivity extends AppCompatActivity {
         return false;
     }
 
+
     private void handleMessage(Message _msg) {
         int what = _msg.what;
         switch (what) {
-            case HANDLER_REFRESH: {
+            case HANDLER_REFRESH_DIR: {
+                getDirectory(DEVICE_ROOT);
+                mFileListObjectAdaptor.notifyDataSetChanged();
+                break;
+            }
+            case HANDLER_PREV_DIR: {
+                getDirectory(new File(mStrFilename).getParent());
+                mFileListObjectAdaptor.notifyDataSetChanged();
+                break;
+            }
+            case HANDLER_NEXT_DIR: {
+                getDirectory(mFileListObjects.get(_msg.arg1).mFilePath);
+                mFileListObjectAdaptor.notifyDataSetChanged();
+                break;
+            }
+            case HANDLER_CHANGE_SORT: {
+                getDirectory(mStrFilename);
                 mFileListObjectAdaptor.notifyDataSetChanged();
                 break;
             }
         }
     }
 
+    /**
+     * Handler class for updating the file list
+     */
     static class RefreshList extends Handler {
         private final WeakReference<FileBrowserActivity> mActivity;
         RefreshList(FileBrowserActivity _activity) {

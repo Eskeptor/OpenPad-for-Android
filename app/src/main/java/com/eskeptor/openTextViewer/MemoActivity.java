@@ -43,53 +43,50 @@ import util.TestLog;
  */
 
 public class MemoActivity extends AppCompatActivity {
-    // MainActivity로 부터 받아오는 파일과 관련된 변수
+    // Variables associated with files from MainActivity
     private String mOpenFileURL;
     private String mOpenFileName;
     private String mOpenFolderURL;
-    private int mMemoIndex;      // 새로만든 메모에게 붙여줄 번호
+    private int mMemoIndex;                     // Number to paste on the newly created memo
     private Constant.EncodeType mEncodeType;
     private boolean mIsDivided;
 
-    // 위젯관련
+    // Widget related
     private boolean mIsWidget;
     private int mWidgetID;
 
-    private EditText mEditText;          // 텍스트 주체
-    private TextManager mTxtManager;     // 텍스트 저장 및 불러오기 담당
-    private File mLastLog;               // 로그 파일(새로메모를 만들시 붙여줄 번호)
-    private ScrollView mScrollView;      // 텍스트 스크롤
-    private Context mContextThis;       // context용
+    private EditText mEditText;
+    private TextManager mTxtManager;            // Text Manager
+    private File mLastLog;                      // Log files (numbers to paste on when creating a new note)
+    private ScrollView mScrollView;
+    private Context mContextThis;
     private boolean mIsModifiying;
 
-    // 향상된 불러오기의 하단 버튼
+    // Lower button
     private ScrollView mBtnLayout;
     private Button mBtnPrev;
     private Button mBtnNext;
-
-    // 향상된 불러오기의 하단 버튼2
     private ProgressBar mProgCurrent;
     private TextView mTxtProgCur;
 
-    // 멀티터치 제스쳐
+    // Multi-touch gesture
     private GestureDetectorCompat mGestureDetectorCompat;
     private boolean mIsFirstSwipe = true;
     private float mTouchYposStart;
     private float mTouchYposEnd;
 
-    // mSharedPref 불러오기
     private SharedPreferences mSharedPref;
     private SharedPreferences.Editor mSharedPrefEditor;
 
-    // 메뉴 아이템들
+    // Menu items
     private MenuItem mEditMenu;
     private Drawable mDrawableModified;
     private Drawable mDrawableModifiedComplete;
 
-    // 자동 포커스 끄기를 위한 InputMethodManager
+    // IntMpuethodManager for auto focus off
     private InputMethodManager mInputMethodManager;
 
-    // 파일 핸들러(for TextManager)
+    // File Handler(for TextManager)
     private FileIOHandler mHandler;
     private Thread mTextThread;
     private static final int HANDLER_FILE_OPENED = 1;
@@ -135,7 +132,7 @@ public class MemoActivity extends AppCompatActivity {
                 alert.setItems(R.array.menu_memo_charset, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface _dialog, int _which) {
-                        String txtData = "오류";
+                        String txtData = "Error";
                         if (_which == 0)
                             mEncodeType = Constant.EncodeType.EUCKR;
                         else
@@ -201,8 +198,8 @@ public class MemoActivity extends AppCompatActivity {
         mBtnLayout = findViewById(R.id.memo_layoutButton);
         mEncodeType = Constant.EncodeType.UTF8;
 
-        // 새 파일 생성 : mOpenFileURL 이 null 인 경우
-        // 이전 파일 열기 : mOpenFileURL 이 null 이 아닌 경우
+        // Create a new file : If mOpenFileURL is null
+        // Open previous file : If mOpenFileURL is not null
         mOpenFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         mOpenFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
         mOpenFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
@@ -570,8 +567,8 @@ public class MemoActivity extends AppCompatActivity {
     }
 
     /**
-     * 메모 내용이 변경되었는가 여부를 반환
-     * @return 변경 혹은 미변경
+     * Determine if note content has changed
+     * @return True or False
      */
     private boolean isModified() {
         if (mOpenFileURL != null) {
@@ -583,7 +580,7 @@ public class MemoActivity extends AppCompatActivity {
     }
 
     /**
-     * 로그를 쓰는 메소드
+     * How to Write Logs
      */
     private void writeLog() {
         try {
@@ -600,7 +597,7 @@ public class MemoActivity extends AppCompatActivity {
     }
 
     /**
-     * 이전, 이후 버튼 만들기(향상된 파일열기 기능)
+     * Create Previous and Subsequent Buttons
      */
     private void buttonEnabler() {
         if (mTxtManager.getCurPage() <= 0) {
@@ -616,6 +613,10 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets content from TextManager
+     * @param _page Page
+     */
     private void getTextFromTextManager(final int _page) {
         String txtData = mTxtManager.getText(_page, mEncodeType);
         mEditText.setText(txtData);
@@ -659,6 +660,9 @@ public class MemoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handler class for TextManager
+     */
     static class FileIOHandler extends Handler {
         private final WeakReference<MemoActivity> mActivity;
         FileIOHandler(MemoActivity _activity) {

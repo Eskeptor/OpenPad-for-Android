@@ -16,7 +16,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
  */
 
 /**
- * 설정 페이지의 도움말 화면
+ * Help screen on the Settings page
  */
 public class HelpContentsActivity extends AppCompatActivity {
     private TextView mTxtTitle;

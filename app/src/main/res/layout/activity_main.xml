@@ -44,12 +44,12 @@
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
-            android:id="@+id/main_add"
+            android:id="@+id/main_memo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:layout_above="@+id/adView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
 
             fab:fab_addButtonColorNormal="@color/colorAccent"
             fab:fab_addButtonColorPressed="@color/colorAccentPressed"
@@ -63,8 +63,8 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="@color/colorAccentPressed"
-                fab:fab_title="@string/menu_main_add_text_title"
-                fab:fab_icon="@drawable/ic_text_memo_white_24dp"/>
+                fab:fab_icon="@drawable/ic_text_memo_white_24dp"
+                fab:fab_title="@string/menu_main_add_text_title" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/main_memo_paint"
@@ -72,8 +72,8 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="@color/colorAccentPressed"
-                fab:fab_title="@string/menu_main_add_paint_title"
-                fab:fab_icon="@drawable/ic_brush_white_24dp"/>
+                fab:fab_icon="@drawable/ic_brush_white_24dp"
+                fab:fab_title="@string/menu_main_add_paint_title" />
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

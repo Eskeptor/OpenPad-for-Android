@@ -25,7 +25,7 @@ import com.bumptech.glide.Glide;
  */
 
 /**
- * 튜토리얼 페이지
+ * Tutorial Page Class
  */
 public class FirstStartActivity extends AppCompatActivity {
     private ViewPager mPager;

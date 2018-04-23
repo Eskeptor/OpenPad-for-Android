@@ -10,24 +10,24 @@ import java.util.LinkedList;
  */
 
 /**
- * 그림메모를 리스트에 표현하기 위한 클래스
+ * Classes to represent picture notes to the list
  */
 public class BrushObject {
-    // get, set을 이용하면 좋지만 직접접근이 덜 부하를 준다.
-    public LinkedList<Float> mBrushSizes;               // 브러쉬크기
-    public LinkedList<Object> mBrushPaths;              // 브러쉬의 종류에 따른 Path(일반펜, 원모양, 나머지도형)
-    public LinkedList<Integer> mBrushColor;             // 브러쉬의 색
-    public LinkedList<Constant.ShapeType> mBrushType;   // 브러쉬의 종류(일반펜, 원모양, 나머지도형)
+    // Get, set is good, but direct access gives you less load.
+    public LinkedList<Float> mBrushSizes;               // Brush Size
+    public LinkedList<Object> mBrushPaths;              // Path according to the type of brush (pen, circle, and other shapes)
+    public LinkedList<Integer> mBrushColor;             // Brush Color
+    public LinkedList<Constant.ShapeType> mBrushType;   // Types of brushes (regular pens, circle shapes, and other shapes)
 
     /**
-     * 생성자(생성과 동시에 init 실행)
+     * Generator (execute init upon creation)
      */
     public BrushObject() {
         init();
     }
 
     /**
-     * 내부의 모든 필드를 초기화한다.
+     * Initiate all internal fields.
      */
     public void init() {
         if (mBrushSizes != null) {

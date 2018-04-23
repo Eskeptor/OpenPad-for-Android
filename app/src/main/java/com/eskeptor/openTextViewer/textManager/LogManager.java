@@ -12,15 +12,15 @@ import util.TestLog;
  */
 
 /**
- * 로그파일 생성용 클래스
+ * Class for Creating Log Files
  */
 public class LogManager {
 
     /**
-     * 로그를 저장하는 메소드
-     * @param _strData 저장할 메시지
-     * @param _filename 저장되어질 로그의 이름
-     * @return 성공 혹은 실패
+     * How to Save Logs
+     * @param _strData Message to save
+     * @param _filename Name of log to be saved
+     * @return Success or failure
      */
     public static boolean saveLog(final String _strData, final String _filename) {
         if (_strData == null || _strData.isEmpty()) {
@@ -66,9 +66,9 @@ public class LogManager {
     }
 
     /**
-     * 로그를 불러오는 메소드
-     * @param _filename 불러올 로그의 이름
-     * @return 불러온 로그의 내용
+     * How to import logs
+     * @param _filename Name of the log to be recalled
+     * @return The contents of the imported log
      */
     public static String openLog(final String _filename) {
         if (_filename != null) {

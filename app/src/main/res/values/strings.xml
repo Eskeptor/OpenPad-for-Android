@@ -216,4 +216,5 @@
     <string name="settings_expfunc_security">Security</string>
     <string name="settings_expfunc_security_password">File encryption</string>
     <string name="settings_expfunc_security_password_reset">Reset Password</string>
+    <string name="test_preparing">Preparing...</string>
 </resources>

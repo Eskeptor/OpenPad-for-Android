@@ -513,6 +513,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             license.setOnPreferenceClickListener(clickListener);
             mAdMob.setOnPreferenceClickListener(checkClickListener);
             security.setOnPreferenceClickListener(clickListener);
+
+            security.setEnabled(false);
+            security.setSummary(R.string.test_preparing);
+
             setRetainInstance(true);
         }
 

@@ -1,3 +1,10 @@
+## Update 2018.4.23 - Build 1.5.4
+```
+ 1) Correct bounce phenomenon during file browser access in some environments
+ 2) Changing the coding style (SDK 26)
+ 3) Optimization
+ 4) Password Function (~ing) (using AES256)
+```
 ## Update 2018.3.15
 ```
  1) Password Function (~ing) (using AES256)

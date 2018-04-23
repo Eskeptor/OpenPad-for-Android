@@ -10,18 +10,18 @@ import java.io.File;
  */
 
 /**
- * 파일 목록을 리스트에 표현하기 위한 클래스
+ * Class for expressing the file list in the list
  */
 public class FileObject {
-    // get, set을 이용하면 좋지만 직접접근이 덜 부하를 준다.
-    public String mFilePath;                    // 파일의 절대경로
-    public String mFileName;                    // 파일의 이름(파일명만 나옴: 1.png)
-    public Constant.BrowserIconType mIconType;  // 파일 아이콘의 타입
-    public long mFileSize;                      // 파일 크기(KB 단위)
+    // Get, set is good, but direct access gives you less load.
+    public String mFilePath;                    // Absolute path to the file
+    public String mFileName;                    // Name of file (file name only : 1.png)
+    public Constant.BrowserIconType mIconType;  // Type of file icon
+    public long mFileSize;                      // File Size (in KB)
 
     /**
-     * 생성자
-     * @param _file 표시할 파일
+     * Generator
+     * @param _file file
      */
     public FileObject(final File _file) {
         mFilePath = _file.getPath();

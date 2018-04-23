@@ -36,20 +36,20 @@ import util.TestLog;
  */
 
 /**
- * 폴더 액티비티용 클래스
+ * Folder Activity Class
  */
 public class FolderActivity extends AppCompatActivity
 {
-    private ArrayList<FolderObject> mFolders;                        // 폴더를 나열할 ArrayList
-    private FolderAdaptor mFolderAdaptor;                            // 폴더를 나열할 ArrayList 에 쓰일 어댑터
+    private ArrayList<FolderObject> mFolders;           // ArrarCist to list folders
+    private FolderAdaptor mFolderAdaptor;               // Adapter to be used for arra yList to list folders
     private View mContextView;
-    private Context mContextThis;                                    // context 용
-    private EditText mEditText;                                      // 폴더생성시 이름 넣을때 쓰는 edittext
-    private int mFoldersLength;                                      // 폴더의 개수
-    private String mNewFolderName;                                   // 새폴더 이름
-    private ListView mFolderList;                                    // 폴더 리스트
+    private Context mContextThis;                       // Context
+    private EditText mEditText;                         // EditText for adding names when creating folders
+    private int mFoldersLength;                         // Number of folders
+    private String mNewFolderName;                      // New Folder Name
+    private ListView mFolderList;                       // Folder List
 
-    private RefreshList mHandler;
+    private RefreshList mHandler;                       // Handler for refreshing folder lists
     private Thread mListThread;
 
     public boolean onCreateOptionsMenu(Menu _menu)
@@ -94,7 +94,7 @@ public class FolderActivity extends AppCompatActivity
                                             mFoldersLength = files.length;
                                             mFolders.clear();
 
-                                            // 일반 폴더 연결
+                                            // General folder connection
                                             for (int i = 0; i < mFoldersLength; i++) {
                                                 mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                                                     @Override
@@ -105,7 +105,7 @@ public class FolderActivity extends AppCompatActivity
                                                 }).length, checkFolderType(files[i]), mContextThis));
                                             }
 
-                                            // 파일 브라우저 연결
+                                            // File browser connection
                                             mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
                                             mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
                                         }
@@ -220,9 +220,9 @@ public class FolderActivity extends AppCompatActivity
     }
 
     /**
-     * 폴더의 타입을 확인한다.
-     * @param _file 폴더
-     * @return 타입
+     * Check the type of folder
+     * @param _file Folder
+     * @return Folder Type
      */
     private Constant.FolderType checkFolderType(final File _file) {
         if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
@@ -232,8 +232,8 @@ public class FolderActivity extends AppCompatActivity
     }
 
     /**
-     * 폴더를 삭제하는 메소드
-     * @param _index 삭제할 폴더의 인덱스
+     * How to delete folders
+     * @param _index Index of folders to delete
      */
     private void deleteFolder(final int _index) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -348,6 +348,9 @@ public class FolderActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Handler class for refreshing list of folders
+     */
     static class RefreshList extends Handler {
         private final WeakReference<FolderActivity> mActivity;
         RefreshList(FolderActivity _activity) {

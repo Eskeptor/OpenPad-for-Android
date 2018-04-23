@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 
 /**
- * FileObject용 뷰홀더
+ * View Holder for FileObject
  */
 class FileObjectViewHolder
 {
@@ -30,16 +30,16 @@ class FileObjectViewHolder
 
 public class FileObjectAdaptor extends BaseAdapter
 {
-    private Context mContext;                       // LayoutInflater에 사용할 컨텍스트
-    private ArrayList<FileObject> mFileObjects;     // FileObject를 담을 ArrayList
-    private Drawable mDrawableFolder;               // Folder 아이콘
-    private Drawable mDrawableNormalFile;           // 일반 파일 아이콘
-    private Drawable mDrawableOver1File;            // 주황 파일 아이콘
-    private Drawable mDrawableOver2File;            // 빨강 파일 아이콘
+    private Context mContext;                       // Context to use for LayoutInflater
+    private ArrayList<FileObject> mFileObjects;     // ArrayList holding a FileObject
+    private Drawable mDrawableFolder;               // Folder Icon
+    private Drawable mDrawableNormalFile;           // Normal File Icon
+    private Drawable mDrawableOver1File;            // Medium File Icon
+    private Drawable mDrawableOver2File;            // Large File Icon
 
     /**
-     * FileObject용 어댑터를 생성
-     * @param _context 컨텍스트
+     * Create a FileObject Adapter
+     * @param _context Context
      * @param _fileObjects FileObject용 ArrrayList
      */
     FileObjectAdaptor(final Context _context, final ArrayList<FileObject> _fileObjects) {

@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private RefreshListHandler mHandler;                        // Main List refresh handler
     private Thread mListThread;                                 // Main List's thread
 
+    private FloatingActionsMenu mActionMenu;
+
     @Override
     public boolean onCreateOptionsMenu(Menu _menu) {
         getMenuInflater().inflate(R.menu.menu_main, _menu);
@@ -148,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         mHandler = new RefreshListHandler(this);
 
-        // 폴더 아이콘
+        // Folder Icon
         Drawable folderIcon;
         if (Build.VERSION.SDK_INT >= 21) {
             folderIcon = getResources().getDrawable(R.drawable.ic_folder_open_white, null);
@@ -156,14 +158,14 @@ public class MainActivity extends AppCompatActivity {
             folderIcon = getResources().getDrawable(R.drawable.ic_folder_open_white);
         }
 
-        // 툴바의 홈버튼을 폴더보기 아이콘으로 교체
+        // Replace home button on toolbar with folder view icon
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(folderIcon);
         }
-        // StatusBar의 색을 투명화함
+        // Transparent StatusBar Color
         setTranslucentStatusBar(getWindow());
 
         mCurFolderGridView = findViewById(R.id.main_curFolderFileList);
@@ -179,14 +181,18 @@ public class MainActivity extends AppCompatActivity {
                             mCurFileAdapter.notifyDataSetChanged();
                         }
                         mRefreshLayout.setRefreshing(false);
+                        mActionMenu.collapse();
                     }
                 }, 500);
             }
         });
         mLayoutManager = new StaggeredGridLayoutManager(2, 1);
 
-        // 텍스트 메모 추가 버튼
-        final FloatingActionButton btnAddText =findViewById(R.id.main_memo_text);
+        // FloatingActionMenu
+        mActionMenu = findViewById(R.id.main_memo);
+
+        // FloatingActionButton - Add Text
+        final FloatingActionButton btnAddText = findViewById(R.id.main_memo_text);
         btnAddText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 이미지 메모 추가 버튼
-        final FloatingActionButton btnAddPaint =findViewById(R.id.main_memo_paint);
+        // FloatingActionButton - Add Paint memo
+        final FloatingActionButton btnAddPaint = findViewById(R.id.main_memo_paint);
         btnAddPaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 튜토리얼 페이지
+        // Tutorial Page
         if (!mSharedPref.getBoolean(Constant.APP_TUTORIAL, false)) {
             Intent intent = new Intent();
             intent.setClass(mContextThis, FirstStartActivity.class);
@@ -247,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             adMob();
         }
 
-        // 설정의 폰트에 맞게 폰트 변환
+        // Font Settings
         if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
             Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
                     .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
@@ -275,6 +281,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (mActionMenu.isExpanded()) {
+            mActionMenu.collapse();
+        }
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
         mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
 
@@ -291,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // 만약에 이전의 폰트와 현재 폰트가 다르다면 폰트가 변경된 것이다.
+        // If the font is different from the previous one, the font has changed.
         if(mPrevFontStyle != mFontStyle) {
             mPrevFontStyle = mFontStyle;
             if (mFontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
@@ -336,10 +345,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 기본 폴더 체크 메소드
+     * Default Folder Check Method
      */
     private void defaultFolderCheck() {
-        // 어플의 기본 폴더 체크
+        // Check default folder for apps
         File file = new File(Constant.APP_INTERNAL_URL);
         if (!file.exists()) {
             if (file.mkdir()) {
@@ -349,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // 어플의 위젯용 폴더 체크
+        // Check the widget folder for application
         file = new File(Constant.APP_WIDGET_URL);
         if (!file.exists()) {
             if (file.mkdir()) {
@@ -359,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // 어플의 기본 메모 폴더 체크
+        // Check the default memo folder for the app
         file = new File(Constant.APP_INTERNAL_URL + File.separator + Constant.FOLDER_DEFAULT_NAME);
         if (!file.exists()) {
             if (file.mkdir()) {
@@ -373,8 +382,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 메인 리스트에서 파일을 제거하는 메소드
-     * @param _index 제거할 파일의 인덱스
+     * How to remove files from the main list
+     * @param _index Index of files to remove
      */
     private void deleteFile(final int _index) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -415,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 메인 리스트를 갱신하는 메소드
+     * How to update the main list
      */
     private void refreshList() {
         mCurFolderFileList.clear();
@@ -443,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 초기 설치 여부를 판단하는 메소드
+     * How to Determine the Initial Installation
      */
     private void checkFirstExcecute() {
         if (!mSharedPref.getBoolean(Constant.APP_FIRST_SETUP_PREFERENCE, Constant.APP_FIRST_EXECUTE)) {
@@ -509,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 애드몹
+     * AdMob
      */
     private void adMob() {
         if (mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true)) {
@@ -520,7 +529,6 @@ public class MainActivity extends AppCompatActivity {
             adView.setEnabled(true);
             adView.setVisibility(View.VISIBLE);
             adView.loadAd(adRequest);
-            final FloatingActionsMenu floatingMenu = findViewById(R.id.main_add);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ABOVE, R.id.adView);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -528,12 +536,11 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
             }
-            floatingMenu.setLayoutParams(layoutParams);
+            mActionMenu.setLayoutParams(layoutParams);
         } else {
             AdView adView = (AdView) findViewById(R.id.adView);
             adView.setEnabled(false);
             adView.setVisibility(View.GONE);
-            final FloatingActionsMenu floatingMenu = findViewById(R.id.main_add);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -541,16 +548,16 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
             }
-            floatingMenu.setLayoutParams(layoutParams);
+            mActionMenu.setLayoutParams(layoutParams);
         }
     }
 
     /**
-     * 메인 리스트를 정렬하는 메소드
-     * @param _files 리스트
+     * How to sort the main list
+     * @param _files list
      */
     private void sortFileArray(File[] _files) {
-        // 최근 날짜순으로 정렬
+        // Sort by most recent date
         Arrays.sort(_files, new Comparator<File>() {
             @Override
             public int compare(File _o1, File _o2) {
@@ -616,9 +623,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Coordinatorlayout 에서 StatusBar 투명화 또는 컬러화
+     * Transparency or colorization of StatusBar in Coordinatorlayout
      * 출처: https://stackoverflow.com/questions/33668668/coordinatorlayout-not-drawing-behind-status-bar-even-with-windowtranslucentstatu
-     * @param _window 윈도우
+     * @param _window window
      */
     private static void setTranslucentStatusBar(Window _window) {
         if (_window == null) {

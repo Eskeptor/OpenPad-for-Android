@@ -204,4 +204,5 @@
     <string name="settings_expfunc_security">보안</string>
     <string name="settings_expfunc_security_password">파일 암호화</string>
     <string name="settings_expfunc_security_password_reset">비밀번호 재설정</string>
+    <string name="test_preparing">준비중...</string>
 </resources>

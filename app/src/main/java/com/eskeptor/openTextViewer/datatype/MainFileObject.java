@@ -17,22 +17,22 @@ import util.TestLog;
  */
 
 /**
- * MainActivity에 출력되는 리스트에서 메모들을 표현하기위한 클래스
+ * Class to express notes from the list printed on MainActivity
  */
 public class MainFileObject {
-    public String mFileTitle;       // 파일의 제목
-    public String mFilePath;        // 파일의 절대경로
-    public String mOneLinePreview;  // 리스트에 출력할 한줄 요약(텍스트메모는 2번째줄, 이미지메모는 요약이 출력)
-    public String mModifyDate;      // 수정한 날짜
-    public Constant.FileType mFileType;           // 파일의 타입
+    public String mFileTitle;       // Title of the file
+    public String mFilePath;        // Absolute path to the file
+    public String mOneLinePreview;  // A one-line summary to be printed on the list (text notes are the second line, image notes are the summary printed)
+    public String mModifyDate;      // Date modified
+    public Constant.FileType mFileType;           // File Type
 
     /**
-     * 생성자
-     * @param _file 원본 파일
-     * @param _txtFileNoName 텍스트 파일의 이름이 없을 시 출력할 타이틀
-     * @param _imgName 이미지 이름
-     * @param _locale 로케일
-     * @param _viewImage 이미지 미리보기 여부
+     * Generator
+     * @param _file Source files
+     * @param _txtFileNoName Title to print if the text file does not have a name
+     * @param _imgName Image Name
+     * @param _locale Locale
+     * @param _viewImage Image Preview Status
      */
     public MainFileObject(final File _file, final String _txtFileNoName, final String _imgName,
                           final String _locale, final boolean _viewImage) {

@@ -23,7 +23,7 @@ import util.TestLog;
  */
 
 /**
- * 텍스트를 불러오는 클래스
+ * class from which the text is called
  */
 public class TextManager {
     public static final int PAGE_PREV = -1;
@@ -31,26 +31,25 @@ public class TextManager {
     public static final int PAGE_NEXT = 1;
     public static final int PAGE_FIRST = 2;
 
-    private String mOpenedFileName;           // 현재 열린 파일의 이름
-    private String mMD5;                     // 파일의 MD5값
-    private String mFileFormat;                  // 파일의 포멧
-    private int mLines;                      // 향상된 파일열기에서 출력할 라인
+    private String mOpenedFileName;         // Name of the currently open file
+    private String mMD5;                    // MD5 values for the file
+    private String mFileFormat;             // File format
+    private int mLines;                     // Line to be output from opening the improved file
 
-    // 테스트용
     private int mCurPage;
     private int mMaxPage;
     private boolean mFileOpened;
     private ArrayList<String> mContentsList;
 
     /**
-     * 생성과 동시에 initManager(초기화)를 수행합니다.
+     * Perform InitManager at the same time as creating
      */
     public TextManager() {
         initManager();
     }
 
     /**
-     * TextManager를 초기화합니다.
+     * Initiate the TextManager
      */
     public void initManager() {
         mOpenedFileName = "";
@@ -68,10 +67,10 @@ public class TextManager {
     }
 
     /**
-     * 텍스트의 내용을 저장합니다.
-     * @param _filename 저장할 파일의 이름
-     * @param _contents 내용
-     * @return 성공시 true, 실패시 false
+     * Save the content of the text
+     * @param _filename Name of the file to save
+     * @param _contents Contents
+     * @return Success or failure
      */
     public boolean saveText(final String _filename, final String _contents) {
         if (mContentsList.isEmpty()) {
@@ -123,9 +122,9 @@ public class TextManager {
     }
 
     /**
-     * 파일을 읽고 쓰기전에 엽니다.
-     * @param _filename 열 파일의 이름
-     * @return 열었을 때 true, 실패했을 때 false
+     * Open the file before you read and write it.
+     * @param _filename Name of the column file
+     * @return True when opened, false when failed
      */
     public boolean openText(final String _filename) {
         FileInputStream openFileInputStream = null;
@@ -176,7 +175,7 @@ public class TextManager {
             count++;
             stringBuilder.append(tokenizer.nextToken());
             if (mLines == 0) {
-                // 라인수가 0일때는 위젯이다.
+                // When the line count is 0, it is a widget
                 mLines = Constant.SETTINGS_DEFAULT_VALUE_TEXT_LINES;
             }
             if(count % mLines == 0) {
@@ -197,10 +196,10 @@ public class TextManager {
     }
 
     /**
-     * 열려있는 파일의 해당 페이지의 내용을 포멧에 맞게 반환합니다.
-     * @param _page 열 페이지
-     * @param _format 파일 포멧
-     * @return 해당 페이지의 내용
+     * Returns the contents of the page that is open in the formate
+     * @param _page Which page to open
+     * @param _format File format
+     * @return The contents of the page
      */
     public String getText(final int _page, final Constant.EncodeType _format) {
         int page;
@@ -246,8 +245,8 @@ public class TextManager {
 
 
     /**
-     * 열려있는 파일의 이름을 반환
-     * @return 파일이름
+     * Return the name of the open file
+     * @return File name
      */
     public String getOpenedFileName() {
         return mOpenedFileName;
@@ -255,8 +254,8 @@ public class TextManager {
 
 
     /**
-     * 파일 내용이 변경되었는지를 MD5값으로 판단
-     * @return MD5값
+     * Return the MD5 value of the currently open file
+     * @return MD5
      */
     public String getMD5() {
         return mMD5;
@@ -264,9 +263,9 @@ public class TextManager {
 
 
     /**
-     * 입력된 텍스트의 MD5값을 생성(Byte 방식의 텍스트)
-     * @param _message 텍스트
-     * @return 성공 혹은 실패
+     * Generates the MD5 values of the typed text (Byte Method Text)
+     * @param _message Text
+     * @return Success or failure
      */
     public String createMD5(final byte[] _message) {
         MessageDigest messageDigest;
@@ -286,16 +285,16 @@ public class TextManager {
     }
 
     /**
-     * 입력된 텍스트의 MD5값을 생성(String 방식의 텍스트)
-     * @param _message 텍스트
-     * @return 성공 혹은 실패
+     * Generates the MD5 values of the typed text (String Method Text)
+     * @param _message Text
+     * @return Success or failure
      */
     public String createMD5(final String _message) {
         MessageDigest messageDigest;
         StringBuilder MD5String = new StringBuilder();
         try {
             messageDigest = MessageDigest.getInstance("MD5");
-            // 타입에 상관없이 UTF8인 이유는 이미 UTF8로 변환되어있는 것을 체크하기 때문
+            // UTF-8, regardless of type, is because it checks that it is already converted to UTF-8.
             messageDigest.update(_message.getBytes(Charset.forName(Constant.ENCODE_TYPE_UTF8_STR)));
             byte[] hash = messageDigest.digest();
             for (byte h : hash) {
@@ -309,9 +308,9 @@ public class TextManager {
     }
 
     /**
-     * 파일의 인코딩 포멧 형식을 판단합니다.
-     * @param _buffer 입력된 텍스트
-     * @return char형 Buffer를 반환합니다.
+     * Determine the encoding format for the file
+     * @param _buffer Typed text
+     * @return Returns the char type buffer.
      */
     private CharBuffer formatDetector(final ByteBuffer _buffer) {
         CharBuffer charBuffer;
@@ -326,8 +325,8 @@ public class TextManager {
     }
 
     /**
-     * 한 번에 보여줄 라인수를 정합니다.(향상된 파일열기 기능)
-     * @param _lines 라인수
+     * Determines the number of lines you want to show at one time.(Enhanced File Open)
+     * @param _lines Lines
      */
     public void setLines(final int _lines) {
         mLines = _lines;
@@ -335,8 +334,8 @@ public class TextManager {
 
 
     /**
-     * 현재 진행 퍼센트를 보여줍니다.
-     * @return 퍼센트
+     * Returns the current progress percentage
+     * @return Percentage
      */
     public float getProgress() {
         if (mCurPage + 1 == mMaxPage) {
@@ -348,8 +347,8 @@ public class TextManager {
 
 
     /**
-     * 현재 열려있는 페이지를 반환합니다.
-     * @return 열려있는 페이지
+     * Returns the page that is currently open
+     * @return Opened page
      */
     public int getCurPage() {
         return mCurPage;
@@ -357,8 +356,8 @@ public class TextManager {
 
 
     /**
-     * 현재 열려있는 파일의 최대 페이지를 반환합니다.(-1을 해서 사용해야함)
-     * @return 최대 페이지(-1해야함)
+     * Returns the maximum page of a file that is currently open.(- 1 must be used)
+     * @return Maximum page (- 1 must be done)
      */
     public int getMaxPage() {
         return mMaxPage;
@@ -366,8 +365,8 @@ public class TextManager {
 
 
     /**
-     * 현재 파일이 열려있는가 유무를 판단합니다.
-     * @return 열려있으면 true, 아니면 false
+     * Determine if the file is currently open.
+     * @return True if opened, false
      */
     public boolean isFileOpened() {
         return mFileOpened;
@@ -375,8 +374,8 @@ public class TextManager {
 
 
     /**
-     * 열려있는 파일의 내용을 리스트한 객체를 다시 String으로 만들어줍니다.
-     * @return 파일의 내용
+     * Makes the contents of the open file a string of the listed objects
+     * @return The contents of a file
      */
     private String listToString() {
         StringBuilder stringBuilder = new StringBuilder();

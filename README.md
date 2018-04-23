@@ -9,9 +9,12 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.3.15)
+## What's New? (Last updated 2018.4.23)
 ```
- ing~) Password Function
+ 1) Correct bounce phenomenon during file browser access in some environments
+ 2) Changing the coding style (SDK 26)
+ 3) Optimization
+ 4) Password Function (~ing) (using AES256)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

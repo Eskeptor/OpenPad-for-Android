@@ -1,6 +1,5 @@
 package com.eskeptor.openTextViewer;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
  */
 
 /**
- * 메인 페이지의 클릭액션을 정의한 인터페이스
+ * Interface that defined the click action of the main page
  */
 interface ClickAction {
     void onClick(final View _view, final int _position);
@@ -31,7 +30,7 @@ interface ClickAction {
 }
 
 /**
- * 메인페이지 파일용 뷰홀더
+ * View holders for main page files
  */
 class MainFileViewHolder extends RecyclerView.ViewHolder {
     public ImageView image;
@@ -51,7 +50,7 @@ class MainFileViewHolder extends RecyclerView.ViewHolder {
 }
 
 /**
- * RecyclerView의 Padding용
+ * For Padding in the RecyclerView
  */
 class RecyclerViewPadding extends RecyclerView.ItemDecoration {
     private int mBottom;
@@ -74,7 +73,7 @@ class RecyclerViewPadding extends RecyclerView.ItemDecoration {
 }
 
 /**
- * 메인파일용 어댑터
+ * Adapter for main file
  */
 public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     private ArrayList<MainFileObject> mMainFiles;
@@ -151,11 +150,11 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     }
 
     /**
-     * 비트맵의 크기를 계산하는 메소드
-     * @param _options 옵션
-     * @param _reqWidth 넓이
-     * @param _reqHeight 높이
-     * @return 크기
+     * How to calculate the size of a bitmap
+     * @param _options Option
+     * @param _reqWidth Width
+     * @param _reqHeight Height
+     * @return Size
      */
     private static int calculateInBitmapSize(BitmapFactory.Options _options, int _reqWidth, int _reqHeight) {
         // Raw mBottom and width of image
@@ -180,11 +179,11 @@ public class MainFileAdaptor extends RecyclerView.Adapter<MainFileViewHolder> {
     }
 
     /**
-     * Resource를 비트맵으로 변환해주는 메소드
-     * @param _bitmap 비트맵의 경로
-     * @param _reqWidth 넓이
-     * @param _reqHeight 높이
-     * @return 비트맵
+     * How to Convert Resources to Bitmap
+     * @param _bitmap Path to Bitmap
+     * @param _reqWidth Width
+     * @param _reqHeight Height
+     * @return Bitmap
      */
     private static Bitmap decodeBitmapFromResource(final String _bitmap, int _reqWidth, int _reqHeight) {
 

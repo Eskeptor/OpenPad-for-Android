@@ -6,18 +6,18 @@ package com.eskeptor.openTextViewer.datatype;
  */
 
 /**
- * 원을 그리는 브러쉬용 클래스
+ * A circular class
  */
 public class CircleObject {
-    public float mX;        // 원의 x좌표
-    public float mY;        // 원의 y좌표
-    public float mRadius;   // 원의 반지름
+    public float mX;        // X point
+    public float mY;        // Y point
+    public float mRadius;   // radius
 
     /**
-     * 생성자 메소드
-     * @param _x x좌표
-     * @param _y y좌표
-     * @param _r 반지름
+     * About the generator method
+     * @param _x x
+     * @param _y y
+     * @param _r radius
      */
     public CircleObject(final float _x, final float _y, final float _r) {
         mX = _x;

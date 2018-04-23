@@ -7,6 +7,11 @@ import android.widget.TextView;
 
 import in.arjsna.passcodeview.PassCodeView;
 
+
+/**
+ * Password Test
+ * Alpha V0.1
+ */
 public class PasswordActivity extends AppCompatActivity {
     private String mPass;
     private boolean isRepeat;

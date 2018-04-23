@@ -13,14 +13,14 @@ import util.TestLog;
  */
 
 /**
- * Raw 텍스트를 여는 클래스
+ * Class to open raw text
  */
 public class RawTextManager {
     /**
-     * Raw 파일(텍스트)을 불러오는 메소드
-     * @param _context 컨텍스트
-     * @param _res Raw 파일 이름
-     * @return 불러온 파일의 내용
+     * Method for recalling raw files (text)
+     * @param _context Context
+     * @param _res Raw File Name
+     * @return The content of the imported file
      */
     public static String getRawText(final Context _context, @RawRes int _res) {
         InputStream inputStream = null;
