@@ -53,7 +53,7 @@
 
             fab:fab_addButtonColorNormal="@color/colorAccent"
             fab:fab_addButtonColorPressed="@color/colorAccentPressed"
-            fab:fab_addButtonSize="mini"
+            fab:fab_addButtonSize="normal"
             fab:fab_labelStyle="@style/AppTheme.MenuLabel"
             fab:fab_labelsPosition="left">
 

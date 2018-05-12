@@ -270,11 +270,15 @@ public class MainActivity extends AppCompatActivity {
         long tempTime = System.currentTimeMillis();
         long intervalTime = tempTime - mBackPressedTime;
 
-        if (0 <= intervalTime && Constant.WAIT_FOR_SECOND >= intervalTime) {
-            super.onBackPressed();
+        if (mActionMenu.isExpanded()) {
+            mActionMenu.collapse();
         } else {
-            mBackPressedTime = tempTime;
-            Snackbar.make(mContextView, R.string.back_press, Snackbar.LENGTH_SHORT).show();
+            if (0 <= intervalTime && Constant.WAIT_FOR_SECOND >= intervalTime) {
+                super.onBackPressed();
+            } else {
+                mBackPressedTime = tempTime;
+                Snackbar.make(mContextView, R.string.back_press, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 

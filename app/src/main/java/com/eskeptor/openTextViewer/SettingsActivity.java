@@ -12,7 +12,11 @@ import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.eskeptor.openTextViewer.license.ACCLicense;
 import com.eskeptor.openTextViewer.license.BmJUALicense;
@@ -142,10 +146,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                         dialog.setTitle(getResources().getString(R.string.settings_font_fontsize));
                         dialog.setMessage(getResources().getString(R.string.settings_dialog_font_context));
-                        NumberPicker picker = new NumberPicker(getActivity());
+                        View layout = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_fontsize, null);
+                        final TextView sizePreview = layout.findViewById(R.id.dialog_font_preview);
+                        NumberPicker picker = layout.findViewById(R.id.dialog_font_picker);
                         picker.setMaxValue(30);
                         picker.setMinValue(8);
                         picker.setValue((int) mSharedPref.getFloat("FontSize", Constant.SETTINGS_DEFAULT_VALUE_TEXT_SIZE));
+                        sizePreview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, picker.getValue());
+                        picker.setOnScrollListener(new NumberPicker.OnScrollListener() {
+                            @Override
+                            public void onScrollStateChange(NumberPicker _picker, int _scrollState) {
+                                sizePreview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, _picker.getValue());
+                            }
+                        });
                         picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
                             public void onValueChange(NumberPicker _picker, int _oldVal, int _newVal) {
@@ -154,11 +167,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                         mSharedPrefEditor = mSharedPref.edit();
                                     mSharedPrefEditor.putFloat("FontSize", _newVal);
                                     mSharedPrefEditor.apply();
+                                    sizePreview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, _picker.getValue());
                                     mTextSize.setSummary(Integer.toString(_newVal));
                                 }
                             }
                         });
-                        dialog.setView(picker);
+                        dialog.setView(layout);
                         dialog.setPositiveButton(getResources().getString(R.string.settings_dialog_info_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface _dialog, int _which) {
@@ -595,6 +609,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         } else {
             Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
         }
+
     }
 
     @Override

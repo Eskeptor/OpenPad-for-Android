@@ -7,9 +7,9 @@ android {
         applicationId "com.eskeptor.openTextViewer"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 27
+        versionCode 28
         // 이전 버전
-        versionName "1.5.4"
+        versionName "1.5.5"
 //        versionName "1.5.4.Dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //vectorDrawables.useSupportLibrary = true
@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:support-vector-drawable:27.1.1'
-    implementation 'com.google.android.gms:play-services-ads:15.0.0'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 

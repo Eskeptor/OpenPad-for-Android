@@ -1,3 +1,9 @@
+## Update 2018.5.12 - Build 1.5.5
+```
+ 1) Fix bug (multi-touch gesture bug)
+ 2) Adding a preview when changing font size
+ 3) Optimization
+```
 ## Update 2018.4.23 - Build 1.5.4
 ```
  1) Correct bounce phenomenon during file browser access in some environments

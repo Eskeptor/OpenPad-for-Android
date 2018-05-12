@@ -71,9 +71,6 @@ public class MemoActivity extends AppCompatActivity {
 
     // Multi-touch gesture
     private GestureDetectorCompat mGestureDetectorCompat;
-    private boolean mIsFirstSwipe = true;
-    private float mTouchYposStart;
-    private float mTouchYposEnd;
 
     private SharedPreferences mSharedPref;
     private SharedPreferences.Editor mSharedPrefEditor;
@@ -184,6 +181,7 @@ public class MemoActivity extends AppCompatActivity {
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.activity_memo);
+        TestLog.Tag("MemoActivity").Logging(TestLog.LogType.ERROR, "onCreate");
 
         mContextThis = getApplicationContext();
         mSharedPref = getSharedPreferences(Constant.APP_SETTINGS_PREFERENCE, MODE_PRIVATE);
@@ -292,19 +290,9 @@ public class MemoActivity extends AppCompatActivity {
                 mScrollView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        int action = event.getActionMasked();
-
                         if (event.getPointerCount() > 1) {
-
+                            TestLog.Tag("Test").Logging(TestLog.LogType.DEBUG, "double touch");
                             return mGestureDetectorCompat.onTouchEvent(event);
-                        }
-
-                        if (action == 1) {
-                            mIsFirstSwipe = true;
-                            if (mTouchYposStart - mTouchYposEnd > 0)
-                                mBtnLayout.scrollTo((int) mBtnLayout.getX(), mBtnLayout.getBottom());
-                            else
-                                mBtnLayout.scrollTo((int) mBtnLayout.getX(), 0);
                         }
                         return false;
                     }
@@ -327,12 +315,10 @@ public class MemoActivity extends AppCompatActivity {
 
                     @Override
                     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                        mTouchYposEnd = e2.getY();
-
-                        if (mIsFirstSwipe) {
-                            mTouchYposStart = e2.getY();
-                            mIsFirstSwipe = false;
-                        }
+                        if (distanceY > 0)
+                            mBtnLayout.scrollTo((int) mBtnLayout.getX(), mBtnLayout.getBottom());
+                        else
+                            mBtnLayout.scrollTo((int) mBtnLayout.getX(), 0);
                         return true;
                     }
 

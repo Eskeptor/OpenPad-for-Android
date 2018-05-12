@@ -9,10 +9,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.4.23)
+## What's New? (Last updated 2018.5.12) - Build 1.5.5
 ```
- 1) Correct bounce phenomenon during file browser access in some environments
- 2) Changing the coding style (SDK 26)
+ 1) Fix bug (multi-touch gesture bug)
+ 2) Adding a preview when changing font size
  3) Optimization
  4) Password Function (~ing) (using AES256)
 ```

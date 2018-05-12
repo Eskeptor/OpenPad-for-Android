@@ -4,15 +4,15 @@
               android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textColor="@color/Black"
-    android:textColorHint="@color/SemiBlack"
-    android:layout_margin="10dp"
-    android:id="@+id/dialog_folder_input"
-    android:hint="@string/folder_dialog_hint_add"
-    android:maxLines="1"
-    android:background="@drawable/edittext"
-    />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Black"
+        android:textColorHint="@color/SemiBlack"
+        android:layout_margin="10dp"
+        android:id="@+id/dialog_folder_input"
+        android:hint="@string/folder_dialog_hint_add"
+        android:maxLines="1"
+        android:background="@drawable/edittext"
+        />
 </LinearLayout>
