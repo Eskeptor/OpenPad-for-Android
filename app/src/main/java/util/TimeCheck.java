@@ -12,11 +12,11 @@ public class TimeCheck
     private long end;
     private String name;
     private boolean isStart;
-    public TimeCheck(final String _name)
+    public TimeCheck(final String name)
     {
         start = 0L;
         end = 0L;
-        name = _name;
+        this.name = name;
         isStart = false;
     }
     public void CheckStart()

@@ -24,8 +24,8 @@ public class HelpContentsActivity extends AppCompatActivity {
     private String mHelpIndex;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helpcontents);
 
         setTitle(R.string.settings_information_help_title);

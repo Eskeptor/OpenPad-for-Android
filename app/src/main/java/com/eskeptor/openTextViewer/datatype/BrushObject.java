@@ -13,11 +13,15 @@ import java.util.LinkedList;
  * Classes to represent picture notes to the list
  */
 public class BrushObject {
+    public enum ShapeType {
+        None, Circle, Rectangle
+    }
+
     // Get, set is good, but direct access gives you less load.
     public LinkedList<Float> mBrushSizes;               // Brush Size
     public LinkedList<Object> mBrushPaths;              // Path according to the type of brush (pen, circle, and other shapes)
     public LinkedList<Integer> mBrushColor;             // Brush Color
-    public LinkedList<Constant.ShapeType> mBrushType;   // Types of brushes (regular pens, circle shapes, and other shapes)
+    public LinkedList<ShapeType> mBrushType;   // Types of brushes (regular pens, circle shapes, and other shapes)
 
     /**
      * Generator (execute init upon creation)

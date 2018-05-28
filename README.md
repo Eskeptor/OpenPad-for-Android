@@ -1,4 +1,5 @@
 # OpenPad for Android
+![homepage](./Preview/image.png)
 ## Download
 [Google Play](https://play.google.com/store/apps/details?id=com.eskeptor.openTextViewer)
 
@@ -9,12 +10,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.5.12) - Build 1.5.5
+## What's New? (Last updated 2018.5.28) - None Build
 ```
- 1) Fix bug (multi-touch gesture bug)
- 2) Adding a preview when changing font size
- 3) Optimization
- 4) Password Function (~ing) (using AES256)
+ 1) Change coding style (Google coding style)
+ 2) Add Swipe delete action (Main RecycleView)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

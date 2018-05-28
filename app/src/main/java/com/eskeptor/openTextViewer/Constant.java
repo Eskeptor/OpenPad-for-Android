@@ -30,43 +30,11 @@ public class Constant {
     public static final String APP_PASSWORD_SET = "isSetPassword_Pref";
     public static final String APP_PASSWORD_KEY = "passwordKey_Pref";
 
-    public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
-    public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
-    public static final String WIDGET_TITLE_FONT_COLOR_BLUE = "widget_title_font_color_b_Pref";
-    public static final String WIDGET_TITLE_BACK_COLOR_RED = "widget_title_back_color_r_Pref";
-    public static final String WIDGET_TITLE_BACK_COLOR_GREEN = "widget_title_back_color_g_Pref";
-    public static final String WIDGET_TITLE_BACK_COLOR_BLUE = "widget_title_back_color_b_Pref";
-    public static final String WIDGET_CONTEXT_FONT_COLOR_RED = "widget_context_font_color_r_Pref";
-    public static final String WIDGET_CONTEXT_FONT_COLOR_GREEN = "widget_context_font_color_g_Pref";
-    public static final String WIDGET_CONTEXT_FONT_COLOR_BLUE = "widget_context_font_color_b_Pref";
-    public static final String WIDGET_CONTEXT_BACK_COLOR_RED = "widget_context_back_color_r_Pref";
-    public static final String WIDGET_CONTEXT_BACK_COLOR_GREEN = "widget_context_back_color_g_Pref";
-    public static final String WIDGET_CONTEXT_BACK_COLOR_BLUE = "widget_context_back_color_b_Pref";
-    public static final String WIDGET_FILE_URL = "widget_file_url";
-    public static final String WIDGET_ID = "widget_id";
-    public static final int WIDGET_MAX_LINE = 20;
-
-    public static final int WIDGET_TITLE_FONT_COLOR_RED_DEFAULT = 1;
-    public static final int WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT = 1;
-    public static final int WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT = 1;
-    public static final int WIDGET_TITLE_BACK_COLOR_RED_DEFAULT = 239;
-    public static final int WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT = 239;
-    public static final int WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT = 239;
-    public static final int WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT = 20;
-    public static final int WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT = 20;
-    public static final int WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT = 20;
-    public static final int WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT = 255;
-    public static final int WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT = 255;
-    public static final int WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT = 255;
-
     public static final boolean APP_FIRST_EXECUTE = false;
     public static final boolean APP_TWICE_EXECUTE = true;
 
     public static final float SETTINGS_DEFAULT_VALUE_TEXT_SIZE = 18F;
     public static final int SETTINGS_DEFAULT_VALUE_TEXT_LINES = 150;
-
-    public static final int MEMO_SAVE_SELECT_TYPE_EXTERNAL = 0;
-    public static final int MEMO_SAVE_SELECT_TYPE_INTERNAL = 1;
 
     public static final int REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE = 0;
     public static final int REQUEST_CODE_SAVE_COMPLETE_OPEN_COMPLETE = 1;
@@ -77,34 +45,16 @@ public class Constant {
 
     public static final String REGEX = "^[_a-zA-Z0-9.ㄱ-ㅎㅏ-ㅣ가-힣]*$";
 
-    public static final long WAIT_FOR_SECOND = 2000L;
     public static final String FILE_TEXT_EXTENSION = ".txt";
     public static final String FILE_IMAGE_EXTENSION = ".png";
     public static final String FILE_LOG_COUNT = "lastCount.log";
     public static final String FILE_IMAGE_SUMMARY = ".smy";
 
-    public static final char WIDGET_LINKED_TOKEN = 'w';
-
-    public static final float PAINT_MINIMUM_LINE_LENGTH_PIXEL = 0.0f;
-    public static final float PAINT_ERASER_WIDTH_PIXEL = 20.0f;
-    public static final float PAINT_DEFAULT_WIDTH_PIXEL = 10.0f;
-    public static final float PAINT_MAXIMUM_WIDTH = 40.0f;
-    public static final int PAINT_COLOR_MAX = 255;
-
     public static final String BASIC_FILE_UNIT = "KB";
-    public static final long MEGABYTE = 1048576L;
-    public static final long KILOBYTE = 1024L;
-    public static final long SAFE_LOAD_CAPACITY = 500L;
-
-    public static final String ENCODE_TYPE_EUCKR_STR = "EUC-KR";
-    public static final String ENCODE_TYPE_UTF8_STR = "UTF-8";
-
-    public static final int TEXTMANAGER_BUFFER = 3000;
 
     /* 여기서 부터는 Intent에 쓰이는 것들 */
     public static final String INTENT_EXTRA_MEMO_OPEN_FILEURL = "MEMO_OPEN_FILEURL";
     public static final String INTENT_EXTRA_MEMO_OPEN_FILENAME = "MEMO_OPEN_FILENAME";
-    //public static final String INTENT_EXTRA_MEMO_TYPE = "MEMO_TYPE";
     public static final String INTENT_EXTRA_MEMO_OPEN_FOLDERURL = "MEMO_OPEN_FOLDERURL";
     public static final String INTENT_EXTRA_BROWSER_TYPE = "BROWSER_TYPE";
     public static final String INTENT_EXTRA_CURRENT_FOLDERURL = "CURRENT_FOLDERURL";
@@ -151,68 +101,5 @@ public class Constant {
 
     public static final int HANDLER_REFRESH_LIST = 1;
 
-    public enum MemoSaveType {
-        BackKeySave(0), ButtonSave(1);
-
-        private final int value;
-        MemoSaveType(final int _value) {
-            value = _value;
-        }
-        public int getValue() {
-            return value;
-        }
-    }
-
-    public enum BrowserType {
-        OpenExternal(1), SaveExternalOpenedFile(2);
-
-        private final int value;
-        BrowserType(final int _value) {
-            value = _value;
-        }
-        public int getValue() {
-            return value;
-        }
-    }
-
-    public enum FileType {
-        Text(0), Image(1);
-
-        private final int value;
-        FileType(final int _value) {
-            value = _value;
-        }
-        public int getValue() {
-            return value;
-        }
-    }
-
-    public enum FolderType {
-        Default, Custom, External
-    }
-
-    public enum BrowserMenuSortType {
-        Asc, Des
-    }
-
-    public enum BrowserIconType {
-        None, Folder, Normal, Over1, Over2
-    }
-
-    public enum EncodeType {
-        EUCKR, UTF8
-    }
-
-    public enum PaintType {
-        Brush, Eraser, Shape
-    }
-
-    public enum ActiveScreenType {
-        Main, Font, Help, Security
-    }
-
-    public enum ShapeType {
-        None, Circle, Rectangle
-    }
 
 }

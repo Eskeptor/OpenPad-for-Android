@@ -41,6 +41,21 @@ import java.util.regex.Pattern;
  * Embedded File Browser Class
  */
 public class FileBrowserActivity extends AppCompatActivity {
+    public enum BrowserType {
+        OpenExternal(1), SaveExternalOpenedFile(2);
+
+        private final int value;
+        BrowserType(final int _value) {
+            value = _value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
+    public enum BrowserMenuSortType {
+        Asc, Des
+    }
+
     private TextView mTxtPath;                              // Current File Paths
     private ListView mFileList;                             // File List
     private String mStrFilename;                            // File Name
@@ -48,8 +63,8 @@ public class FileBrowserActivity extends AppCompatActivity {
     private FileObjectAdaptor mFileListObjectAdaptor;       // Custom Adapter for File
     private Context mContextThis;                           // Context
     private View mContextView;
-    private Constant.BrowserType mBrowserType;              // Browser Type
-    private Constant.BrowserMenuSortType mSortType;         // Sort by
+    private BrowserType mBrowserType;              // Browser Type
+    private BrowserMenuSortType mSortType;         // Sort by
 
     // Menu Items
     private MenuItem mMenuItemDES;                          // Descending order
@@ -68,8 +83,8 @@ public class FileBrowserActivity extends AppCompatActivity {
     private static final String DEVICE_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filebrowser);
 
         mContextThis = getApplicationContext();
@@ -77,7 +92,7 @@ public class FileBrowserActivity extends AppCompatActivity {
         mHandler = new RefreshList(this);
 
         int browserType = getIntent().getIntExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, 0);
-        mSortType = Constant.BrowserMenuSortType.Asc;
+        mSortType = BrowserMenuSortType.Asc;
 
         mTxtPath = findViewById(R.id.browser_txtPath);
         mFileList = findViewById(R.id.browser_lvFilecontrol);
@@ -85,14 +100,14 @@ public class FileBrowserActivity extends AppCompatActivity {
         mSaveLayout = findViewById(R.id.browser_saveLayout);
         mEditTxtSave = findViewById(R.id.browser_etxtSave);
 
-        if (browserType == Constant.BrowserType.OpenExternal.getValue()) {
+        if (browserType == BrowserType.OpenExternal.getValue()) {
             setTitle(R.string.filebrowser_name_open);
             mSaveLayout.setVisibility(View.GONE);
-            mBrowserType = Constant.BrowserType.OpenExternal;
-        } else if (browserType == Constant.BrowserType.SaveExternalOpenedFile.getValue()) {
+            mBrowserType = BrowserType.OpenExternal;
+        } else if (browserType == BrowserType.SaveExternalOpenedFile.getValue()) {
             setTitle(R.string.filebrowser_name_save);
             mSaveLayout.setVisibility(View.VISIBLE);
-            mBrowserType = Constant.BrowserType.SaveExternalOpenedFile;
+            mBrowserType = BrowserType.SaveExternalOpenedFile;
         }
 
         mDirectoryThread = new Thread(new Runnable() {
@@ -105,8 +120,8 @@ public class FileBrowserActivity extends AppCompatActivity {
 
         mFileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> _parent, View _view, final int _position, long _id) {
-                final File file = new File(mFileListObjects.get(_position).mFilePath);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final File file = new File(mFileListObjects.get(position).mFilePath);
 
                 if (file.isDirectory()) {
                     if (file.canRead()) {
@@ -118,7 +133,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                             public void run() {
                                 Message message = new Message();
                                 message.what = HANDLER_NEXT_DIR;
-                                message.arg1 = _position;
+                                message.arg1 = position;
                                 mHandler.sendMessage(message);
                             }
                         });
@@ -129,7 +144,7 @@ public class FileBrowserActivity extends AppCompatActivity {
 
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.setClass(mContextThis, MemoActivity.class);
-                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mFileListObjects.get(_position).mFilePath);
+                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mFileListObjects.get(position).mFilePath);
                     intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
                     intent.putExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, true);
                     startActivity(intent);
@@ -158,22 +173,22 @@ public class FileBrowserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu _menu) {
-        getMenuInflater().inflate(R.menu.menu_filebrowser, _menu);
-        mMenuItemDES = _menu.findItem(R.id.menu_des);
-        mMenuItemASC = _menu.findItem(R.id.menu_asc);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_filebrowser, menu);
+        mMenuItemDES = menu.findItem(R.id.menu_des);
+        mMenuItemASC = menu.findItem(R.id.menu_asc);
         mMenuItemASC.setChecked(true);
 
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem _item) {
-        int id = _item.getItemId();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
         switch (id) {
             case R.id.menu_asc:
-                mSortType = Constant.BrowserMenuSortType.Asc;
+                mSortType = BrowserMenuSortType.Asc;
                 if (mDirectoryThread != null) {
                     mDirectoryThread.interrupt();
                 }
@@ -188,7 +203,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                 mMenuItemDES.setChecked(false);
                 break;
             case R.id.menu_des:
-                mSortType = Constant.BrowserMenuSortType.Des;
+                mSortType = BrowserMenuSortType.Des;
                 if (mDirectoryThread != null) {
                     mDirectoryThread.interrupt();
                 }
@@ -203,7 +218,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                 mMenuItemDES.setChecked(true);
                 break;
         }
-        return super.onOptionsItemSelected(_item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -247,8 +262,9 @@ public class FileBrowserActivity extends AppCompatActivity {
         mDirectoryThread = null;
     }
 
-    public void onClick(View _v) {
-        if (_v.getId() == R.id.browser_btnSave) {
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.browser_btnSave) {
             Pattern pattern = Pattern.compile(Constant.REGEX);
             if (!mEditTxtSave.getText().toString().equals("") && pattern.matcher(mEditTxtSave.getText().toString()).matches()) {
                 if (!isExist(mEditTxtSave.getText().toString())) {
@@ -289,31 +305,31 @@ public class FileBrowserActivity extends AppCompatActivity {
 
     /**
      * Import a file directory
-     * @param _dir Directory
+     * @param dir Directory
      */
-    public void getDirectory(final String _dir) {
+    public void getDirectory(final String dir) {
         if (!mFileListObjects.isEmpty()) {
             mFileListObjects.clear();
         }
 
-        File file = new File(_dir);
+        File file = new File(dir);
         File files[];
 
         switch (mBrowserType) {
             case OpenExternal:
                 files = file.listFiles(new FileFilter() {
                     @Override
-                    public boolean accept(File _pathname) {
-                        String name = _pathname.getName();
-                        return _pathname.isDirectory() || name.endsWith(Constant.FILE_TEXT_EXTENSION);
+                    public boolean accept(File pathname) {
+                        String name = pathname.getName();
+                        return pathname.isDirectory() || name.endsWith(Constant.FILE_TEXT_EXTENSION);
                     }
                 });
                 break;
             case SaveExternalOpenedFile:
                 files = file.listFiles(new FileFilter() {
                     @Override
-                    public boolean accept(File _pathname) {
-                        return _pathname.isDirectory();
+                    public boolean accept(File pathname) {
+                        return pathname.isDirectory();
                     }
                 });
                 break;
@@ -330,7 +346,7 @@ public class FileBrowserActivity extends AppCompatActivity {
             }
         }
 
-        String path = getResources().getString(R.string.filebrowser_Location) + " " + _dir;
+        String path = getResources().getString(R.string.filebrowser_Location) + " " + dir;
         mTxtPath.setText(path);
 
         if (mFileListObjectAdaptor == null) {
@@ -338,23 +354,23 @@ public class FileBrowserActivity extends AppCompatActivity {
             mFileList.setAdapter(mFileListObjectAdaptor);
         }
 
-        mStrFilename = _dir;
+        mStrFilename = dir;
     }
 
     /**
      * Sort and show the file directory
-     * @param _files File Directory
-     * @param _sortType Sort by
+     * @param files File Directory
+     * @param sortType Sort by
      */
-    private void sortFileArray(File[] _files, final Constant.BrowserMenuSortType _sortType) {
-        Arrays.sort(_files, new Comparator<File>() {
+    private void sortFileArray(File[] files, final BrowserMenuSortType sortType) {
+        Arrays.sort(files, new Comparator<File>() {
             @Override
-            public int compare(File _o1, File _o2) {
-                switch (_sortType) {
+            public int compare(File o1, File o2) {
+                switch (sortType) {
                     case Asc:
-                        return (_o1.getName().compareTo(_o2.getName()));
+                        return (o1.getName().compareTo(o2.getName()));
                     default:
-                        return (_o2.getName().compareTo(_o1.getName()));
+                        return (o2.getName().compareTo(o1.getName()));
                 }
             }
         });
@@ -362,12 +378,12 @@ public class FileBrowserActivity extends AppCompatActivity {
 
     /**
      * Returns whether a file exists on that path
-     * @param _filename File name
+     * @param fileName File name
      * @return Exist or nothing
      */
-    private boolean isExist(final String _filename) {
+    private boolean isExist(final String fileName) {
         for (int i = 0; i < mFileListObjects.size(); i++) {
-            if (_filename.equals(mFileListObjects.get(i).mFileName)) {
+            if (fileName.equals(mFileListObjects.get(i).mFileName)) {
                 return true;
             }
         }
@@ -375,8 +391,8 @@ public class FileBrowserActivity extends AppCompatActivity {
     }
 
 
-    private void handleMessage(Message _msg) {
-        int what = _msg.what;
+    private void handleMessage(Message msg) {
+        int what = msg.what;
         switch (what) {
             case HANDLER_REFRESH_DIR: {
                 getDirectory(DEVICE_ROOT);
@@ -389,7 +405,7 @@ public class FileBrowserActivity extends AppCompatActivity {
                 break;
             }
             case HANDLER_NEXT_DIR: {
-                getDirectory(mFileListObjects.get(_msg.arg1).mFilePath);
+                getDirectory(mFileListObjects.get(msg.arg1).mFilePath);
                 mFileListObjectAdaptor.notifyDataSetChanged();
                 break;
             }
@@ -406,8 +422,8 @@ public class FileBrowserActivity extends AppCompatActivity {
      */
     static class RefreshList extends Handler {
         private final WeakReference<FileBrowserActivity> mActivity;
-        RefreshList(FileBrowserActivity _activity) {
-            mActivity = new WeakReference<>(_activity);
+        RefreshList(FileBrowserActivity activity) {
+            mActivity = new WeakReference<>(activity);
         }
 
         @Override

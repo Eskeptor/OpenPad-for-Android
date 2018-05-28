@@ -29,6 +29,36 @@ import static android.content.Context.MODE_PRIVATE;
  * App Widget Configuration implemented in {@link MemoWidgetConfigureActivity MemoWidgetConfigureActivity}
  */
 public class MemoWidget extends AppWidgetProvider {
+    public static final String WIDGET_TITLE_FONT_COLOR_RED = "widget_title_font_color_r_Pref";
+    public static final String WIDGET_TITLE_FONT_COLOR_GREEN = "widget_title_font_color_g_Pref";
+    public static final String WIDGET_TITLE_FONT_COLOR_BLUE = "widget_title_font_color_b_Pref";
+    public static final String WIDGET_TITLE_BACK_COLOR_RED = "widget_title_back_color_r_Pref";
+    public static final String WIDGET_TITLE_BACK_COLOR_GREEN = "widget_title_back_color_g_Pref";
+    public static final String WIDGET_TITLE_BACK_COLOR_BLUE = "widget_title_back_color_b_Pref";
+    public static final String WIDGET_CONTEXT_FONT_COLOR_RED = "widget_context_font_color_r_Pref";
+    public static final String WIDGET_CONTEXT_FONT_COLOR_GREEN = "widget_context_font_color_g_Pref";
+    public static final String WIDGET_CONTEXT_FONT_COLOR_BLUE = "widget_context_font_color_b_Pref";
+    public static final String WIDGET_CONTEXT_BACK_COLOR_RED = "widget_context_back_color_r_Pref";
+    public static final String WIDGET_CONTEXT_BACK_COLOR_GREEN = "widget_context_back_color_g_Pref";
+    public static final String WIDGET_CONTEXT_BACK_COLOR_BLUE = "widget_context_back_color_b_Pref";
+    public static final String WIDGET_FILE_URL = "widget_file_url";
+    public static final String WIDGET_ID = "widget_id";
+    public static final int WIDGET_MAX_LINE = 20;
+
+    public static final int WIDGET_TITLE_FONT_COLOR_RED_DEFAULT = 1;
+    public static final int WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT = 1;
+    public static final int WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT = 1;
+    public static final int WIDGET_TITLE_BACK_COLOR_RED_DEFAULT = 239;
+    public static final int WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT = 239;
+    public static final int WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT = 239;
+    public static final int WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT = 20;
+    public static final int WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT = 20;
+    public static final int WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT = 20;
+    public static final int WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT = 255;
+    public static final int WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT = 255;
+    public static final int WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT = 255;
+
+
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                        int appWidgetId) {
         SharedPreferences pref = context.getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + appWidgetId, MODE_PRIVATE);
@@ -41,7 +71,7 @@ public class MemoWidget extends AppWidgetProvider {
                 TestLog.Tag("MemoWidget(update)").Logging(TestLog.LogType.DEBUG, "Make directory - Widget Folder");
             }
         }
-        String fileURL = pref.getString(Constant.WIDGET_FILE_URL, null);
+        String fileURL = pref.getString(WIDGET_FILE_URL, null);
 
         Intent intent = new Intent(context, MemoActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -53,18 +83,18 @@ public class MemoWidget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.widget_mainLayout, pendingIntent);
 
-        int titleBackRed = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
-        int titleBackGreen = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
-        int titleBackBlue = pref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);
-        int titleFontRed = pref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT);
-        int titleFontGreen = pref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT);
-        int titleFontBlue = pref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT);
-        int contextFontRed = pref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT);
-        int contextFontGreen = pref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT);
-        int contextFontBlue = pref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT);
-        int contextBackRed = pref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT);
-        int contextBackGreen = pref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT);
-        int contextBackBlue = pref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT);
+        int titleBackRed = pref.getInt(WIDGET_TITLE_BACK_COLOR_RED, WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
+        int titleBackGreen = pref.getInt(WIDGET_TITLE_BACK_COLOR_GREEN, WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
+        int titleBackBlue = pref.getInt(WIDGET_TITLE_BACK_COLOR_BLUE, WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);
+        int titleFontRed = pref.getInt(WIDGET_TITLE_FONT_COLOR_RED, WIDGET_TITLE_FONT_COLOR_RED_DEFAULT);
+        int titleFontGreen = pref.getInt(WIDGET_TITLE_FONT_COLOR_GREEN, WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT);
+        int titleFontBlue = pref.getInt(WIDGET_TITLE_FONT_COLOR_BLUE, WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT);
+        int contextFontRed = pref.getInt(WIDGET_CONTEXT_FONT_COLOR_RED, WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT);
+        int contextFontGreen = pref.getInt(WIDGET_CONTEXT_FONT_COLOR_GREEN, WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT);
+        int contextFontBlue = pref.getInt(WIDGET_CONTEXT_FONT_COLOR_BLUE, WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT);
+        int contextBackRed = pref.getInt(WIDGET_CONTEXT_BACK_COLOR_RED, WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT);
+        int contextBackGreen = pref.getInt(WIDGET_CONTEXT_BACK_COLOR_GREEN, WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT);
+        int contextBackBlue = pref.getInt(WIDGET_CONTEXT_BACK_COLOR_BLUE, WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT);
 
         views.setTextColor(R.id.widget_title, Color.rgb(titleFontRed, titleFontGreen, titleFontBlue));
         views.setInt(R.id.widget_title_layout, "setBackgroundColor", Color.rgb(titleBackRed, titleBackGreen, titleBackBlue));
@@ -89,7 +119,7 @@ public class MemoWidget extends AppWidgetProvider {
                     title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_UK, Locale.UK).format(new Date(new File(fileURL).lastModified()));
                 else
                     title = new SimpleDateFormat(Constant.DATE_FORMAT_WIDGET_USA, Locale.US).format(new Date(new File(fileURL).lastModified()));
-                while (currentLine < Constant.WIDGET_MAX_LINE) {
+                while (currentLine < WIDGET_MAX_LINE) {
                     if ((line = br.readLine()) != null) {
                         contents += line + "\n";
                         currentLine++;

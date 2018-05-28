@@ -20,29 +20,29 @@ public class TestLog {
     }
 
     private String mTagName;
-    public TestLog(final String _tagName) {
-        mTagName = _tagName;
+    public TestLog(final String tagName) {
+        mTagName = tagName;
     }
-    public static TestLog Tag(final String _tagName) {
-        return new TestLog(_tagName);
+    public static TestLog Tag(final String tagName) {
+        return new TestLog(tagName);
     }
-    public void Logging(final LogType _mode, final String _text) {
+    public void Logging(final LogType mode, final String text) {
         if(BuildConfig.DEBUG) {
-            switch (_mode) {
+            switch (mode) {
                 case DEBUG:
-                    Log.d(mTagName, _text);
+                    Log.d(mTagName, text);
                     break;
                 case ERROR:
-                    Log.e(mTagName, _text);
+                    Log.e(mTagName, text);
                     break;
                 case INFO:
-                    Log.i(mTagName, _text);
+                    Log.i(mTagName, text);
                     break;
                 case VERBOSE:
-                    Log.v(mTagName, _text);
+                    Log.v(mTagName, text);
                     break;
                 case WARN:
-                    Log.w(mTagName, _text);
+                    Log.w(mTagName, text);
                     break;
             }
         }

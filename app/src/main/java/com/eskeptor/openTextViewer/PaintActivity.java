@@ -44,6 +44,16 @@ import util.TestLog;
  */
 
 public class PaintActivity extends AppCompatActivity {
+    public enum PaintType {
+        Brush, Eraser, Shape
+    }
+
+    public static final float PAINT_MINIMUM_LINE_LENGTH_PIXEL = 0.0f;
+    public static final float PAINT_ERASER_WIDTH_PIXEL = 20.0f;
+    public static final float PAINT_DEFAULT_WIDTH_PIXEL = 10.0f;
+    public static final float PAINT_MAXIMUM_WIDTH = 40.0f;
+    public static final int PAINT_COLOR_MAX = 255;
+
     private DrawerLayout mPaintDrawerLayout;
     private PaintFunction mPaintFunction;
     private LinearLayout mDrawLayout;
@@ -63,7 +73,7 @@ public class PaintActivity extends AppCompatActivity {
     private ImageView mBrushColor;
     private Button mShapeCircle;
     private Button mShapeRectangle;
-    private static Constant.ShapeType mShapeType;
+    private static BrushObject.ShapeType mShapeType;
 
     private Context mContextThis;
 
@@ -82,8 +92,8 @@ public class PaintActivity extends AppCompatActivity {
     private static MenuItem mMenuItemUndo;
 
     @Override
-    protected void onCreate(final Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paint);
 
         mContextThis = getApplicationContext();
@@ -92,8 +102,8 @@ public class PaintActivity extends AppCompatActivity {
         mOpenFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
         mOpenFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
 
-        mCurBrushValue = (int) Constant.PAINT_DEFAULT_WIDTH_PIXEL;
-        mCurEraserSize = (int) Constant.PAINT_ERASER_WIDTH_PIXEL;
+        mCurBrushValue = (int) PAINT_DEFAULT_WIDTH_PIXEL;
+        mCurEraserSize = (int) PAINT_ERASER_WIDTH_PIXEL;
         mCurRedValue = 0;
         mCurGreenValue = 0;
         mCurBlueValue = 0;
@@ -116,18 +126,18 @@ public class PaintActivity extends AppCompatActivity {
         mShapeLayout = findViewById(R.id.paint_shapesLayout);
         mShapeCircle = findViewById(R.id.paint_shape_circle);
         mShapeRectangle = findViewById(R.id.paint_shape_rectangle);
-        mShapeType = Constant.ShapeType.None;
+        mShapeType = BrushObject.ShapeType.None;
 
         mShapeCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mShapeType = Constant.ShapeType.Circle;
+                mShapeType = BrushObject.ShapeType.Circle;
             }
         });
         mShapeRectangle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mShapeType = Constant.ShapeType.Rectangle;
+                mShapeType = BrushObject.ShapeType.Rectangle;
             }
         });
 
@@ -139,39 +149,39 @@ public class PaintActivity extends AppCompatActivity {
 
         SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar _seekBar, int _progress, boolean _fromUser) {
-                int id = _seekBar.getId();
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int id = seekBar.getId();
                 switch (id) {
                     case R.id.paint_brush_seekSize:
-                        mBrushTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), _progress));
+                        mBrushTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), progress));
                         break;
                     case R.id.paint_brush_seekRed:
-                        mBrushTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), _progress));
+                        mBrushTxtRed.setText(String.format(getResources().getString(R.string.paint_txtBrushRed), progress));
                         break;
                     case R.id.paint_brush_seekGreen:
-                        mBrushTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), _progress));
+                        mBrushTxtGreen.setText(String.format(getResources().getString(R.string.paint_txtBrushGreen), progress));
                         break;
                     case R.id.paint_brush_seekBlue:
-                        mBrushTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), _progress));
+                        mBrushTxtBlue.setText(String.format(getResources().getString(R.string.paint_txtBrushBlue), progress));
                         break;
                     case R.id.paint_eraser_seekSize:
-                        mEraserTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), _progress));
+                        mEraserTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), progress));
                         break;
 
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(final SeekBar _seekBar) {
+            public void onStartTrackingTouch(final SeekBar seekBar) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar _seekBar) {
-                int id = _seekBar.getId();
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int id = seekBar.getId();
                 switch (id) {
                     case R.id.paint_brush_seekSize:
-                        mCurBrushValue = _seekBar.getProgress();
+                        mCurBrushValue = seekBar.getProgress();
                         mPaintFunction.setLineWidth(mCurBrushValue);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mCurBrushValue, mCurBrushValue);
                         params.gravity = Gravity.CENTER;
@@ -180,22 +190,22 @@ public class PaintActivity extends AppCompatActivity {
                         mBrushColor.setLayoutParams(params);
                         break;
                     case R.id.paint_brush_seekRed:
-                        mCurRedValue = _seekBar.getProgress();
+                        mCurRedValue = seekBar.getProgress();
                         mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
                         mBrushColor.setColorFilter(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue), PorterDuff.Mode.SRC);
                         break;
                     case R.id.paint_brush_seekGreen:
-                        mCurGreenValue = _seekBar.getProgress();
+                        mCurGreenValue = seekBar.getProgress();
                         mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
                         mBrushColor.setColorFilter(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue), PorterDuff.Mode.SRC);
                         break;
                     case R.id.paint_brush_seekBlue:
-                        mCurBlueValue = _seekBar.getProgress();
+                        mCurBlueValue = seekBar.getProgress();
                         mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
                         mBrushColor.setColorFilter(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue), PorterDuff.Mode.SRC);
                         break;
                     case R.id.paint_eraser_seekSize:
-                        mCurEraserSize = _seekBar.getProgress();
+                        mCurEraserSize = seekBar.getProgress();
                         mPaintFunction.setLineWidth(mCurEraserSize);
                         break;
                 }
@@ -208,15 +218,15 @@ public class PaintActivity extends AppCompatActivity {
         mBrushSeekBlue.setOnSeekBarChangeListener(seekBarChangeListener);
         mEraserSeekSize.setOnSeekBarChangeListener(seekBarChangeListener);
 
-        mBrushSeekSize.setMax((int) Constant.PAINT_MAXIMUM_WIDTH);
+        mBrushSeekSize.setMax((int) PAINT_MAXIMUM_WIDTH);
         mBrushSeekSize.setProgress(mCurBrushValue);
-        mBrushSeekRed.setMax(Constant.PAINT_COLOR_MAX);
+        mBrushSeekRed.setMax(PAINT_COLOR_MAX);
         mBrushSeekRed.setProgress(mCurRedValue);
-        mBrushSeekGreen.setMax(Constant.PAINT_COLOR_MAX);
+        mBrushSeekGreen.setMax(PAINT_COLOR_MAX);
         mBrushSeekGreen.setProgress(mCurGreenValue);
-        mBrushSeekBlue.setMax(Constant.PAINT_COLOR_MAX);
+        mBrushSeekBlue.setMax(PAINT_COLOR_MAX);
         mBrushSeekBlue.setProgress(mCurBlueValue);
-        mEraserSeekSize.setMax((int) Constant.PAINT_MAXIMUM_WIDTH);
+        mEraserSeekSize.setMax((int) PAINT_MAXIMUM_WIDTH);
         mEraserSeekSize.setProgress(mCurEraserSize);
 
         mBrushLayout.setVisibility(View.GONE);
@@ -236,11 +246,11 @@ public class PaintActivity extends AppCompatActivity {
                 dialog.setMessage(R.string.paint_dialog_isDescription);
                 DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface _dialog, int _which) {
-                        if (_which == AlertDialog.BUTTON_POSITIVE) {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == AlertDialog.BUTTON_POSITIVE) {
                             imageDescription();
                         }
-                        _dialog.dismiss();
+                        dialog.dismiss();
                     }
                 };
                 dialog.setPositiveButton(R.string.paint_dialog_yes, clickListener);
@@ -252,16 +262,16 @@ public class PaintActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(final Menu _menu) {
-        getMenuInflater().inflate(R.menu.menu_paint, _menu);
-        mMenuItemUndo = _menu.findItem(R.id.menu_paint_undo);
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_paint, menu);
+        mMenuItemUndo = menu.findItem(R.id.menu_paint_undo);
         mMenuItemUndo.setVisible(false);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem _item) {
-        int id = _item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        int id = item.getItemId();
         switch (id) {
             case R.id.menu_paint_reset:
                 mPaintFunction.resetPaint();
@@ -283,7 +293,7 @@ public class PaintActivity extends AppCompatActivity {
                 imageDescription();
                 break;
         }
-        return super.onOptionsItemSelected(_item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -322,25 +332,25 @@ public class PaintActivity extends AppCompatActivity {
         if (mPaintFunction.isModified()) {
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface _dialog, int _which) {
-                    switch (_which) {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
                         case AlertDialog.BUTTON_POSITIVE: {
                             if (mOpenFileURL == null) {
                                 AlertDialog.Builder alert = new AlertDialog.Builder(PaintActivity.this);
                                 alert.setTitle(R.string.memo_alert_save_context);
                                 alert.setItems(R.array.main_selectalert, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface _dialog, int _which) {
-                                        switch (_which) {
-                                            case Constant.MEMO_SAVE_SELECT_TYPE_EXTERNAL:
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case MemoActivity.MEMO_SAVE_SELECT_TYPE_EXTERNAL:
                                                 Intent intent = new Intent();
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                                 intent.setClass(mContextThis, FileBrowserActivity.class);
                                                 intent.setType("text/plain");
-                                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BrowserType.SaveExternalOpenedFile.getValue());
+                                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, FileBrowserActivity.BrowserType.SaveExternalOpenedFile.getValue());
                                                 startActivityForResult(intent, Constant.REQUEST_CODE_SAVE_COMPLETE_NONE_OPENEDFILE);
                                                 break;
-                                            case Constant.MEMO_SAVE_SELECT_TYPE_INTERNAL:
+                                            case MemoActivity.MEMO_SAVE_SELECT_TYPE_INTERNAL:
                                                 if (mPaintFunction.isFileopen()) {
                                                     mPaintFunction.savePaint(mOpenFolderURL);
                                                 } else {
@@ -357,7 +367,7 @@ public class PaintActivity extends AppCompatActivity {
                                                 finish();
                                                 break;
                                         }
-                                        _dialog.dismiss();
+                                        dialog.dismiss();
                                     }
                                 });
                                 alert.show();
@@ -382,7 +392,7 @@ public class PaintActivity extends AppCompatActivity {
                             break;
                         }
                     }
-                    _dialog.dismiss();
+                    dialog.dismiss();
                 }
             };
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -505,8 +515,8 @@ public class PaintActivity extends AppCompatActivity {
         builder.setView(layout);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface _dialog, int _which) {
-                if (_which == AlertDialog.BUTTON_POSITIVE) {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == AlertDialog.BUTTON_POSITIVE) {
                     FileWriter fw = null;
                     BufferedWriter bw = null;
                     try {
@@ -526,7 +536,7 @@ public class PaintActivity extends AppCompatActivity {
                         }
                     }
                 }
-                _dialog.dismiss();
+                dialog.dismiss();
             }
         };
         builder.setPositiveButton(R.string.memo_alert_modified_btnSave, clickListener);
@@ -539,8 +549,8 @@ public class PaintActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void onClick(View _v) {
-        int idx = _v.getId();
+    public void onClick(View v) {
+        int idx = v.getId();
         switch (idx) {
             case R.id.paint_brush_btnClose:
                 mBrushLayout.setVisibility(View.GONE);
@@ -552,7 +562,7 @@ public class PaintActivity extends AppCompatActivity {
                 mShapeLayout.setVisibility(View.GONE);
                 break;
             case R.id.paint_brush:
-                mPaintFunction.changePaint(Constant.PaintType.Brush);
+                mPaintFunction.changePaint(PaintType.Brush);
                 mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
                 mPaintFunction.setLineWidth(mCurBrushValue);
                 if (mBrushLayout.getVisibility() == View.VISIBLE) {
@@ -566,11 +576,11 @@ public class PaintActivity extends AppCompatActivity {
                     }
                     mBrushLayout.setVisibility(View.VISIBLE);
                 }
-                mShapeType = Constant.ShapeType.None;
+                mShapeType = BrushObject.ShapeType.None;
                 mPaintDrawerLayout.closeDrawer(Gravity.END);
                 break;
             case R.id.paint_eraser:
-                mPaintFunction.changePaint(Constant.PaintType.Eraser);
+                mPaintFunction.changePaint(PaintType.Eraser);
                 mPaintFunction.setLineWidth(mCurEraserSize);
                 if (mEraserLayout.getVisibility() == View.VISIBLE) {
                     mEraserLayout.setVisibility(View.GONE);
@@ -583,11 +593,11 @@ public class PaintActivity extends AppCompatActivity {
                     }
                     mEraserLayout.setVisibility(View.VISIBLE);
                 }
-                mShapeType = Constant.ShapeType.None;
+                mShapeType = BrushObject.ShapeType.None;
                 mPaintDrawerLayout.closeDrawer(Gravity.END);
                 break;
             case R.id.paint_shapes:
-                mPaintFunction.changePaint(Constant.PaintType.Shape);
+                mPaintFunction.changePaint(PaintType.Shape);
                 mPaintFunction.setColor(Color.rgb(mCurRedValue, mCurGreenValue, mCurBlueValue));
                 mPaintFunction.setLineWidth(mCurBrushValue);
                 if (mShapeLayout.getVisibility() == View.VISIBLE) {
@@ -633,16 +643,16 @@ public class PaintActivity extends AppCompatActivity {
         private String mFilename;
         private boolean mIsModified;
 
-        public PaintFunction(final Context _context) {
-            super(_context);
-            DisplayMetrics displayMetrics = _context.getApplicationContext().getResources().getDisplayMetrics();
+        public PaintFunction(final Context context) {
+            super(context);
+            DisplayMetrics displayMetrics = context.getApplicationContext().getResources().getDisplayMetrics();
             mScreenWidth = displayMetrics.widthPixels;
             mScreenHeight = displayMetrics.heightPixels;
         }
 
-        public PaintFunction(final Context _context, final AttributeSet _attributeSet) {
-            super(_context, _attributeSet);
-            DisplayMetrics displayMetrics = _context.getApplicationContext().getResources().getDisplayMetrics();
+        public PaintFunction(final Context context, final AttributeSet attributeSet) {
+            super(context, attributeSet);
+            DisplayMetrics displayMetrics = context.getApplicationContext().getResources().getDisplayMetrics();
             mScreenWidth = displayMetrics.widthPixels;
             mScreenHeight = displayMetrics.heightPixels;
         }
@@ -681,7 +691,7 @@ public class PaintActivity extends AppCompatActivity {
             }
             mCanvas = new Canvas(mBitmap);
             if (!mFileopen) {
-                mCanvas.drawARGB(Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX);
+                mCanvas.drawARGB(PAINT_COLOR_MAX, PAINT_COLOR_MAX, PAINT_COLOR_MAX, PAINT_COLOR_MAX);
             }
 
             if (mBrushObject != null) {
@@ -707,22 +717,22 @@ public class PaintActivity extends AppCompatActivity {
                 mBrushPaint = null;
             }
             mBrushPaint = new Paint();
-            mBrushPaint.setAlpha(Constant.PAINT_COLOR_MAX);
+            mBrushPaint.setAlpha(PAINT_COLOR_MAX);
             mBrushPaint.setDither(true);
-            mBrushPaint.setStrokeWidth(Constant.PAINT_DEFAULT_WIDTH_PIXEL);
+            mBrushPaint.setStrokeWidth(PAINT_DEFAULT_WIDTH_PIXEL);
             mBrushPaint.setStrokeJoin(Paint.Join.ROUND);
             mBrushPaint.setStyle(Paint.Style.STROKE);
             mBrushPaint.setStrokeCap(Paint.Cap.ROUND);
             mBrushPaint.setAntiAlias(true);
 
             mRadius = 0.0f;
-            setLineWidth(Constant.PAINT_DEFAULT_WIDTH_PIXEL);
+            setLineWidth(PAINT_DEFAULT_WIDTH_PIXEL);
         }
 
         @Override
-        protected void onDraw(final Canvas _canvas) {
+        protected void onDraw(final Canvas canvas) {
             if (mBitmap != null) {
-                _canvas.drawBitmap(mBitmap, 0, 0, mCanvasPaint);
+                canvas.drawBitmap(mBitmap, 0, 0, mCanvasPaint);
             }
         }
 
@@ -742,11 +752,11 @@ public class PaintActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean onTouchEvent(final MotionEvent _event) {
-            mCurX = _event.getX();
-            mCurY = _event.getY();
+        public boolean onTouchEvent(final MotionEvent event) {
+            mCurX = event.getX();
+            mCurY = event.getY();
 
-            int action = _event.getAction();
+            int action = event.getAction();
 
             switch (mShapeType) {
                 case None: {
@@ -760,7 +770,7 @@ public class PaintActivity extends AppCompatActivity {
                             return true;
                         }
                         case MotionEvent.ACTION_MOVE: {
-                            if (Math.abs(mCurX - mPrevX) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(mCurY - mPrevY) >= Constant.PAINT_MINIMUM_LINE_LENGTH_PIXEL) {
+                            if (Math.abs(mCurX - mPrevX) >= PAINT_MINIMUM_LINE_LENGTH_PIXEL || Math.abs(mCurY - mPrevY) >= PAINT_MINIMUM_LINE_LENGTH_PIXEL) {
                                 mPath.quadTo(mPrevX, mPrevY, mCurX, mCurY);
                                 mPrevX = mCurX;
                                 mPrevY = mCurY;
@@ -770,7 +780,7 @@ public class PaintActivity extends AppCompatActivity {
                             return true;
                         }
                         case MotionEvent.ACTION_UP: {
-                            mBrushObject.mBrushType.add(Constant.ShapeType.None);
+                            mBrushObject.mBrushType.add(BrushObject.ShapeType.None);
                             mBrushObject.mBrushPaths.add(new Path(mPath));
                             mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
                             mBrushObject.mBrushColor.add(mCurColor);
@@ -799,7 +809,7 @@ public class PaintActivity extends AppCompatActivity {
                             return true;
                         }
                         case MotionEvent.ACTION_UP: {
-                            mBrushObject.mBrushType.add(Constant.ShapeType.Circle);
+                            mBrushObject.mBrushType.add(BrushObject.ShapeType.Circle);
                             mBrushObject.mBrushPaths.add(new CircleObject(mPrevX + (mCurX - mPrevX) / 2, mPrevY + (mCurY - mPrevY) / 2, mRadius));
                             mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
                             mBrushObject.mBrushColor.add(mCurColor);
@@ -826,7 +836,7 @@ public class PaintActivity extends AppCompatActivity {
                             return true;
                         }
                         case MotionEvent.ACTION_UP: {
-                            mBrushObject.mBrushType.add(Constant.ShapeType.Rectangle);
+                            mBrushObject.mBrushType.add(BrushObject.ShapeType.Rectangle);
                             mBrushObject.mBrushPaths.add(new Rect((int)mPrevX, (int)mPrevY, (int)mCurX, (int)mCurY));
                             mBrushObject.mBrushSizes.add(mBrushPaint.getStrokeWidth());
                             mBrushObject.mBrushColor.add(mCurColor);
@@ -851,20 +861,20 @@ public class PaintActivity extends AppCompatActivity {
 
         /**
          * 페인트 색상 설정
-         * @param _color 색
+         * @param color 색
          */
-        public void setColor(final int _color) {
-            mCurColor = _color;
+        public void setColor(final int color) {
+            mCurColor = color;
             mBrushPaint.setColor(mCurColor);
             invalidate();
         }
 
         /**
          * 페인트 굵기 설정
-         * @param _lineWidth 굵기
+         * @param lineWidth 굵기
          */
-        public void setLineWidth(final float _lineWidth) {
-            mCurSize = _lineWidth;
+        public void setLineWidth(final float lineWidth) {
+            mCurSize = lineWidth;
             mBrushPaint.setStrokeWidth(mCurSize);
             invalidate();
         }
@@ -888,14 +898,14 @@ public class PaintActivity extends AppCompatActivity {
 
         /**
          * 비트맵을 설정한다.
-         * @param _memoType 이미 생성되어진 파일인가
-         * @param _folderUrl 폴더 경로
+         * @param memoType 이미 생성되어진 파일인가
+         * @param folderUrl 폴더 경로
          */
-        public void setBitmap(final boolean _memoType, final String _folderUrl) {
-            if (_memoType) {
+        public void setBitmap(final boolean memoType, final String folderUrl) {
+            if (memoType) {
                 mFileopen = false;
             } else {
-                this.mFilename = _folderUrl;
+                this.mFilename = folderUrl;
                 mFileopen = true;
             }
             init();
@@ -903,13 +913,13 @@ public class PaintActivity extends AppCompatActivity {
 
         /**
          * 만든 이미지 메모를 저장
-         * @param _dir 저장 경로
+         * @param dir 저장 경로
          */
-        public void savePaint(final String _dir) {
+        public void savePaint(final String dir) {
             FileOutputStream fos = null;
             this.draw(mCanvas);
             try {
-                fos = new FileOutputStream(new File(_dir));
+                fos = new FileOutputStream(new File(dir));
                 mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             } catch (Exception e) {
                 TestLog.Tag("PaintFunction(save-)").Logging(TestLog.LogType.ERROR, e.getMessage());
@@ -936,18 +946,6 @@ public class PaintActivity extends AppCompatActivity {
          * 되돌리기 기능
          */
         public void undoCanvas() {
-            /*if (mBrushObject.mBrushPathsIdx != 0) {
-                mBrushObject.mBrushType.remove(--mBrushObject.mBrushPathsIdx);
-                mBrushObject.mBrushPaths.remove(mBrushObject.mBrushPathsIdx);
-                mBrushObject.mBrushSizes.remove(mBrushObject.mBrushPathsIdx);
-                mBrushObject.mBrushColor.remove(mBrushObject.mBrushPathsIdx);
-                mPath.reset();
-                drawLine();
-            }
-
-            if (mBrushObject.mBrushPathsIdx == 0) {
-                mMenuItemUndo.setVisible(false);
-            }*/
             if (!mBrushObject.mBrushPaths.isEmpty()) {
                 mBrushObject.mBrushType.removeLast();
                 mBrushObject.mBrushPaths.removeLast();
@@ -965,10 +963,10 @@ public class PaintActivity extends AppCompatActivity {
 
         /**
          * 브러쉬, 지우개 변경
-         * @param _type 지우개, 도형, 브러쉬
+         * @param type 지우개, 도형, 브러쉬
          */
-        public void changePaint(final Constant.PaintType _type) {
-            switch (_type) {
+        public void changePaint(final PaintType type) {
+            switch (type) {
                 case Brush: case Shape:
                     mBrushPaint.setColor(mCurColor);
                     break;
@@ -1003,13 +1001,13 @@ public class PaintActivity extends AppCompatActivity {
             }
             mCanvas = new Canvas(mBitmap);
             if (!mFileopen) {
-                mCanvas.drawARGB(Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX, Constant.PAINT_COLOR_MAX);
+                mCanvas.drawARGB(PAINT_COLOR_MAX, PAINT_COLOR_MAX, PAINT_COLOR_MAX, PAINT_COLOR_MAX);
             }
 
             Iterator<Float> iterBrushSize = mBrushObject.mBrushSizes.iterator();
             Iterator<Object> iterBrushPath = mBrushObject.mBrushPaths.iterator();
             Iterator<Integer> iterBrushColor = mBrushObject.mBrushColor.iterator();
-            Iterator<Constant.ShapeType> iterBrushType = mBrushObject.mBrushType.iterator();
+            Iterator<BrushObject.ShapeType> iterBrushType = mBrushObject.mBrushType.iterator();
             while (iterBrushSize.hasNext()) {
                 mBrushPaint.setStrokeWidth(iterBrushSize.next());
                 mBrushPaint.setColor(iterBrushColor.next());

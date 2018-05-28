@@ -26,6 +26,12 @@ import util.TestLog;
  * class from which the text is called
  */
 public class TextManager {
+    public enum EncodeType {
+        EucKR, UTF8
+    }
+
+    public static final String ENCODE_TYPE_EUCKR_STR = "EUC-KR";
+    public static final String ENCODE_TYPE_UTF8_STR = "UTF-8";
     public static final int PAGE_PREV = -1;
     public static final int PAGE_NONE = 0;
     public static final int PAGE_NEXT = 1;
@@ -68,27 +74,27 @@ public class TextManager {
 
     /**
      * Save the content of the text
-     * @param _filename Name of the file to save
-     * @param _contents Contents
+     * @param fileName Name of the file to save
+     * @param contents Contents
      * @return Success or failure
      */
-    public boolean saveText(final String _filename, final String _contents) {
+    public boolean saveText(final String fileName, final String contents) {
         if (mContentsList.isEmpty()) {
-            mContentsList.add(_contents);
+            mContentsList.add(contents);
             mMaxPage++;
         } else {
-            mContentsList.set(mCurPage, _contents);
+            mContentsList.set(mCurPage, contents);
         }
 
-        String contents = listToString();
+        String strContents = listToString();
         FileOutputStream saveFileOutputStream = null;
         FileChannel saveFileChannel = null;
         ByteBuffer fileBuffer = null;
         try {
-            saveFileOutputStream = new FileOutputStream(new File(_filename));
+            saveFileOutputStream = new FileOutputStream(new File(fileName));
             saveFileChannel = saveFileOutputStream.getChannel();
-            fileBuffer = ByteBuffer.allocate(contents.getBytes().length);
-            fileBuffer.put(contents.getBytes());
+            fileBuffer = ByteBuffer.allocate(strContents.getBytes().length);
+            fileBuffer.put(strContents.getBytes());
             fileBuffer.flip();
             saveFileChannel.write(fileBuffer);
             return true;
@@ -123,10 +129,10 @@ public class TextManager {
 
     /**
      * Open the file before you read and write it.
-     * @param _filename Name of the column file
+     * @param fileName Name of the column file
      * @return True when opened, false when failed
      */
-    public boolean openText(final String _filename) {
+    public boolean openText(final String fileName) {
         FileInputStream openFileInputStream = null;
         FileChannel openFileChannel = null;
         ByteBuffer fileBuffer = null;
@@ -137,19 +143,19 @@ public class TextManager {
         }
 
         try {
-            openFileInputStream = new FileInputStream(new File(_filename));
+            openFileInputStream = new FileInputStream(new File(fileName));
             openFileChannel = openFileInputStream.getChannel();
             fileBuffer = ByteBuffer.allocate((int)openFileChannel.size());
             if (openFileInputStream.available() != 0) {
                 openFileChannel.read(fileBuffer);
                 fileBuffer.flip();
                 if (formatDetector(fileBuffer) != null) {
-                    mFileFormat = Constant.ENCODE_TYPE_UTF8_STR;
+                    mFileFormat = ENCODE_TYPE_UTF8_STR;
                 } else {
-                    mFileFormat = Constant.ENCODE_TYPE_EUCKR_STR;
+                    mFileFormat = ENCODE_TYPE_EUCKR_STR;
                 }
                 mFileOpened = true;
-                mOpenedFileName = _filename;
+                mOpenedFileName = fileName;
                 tokenizer = new StringTokenizer(new String(fileBuffer.array(), mFileFormat), "\n");
             } else {
                 mFileOpened = false;
@@ -197,23 +203,23 @@ public class TextManager {
 
     /**
      * Returns the contents of the page that is open in the formate
-     * @param _page Which page to open
-     * @param _format File format
+     * @param page Which page to open
+     * @param format File format
      * @return The contents of the page
      */
-    public String getText(final int _page, final Constant.EncodeType _format) {
-        int page;
-        if (_page == PAGE_FIRST) {
-            page = 0;
+    public String getText(final int page, final EncodeType format) {
+        int thisPage;
+        if (page == PAGE_FIRST) {
+            thisPage = 0;
         } else {
-            page = mCurPage + _page;
+            thisPage = mCurPage + page;
         }
-        if (page <= mMaxPage - 1 && page >= 0) {
-            mCurPage = page;
-            if (_format == Constant.EncodeType.EUCKR) {
+        if (thisPage <= mMaxPage - 1 && thisPage >= 0) {
+            mCurPage = thisPage;
+            if (format == EncodeType.EucKR) {
                 String str = "";
                 try {
-                    str = new String(mContentsList.get(mCurPage).getBytes(), Constant.ENCODE_TYPE_EUCKR_STR);
+                    str = new String(mContentsList.get(mCurPage).getBytes(), ENCODE_TYPE_EUCKR_STR);
                 } catch (Exception e) {
                     TestLog.Tag("TextManager").Logging(TestLog.LogType.ERROR, e.getMessage());
                 }
@@ -229,15 +235,15 @@ public class TextManager {
         }
     }
 
-    public void setMD5(final String _str, final Constant.EncodeType _format) {
-        if (_format == Constant.EncodeType.EUCKR) {
-            String str = "";
+    public void setMD5(final String str, final EncodeType format) {
+        if (format == EncodeType.EucKR) {
+            String origin = "";
             try {
-                str = new String(mContentsList.get(mCurPage).getBytes(), Constant.ENCODE_TYPE_EUCKR_STR);
+                origin = new String(mContentsList.get(mCurPage).getBytes(), ENCODE_TYPE_EUCKR_STR);
             } catch (Exception e) {
                 TestLog.Tag("TextManager").Logging(TestLog.LogType.ERROR, e.getMessage());
             }
-            mMD5 = createMD5(str);
+            mMD5 = createMD5(origin);
         } else {
             mMD5 = createMD5(mContentsList.get(mCurPage));
         }
@@ -264,15 +270,15 @@ public class TextManager {
 
     /**
      * Generates the MD5 values of the typed text (Byte Method Text)
-     * @param _message Text
+     * @param message Text
      * @return Success or failure
      */
-    public String createMD5(final byte[] _message) {
+    public String createMD5(final byte[] message) {
         MessageDigest messageDigest;
         StringBuilder MD5String = new StringBuilder();
         try {
             messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.update(_message);
+            messageDigest.update(message);
             byte[] hash = messageDigest.digest();
             for (byte h : hash) {
                 MD5String.append(String.format("%02x", h & 0xff));
@@ -286,16 +292,16 @@ public class TextManager {
 
     /**
      * Generates the MD5 values of the typed text (String Method Text)
-     * @param _message Text
+     * @param message Text
      * @return Success or failure
      */
-    public String createMD5(final String _message) {
+    public String createMD5(final String message) {
         MessageDigest messageDigest;
         StringBuilder MD5String = new StringBuilder();
         try {
             messageDigest = MessageDigest.getInstance("MD5");
             // UTF-8, regardless of type, is because it checks that it is already converted to UTF-8.
-            messageDigest.update(_message.getBytes(Charset.forName(Constant.ENCODE_TYPE_UTF8_STR)));
+            messageDigest.update(message.getBytes(Charset.forName(ENCODE_TYPE_UTF8_STR)));
             byte[] hash = messageDigest.digest();
             for (byte h : hash) {
                 MD5String.append(String.format("%02x", h & 0xff));
@@ -309,14 +315,14 @@ public class TextManager {
 
     /**
      * Determine the encoding format for the file
-     * @param _buffer Typed text
+     * @param buffer Typed text
      * @return Returns the char type buffer.
      */
-    private CharBuffer formatDetector(final ByteBuffer _buffer) {
+    private CharBuffer formatDetector(final ByteBuffer buffer) {
         CharBuffer charBuffer;
         try {
-            CharsetDecoder decoder = Charset.forName(Constant.ENCODE_TYPE_UTF8_STR).newDecoder();
-            charBuffer = decoder.decode(_buffer);
+            CharsetDecoder decoder = Charset.forName(ENCODE_TYPE_UTF8_STR).newDecoder();
+            charBuffer = decoder.decode(buffer);
         } catch (CharacterCodingException cce) {
             TestLog.Tag("TextManager(format-)").Logging(TestLog.LogType.ERROR, cce.getMessage());
             return null;
@@ -326,10 +332,10 @@ public class TextManager {
 
     /**
      * Determines the number of lines you want to show at one time.(Enhanced File Open)
-     * @param _lines Lines
+     * @param lines Lines
      */
-    public void setLines(final int _lines) {
-        mLines = _lines;
+    public void setLines(final int lines) {
+        mLines = lines;
     }
 
 

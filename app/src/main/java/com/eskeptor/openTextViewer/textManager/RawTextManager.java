@@ -18,17 +18,17 @@ import util.TestLog;
 public class RawTextManager {
     /**
      * Method for recalling raw files (text)
-     * @param _context Context
-     * @param _res Raw File Name
+     * @param context Context
+     * @param res Raw File Name
      * @return The content of the imported file
      */
-    public static String getRawText(final Context _context, @RawRes int _res) {
+    public static String getRawText(final Context context, @RawRes int res) {
         InputStream inputStream = null;
         ByteArrayOutputStream byteArrayOutputStream = null;
         String text = "";
 
         try {
-            inputStream = _context.getResources().openRawResource(_res);
+            inputStream = context.getResources().openRawResource(res);
             byteArrayOutputStream = new ByteArrayOutputStream();
             int i;
             while ((i = inputStream.read()) != -1) {

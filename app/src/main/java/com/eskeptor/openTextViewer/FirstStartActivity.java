@@ -33,11 +33,11 @@ public class FirstStartActivity extends AppCompatActivity {
     private SharedPreferences.Editor mPrefEditor;
 
     @Override
-    public void onRequestPermissionsResult(int _requestCode, @NonNull String[] _permissions, @NonNull int[] _grantResults) {
-        super.onRequestPermissionsResult(_requestCode, _permissions, _grantResults);
-        if (_requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE) {
-            if (_grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    _grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == Constant.REQUEST_CODE_APP_PERMISSION_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 mPrefEditor = mPref.edit();
                 mPrefEditor.putBoolean(Constant.APP_TUTORIAL, true);
                 mPrefEditor.apply();
@@ -98,9 +98,9 @@ public class FirstStartActivity extends AppCompatActivity {
                 R.drawable.firstview5, R.drawable.firstview6};
         private LayoutInflater mInflater;
 
-        public PagerAdapterClass(Context _context) {
+        public PagerAdapterClass(Context context) {
             super();
-            mInflater = LayoutInflater.from(_context);
+            mInflater = LayoutInflater.from(context);
         }
 
         @Override

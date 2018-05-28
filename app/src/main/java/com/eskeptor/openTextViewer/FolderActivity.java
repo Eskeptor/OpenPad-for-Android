@@ -52,15 +52,15 @@ public class FolderActivity extends AppCompatActivity
     private RefreshList mHandler;                       // Handler for refreshing folder lists
     private Thread mListThread;
 
-    public boolean onCreateOptionsMenu(Menu _menu)
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.menu_folder, _menu);
+        getMenuInflater().inflate(R.menu.menu_folder, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem _item) {
-        if (_item.getItemId() == R.id.menu_folderAdd) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_folderAdd) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.folder_dialog_title_create);
             View layout = LayoutInflater.from(mContextThis).inflate(R.layout.dialog_folder_create, null);
@@ -68,8 +68,8 @@ public class FolderActivity extends AppCompatActivity
             builder.setView(layout);
             DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface _dialog, int _which) {
-                    if (_which == AlertDialog.BUTTON_POSITIVE) {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == AlertDialog.BUTTON_POSITIVE) {
                         mNewFolderName = mEditText.getText().toString();
                         if (!mNewFolderName.equals("")) {
                             File file = new File(Constant.APP_INTERNAL_URL + File.separator + mNewFolderName);
@@ -87,8 +87,8 @@ public class FolderActivity extends AppCompatActivity
                                             File file = new File(Constant.APP_INTERNAL_URL);
                                             File files[] = file.listFiles(new FileFilter() {
                                                 @Override
-                                                public boolean accept(File _pathname) {
-                                                    return _pathname.isDirectory();
+                                                public boolean accept(File pathname) {
+                                                    return pathname.isDirectory();
                                                 }
                                             });
                                             mFoldersLength = files.length;
@@ -106,7 +106,7 @@ public class FolderActivity extends AppCompatActivity
                                             }
 
                                             // File browser connection
-                                            mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
+                                            mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, FolderObject.FolderType.External, null));
                                             mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
                                         }
                                     });
@@ -115,7 +115,7 @@ public class FolderActivity extends AppCompatActivity
                             }
                         }
                     }
-                    _dialog.dismiss();
+                    dialog.dismiss();
                 }
             };
             builder.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
@@ -127,7 +127,7 @@ public class FolderActivity extends AppCompatActivity
             }
             dialog.show();
         }
-        return super.onOptionsItemSelected(_item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -138,8 +138,8 @@ public class FolderActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder);
 
         mContextThis = getApplicationContext();
@@ -156,8 +156,8 @@ public class FolderActivity extends AppCompatActivity
                 File file = new File(Constant.APP_INTERNAL_URL);
                 File files[] = file.listFiles(new FileFilter() {
                     @Override
-                    public boolean accept(File _pathname) {
-                        return _pathname.isDirectory();
+                    public boolean accept(File pathname) {
+                        return pathname.isDirectory();
                     }
                 });
                 mFoldersLength = files.length;
@@ -166,15 +166,15 @@ public class FolderActivity extends AppCompatActivity
                 for (int i = 0; i < mFoldersLength; i++) {
                     mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                         @Override
-                        public boolean accept(File _pathname) {
-                            return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
-                                    || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
+                        public boolean accept(File pathname) {
+                            return pathname.isFile() && (pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                    || pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
                         }
                     }).length, checkFolderType(files[i]), mContextThis));
                 }
 
                 // 파일 브라우저 연결
-                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
+                mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, FolderObject.FolderType.External, null));
                 mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
             }
         });
@@ -221,29 +221,29 @@ public class FolderActivity extends AppCompatActivity
 
     /**
      * Check the type of folder
-     * @param _file Folder
+     * @param file Folder
      * @return Folder Type
      */
-    private Constant.FolderType checkFolderType(final File _file) {
-        if (_file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || _file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
-            return Constant.FolderType.Default;
+    private FolderObject.FolderType checkFolderType(final File file) {
+        if (file.getName().equals(Constant.FOLDER_DEFAULT_NAME) || file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
+            return FolderObject.FolderType.Default;
         }
-        return Constant.FolderType.Custom;
+        return FolderObject.FolderType.Custom;
     }
 
     /**
      * How to delete folders
-     * @param _index Index of folders to delete
+     * @param index Index of folders to delete
      */
-    private void deleteFolder(final int _index) {
+    private void deleteFolder(final int index) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.folder_dialog_title_delete);
         dialog.setMessage(R.string.folder_dialog_message_question_delete);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface _dialog, int _which) {
-                if (_which == AlertDialog.BUTTON_POSITIVE) {
-                    File file = new File(mFolders.get(_index).mFolderPath);
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == AlertDialog.BUTTON_POSITIVE) {
+                    File file = new File(mFolders.get(index).mFolderPath);
                     if (file.exists()) {
                         if (!file.getName().equals(Constant.FOLDER_DEFAULT_NAME) && !file.getName().equals(Constant.FOLDER_WIDGET_NAME)) {
                             for (File inFile : file.listFiles()) {
@@ -264,8 +264,8 @@ public class FolderActivity extends AppCompatActivity
                                         File file = new File(Constant.APP_INTERNAL_URL);
                                         File files[] = file.listFiles(new FileFilter() {
                                             @Override
-                                            public boolean accept(File _pathname) {
-                                                return _pathname.isDirectory();
+                                            public boolean accept(File pathname) {
+                                                return pathname.isDirectory();
                                             }
                                         });
                                         mFoldersLength = files.length;
@@ -274,15 +274,15 @@ public class FolderActivity extends AppCompatActivity
                                         for (int i = 0; i < mFoldersLength; i++) {
                                             mFolders.add(new FolderObject(files[i].getName(), files[i].listFiles(new FileFilter() {
                                                 @Override
-                                                public boolean accept(File _pathname) {
-                                                    return _pathname.isFile() && (_pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
-                                                            || _pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
+                                                public boolean accept(File pathname) {
+                                                    return pathname.isFile() && (pathname.getName().endsWith(Constant.FILE_TEXT_EXTENSION)
+                                                            || pathname.getName().endsWith(Constant.FILE_IMAGE_EXTENSION));
                                                 }
                                             }).length, checkFolderType(files[i]), mContextThis));
                                         }
 
                                         // 파일 브라우저 연결
-                                        mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, Constant.FolderType.External, null));
+                                        mFolders.add(new FolderObject(getResources().getString(R.string.folder_externalBrowser), -1, FolderObject.FolderType.External, null));
                                         mHandler.sendEmptyMessage(Constant.HANDLER_REFRESH_LIST);
                                     }
                                 });
@@ -295,7 +295,7 @@ public class FolderActivity extends AppCompatActivity
                         Snackbar.make(mContextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
                     }
                 }
-                _dialog.dismiss();
+                dialog.dismiss();
             }
         };
         dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
@@ -303,8 +303,8 @@ public class FolderActivity extends AppCompatActivity
         dialog.show();
     }
 
-    private void handleMessage(Message _message) {
-        int what = _message.what;
+    private void handleMessage(Message message) {
+        int what = message.what;
         switch (what) {
             case Constant.HANDLER_REFRESH_LIST: {
                 if (mFolderAdaptor == null) {
@@ -318,7 +318,7 @@ public class FolderActivity extends AppCompatActivity
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.setClass(mContextThis, FileBrowserActivity.class);
                                 intent.setType("text/plain");
-                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, Constant.BrowserType.OpenExternal.getValue());
+                                intent.putExtra(Constant.INTENT_EXTRA_BROWSER_TYPE, FileBrowserActivity.BrowserType.OpenExternal.getValue());
                                 startActivity(intent);
                             } else {
                                 Intent intent = new Intent();
@@ -353,8 +353,8 @@ public class FolderActivity extends AppCompatActivity
      */
     static class RefreshList extends Handler {
         private final WeakReference<FolderActivity> mActivity;
-        RefreshList(FolderActivity _activity) {
-            mActivity = new WeakReference<>(_activity);
+        RefreshList(FolderActivity activity) {
+            mActivity = new WeakReference<>(activity);
         }
 
         @Override

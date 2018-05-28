@@ -150,18 +150,18 @@ public class MemoWidgetConfigureActivity extends Activity {
         mPreviewTxtContext = findViewById(R.id.widget_config_preview_memocontext);
 
         mSharedPref = getSharedPreferences(Constant.APP_WIDGET_PREFERENCE + mAppWidgetId, MODE_PRIVATE);
-        mTab1CurBackRed = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
-        mTab1CurBackGreen = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
-        mTab1CurBackBlue = mSharedPref.getInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);
-        mTab1CurFontRed = mSharedPref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT);
-        mTab1CurFontGreen = mSharedPref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT);
-        mTab1CurFontBlue = mSharedPref.getInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT);
-        mTab2CurBackRed = mSharedPref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT);
-        mTab2CurBackGreen = mSharedPref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT);
-        mTab2CurBackBlue = mSharedPref.getInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT);
-        mTab2CurFontRed = mSharedPref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT);
-        mTab2CurFontGreen = mSharedPref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT);
-        mTab2CurFontBlue = mSharedPref.getInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT);
+        mTab1CurBackRed = mSharedPref.getInt(MemoWidget.WIDGET_TITLE_BACK_COLOR_RED, MemoWidget.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT);
+        mTab1CurBackGreen = mSharedPref.getInt(MemoWidget.WIDGET_TITLE_BACK_COLOR_GREEN, MemoWidget.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT);
+        mTab1CurBackBlue = mSharedPref.getInt(MemoWidget.WIDGET_TITLE_BACK_COLOR_BLUE, MemoWidget.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT);
+        mTab1CurFontRed = mSharedPref.getInt(MemoWidget.WIDGET_TITLE_FONT_COLOR_RED, MemoWidget.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT);
+        mTab1CurFontGreen = mSharedPref.getInt(MemoWidget.WIDGET_TITLE_FONT_COLOR_GREEN, MemoWidget.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT);
+        mTab1CurFontBlue = mSharedPref.getInt(MemoWidget.WIDGET_TITLE_FONT_COLOR_BLUE, MemoWidget.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT);
+        mTab2CurBackRed = mSharedPref.getInt(MemoWidget.WIDGET_CONTEXT_BACK_COLOR_RED, MemoWidget.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT);
+        mTab2CurBackGreen = mSharedPref.getInt(MemoWidget.WIDGET_CONTEXT_BACK_COLOR_GREEN, MemoWidget.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT);
+        mTab2CurBackBlue = mSharedPref.getInt(MemoWidget.WIDGET_CONTEXT_BACK_COLOR_BLUE, MemoWidget.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT);
+        mTab2CurFontRed = mSharedPref.getInt(MemoWidget.WIDGET_CONTEXT_FONT_COLOR_RED, MemoWidget.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT);
+        mTab2CurFontGreen = mSharedPref.getInt(MemoWidget.WIDGET_CONTEXT_FONT_COLOR_GREEN, MemoWidget.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT);
+        mTab2CurFontBlue = mSharedPref.getInt(MemoWidget.WIDGET_CONTEXT_FONT_COLOR_BLUE, MemoWidget.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT);
         mTab1CurBackRed_backup = mTab1CurBackRed;
         mTab1CurBackGreen_backup = mTab1CurBackGreen;
         mTab1CurBackBlue_backup = mTab1CurBackBlue;
@@ -325,18 +325,18 @@ public class MemoWidgetConfigureActivity extends Activity {
 
         switch (id) {
             case R.id.widget_config_btnReset:
-                mTab1CurBackRed = Constant.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT;
-                mTab1CurBackGreen = Constant.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT;
-                mTab1CurBackBlue = Constant.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT;
-                mTab1CurFontRed = Constant.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT;
-                mTab1CurFontGreen = Constant.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT;
-                mTab1CurFontBlue = Constant.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT;
-                mTab2CurBackRed = Constant.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT;
-                mTab2CurBackGreen = Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT;
-                mTab2CurBackBlue = Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT;
-                mTab2CurFontRed = Constant.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT;
-                mTab2CurFontGreen = Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT;
-                mTab2CurFontBlue = Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT;
+                mTab1CurBackRed = MemoWidget.WIDGET_TITLE_BACK_COLOR_RED_DEFAULT;
+                mTab1CurBackGreen = MemoWidget.WIDGET_TITLE_BACK_COLOR_GREEN_DEFAULT;
+                mTab1CurBackBlue = MemoWidget.WIDGET_TITLE_BACK_COLOR_BLUE_DEFAULT;
+                mTab1CurFontRed = MemoWidget.WIDGET_TITLE_FONT_COLOR_RED_DEFAULT;
+                mTab1CurFontGreen = MemoWidget.WIDGET_TITLE_FONT_COLOR_GREEN_DEFAULT;
+                mTab1CurFontBlue = MemoWidget.WIDGET_TITLE_FONT_COLOR_BLUE_DEFAULT;
+                mTab2CurBackRed = MemoWidget.WIDGET_CONTEXT_BACK_COLOR_RED_DEFAULT;
+                mTab2CurBackGreen = MemoWidget.WIDGET_CONTEXT_BACK_COLOR_GREEN_DEFAULT;
+                mTab2CurBackBlue = MemoWidget.WIDGET_CONTEXT_BACK_COLOR_BLUE_DEFAULT;
+                mTab2CurFontRed = MemoWidget.WIDGET_CONTEXT_FONT_COLOR_RED_DEFAULT;
+                mTab2CurFontGreen = MemoWidget.WIDGET_CONTEXT_FONT_COLOR_GREEN_DEFAULT;
+                mTab2CurFontBlue = MemoWidget.WIDGET_CONTEXT_FONT_COLOR_BLUE_DEFAULT;
                 mPreviewMainLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
                 mPreviewTitleLayout.setBackgroundColor(Color.rgb(mTab1CurBackRed, mTab1CurBackGreen, mTab1CurBackBlue));
                 mPreviewTxtTitle.setTextColor(Color.rgb(mTab1CurFontRed, mTab1CurFontGreen, mTab1CurFontBlue));
@@ -357,19 +357,19 @@ public class MemoWidgetConfigureActivity extends Activity {
                 break;
             case R.id.widget_config_btnAdd:
                 SharedPreferences.Editor mSharedPrefEditor = mSharedPref.edit();
-                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_RED, mTab1CurBackRed);
-                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_GREEN, mTab1CurBackGreen);
-                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_BACK_COLOR_BLUE, mTab1CurBackBlue);
-                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_RED, mTab1CurFontRed);
-                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_GREEN, mTab1CurFontGreen);
-                mSharedPrefEditor.putInt(Constant.WIDGET_TITLE_FONT_COLOR_BLUE, mTab1CurFontBlue);
-                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_RED, mTab2CurBackRed);
-                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_GREEN, mTab2CurBackGreen);
-                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_BACK_COLOR_BLUE, mTab2CurBackBlue);
-                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_RED, mTab2CurFontRed);
-                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_GREEN, mTab2CurFontGreen);
-                mSharedPrefEditor.putInt(Constant.WIDGET_CONTEXT_FONT_COLOR_BLUE, mTab2CurFontBlue);
-                mSharedPrefEditor.putInt(Constant.WIDGET_ID, mAppWidgetId);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_TITLE_BACK_COLOR_RED, mTab1CurBackRed);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_TITLE_BACK_COLOR_GREEN, mTab1CurBackGreen);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_TITLE_BACK_COLOR_BLUE, mTab1CurBackBlue);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_TITLE_FONT_COLOR_RED, mTab1CurFontRed);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_TITLE_FONT_COLOR_GREEN, mTab1CurFontGreen);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_TITLE_FONT_COLOR_BLUE, mTab1CurFontBlue);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_CONTEXT_BACK_COLOR_RED, mTab2CurBackRed);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_CONTEXT_BACK_COLOR_GREEN, mTab2CurBackGreen);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_CONTEXT_BACK_COLOR_BLUE, mTab2CurBackBlue);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_CONTEXT_FONT_COLOR_RED, mTab2CurFontRed);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_CONTEXT_FONT_COLOR_GREEN, mTab2CurFontGreen);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_CONTEXT_FONT_COLOR_BLUE, mTab2CurFontBlue);
+                mSharedPrefEditor.putInt(MemoWidget.WIDGET_ID, mAppWidgetId);
                 mSharedPrefEditor.apply();
                 final Context context = MemoWidgetConfigureActivity.this;
 

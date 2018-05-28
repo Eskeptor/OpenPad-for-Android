@@ -11,8 +11,8 @@ import com.eskeptor.openTextViewer.textManager.RawTextManager;
  */
 public class HiddenActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden);
 
         setTitle(R.string.hidden_title);

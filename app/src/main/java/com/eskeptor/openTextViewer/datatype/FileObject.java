@@ -13,35 +13,43 @@ import java.io.File;
  * Class for expressing the file list in the list
  */
 public class FileObject {
+    public enum BrowserIconType {
+        None, Folder, Normal, Over1, Over2
+    }
+
+    private static final long MEGABYTE = 1048576L;
+    private static final long KILOBYTE = 1024L;
+    private static final long SAFE_LOAD_CAPACITY = 500L;
+
     // Get, set is good, but direct access gives you less load.
     public String mFilePath;                    // Absolute path to the file
     public String mFileName;                    // Name of file (file name only : 1.png)
-    public Constant.BrowserIconType mIconType;  // Type of file icon
+    public BrowserIconType mIconType;  // Type of file icon
     public long mFileSize;                      // File Size (in KB)
 
     /**
      * Generator
-     * @param _file file
+     * @param file file
      */
-    public FileObject(final File _file) {
-        mFilePath = _file.getPath();
-        mFileName = _file.getName();
+    public FileObject(final File file) {
+        mFilePath = file.getPath();
+        mFileName = file.getName();
 
-        if (_file.isDirectory()) {
-            mIconType = Constant.BrowserIconType.Folder;
-        } else if (_file.isFile()) {
-            if (_file.length() >= Constant.KILOBYTE * Constant.SAFE_LOAD_CAPACITY &&
-                    _file.length() <= Constant.MEGABYTE) {
-                mIconType = Constant.BrowserIconType.Over1;
-            } else if (_file.length() >= Constant.MEGABYTE) {
-                mIconType = Constant.BrowserIconType.Over2;
+        if (file.isDirectory()) {
+            mIconType = BrowserIconType.Folder;
+        } else if (file.isFile()) {
+            if (file.length() >= KILOBYTE * SAFE_LOAD_CAPACITY &&
+                    file.length() <= MEGABYTE) {
+                mIconType = BrowserIconType.Over1;
+            } else if (file.length() >= MEGABYTE) {
+                mIconType = BrowserIconType.Over2;
             } else {
-                mIconType = Constant.BrowserIconType.Normal;
+                mIconType = BrowserIconType.Normal;
             }
         }
 
-        if (_file.length() >= Constant.KILOBYTE) {
-            mFileSize = _file.length() / Constant.KILOBYTE;
+        if (file.length() >= KILOBYTE) {
+            mFileSize = file.length() / KILOBYTE;
         } else {
             mFileSize = 1L;
         }

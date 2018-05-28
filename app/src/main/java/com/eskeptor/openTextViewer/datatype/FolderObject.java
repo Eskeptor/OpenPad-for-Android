@@ -15,34 +15,38 @@ import java.io.File;
  * Class for representing folders in the list
  */
 public class FolderObject {
+    public enum FolderType {
+        Default, Custom, External
+    }
+
     // Get, set is good, but direct access gives you less load.
     public String mFolderName;          // Name of the folder (folder only appears)
     public String mFolderPath;          // Absolute path to the folder
     public int mFileCountInFolder;      // The number of files that are inside the folder.
-    public Constant.FolderType mFolderType;             // Type of folder
+    public FolderType mFolderType;             // Type of folder
 
     /**
      * Generator
-     * @param _name Name of the folder
-     * @param _count Number of files in the folder
-     * @param _type Type of folder
-     * @param _context Context
+     * @param name Name of the folder
+     * @param count Number of files in the folder
+     * @param type Type of folder
+     * @param context Context
      */
-    public FolderObject(final String _name, final int _count, final Constant.FolderType _type, final Context _context) {
-        if (!_name.equals(Constant.FOLDER_DEFAULT_NAME) && !_name.equals(Constant.FOLDER_WIDGET_NAME)) {
-            this.mFolderName = _name;
+    public FolderObject(final String name, final int count, final FolderType type, final Context context) {
+        if (!name.equals(Constant.FOLDER_DEFAULT_NAME) && !name.equals(Constant.FOLDER_WIDGET_NAME)) {
+            this.mFolderName = name;
         } else {
-            if (_name.equals(Constant.FOLDER_WIDGET_NAME))
-                this.mFolderName = _context.getResources().getString(R.string.folder_widget);
+            if (name.equals(Constant.FOLDER_WIDGET_NAME))
+                this.mFolderName = context.getResources().getString(R.string.folder_widget);
             else
-                this.mFolderName = _context.getResources().getString(R.string.folder_default);
+                this.mFolderName = context.getResources().getString(R.string.folder_default);
         }
 
-        this.mFileCountInFolder = _count;
-        this.mFolderType = _type;
+        this.mFileCountInFolder = count;
+        this.mFolderType = type;
 
-        if (_context != null) {
-            mFolderPath = Constant.APP_INTERNAL_URL + File.separator + _name;
+        if (context != null) {
+            mFolderPath = Constant.APP_INTERNAL_URL + File.separator + name;
         }
     }
 }

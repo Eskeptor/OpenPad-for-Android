@@ -1,3 +1,8 @@
+## Update 2018.5.28
+```
+ 1) Change coding style (Google coding style)
+ 2) Add Swipe delete action (Main RecycleView)
+```
 ## Update 2018.5.12 - Build 1.5.5
 ```
  1) Fix bug (multi-touch gesture bug)

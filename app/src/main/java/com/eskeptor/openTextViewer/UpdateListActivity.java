@@ -17,8 +17,8 @@ public class UpdateListActivity extends AppCompatActivity {
     private Thread mTextThread;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
-        super.onCreate(_savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_list);
 
         mUpdateList = findViewById(R.id.updateList_contents);

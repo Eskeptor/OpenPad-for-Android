@@ -15,13 +15,13 @@ public class CircleObject {
 
     /**
      * About the generator method
-     * @param _x x
-     * @param _y y
-     * @param _r radius
+     * @param x x
+     * @param y y
+     * @param r radius
      */
-    public CircleObject(final float _x, final float _y, final float _r) {
-        mX = _x;
-        mY = _y;
-        mRadius = _r;
+    public CircleObject(final float x, final float y, final float r) {
+        mX = x;
+        mY = y;
+        mRadius = r;
     }
 }

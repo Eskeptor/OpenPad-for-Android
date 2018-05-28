@@ -18,12 +18,12 @@ public class LogManager {
 
     /**
      * How to Save Logs
-     * @param _strData Message to save
-     * @param _filename Name of log to be saved
+     * @param strData Message to save
+     * @param fileName Name of log to be saved
      * @return Success or failure
      */
-    public static boolean saveLog(final String _strData, final String _filename) {
-        if (_strData == null || _strData.isEmpty()) {
+    public static boolean saveLog(final String strData, final String fileName) {
+        if (strData == null || strData.isEmpty()) {
             return false;
         }
 
@@ -31,10 +31,10 @@ public class LogManager {
         FileChannel channel = null;
         ByteBuffer buffer = null;
         try {
-            fos = new FileOutputStream(new File(_filename));
+            fos = new FileOutputStream(new File(fileName));
             channel = fos.getChannel();
-            buffer = ByteBuffer.allocate(_strData.getBytes().length);
-            buffer.put(_strData.getBytes());
+            buffer = ByteBuffer.allocate(strData.getBytes().length);
+            buffer.put(strData.getBytes());
             buffer.flip();
             channel.write(buffer);
         } catch (Exception e) {
@@ -67,16 +67,16 @@ public class LogManager {
 
     /**
      * How to import logs
-     * @param _filename Name of the log to be recalled
+     * @param fileName Name of the log to be recalled
      * @return The contents of the imported log
      */
-    public static String openLog(final String _filename) {
-        if (_filename != null) {
+    public static String openLog(final String fileName) {
+        if (fileName != null) {
             FileInputStream fis = null;
             FileChannel channel = null;
             ByteBuffer byteBuffer = null;
             try {
-                fis = new FileInputStream(new File(_filename));
+                fis = new FileInputStream(new File(fileName));
 
                 channel = fis.getChannel();
                 byteBuffer = ByteBuffer.allocate((int) channel.size());
