@@ -1,4 +1,5 @@
 # OpenPad for Android
+[![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=15)[![](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 ![homepage](./Preview/image.png)
 ## Download
 [Google Play](https://play.google.com/store/apps/details?id=com.eskeptor.openTextViewer)
@@ -24,7 +25,7 @@
 ## Development environment
 #### 1st environment
 ```
- Operating System : Windows 10 Pro RS3 64bit
+ Operating System : Windows 10 Pro RS4 64bit
  CPU : AMD Ryzen R5 1600
  RAM : 24GB
  VGA : Nvidia Geforce GTX 1050 2GB
