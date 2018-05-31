@@ -1,3 +1,8 @@
+## Update 2018.5.31 - Build 1.5.6
+```
+ 1) Change Swipe delete action
+ 2) Minor bug fix
+```
 ## Update 2018.5.28
 ```
  1) Change coding style (Google coding style)

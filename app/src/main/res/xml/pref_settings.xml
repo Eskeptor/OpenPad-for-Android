@@ -52,6 +52,11 @@
             android:key="settings_key_enhanceIO_Line"
             android:summary="@string/settings_expfunc_enhanceIO_Line_summary"
             android:title="@string/settings_expfunc_enhanceIO_Line_title" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="settings_key_swipe_delete"
+            android:summary="@string/settings_expfunc_swipe_delete_summary"
+            android:title="@string/settings_expfunc_swipe_delete_title" />
         <Preference
             android:key="settings_key_security"
             android:title="@string/settings_expfunc_security" />

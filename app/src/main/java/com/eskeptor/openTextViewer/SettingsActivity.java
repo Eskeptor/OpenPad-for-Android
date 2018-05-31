@@ -341,6 +341,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private CheckBoxPreference mAdMob;
         private CheckBoxPreference mViewImage;
         private Preference mEnhanceIOLine;
+        private CheckBoxPreference mSwipeDelete;
 
         private long mPressTime = 0;
 
@@ -373,6 +374,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mViewImage = (CheckBoxPreference) findPreference("settings_key_viewimage");
             Preference license = findPreference("settings_key_license");
             Preference security = findPreference("settings_key_security");
+            mSwipeDelete = (CheckBoxPreference)findPreference("settings_key_swipe_delete");
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
                 @Override
@@ -547,6 +549,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 mPrevFontStyle = mFontStyle;
             }
             mAdMob.setChecked(mSharedPref.getBoolean(Constant.APP_ADMOB_VISIBLE, true));
+            mSwipeDelete.setChecked(mSharedPref.getBoolean(Constant.APP_SWIPE_DELETE_PREFERENCE, true));
         }
 
         @Override
@@ -556,6 +559,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 mSharedPrefEditor = mSharedPref.edit();
             mSharedPrefEditor.putBoolean(Constant.APP_ADMOB_VISIBLE, mAdMob.isChecked());
             mSharedPrefEditor.putBoolean(Constant.APP_VIEW_IMAGE, mViewImage.isChecked());
+            mSharedPrefEditor.putBoolean(Constant.APP_SWIPE_DELETE_PREFERENCE, mSwipeDelete.isChecked());
             mSharedPrefEditor.apply();
         }
 

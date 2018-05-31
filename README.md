@@ -11,10 +11,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.5.28) - None Build
+## What's New? (Last updated 2018.5.31) - Build 1.5.6
 ```
- 1) Change coding style (Google coding style)
- 2) Add Swipe delete action (Main RecycleView)
+ 1) Change Swipe delete action
+ 2) Minor bug fix
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -56,4 +56,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ## Good Bye!!
-Compiled by Android Studio 3.1.1
+Compiled by Android Studio 3.1.2

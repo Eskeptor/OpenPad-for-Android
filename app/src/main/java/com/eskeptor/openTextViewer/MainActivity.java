@@ -51,7 +51,7 @@ import util.TestLog;
  * Copyright (C) 2017 Eskeptor(Jeon Ye Chan)
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFileItemTouchHelper.RecyclerItemTouchHelperListener {
     public static final long WAIT_FOR_SECOND = 2000L;
 
     private long mBackPressedTime;                              // Back Button Press Time
@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
     private Thread mListThread;                                 // Main List's thread
 
     private FloatingActionsMenu mActionMenu;
+
+    private boolean mIsFileDeleted;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -393,10 +395,11 @@ public class MainActivity extends AppCompatActivity {
      * How to remove files from the main list
      * @param index Index of files to remove
      */
-    private void deleteFile(final int index) {
+    private boolean deleteFile(final int index) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.file_dialog_title_delete);
         dialog.setMessage(R.string.file_dialog_message_question_delete);
+        mIsFileDeleted = false;
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface _dialog, int _which) {
@@ -418,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
                             mCurFileAdapter.notifyItemRangeChanged(index, mCurFolderFileList.size());
                             mCurFileAdapter.notifyDataSetChanged();
                             Snackbar.make(mContextView, R.string.file_dialog_toast_delete, Snackbar.LENGTH_SHORT).show();
+                            mIsFileDeleted = true;
                         } else {
                             Snackbar.make(mContextView, R.string.error_folder_not_exist, Snackbar.LENGTH_SHORT).show();
                         }
@@ -429,6 +433,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setNegativeButton(R.string.folder_dialog_button_cancel, clickListener);
         dialog.setPositiveButton(R.string.folder_dialog_button_delete, clickListener);
         dialog.show();
+        return mIsFileDeleted;
     }
 
     /**
@@ -603,20 +608,10 @@ public class MainActivity extends AppCompatActivity {
                         deleteFile(_position);
                     }
                 });
-                final SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
-                    @Override
-                    public void onRightClicked(int position) {
-                        deleteFile(position);
-                    }
-                });
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeController);
-                itemTouchHelper.attachToRecyclerView(mCurFolderGridView);
-                mCurFolderGridView.addItemDecoration(new RecyclerView.ItemDecoration() {
-                    @Override
-                    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                        swipeController.onDraw(c);
-                    }
-                });
+
+                ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new MainFileItemTouchHelper(0, ItemTouchHelper.LEFT, this, mSharedPref);
+                new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mCurFolderGridView);
+
                 mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
                 mLayoutManager.invalidateSpanAssignments();
                 mCurFolderGridView.setHasFixedSize(true);
@@ -643,6 +638,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        final int DELETED_INDEX = viewHolder.getAdapterPosition();
+        TestLog.Tag("onSwiped").Logging(TestLog.LogType.ERROR, "onSwiped");
+        deleteFile(DELETED_INDEX);
+        mCurFileAdapter.notifyDataSetChanged();
+    }
 
     /**
      * Transparency or colorization of StatusBar in Coordinatorlayout
