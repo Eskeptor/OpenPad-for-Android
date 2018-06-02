@@ -1,3 +1,6 @@
+1.5.7
+1) Add Lock application
+
 1.5.6
 1) Add Swipe delete action (Main RecycleView)
 2) Minor bug fix

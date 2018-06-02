@@ -28,8 +28,12 @@ public class Constant {
     public static final String APP_VIEW_IMAGE = "isViewImage_Pref";
     public static final String APP_TEXT_LINES = "textLines_Pref";
     public static final String APP_PASSWORD_SET = "isSetPassword_Pref";
+    public static final String APP_PASSWORD_VALUE = "passwordValue_Pref";
     public static final String APP_PASSWORD_KEY = "passwordKey_Pref";
+    public static final String APP_PASSWORD_SET_APP = "isSetPassword_APP_Pref";
+    public static final String APP_PASSWORD_SET_FILE = "isSetPassword_FILE_Pref";
     public static final String APP_SWIPE_DELETE_PREFERENCE = "swipe_delete_Pref";
+    public static final String APP_PASSWORD_KEY_DEFAULT = "ABCDABCDABCDABCD";
 
     public static final boolean APP_FIRST_EXECUTE = false;
     public static final boolean APP_TWICE_EXECUTE = true;
@@ -77,7 +81,7 @@ public class Constant {
     public static final String DATE_FORMAT_MAIN_UK = "dd/MM/yyyy hh:mm a";
 
     public enum PasswordIntentType {
-        Set(0), Reset(1), Execute(2);
+        Set(0), Reset(1), Execute(2), MainExecute(3);
 
         private final int value;
         PasswordIntentType(final int _value) {

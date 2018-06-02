@@ -211,13 +211,15 @@
     <string name="license_glide4">Glide 4 License</string>
     <string name="memo_btnFirst">First Page</string>
     <string name="main_dialog_image_alert">The screen is held in the portrait position.</string>
-    <string name="settings_expfunc_security_password_title">File Encryption</string>
-    <string name="settings_expfunc_security_password_summary">Encrypt files using AES 256 (Text memos only)</string>
+    <string name="settings_expfunc_security_password_file_title">File Encryption</string>
+    <string name="settings_expfunc_security_password_file_summary">Encrypt files using AES 256 (Text memos only)</string>
     <string name="settings_expfunc_security">Security</string>
-    <string name="settings_expfunc_security_password">File encryption</string>
+    <string name="settings_expfunc_security_enabled">Enable Security</string>
     <string name="settings_expfunc_security_password_reset">Reset Password</string>
     <string name="test_preparing">Preparing...</string>
     <string name="settings_dialog_font_size">Hello? Have a nice day.</string>
     <string name="settings_expfunc_swipe_delete_title">Slide to delete memos</string>
     <string name="settings_expfunc_swipe_delete_summary">You can push a memo to remove it.</string>
+    <string name="settings_expfunc_security_app_title">Lock Application</string>
+    <string name="settings_expfunc_security_app_summary">Set a password for the application.</string>
 </resources>

@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import util.TestLog;
 
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
     private FloatingActionsMenu mActionMenu;
 
     private boolean mIsFileDeleted;
+    private Random mRandom;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
 
         mHandler = new RefreshListHandler(this);
+
+        mRandom = new Random();
 
         // Folder Icon
         Drawable folderIcon;
@@ -257,6 +261,15 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
             mListThread.start();
             checkFirstExecute();
             adMob();
+        }
+
+        // Password
+        if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET_APP, false)) {
+            Intent intent = new Intent();
+            intent.setClass(mContextThis, PasswordActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra(Constant.INTENT_EXTRA_PASSWORD, Constant.PasswordIntentType.MainExecute.getValue());
+            startActivity(intent);
         }
 
         // Font Settings
@@ -528,6 +541,18 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
             dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
             dialog.show();
         }
+        /*if (mSharedPrefEditor == null)
+            mSharedPrefEditor = mSharedPref.edit();
+        mSharedPrefEditor.putString(Constant.APP_PASSWORD_KEY, Constant.APP_PASSWORD_KEY_DEFAULT);
+        mSharedPrefEditor.apply();*/
+        if (mSharedPref.getString(Constant.APP_PASSWORD_KEY, Constant.APP_PASSWORD_KEY_DEFAULT).equals(Constant.APP_PASSWORD_KEY_DEFAULT)) {
+            if (mSharedPrefEditor == null)
+                mSharedPrefEditor = mSharedPref.edit();
+            mSharedPrefEditor.putString(Constant.APP_PASSWORD_KEY, createKey());
+            mSharedPrefEditor.apply();
+        } else {
+            mRandom = null;
+        }
     }
 
     /**
@@ -563,6 +588,15 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
             }
             mActionMenu.setLayoutParams(layoutParams);
         }
+    }
+
+    private String createKey() {
+        StringBuilder key = new StringBuilder();
+
+        for (int i = 0; i < 16; i++) {
+            key.append((char)(mRandom.nextInt(26) + 65));
+        }
+        return key.toString();
     }
 
     /**
@@ -641,7 +675,6 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         final int DELETED_INDEX = viewHolder.getAdapterPosition();
-        TestLog.Tag("onSwiped").Logging(TestLog.LogType.ERROR, "onSwiped");
         deleteFile(DELETED_INDEX);
         mCurFileAdapter.notifyDataSetChanged();
     }

@@ -11,10 +11,9 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.5.31) - Build 1.5.6
+## What's New? (Last updated 2018.6.2) - Build 1.5.7
 ```
- 1) Change Swipe delete action
- 2) Minor bug fix
+ 1) Add Lock application
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

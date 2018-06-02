@@ -1,3 +1,7 @@
+## Update 2018.6.2 - Build 1.5.7
+```
+ 1) Add Lock application
+```
 ## Update 2018.5.31 - Build 1.5.6
 ```
  1) Change Swipe delete action

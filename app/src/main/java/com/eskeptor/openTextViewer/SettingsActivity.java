@@ -32,6 +32,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import de.psdev.licensesdialog.LicensesDialog;
 import de.psdev.licensesdialog.model.Notice;
 import de.psdev.licensesdialog.model.Notices;
+import util.TestLog;
 
 
 /*
@@ -267,7 +268,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static class Security extends PreferenceFragment {
         // todo 비밀번호 암호화하여 처리하기 구현
 
-        private CheckBoxPreference mIsSetPassword;
+        private CheckBoxPreference mSetSecurity;
+        private CheckBoxPreference mSetPasswordApp;
+        private CheckBoxPreference mSetPasswordFile;
         private Preference mResetPassword;
 
         @Override
@@ -275,8 +278,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (resultCode == RESULT_OK) {
                 switch (requestCode) {
                     case Constant.REQUEST_CODE_PASSWORD: {
+                        mSetPasswordApp.setEnabled(true);
+                        mSetPasswordFile.setEnabled(true);
                         mResetPassword.setEnabled(true);
-                        mIsSetPassword.setChecked(true);
                         break;
                     }
                 }
@@ -288,15 +292,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_settings_security);
 
-            mIsSetPassword = (CheckBoxPreference)findPreference("settings_key_password_enabled");
+            mSetSecurity = (CheckBoxPreference)findPreference("settings_key_password_enabled");
+            mSetPasswordApp = (CheckBoxPreference)findPreference("settings_key_password_app");
+            mSetPasswordFile = (CheckBoxPreference)findPreference("settings_key_password_file");
             mResetPassword = findPreference("settings_key_password_reset");
 
+            TestLog.Tag("Security").Logging(TestLog.LogType.ERROR, "APP_PASSWORD_FILE_SET: " + mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false));
             if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
+                mSetPasswordApp.setEnabled(true);
+                mSetPasswordFile.setEnabled(true);
                 mResetPassword.setEnabled(true);
-                mIsSetPassword.setChecked(true);
             } else {
+                mSetPasswordApp.setEnabled(false);
+                mSetPasswordFile.setEnabled(false);
                 mResetPassword.setEnabled(false);
-                mIsSetPassword.setChecked(false);
             }
 
             Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
@@ -307,8 +316,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     {
                         case "settings_key_password_enabled": {
                             if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
+                                mSetPasswordApp.setEnabled(false);
+                                mSetPasswordFile.setEnabled(false);
                                 mResetPassword.setEnabled(false);
-                                mIsSetPassword.setChecked(false);
                                 mSharedPrefEditor.putBoolean(Constant.APP_PASSWORD_SET, false);
                                 mSharedPrefEditor.apply();
                             } else {
@@ -318,6 +328,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                 startActivityForResult(intent, Constant.REQUEST_CODE_PASSWORD);
                                 getActivity().overridePendingTransition(0, 0);
                             }
+                            break;
+                        }
+                        case "settings_key_password_app": {
+                            mSharedPrefEditor.putBoolean(Constant.APP_PASSWORD_SET_APP, mSetPasswordApp.isChecked());
+                            mSharedPrefEditor.apply();
+                            break;
+                        }
+                        case "settings_key_password_file": {
+                            mSharedPrefEditor.putBoolean(Constant.APP_PASSWORD_SET_FILE, mSetPasswordFile.isChecked());
+                            mSharedPrefEditor.apply();
                             break;
                         }
                         case "settings_key_password_reset": {
@@ -332,9 +352,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return false;
                 }
             };
-            mIsSetPassword.setOnPreferenceClickListener(clickListener);
+            mSetSecurity.setOnPreferenceClickListener(clickListener);
+            mSetPasswordApp.setOnPreferenceClickListener(clickListener);
+            mSetPasswordFile.setOnPreferenceClickListener(clickListener);
             mResetPassword.setOnPreferenceClickListener(clickListener);
+
+            if (!BuildConfig.VERSION_NAME.equals("Dev_Build")) {
+                mSetPasswordFile.setEnabled(false);
+                mSetPasswordFile.setSummary(R.string.test_preparing);
+            }
         }
+
     }
 
     public static class Settings extends PreferenceFragment {
@@ -533,9 +561,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             license.setOnPreferenceClickListener(clickListener);
             mAdMob.setOnPreferenceClickListener(checkClickListener);
             security.setOnPreferenceClickListener(clickListener);
-
-            security.setEnabled(false);
-            security.setSummary(R.string.test_preparing);
 
             setRetainInstance(true);
         }
