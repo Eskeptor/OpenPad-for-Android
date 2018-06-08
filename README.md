@@ -24,6 +24,7 @@
  1) Shape Tools in Paint Mode has Trailing Effect When Resizing
 ```
 ## OpenPad Decrypt Tool
+[Go to OpenPad Decrypt Tool](./openpadcrypt)
 ```
  It's program to recover files encrypted with OpenPad.
  (Need "Key file (Settings - Security - Extract key file")

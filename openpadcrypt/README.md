@@ -5,7 +5,7 @@
  (Need "Key file (Settings - Security - Extract key file")
 ```
 ## Download
-![Download OpenPad Decrypt Tool](./jar)
+[Download OpenPad Decrypt Tool](./jar)
 ## How to decrypt
 ```
  0. Download "openpadcrypt.jar"
