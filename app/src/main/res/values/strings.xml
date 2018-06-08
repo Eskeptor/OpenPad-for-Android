@@ -222,4 +222,9 @@
     <string name="settings_expfunc_swipe_delete_summary">You can push a memo to remove it.</string>
     <string name="settings_expfunc_security_app_title">Lock Application</string>
     <string name="settings_expfunc_security_app_summary">Set a password for the application.</string>
+    <string name="settings_expfunc_security_password_key_backup_title">Backup encryption key</string>
+    <string name="settings_expfunc_security_password_key_backup_summary">Back up your keys for emergency recovery.</string>
+    <string name="settings_expfunc_security_password_key_backup_dialog">Back up encryption required for emergency recovery.\n(Backup path: OpenPad Folder)\n(Key File: key.opkdc)</string>
+    <string name="settings_expfunc_security_password_key_backup_fail">Failed to create key file.</string>
+    <string name="settings_expfunc_security_password_key_backup_success">Successfully created a key file.</string>
 </resources>

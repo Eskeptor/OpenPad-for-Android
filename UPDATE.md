@@ -1,3 +1,9 @@
+## Update 2018.6.8
+```
+ 1) Add Encrypt key file backup
+ 2) Add Encrypt file function
+ 3) Add tools - OpenPad Decrypt Tool (Java Program for PC)
+```
 ## Update 2018.6.2 - Build 1.5.7
 ```
  1) Add Lock application

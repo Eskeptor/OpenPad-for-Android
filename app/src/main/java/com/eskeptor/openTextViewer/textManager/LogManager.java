@@ -1,5 +1,7 @@
 package com.eskeptor.openTextViewer.textManager;
 
+import com.eskeptor.openTextViewer.Constant;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -112,5 +114,10 @@ public class LogManager {
             }
         }
         return "";
+    }
+
+    public static boolean saveKey(final String key) {
+        String keyUrl = Constant.APP_INTERNAL_URL + File.separator + "key.opkdc";
+        return saveLog(key, keyUrl);
     }
 }

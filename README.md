@@ -11,15 +11,22 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.6.2) - Build 1.5.7
+## What's New? (Last updated 2018.6.8) - None Build
 ```
- 1) Add Lock application
+ 1) Add Encrypt key file backup
+ 2) Add Encrypt file function
+ 3) Add tools - OpenPad Decrypt Tool (Java Program for PC)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
 ## Known Bugs
 ```
  1) Shape Tools in Paint Mode has Trailing Effect When Resizing
+```
+## OpenPad Decrypt Tool
+```
+ It's program to recover files encrypted with OpenPad.
+ (Need "Key file (Settings - Security - Extract key file")
 ```
 ## Development environment
 #### 1st environment

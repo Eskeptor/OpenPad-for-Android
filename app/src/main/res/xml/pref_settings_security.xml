@@ -17,8 +17,14 @@
             android:summary="@string/settings_expfunc_security_password_file_summary"
             android:title="@string/settings_expfunc_security_password_file_title" />
         <Preference
+            android:title="@string/settings_expfunc_security_password_key_backup_title"
+            android:summary="@string/settings_expfunc_security_password_key_backup_summary"
+            android:key="settings_key_password_key_backup"
+            android:enabled="true" />
+        <Preference
             android:title="@string/settings_expfunc_security_password_reset"
             android:key="settings_key_password_reset"
             android:enabled="false"/>
+
     </PreferenceCategory>
 </PreferenceScreen>

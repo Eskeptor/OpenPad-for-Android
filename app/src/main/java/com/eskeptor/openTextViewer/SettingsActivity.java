@@ -10,6 +10,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
@@ -26,6 +27,7 @@ import com.eskeptor.openTextViewer.license.KOPUBLicense;
 import com.eskeptor.openTextViewer.license.LicensesDialogLicense;
 import com.eskeptor.openTextViewer.license.OpenpadLicense;
 import com.eskeptor.openTextViewer.license.PassCodeViewLicense;
+import com.eskeptor.openTextViewer.textManager.LogManager;
 import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -58,6 +60,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     private static ActionBar mActionBar;
     private static int mFontStyle;
     private static int mPrevFontStyle;
+    private static View mSettingsView;
 
     public static class Help extends PreferenceFragment {
 
@@ -149,8 +152,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     if (preference.getKey().equals("settings_key_font_fontsize")) {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                        dialog.setTitle(getResources().getString(R.string.settings_font_fontsize));
-                        dialog.setMessage(getResources().getString(R.string.settings_dialog_font_context));
+                        dialog.setTitle(R.string.settings_font_fontsize);
+                        dialog.setMessage(R.string.settings_dialog_font_context);
                         View layout = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_fontsize, null);
                         final TextView sizePreview = layout.findViewById(R.id.dialog_font_preview);
                         NumberPicker picker = layout.findViewById(R.id.dialog_font_picker);
@@ -178,7 +181,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             }
                         });
                         dialog.setView(layout);
-                        dialog.setPositiveButton(getResources().getString(R.string.settings_dialog_info_ok), new DialogInterface.OnClickListener() {
+                        dialog.setPositiveButton(R.string.settings_dialog_info_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
@@ -272,6 +275,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private CheckBoxPreference mSetPasswordApp;
         private CheckBoxPreference mSetPasswordFile;
         private Preference mResetPassword;
+        private Preference mBackupKey;
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,6 +300,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mSetPasswordApp = (CheckBoxPreference)findPreference("settings_key_password_app");
             mSetPasswordFile = (CheckBoxPreference)findPreference("settings_key_password_file");
             mResetPassword = findPreference("settings_key_password_reset");
+            mBackupKey = findPreference("settings_key_password_key_backup");
 
             TestLog.Tag("Security").Logging(TestLog.LogType.ERROR, "APP_PASSWORD_FILE_SET: " + mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false));
             if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
@@ -348,6 +353,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             getActivity().overridePendingTransition(0, 0);
                             break;
                         }
+                        case "settings_key_password_key_backup": {
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+                            dialog.setTitle(R.string.settings_expfunc_security_password_key_backup_title);
+                            dialog.setMessage(R.string.settings_expfunc_security_password_key_backup_dialog);
+                            dialog.setPositiveButton(R.string.paint_dialog_yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String key = mSharedPref.getString(Constant.APP_PASSWORD_KEY, Constant.APP_PASSWORD_KEY_DEFAULT);
+                                    if (LogManager.saveKey(key)) {
+                                        Snackbar.make(mSettingsView, R.string.settings_expfunc_security_password_key_backup_success, Snackbar.LENGTH_LONG).show();
+                                    } else {
+                                        Snackbar.make(mSettingsView, R.string.settings_expfunc_security_password_key_backup_fail, Snackbar.LENGTH_LONG).show();
+                                    }
+
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.setNegativeButton(R.string.paint_dialog_no, null);
+                            dialog.show();
+                            break;
+                        }
                     }
                     return false;
                 }
@@ -356,6 +382,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mSetPasswordApp.setOnPreferenceClickListener(clickListener);
             mSetPasswordFile.setOnPreferenceClickListener(clickListener);
             mResetPassword.setOnPreferenceClickListener(clickListener);
+            mBackupKey.setOnPreferenceClickListener(clickListener);
 
             if (!BuildConfig.VERSION_NAME.equals("Dev_Build")) {
                 mSetPasswordFile.setEnabled(false);
@@ -619,6 +646,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         setupActionBar();
 
+        mSettingsView = SettingsActivity.this.getListView();
         mHelpAct = new Help();
         mFontSettingAct = new FontSettings();
         mSettingsAct = new Settings();
@@ -673,5 +701,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         mSharedPref = null;
         mSharedPrefEditor = null;
         mActionBar = null;
+        mSettingsView = null;
     }
 }
