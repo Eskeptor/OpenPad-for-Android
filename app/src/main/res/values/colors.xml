@@ -15,4 +15,5 @@
     <color name="Hidden">#fcf400</color>
     <color name="colorAccentPressed">#cc3370</color>
     <color name="itemBackgroundColor">#fa315b</color>
+    <color name="BackgroundColor">#e4e4e4</color>
 </resources>

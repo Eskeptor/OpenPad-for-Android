@@ -66,7 +66,6 @@ public class Constant {
     public static final String INTENT_EXTRA_MEMO_SAVE_FOLDERURL = "MEMO_SAVE_FOLDERURL";
     public static final String INTENT_EXTRA_MEMO_SAVE_FILEURL = "MEMO_SAVE_FILEURL";
     public static final String INTENT_EXTRA_HELP_INDEX = "HELP_INDEX";
-    public static final String INTENT_EXTRA_MEMO_DIVIDE = "MEMO_OPEN_DIVIDE";
     public static final String INTENT_EXTRA_MEMO_ISWIDGET = "MEMO_ISWIDGET";
     public static final String INTENT_EXTRA_WIDGET_ID = "WIDGET_ID";
     public static final String INTENT_EXTRA_PASSWORD = "PASSWORD_INTENT_TYPE";

@@ -11,16 +11,6 @@
             android:key="settings_key_password_app"
             android:summary="@string/settings_expfunc_security_app_summary"
             android:title="@string/settings_expfunc_security_app_title" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="settings_key_password_file"
-            android:summary="@string/settings_expfunc_security_password_file_summary"
-            android:title="@string/settings_expfunc_security_password_file_title" />
-        <Preference
-            android:title="@string/settings_expfunc_security_password_key_backup_title"
-            android:summary="@string/settings_expfunc_security_password_key_backup_summary"
-            android:key="settings_key_password_key_backup"
-            android:enabled="true" />
         <Preference
             android:title="@string/settings_expfunc_security_password_reset"
             android:key="settings_key_password_reset"

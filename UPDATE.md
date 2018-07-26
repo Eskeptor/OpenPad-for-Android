@@ -1,3 +1,11 @@
+## Update 2018.7.26 - Build 1.5.8
+```
+ 1) OpenPad Decrypt Tool excluded  ->  Update scheduled for version 2
+ 2) Encrypt file function excluded ->  Update scheduled for version 2
+    Because -> need to change the way(write memo).
+ 3) Fix bugs and remove unnecessary elements
+ 4) Add Back Button(Memo, Setting Scene)
+```
 ## Update 2018.6.8
 ```
  1) Add Encrypt key file backup

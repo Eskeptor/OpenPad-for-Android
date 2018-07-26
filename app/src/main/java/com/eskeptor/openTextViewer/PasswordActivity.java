@@ -102,6 +102,12 @@ public class PasswordActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAES256 = null;
+    }
+
+    @Override
     public void onBackPressed() {
         if (mPasswordType != Constant.PasswordIntentType.MainExecute.getValue()) {
             super.onBackPressed();

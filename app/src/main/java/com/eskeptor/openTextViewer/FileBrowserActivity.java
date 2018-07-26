@@ -110,6 +110,9 @@ public class FileBrowserActivity extends AppCompatActivity {
             mBrowserType = BrowserType.SaveExternalOpenedFile;
         }
 
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mDirectoryThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -146,7 +149,6 @@ public class FileBrowserActivity extends AppCompatActivity {
                     intent.setClass(mContextThis, MemoActivity.class);
                     intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL, mFileListObjects.get(position).mFilePath);
                     intent.putExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME, file.getName());
-                    intent.putExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, true);
                     startActivity(intent);
                     overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                     finish();
@@ -216,6 +218,9 @@ public class FileBrowserActivity extends AppCompatActivity {
                 mDirectoryThread.start();
                 mMenuItemASC.setChecked(false);
                 mMenuItemDES.setChecked(true);
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

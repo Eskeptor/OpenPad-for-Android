@@ -7,9 +7,9 @@ android {
         applicationId "com.eskeptor.openTextViewer"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 30
+        versionCode 31
         // 이전 버전
-        versionName "1.5.7"
+        versionName "1.5.8"
 //        versionName "Dev_Build"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

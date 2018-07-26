@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
     private FloatingActionsMenu mActionMenu;
 
     private boolean mIsFileDeleted;
-    private Random mRandom;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,8 +156,6 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
         mIsViewImage = mSharedPref.getBoolean(Constant.APP_VIEW_IMAGE, true);
 
         mHandler = new RefreshListHandler(this);
-
-        mRandom = new Random();
 
         // Folder Icon
         Drawable folderIcon;
@@ -365,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
             mListThread.interrupt();
         }
         mListThread = null;
+        mActionMenu = null;
     }
 
     /**
@@ -541,17 +539,12 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
             dialog.setPositiveButton(R.string.settings_dialog_info_ok, clickListener);
             dialog.show();
         }
-        /*if (mSharedPrefEditor == null)
-            mSharedPrefEditor = mSharedPref.edit();
-        mSharedPrefEditor.putString(Constant.APP_PASSWORD_KEY, Constant.APP_PASSWORD_KEY_DEFAULT);
-        mSharedPrefEditor.apply();*/
+
         if (mSharedPref.getString(Constant.APP_PASSWORD_KEY, Constant.APP_PASSWORD_KEY_DEFAULT).equals(Constant.APP_PASSWORD_KEY_DEFAULT)) {
             if (mSharedPrefEditor == null)
                 mSharedPrefEditor = mSharedPref.edit();
             mSharedPrefEditor.putString(Constant.APP_PASSWORD_KEY, createKey());
             mSharedPrefEditor.apply();
-        } else {
-            mRandom = null;
         }
     }
 
@@ -592,9 +585,10 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
 
     private String createKey() {
         StringBuilder key = new StringBuilder();
+        Random random = new Random();
 
         for (int i = 0; i < 16; i++) {
-            key.append((char)(mRandom.nextInt(26) + 65));
+            key.append((char)(random.nextInt(26) + 65));
         }
         return key.toString();
     }
@@ -651,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
                 mCurFolderGridView.setHasFixedSize(true);
                 mCurFolderGridView.setLayoutManager(mLayoutManager);
                 mCurFolderGridView.setAdapter(mCurFileAdapter);
-                mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(10, 5, 5));
+                mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(10, 5, 5, 10));
                 break;
             }
         }

@@ -64,11 +64,13 @@ class RecyclerViewPadding extends RecyclerView.ItemDecoration {
     private int mBottom;
     private int mLeft;
     private int mRight;
+    private int mTop;
 
-    RecyclerViewPadding(final int bottom, final int right, final int left) {
+    RecyclerViewPadding(final int bottom, final int right, final int left, final int top) {
         mBottom = bottom;
         mRight = right;
         mLeft = left;
+        mTop = top;
     }
 
     @Override
@@ -77,6 +79,7 @@ class RecyclerViewPadding extends RecyclerView.ItemDecoration {
         outRect.bottom = mBottom;
         outRect.right = mRight;
         outRect.left = mLeft;
+        outRect.top = mTop;
     }
 }
 

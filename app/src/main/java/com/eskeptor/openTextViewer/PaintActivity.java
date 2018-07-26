@@ -98,6 +98,9 @@ public class PaintActivity extends AppCompatActivity {
 
         mContextThis = getApplicationContext();
 
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mOpenFolderURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FOLDERURL);
         mOpenFileURL = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILEURL);
         mOpenFileName = getIntent().getStringExtra(Constant.INTENT_EXTRA_MEMO_OPEN_FILENAME);
@@ -167,14 +170,11 @@ public class PaintActivity extends AppCompatActivity {
                     case R.id.paint_eraser_seekSize:
                         mEraserTxtSize.setText(String.format(getResources().getString(R.string.paint_txtBrushSize), progress));
                         break;
-
                 }
             }
 
             @Override
-            public void onStartTrackingTouch(final SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(final SeekBar seekBar) { }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -258,7 +258,6 @@ public class PaintActivity extends AppCompatActivity {
                 dialog.show();
             }
         }
-
     }
 
     @Override
@@ -291,6 +290,9 @@ public class PaintActivity extends AppCompatActivity {
                 break;
             case R.id.menu_paint_info:
                 imageDescription();
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ import util.TestLog;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
     public enum ActiveScreenType {
-        Main, Font, Help, Security
+        Main, Font, Help, Security, UpdateList
     }
 
     private static ActiveScreenType mActiveScene;
@@ -269,13 +270,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class Security extends PreferenceFragment {
-        // todo 비밀번호 암호화하여 처리하기 구현
-
         private CheckBoxPreference mSetSecurity;
         private CheckBoxPreference mSetPasswordApp;
-        private CheckBoxPreference mSetPasswordFile;
         private Preference mResetPassword;
-        private Preference mBackupKey;
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -283,7 +280,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 switch (requestCode) {
                     case Constant.REQUEST_CODE_PASSWORD: {
                         mSetPasswordApp.setEnabled(true);
-                        mSetPasswordFile.setEnabled(true);
                         mResetPassword.setEnabled(true);
                         break;
                     }
@@ -298,18 +294,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             mSetSecurity = (CheckBoxPreference)findPreference("settings_key_password_enabled");
             mSetPasswordApp = (CheckBoxPreference)findPreference("settings_key_password_app");
-            mSetPasswordFile = (CheckBoxPreference)findPreference("settings_key_password_file");
             mResetPassword = findPreference("settings_key_password_reset");
-            mBackupKey = findPreference("settings_key_password_key_backup");
 
-            TestLog.Tag("Security").Logging(TestLog.LogType.ERROR, "APP_PASSWORD_FILE_SET: " + mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false));
             if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
                 mSetPasswordApp.setEnabled(true);
-                mSetPasswordFile.setEnabled(true);
                 mResetPassword.setEnabled(true);
             } else {
                 mSetPasswordApp.setEnabled(false);
-                mSetPasswordFile.setEnabled(false);
                 mResetPassword.setEnabled(false);
             }
 
@@ -322,7 +313,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         case "settings_key_password_enabled": {
                             if (mSharedPref.getBoolean(Constant.APP_PASSWORD_SET, false)) {
                                 mSetPasswordApp.setEnabled(false);
-                                mSetPasswordFile.setEnabled(false);
                                 mResetPassword.setEnabled(false);
                                 mSharedPrefEditor.putBoolean(Constant.APP_PASSWORD_SET, false);
                                 mSharedPrefEditor.apply();
@@ -340,11 +330,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             mSharedPrefEditor.apply();
                             break;
                         }
-                        case "settings_key_password_file": {
-                            mSharedPrefEditor.putBoolean(Constant.APP_PASSWORD_SET_FILE, mSetPasswordFile.isChecked());
-                            mSharedPrefEditor.apply();
-                            break;
-                        }
                         case "settings_key_password_reset": {
                             Intent intent = new Intent();
                             intent.setClass(getActivity(), PasswordActivity.class);
@@ -353,43 +338,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             getActivity().overridePendingTransition(0, 0);
                             break;
                         }
-                        case "settings_key_password_key_backup": {
-                            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                            dialog.setTitle(R.string.settings_expfunc_security_password_key_backup_title);
-                            dialog.setMessage(R.string.settings_expfunc_security_password_key_backup_dialog);
-                            dialog.setPositiveButton(R.string.paint_dialog_yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String key = mSharedPref.getString(Constant.APP_PASSWORD_KEY, Constant.APP_PASSWORD_KEY_DEFAULT);
-                                    if (LogManager.saveKey(key)) {
-                                        Snackbar.make(mSettingsView, R.string.settings_expfunc_security_password_key_backup_success, Snackbar.LENGTH_LONG).show();
-                                    } else {
-                                        Snackbar.make(mSettingsView, R.string.settings_expfunc_security_password_key_backup_fail, Snackbar.LENGTH_LONG).show();
-                                    }
-
-                                    dialog.dismiss();
-                                }
-                            });
-                            dialog.setNegativeButton(R.string.paint_dialog_no, null);
-                            dialog.show();
-                            break;
-                        }
                     }
                     return false;
                 }
             };
             mSetSecurity.setOnPreferenceClickListener(clickListener);
             mSetPasswordApp.setOnPreferenceClickListener(clickListener);
-            mSetPasswordFile.setOnPreferenceClickListener(clickListener);
             mResetPassword.setOnPreferenceClickListener(clickListener);
-            mBackupKey.setOnPreferenceClickListener(clickListener);
-
-            if (!BuildConfig.VERSION_NAME.equals("Dev_Build")) {
-                mSetPasswordFile.setEnabled(false);
-                mSetPasswordFile.setSummary(R.string.test_preparing);
-            }
         }
 
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            mSetSecurity = null;
+            mSetPasswordApp = null;
+            mResetPassword = null;
+        }
     }
 
     public static class Settings extends PreferenceFragment {
@@ -476,6 +440,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             intent.setClass(getActivity(), UpdateListActivity.class);
                             startActivity(intent);
                             getActivity().overridePendingTransition(0, 0);
+                            mActiveScene = ActiveScreenType.UpdateList;
                             break;
                         }
                         case "settings_key_version": {
@@ -621,12 +586,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             mAdMob = null;
             mEnhanceIOLine = null;
             mViewImage = null;
+            mSwipeDelete = null;
         }
     }
 
     private void setupActionBar() {
         mActionBar = getSupportActionBar();
         if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
             mActionBar.setDisplayShowHomeEnabled(true);
             mActionBar.setTitle(R.string.settings_title);
         }
@@ -684,11 +651,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             case Main:
                 super.onBackPressed();
                 overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+                TestLog.Tag("No").Logging(TestLog.LogType.ERROR, "Main");
                 break;
             default:
                 getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();
                 mActiveScene = ActiveScreenType.Main;
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+                TestLog.Tag("No").Logging(TestLog.LogType.ERROR, "No Main");
+                break;
         }
     }
 
@@ -702,5 +672,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         mSharedPrefEditor = null;
         mActionBar = null;
         mSettingsView = null;
+        mSecurityAct = null;
+        mActiveScene = null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return false;
     }
 }

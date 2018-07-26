@@ -106,7 +106,7 @@ public class MemoActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (mOpenFileURL != null || mIsWidget) {
+        if (mOpenFileURL != null && !mIsWidget) {
             getMenuInflater().inflate(R.menu.menu_memo, menu);
             mEditMenu = menu.findItem(R.id.menu_memo_modified);
             mEditMenu.setIcon(mDrawableModified);
@@ -155,6 +155,9 @@ public class MemoActivity extends AppCompatActivity {
                     }
                 });
                 alert.show();
+                break;
+            case android.R.id.home:
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -220,8 +223,16 @@ public class MemoActivity extends AppCompatActivity {
         mWidgetID = mSharedPref.getInt(MemoWidget.WIDGET_ID, 0);
         int fontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        // 파일이 열려있지 않다면? (위젯용 메모를 열여도 여기로 통함, 위젯의 경우에는 파일경로를 통하지 않음)
         if (mOpenFileURL == null) {
+            // 로그를 위한 File 만들기(이 로그는 새 메모 파일생성시에 적용할 이름이 됨)
             mLastLog = new File(mOpenFolderURL + File.separator + Constant.FILE_LOG_COUNT);
+
+            // 파일 이름 중복을 방지하기 위한 이름 중복 체크
             if (!mLastLog.exists()) {
                 try {
                     if(mLastLog.createNewFile()) {
@@ -245,19 +256,25 @@ public class MemoActivity extends AppCompatActivity {
             }
 
             mTxtManager.initManager();
+
+            // 새로운 파일이기 때문에 하단 버튼레이아웃을 보이지 않음
             mBtnLayout.setVisibility(View.GONE);
+
+            // 만약 파일이 위젯용이라면?
             if (mIsWidget) {
                 final File tmpFile = new File(mOpenFolderURL + File.separator + mWidgetID + Constant.FILE_TEXT_EXTENSION);
+
+                // 이미 존재하는 파일이면 -> 위젯메모 수정
                 if (tmpFile.exists()) {
                     setTitle(R.string.memo_title_widget);
                     mOpenFileURL = tmpFile.getPath();
                     if (mTxtManager.openText(mOpenFileURL)) {
                         String txtData = mTxtManager.getText(TextManager.PAGE_NONE, mEncodeType);
                         mEditText.setText(txtData);
-                        mEditText.setFocusable(false);
+                        mEditText.setFocusable(true);
                     }
                     mBtnLayout.setVisibility(View.GONE);
-                } else {
+                } else { // 존재하지 않는 파일이면 -> 새로운 위젯 메모
                     setTitle(getString(R.string.memo_title_newFile) + "(" + getString(R.string.memo_title_newWidgetMemo) + ")");
                     mEditText.setText("");
                     mEditText.setFocusable(true);
@@ -270,18 +287,19 @@ public class MemoActivity extends AppCompatActivity {
                     mDrawableModified = getResources().getDrawable(R.drawable.ic_modifiy_white_24dp);
                     mDrawableModifiedComplete = getResources().getDrawable(R.drawable.ic_save_white_24dp);
                 }
-            } else {
+            } else { // 위젯용이 아니라면?
                 setTitle(R.string.memo_title_newFile);
                 mEditText.setText("");
                 mEditText.setFocusable(true);
             }
-        } else {
+        } else { // 파일이 열려있다면?
             setTitle(mOpenFileName);
             mProgCurrent = findViewById(R.id.memo_Prog);
             mTxtProgCur = findViewById(R.id.memo_txtProg_cur);
 
             mHandler = new FileIOHandler(this);
 
+            // 메모내용 불러오기
             mTextThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -293,66 +311,57 @@ public class MemoActivity extends AppCompatActivity {
             });
             mTextThread.start();
 
-            mIsDivided = getIntent().getBooleanExtra(Constant.INTENT_EXTRA_MEMO_DIVIDE, false);
+            mBtnLayout.setVisibility(View.VISIBLE);
+            mBtnPrev = findViewById(R.id.memo_btnPrev);
+            mBtnNext = findViewById(R.id.memo_btnNext);
 
-            if (mIsDivided) {
-                mBtnLayout.setVisibility(View.VISIBLE);
-                mBtnPrev = findViewById(R.id.memo_btnPrev);
-                mBtnNext = findViewById(R.id.memo_btnNext);
-
-                mScrollView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getPointerCount() > 1) {
-                            TestLog.Tag("Test").Logging(TestLog.LogType.DEBUG, "double touch");
-                            return mGestureDetectorCompat.onTouchEvent(event);
-                        }
-                        return false;
+            mScrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getPointerCount() > 1) {
+                        TestLog.Tag("Test").Logging(TestLog.LogType.DEBUG, "double touch");
+                        return mGestureDetectorCompat.onTouchEvent(event);
                     }
-                });
-
-                mGestureDetectorCompat = new GestureDetectorCompat(mContextThis, new GestureDetector.OnGestureListener() {
-                    @Override
-                    public boolean onDown(MotionEvent e) {
-                        return true;
-                    }
-
-                    @Override
-                    public void onShowPress(MotionEvent e) {
-                    }
-
-                    @Override
-                    public boolean onSingleTapUp(MotionEvent e) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                        if (distanceY > 0)
-                            mBtnLayout.scrollTo((int) mBtnLayout.getX(), mBtnLayout.getBottom());
-                        else
-                            mBtnLayout.scrollTo((int) mBtnLayout.getX(), 0);
-                        return true;
-                    }
-
-                    @Override
-                    public void onLongPress(MotionEvent e) {
-
-                    }
-
-                    @Override
-                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                        return true;
-                    }
-
-                });
-
-                mBtnPrev.setEnabled(false);
-                if (mTxtManager.getCurPage() == mTxtManager.getMaxPage() - 1) {
-                    mBtnNext.setEnabled(false);
+                    return false;
                 }
-            } else {
-                mBtnLayout.setVisibility(View.GONE);
+            });
+
+            // 멀티터치로 하단 버튼 레이아웃 조종을 위한 디텍터
+            mGestureDetectorCompat = new GestureDetectorCompat(mContextThis, new GestureDetector.OnGestureListener() {
+                @Override
+                public boolean onDown(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onShowPress(MotionEvent e) {}
+
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return false;
+                }
+
+                @Override
+                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                    if (distanceY > 0)
+                        mBtnLayout.scrollTo((int) mBtnLayout.getX(), mBtnLayout.getBottom());
+                    else
+                        mBtnLayout.scrollTo((int) mBtnLayout.getX(), 0);
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {}
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                    return true;
+                }
+
+            });
+
+            mBtnPrev.setEnabled(false);
+            if (mTxtManager.getCurPage() == mTxtManager.getMaxPage() - 1) {
+                mBtnNext.setEnabled(false);
             }
 
             if (Build.VERSION.SDK_INT >= 21) {
@@ -362,18 +371,20 @@ public class MemoActivity extends AppCompatActivity {
                 mDrawableModified = getResources().getDrawable(R.drawable.ic_modifiy_white_24dp);
                 mDrawableModifiedComplete = getResources().getDrawable(R.drawable.ic_save_white_24dp);
             }
-
-            if (fontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
-            } else if (fontStyle == Constant.FontType.KOPUB_Dotum.getValue()) {
-                Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
-                        .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
-            } else {
-                Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
-            }
-
         }
+
+
+        // 폰트 부분
+        if (fontStyle == Constant.FontType.BaeDal_JUA.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"))
+                    .addBold(Typekit.createFromAsset(mContextThis, "fonts/bmjua.ttf"));
+        } else if (fontStyle == Constant.FontType.KOPUB_Dotum.getValue()) {
+            Typekit.getInstance().addNormal(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"))
+                    .addBold(Typekit.createFromAsset(mContextThis, "fonts/kopub_dotum_medium.ttf"));
+        } else {
+            Typekit.getInstance().addNormal(Typeface.DEFAULT).addBold(Typeface.DEFAULT_BOLD);
+        }
+
     }
 
     @Override
@@ -416,6 +427,7 @@ public class MemoActivity extends AppCompatActivity {
             mTextThread.interrupt();
         }
         mTextThread = null;
+        mEncodeType = null;
     }
 
     @Override

@@ -1,3 +1,8 @@
+1.5.8
+1) Fix bugs and remove unnecessary elements
+2) Excluding features to be updated (file encryption)
+3) Add Back Button(Memo, Setting Scene)
+
 1.5.7
 1) Add Lock application
 
