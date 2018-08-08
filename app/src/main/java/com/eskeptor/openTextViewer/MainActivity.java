@@ -645,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements MainFileItemTouch
                 mCurFolderGridView.setHasFixedSize(true);
                 mCurFolderGridView.setLayoutManager(mLayoutManager);
                 mCurFolderGridView.setAdapter(mCurFileAdapter);
-                mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(10, 5, 5, 10));
+                mCurFolderGridView.addItemDecoration(new RecyclerViewPadding(0, 5, 5, 10));
                 break;
             }
         }

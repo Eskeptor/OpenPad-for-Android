@@ -1,8 +1,8 @@
-1.5.8
-1) Fix bugs and remove unnecessary elements
-2) Excluding features to be updated (file encryption)
-3) Add Back Button(Memo, Setting Scene)
+1.5.9
+1) Bug fix (font change bug)
+2) Bug fix (the bottom button came out of a single page note or text file)
 
 Notice
 No more functional updates.
+(There are only bug fixes.)
 (We will visit you later. Thank you.)

@@ -305,13 +305,17 @@ public class MemoActivity extends AppCompatActivity {
                 public void run() {
                     if (mTxtManager.openText(mOpenFileURL)) {
                         TestLog.Tag("MemoActivity").Logging(TestLog.LogType.DEBUG, "파일 열림");
+                        if (mTxtManager.getMaxPage() == 1)
+                            mBtnLayout.setVisibility(View.GONE);
+                        else
+                            mBtnLayout.setVisibility(View.VISIBLE);
                         mHandler.sendEmptyMessage(HANDLER_FILE_OPENED);
                     }
                 }
             });
             mTextThread.start();
 
-            mBtnLayout.setVisibility(View.VISIBLE);
+
             mBtnPrev = findViewById(R.id.memo_btnPrev);
             mBtnNext = findViewById(R.id.memo_btnNext);
 

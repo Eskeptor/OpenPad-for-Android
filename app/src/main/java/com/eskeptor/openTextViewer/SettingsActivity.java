@@ -139,7 +139,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private CheckBoxPreference mFontBDJua;
         private CheckBoxPreference mFontKPDotum;
 
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -248,15 +247,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 mFontKPDotum.setChecked(false);
             }
             setRetainInstance(true);
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            if (mSharedPrefEditor == null)
-                mSharedPrefEditor = mSharedPref.edit();
-            mSharedPrefEditor.putInt(Constant.APP_FONT, mFontStyle);
-            mSharedPrefEditor.apply();
         }
 
         @Override
@@ -560,7 +550,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onResume() {
             super.onResume();
+
             mFontStyle = mSharedPref.getInt(Constant.APP_FONT, Constant.FontType.Default.getValue());
+            TestLog.Tag("Font").Logging(TestLog.LogType.ERROR, "Font: " + mFontStyle);
 
             if (mPrevFontStyle != mFontStyle) {
                 mPrevFontStyle = mFontStyle;
@@ -652,6 +644,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 super.onBackPressed();
                 overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
                 TestLog.Tag("No").Logging(TestLog.LogType.ERROR, "Main");
+                break;
+            case Font:
+                if (mSharedPrefEditor == null)
+                    mSharedPrefEditor = mSharedPref.edit();
+                mSharedPrefEditor.putInt(Constant.APP_FONT, mFontStyle);
+                mSharedPrefEditor.apply();
+                getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();
+                mActiveScene = ActiveScreenType.Main;
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 break;
             default:
                 getFragmentManager().beginTransaction().replace(android.R.id.content, new Settings()).commit();

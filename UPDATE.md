@@ -1,3 +1,8 @@
+## Update 2018.8.8 - Build 1.5.9
+```
+ 1) Bug fix (font change bug)
+ 2) Bug fix (the bottom button came out of a single page note or text file)
+```
 ## Update 2018.7.26 - Build 1.5.8
 ```
  1) OpenPad Decrypt Tool excluded  ->  Update scheduled for version 2

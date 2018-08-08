@@ -11,13 +11,10 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.7.26) - Build 1.5.8
+## What's New? (Last updated 2018.8.8) - Build 1.5.9
 ```
- 1) OpenPad Decrypt Tool excluded  ->  Update scheduled for version 2
- 2) Encrypt file function excluded ->  Update scheduled for version 2
-    Because -> need to change the way(write memo).
- 3) Fix bugs and remove unnecessary elements
- 4) Add Back Button(Memo, Setting Scene)
+ 1) Bug fix (font change bug)
+ 2) Bug fix (the bottom button came out of a single page note or text file)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)
@@ -59,4 +56,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ## Good Bye!!
-Compiled by Android Studio 3.1.2
+Compiled by Android Studio 3.1.4
