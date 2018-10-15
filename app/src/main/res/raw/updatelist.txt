@@ -1,3 +1,6 @@
+1.5.10
+1) Bug fix (translate)
+
 1.5.9
 1) Bug fix (font change bug)
 2) Bug fix (the bottom button came out of a single page note or text file)

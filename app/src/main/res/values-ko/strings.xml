@@ -215,4 +215,9 @@
     <string name="settings_expfunc_security_password_key_backup_dialog">긴급복구에 필요한 암호화키를 백업합니다.\n(백업경로: OpenPad 폴더)\n(키 파일: key.opkdc)</string>
     <string name="settings_expfunc_security_password_key_backup_fail">키 파일 생성에 실패하였습니다.</string>
     <string name="settings_expfunc_security_password_key_backup_success">키 파일을 생성하였습니다.</string>
+    <string name="password_set">비밀번호 설정</string>
+    <string name="password_reset">비밀번호 재설정</string>
+    <string name="password_enter">비밀번호 입력</string>
+    <string name="password_incorrect">비밀번호가 틀렸습니다</string>
+    <string name="password_again">다시 한 번 입력하세요</string>
 </resources>

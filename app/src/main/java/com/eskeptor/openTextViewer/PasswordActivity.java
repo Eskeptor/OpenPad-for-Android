@@ -41,11 +41,11 @@ public class PasswordActivity extends AppCompatActivity {
         mPasswordType = getIntent().getIntExtra(Constant.INTENT_EXTRA_PASSWORD, Constant.PasswordIntentType.Set.getValue());
 
         if (mPasswordType == Constant.PasswordIntentType.Set.getValue()) {
-            txtComment.setText("비밀번호 설정");
+            txtComment.setText(getString(R.string.password_set));
         } else if (mPasswordType == Constant.PasswordIntentType.Reset.getValue()) {
-            txtComment.setText("비밀번호 재설정");
+            txtComment.setText(getString(R.string.password_reset));
         } else {
-            txtComment.setText("비밀번호 입력");
+            txtComment.setText(getString(R.string.password_enter));
         }
 
         passCodeView.setOnTextChangeListener(new PassCodeView.TextChangeListener() {
@@ -64,7 +64,7 @@ public class PasswordActivity extends AppCompatActivity {
                             } else {
                                 mPass = text;
                                 passCodeView.reset();
-                                txtComment.setText("비밀번호가 틀렸습니다.");
+                                txtComment.setText(getString(R.string.password_incorrect));
                             }
                         }
                     } catch (Exception e) {
@@ -93,7 +93,7 @@ public class PasswordActivity extends AppCompatActivity {
                             mPass = text;
                             passCodeView.reset();
                             isRepeat = true;
-                            txtComment.setText("다시 한 번 입력하세요");
+                            txtComment.setText(getString(R.string.password_again));
                         }
                     }
                 }

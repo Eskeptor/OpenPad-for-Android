@@ -11,10 +11,9 @@
  2) There is no need for Internet connection.(but no sync function.)
  3) Text Viewer function(using embedded file explorer)
 ```
-## What's New? (Last updated 2018.8.8) - Build 1.5.9
+## What's New? (Last updated 2018.10.15) - Build 1.5.10
 ```
- 1) Bug fix (font change bug)
- 2) Bug fix (the bottom button came out of a single page note or text file)
+ 1) Bug fix (translate)
 ```
 ## Lasted Update List
 [View Lists](./UPDATE.md)

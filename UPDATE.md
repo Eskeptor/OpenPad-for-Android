@@ -1,3 +1,7 @@
+## Update 2018.10.15 - Build 1.5.10
+```
+ 1) Bug fix (translate)
+```
 ## Update 2018.8.8 - Build 1.5.9
 ```
  1) Bug fix (font change bug)
