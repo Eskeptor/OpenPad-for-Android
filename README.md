@@ -2,7 +2,7 @@
 [![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=15)[![](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 ![homepage](./Preview/image.png)
 ## OpenPad Version 2
-[Let's go OpenPad Version 2 Project](https://github.com/Eskeptor/OpenPad-for-Android2)
+[Let's go OpenPad Version 2 Project](https://github.com/Eskeptor/OpenPad2)
 ## Download
 [Google Play](https://play.google.com/store/apps/details?id=com.eskeptor.openTextViewer)
 
